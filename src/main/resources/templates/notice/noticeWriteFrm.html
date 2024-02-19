@@ -2,45 +2,73 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항 작성 페이지</title>
 </head>
 <body>
+	<!-- <th:block th:include="common/header"></th:block> -->
+  
 	<script src="/summernote/summernote-lite.js"></script>
 	<script src="/summernote/lang/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	
-
+	<div class="page-content">
+		<div class="page-title">공지사항</div>
+		<form action="/notice/write" method="post" enctype="multipart/form-data">
+			<table class="tbl noticeWrite">
+				<tr>
+					<th>제목</th>
+					<td><input type="text" name="noticeTitle" class="input-form"></td>
+				</tr>
+				<tr>
+					<th>첨부파일</th>
+					<td><input type="file" name="upfile" multiple></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:left;">
+						<textarea id="noticeContent" name="noticeContent" class="input-form"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button type="submit" class="btn">공지사항 작성</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 	
 	<script>
-	$("#noticeContent").summernote({
-		height : 500,
-		lang : "ko-KR",
-		callbacks : {
-			onImageUpload : function(files){
-				uploadImage(files[0].this);
-			}
-		},
-		disableResize : true,
-		disableResizeEditor : true,
-		resize : false
-	});
-	function uploadImage(file,editor){
-		const form = new FormData();
-		form.append("upfile",file);
-		$.ajax({
-			url : "/notice/editor",
-			type : "post",
-			data : form,
-			processData : false,
-			contentType : false,
-			success : function(data){
-				$(editor).summernote("insertImage",data);
+		$("#noticeContent").summernote({
+			height : 500,
+			lang : "ko-KR",
+			callbacks : {
+				onImageUpload : function(files){
+					uploadImage(files[0],this);
+				}
 			},
-			error : function(){
-				console.log("에러");
-			}
+			disableResize : true,
+			disableResizeEditor : true,
+			resize : false
 		});
-	}
+		function uploadImage(file,editor){
+			const form = new FormData();
+			form.append("upfile",file);
+			$.ajax({
+				url : "/notice/editor",
+				type : "post",
+				data : form,
+				processData : false,
+				contentType : false,
+				success : function(data){
+					console.log($(editor));
+					$(editor).summernote("insertImage",data);
+				},
+				error : function(){
+					console.log("에러");
+				}
+			});
+		}
 	</script>
+	<!-- <th:block th:include="common/footer"></th:block> -->
 </body>
 </html>
