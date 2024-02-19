@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공지사항 목록</title>
+</head>
+<body>
+	<h1>임시페이지</h1>
+	<div id="pageNavi" th:utext="${pageNavi}"></div>
+	
+	<!-- <a th:if="${session.member != null && session.member.memberLevel == 1}" href="/notice/noticeWriteFrm">글쓰기</a> -->
+	<a href="/notice/noticeWriteFrm">글쓰기</a>
+	
+</body>
+</html>

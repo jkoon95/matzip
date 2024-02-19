@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<script src="/summernote/summernote-lite.js"></script>
+	<script src="/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="/summernote/summernote-lite.css">
+	
+
+	
+	<script>
+	$("#noticeContent").summernote({
+		height : 500,
+		lang : "ko-KR",
+		callbacks : {
+			onImageUpload : function(files){
+				uploadImage(files[0].this);
+			}
+		},
+		disableResize : true,
+		disableResizeEditor : true,
+		resize : false
+	});
+	function uploadImage(file,editor){
+		const form = new FormData();
+		form.append("upfile",file);
+		$.ajax({
+			url : "/notice/editor",
+			type : "post",
+			data : form,
+			processData : false,
+			contentType : false,
+			success : function(data){
+				$(editor).summernote("insertImage",data);
+			},
+			error : function(){
+				console.log("에러");
+			}
+		});
+	}
+	</script>
+</body>
+</html>
