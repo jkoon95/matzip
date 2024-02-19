@@ -16,7 +16,7 @@ public class HomeController {
 		return "search/searchStoreBySubway";
 	}
 	
-	@GetMapping(value="/search")
+	@GetMapping(value="/searchStore")
 	public String searchStore() {
 		return "search/searchStore";
 	}
