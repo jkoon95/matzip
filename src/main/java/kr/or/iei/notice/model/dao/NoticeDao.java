@@ -16,14 +16,14 @@ public class NoticeDao {
 	private NoticeRowMapper noticeRowMapper;
 	
 	public List selectNoticeList(int start, int end) {
-		String query = "select * from (select rownum as rnum, n.* from (select * from notice order by 1 desc)n) where rnum between ? and ?";
+		String query = "select * from (select rownum as rnum, n.* from (select * from notice_tbl order by 1 desc)n) where rnum between ? and ?";
 		Object[] params = {start, end};
 		List list = jdbc.query(query, noticeRowMapper, params);
 		return list;
 	}
 
 	public int selectAllNoticeCount() {
-		String query = "select count(*) from notice";
+		String query = "select count(*) from notice_tbl";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
 	}

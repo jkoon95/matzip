@@ -22,4 +22,10 @@ public class NoticeController {
 		model.addAttribute("pageNavi",nld.getPageNavi());
 		return "notice/noticeList";
 	}
+	
+	@GetMapping(value="/noticeWriteFrm")
+	public String noticeWriteFrm() {
+		return "notice/noticeWriteFrm";
+	}
+	
 }
