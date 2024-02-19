@@ -7,7 +7,7 @@
 .page-content{
 /*     height: 500px; */
     width: 1200px;
-    height : 1000px;
+    
     /* background-color: aquamarine; */
     margin: 0 auto;
     display: flex;
@@ -16,13 +16,13 @@
 .menu{
     width: 300px;
     /* height : 500px; */
-    background-color: bisque;
+    /* background-color: bisque; */
 }
 
 .search-by-subway{
     width: 900px;
     /* height : 500px; */
-    background-color: blueviolet;
+    
     
     display: flex;
     flex-direction: column;
@@ -87,4 +87,35 @@
     align-items: center; /* 수직 중앙 정렬 */
     flex-direction: column; /* 자식 요소들을 세로 방향으로 정렬 */
     height: 100%; /* 부모의 전체 높이를 사용 */
+}
+
+.menu{
+	display: flex;
+	
+}
+
+.subway-line-menu{
+	width: 50%;
+	/* border-right: 2px solid black; */
+}
+
+.subway-line-menu div:not(:last-child){
+    border-bottom: 2px solid #ebebeb;
+}
+
+.subway-line-menu div{
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+
+.station-list{
+	width: 50%;
+}
+
+.station-list ul{
+    list-style-type: none;
 }
