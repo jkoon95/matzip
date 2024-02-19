@@ -5,11 +5,32 @@
 <title>공지사항 목록</title>
 </head>
 <body>
-	<h1>임시페이지</h1>
-	<div id="pageNavi" th:utext="${pageNavi}"></div>
+	<!-- <th:block th:include="common/header"></th:block> -->
+	<div class="page-content">
+		<div class="page-title">공지사항</div>
+		<!-- <a id="write-btn" th:if="${session.member != null && session.member.memberLevel == 1}" class="btn" href="/notice/noticeWriteFrm">글쓰기</a> -->
+		<a id="write-btn" th:if="${session.member == null}" class="btn" href="/notice/noticeWriteFrm">글쓰기</a>
+		
+		<table class="tbl notice-tbl">
+			<tr class="tr-2">
+				<th style="width:10%;">번호</th>
+				<th style="width:45%;">제목</th>
+				<th style="width:15%;">작성자</th>
+				<th style="width:20%;">작성일</th>
+				<th style="width:10%;">조회수</th>
+			</tr>
+			<tr class="tr-1" th:each="notice : ${noticeList}">
+				<td th:text="${notice.noticeNo}"></td>
+				<td><a th:href="@{/notice/view(noticeNo=${notice.noticeNo})}" th:text="${notice.noticeTitle}"></a></td>
+				<td th:text="${notice.noticeWriter}"></td>
+				<td th:text="${notice.regDate}"></td>
+				<td th:text="${notice.readCount}"></td>
+			</tr>
+		</table>
+		
+		<div id="pageNavi" th:utext="${pageNavi}"></div>
+	</div>
 	
-	<!-- <a th:if="${session.member != null && session.member.memberLevel == 1}" href="/notice/noticeWriteFrm">글쓰기</a> -->
-	<a href="/notice/noticeWriteFrm">글쓰기</a>
-	
+	<!-- <th:block th:include="common/footer"></th:block> -->
 </body>
 </html>
