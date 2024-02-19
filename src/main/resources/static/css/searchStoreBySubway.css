@@ -32,3 +32,59 @@
 .search-by-subway > img{
 	width: 100%;
 }
+
+.search-by-subway {
+    position: relative;
+}
+
+.subway-line > .subway-station {
+    position: absolute;
+}
+
+.subway-station .material-icons{
+    color: yellow;
+    font-size: 26px;
+}
+/* .subway-station .subway-station-name{
+
+} */
+
+.subway-station:hover .material-icons{
+    transform: scale(2);
+    cursor: pointer;
+}
+
+.subway-station:hover .subway-station-name{
+    font-weight: 900;
+}
+
+
+
+#dangsan-station {
+    top: 614px;
+    left: 26px;
+}
+#jamsil-station {
+    top: 595px;
+    left: 762px;
+}
+#gangnam-station{
+    top: 850px;
+    left: 663px;
+}
+#sindorim-station{
+    top: 850px;
+    left: 20px;
+}
+#konkuk-university-entrance-station{
+    top: 380px;
+    left: 746px;
+}
+
+.subway-station > div{
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    flex-direction: column; /* 자식 요소들을 세로 방향으로 정렬 */
+    height: 100%; /* 부모의 전체 높이를 사용 */
+}

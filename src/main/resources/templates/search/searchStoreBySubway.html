@@ -4,20 +4,163 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/searchStoreBySubway.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<!-- jquery -->
+<script src="/js/jquery-3.6.0.js"></script>
+	
 </head>
 <body>
 	<h1>역 페이지</h1>
-	
+
 	<div class="page-wrap">
 		<div class="page-content">
 			<div class="menu">
-				
+				<div id="menu">
+					<div onclick="toggleStations('line1')">1호선</div>
+					<div onclick="toggleStations('line2')">2호선</div>
+					<div onclick="toggleStations('line3')">3호선</div>
+					<div onclick="toggleStations('line4')">4호선</div>
+					<div onclick="toggleStations('line5')">5호선</div>
+					<div onclick="toggleStations('line6')">6호선</div>
+					<div onclick="toggleStations('line7')">7호선</div>
+					<div onclick="toggleStations('line8')">8호선</div>
+					<div onclick="toggleStations('line9')">9호선</div>
+				</div>
+
+				<div id="line1" class="station-list" style="display: none;">
+					<!-- 1호선 역 목록 -->
+					<ul>
+						<li>소요산역</li>
+					</ul>
+				</div>
+				<div id="line2" class="station-list" style="display: none;">
+					<ul>
+						<li>당산역</li>
+						<li>신도림역</li>
+						<li>건대입구역</li>
+						<li>잠실역</li>
+						<li>강남역</li>
+						<!-- 나머지 2호선 역들 -->
+					</ul>
+				</div>
+				<!-- 3호선 역 목록 -->
+				<div id="line3" class="station-list" style="display: none;">
+					<ul>
+						<li>대화역</li>
+						<li>주엽역</li>
+						<li>정발산역</li>
+						<!-- 나머지 3호선 역들 -->
+					</ul>
+				</div>
+
+				<!-- 4호선 역 목록 -->
+				<div id="line4" class="station-list" style="display: none;">
+					<ul>
+						<li>당고개역</li>
+						<li>상계역</li>
+						<li>노원역</li>
+						<!-- 나머지 4호선 역들 -->
+					</ul>
+				</div>
+				<!-- 나머지 노선에 대한 역 목록 div들도 여기에 포함 -->
+				<!-- 5호선 역 목록 -->
+				<div id="line5" class="station-list" style="display: none;">
+					<ul>
+						<li>방화역</li>
+						<li>개화산역</li>
+						<li>김포공항역</li>
+						<!-- 나머지 5호선 역들 -->
+					</ul>
+				</div>
+
+				<!-- 6호선 역 목록 -->
+				<div id="line6" class="station-list" style="display: none;">
+					<ul>
+						<li>응암역</li>
+						<li>역촌역</li>
+						<li>불광역</li>
+						<!-- 나머지 6호선 역들 -->
+					</ul>
+				</div>
+
+				<!-- 7호선 역 목록 -->
+				<div id="line7" class="station-list" style="display: none;">
+					<ul>
+						<li>장암역</li>
+						<li>도봉산역</li>
+						<li>수락산역</li>
+						<!-- 나머지 7호선 역들 -->
+					</ul>
+				</div>
+
+				<!-- 8호선 역 목록 -->
+				<div id="line8" class="station-list" style="display: none;">
+					<ul>
+						<li>암사역</li>
+						<li>천호역</li>
+						<li>강동구청역</li>
+						<!-- 나머지 8호선 역들 -->
+					</ul>
+				</div>
+
+				<!-- 9호선 역 목록 -->
+				<div id="line9" class="station-list" style="display: none;">
+					<ul>
+						<li>개화역</li>
+						<li>김포공항역</li>
+						<li>공항시장역</li>
+						<!-- 나머지 9호선 역들 -->
+					</ul>
+				</div>
 			</div>
 			<div class="search-by-subway">
 				<img alt="" src="/img/2호선 그림.png">
+
+				<div class="subway-line">
+					<div class="subway-station" id="jamsil-station">
+						<div>
+							<span class="material-icons"> circle </span>
+							<div class="subway-station-name">잠실</div>
+						</div>
+					</div>
+					<div class="subway-station" id="gangnam-station">
+						<div>
+							<span class="material-icons"> circle </span>
+							<div class="subway-station-name">강남</div>
+						</div>
+					</div>
+					<div class="subway-station" id="dangsan-station">
+						<div>
+							<span class="material-icons"> circle </span>
+							<div class="subway-station-name">당산</div>
+						</div>
+					</div>
+					<div class="subway-station" id="sindorim-station">
+						<div>
+							<span class="material-icons"> circle </span>
+							<div class="subway-station-name">신도림</div>
+						</div>
+					</div>
+					<div class="subway-station" id="konkuk-university-entrance-station">
+						<div>
+							<span class="material-icons"> circle </span>
+							<div class="subway-station-name">건대입구</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	
+		
+		<script>
+			function toggleStations(lineId) {
+				  var stations = document.getElementById(lineId);
+				  if (stations.style.display === "none") {
+				    stations.style.display = "block";
+				  } else {
+				    stations.style.display = "none";
+				  }
+				}
+		</script>
 </body>
 </html>
