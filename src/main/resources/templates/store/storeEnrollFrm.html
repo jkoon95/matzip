@@ -36,11 +36,12 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
+                        <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>
                         <input type="text" name="businessNo" id="businessNo" class="s-input-form" readonly>
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeNo">매장명<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="storeNo" id="storeNo" class="s-input-form" required>
+                        <input type="text" name="storeName" id="storeName" class="s-input-form" required>
                     </div>
                     <div class="s-input-wrap">
                         <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
@@ -59,8 +60,8 @@
                         </select>
                     </div>
                     <div class="s-input-wrap">
-                        <label for="subwayNo" id="s-selectLable">주변역<sup class="s-requiredMsg">* </sup></label>
-                        <select required id="subwayNo">
+                        <label for="subwayName" id="s-selectLable">주변역<sup class="s-requiredMsg">* </sup></label>
+                        <select required name="subwayName">
                             <!-- subway 목록 출력 -->
                             <option value="">--</option>
                             <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}"
@@ -81,7 +82,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
-                        <select required>
+                        <select name="openingHour" required>
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
                             <option value="01:00">01:00</option>
@@ -110,7 +111,7 @@
                             <option value="24:00">24:00</option>
                         </select>
                         시부터
-                        <select required>
+                        <select name="closingHour" required>
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
                             <option value="01:00">01:00</option>
@@ -142,7 +143,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="" id="s-selectLable">쉬는시간</label>
-                        <select>
+                        <select name="breakStart">
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
                             <option value="01:00">01:00</option>
@@ -171,7 +172,7 @@
                             <option value="24:00">24:00</option>
                         </select>
                         시부터
-                        <select>
+                        <select name="breakEnd">
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
                             <option value="01:00">01:00</option>
@@ -231,15 +232,15 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="store_sns">SNS</label>
-                        <input type="text" name="store_sns" id="storeSns" class="s-input-form">
+                        <input type="text" name="storeSns" id="storeSns" class="s-input-form">
                     </div>
                     <div class="s-input-wrap">
-                        <label for="store_description">매장설명</label>
-                        <textarea name="store_description" id="storeDescription" class="s-input-form"></textarea>
+                        <label for="storeDescription">매장설명</label>
+                        <textarea name="storeDescription" id="storeDescription" class="s-input-form"></textarea>
                     </div>
                     <div class="s-input-wrap">
                         <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
-                        <select required id="timeToEat">
+                        <select required name="timeToEat">
                             <option value="">--</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -251,7 +252,7 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-enrollStoreImgBox">
                         <img class="s-img-view" width="200px" height="200px">
-                        <input type="file" name="storeImg" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
+                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
                             required>
                     </div>
                 </div>
@@ -267,10 +268,9 @@
                                 <img class="s-img-view" width="100px" height="100px">
                             </div>
                             <div class="s-img-viewerVal">
-                                <input type="file" name="menuImg" accept=".jpg,.png,.jpeg"
-                                    onchange="menuloadImg(this);">
-                                <input type="text" class="s-menu-input" name="menuName" placeholder="메뉴명" required>
-                                <input type="text" class="s-menu-input" name="menuPrice" width="150px" placeholder="가격"
+                                <input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">
+                                <input type="text" class="s-menu-input" name="name" placeholder="메뉴명" required>
+                                <input type="text" class="s-menu-input" name="price" width="150px" placeholder="가격"
                                     required>
                                 <span class="minusMenu"> 삭제</span>
                             </div>
