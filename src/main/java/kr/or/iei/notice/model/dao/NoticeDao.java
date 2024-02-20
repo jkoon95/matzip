@@ -53,5 +53,58 @@ public class NoticeDao {
 		int noticeNo = jdbc.queryForObject(query, Integer.class);
 		return noticeNo;
 	}
+
+	public Notice selectOneNotice(int noticeNo) {
+		String query = "select * from notice_tbl where notice_no=?";
+		Object[] params = {noticeNo};
+		List list = jdbc.query(query, noticeRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Notice)list.get(0);
+	}
+
+	public List selectNoticeFile(int noticeNo) {
+		String query = "select * from notice_file where notice_no=?";
+		Object[] params = {noticeNo};
+		List list = jdbc.query(query, noticeFileRowMapper, params);
+		return list;
+	}
+
+	public int updateReadCount(int noticeNo) {
+		String query = "update notice_tbl set read_count = read_count+1 where notice_no=?";
+		Object[] params = {noticeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int deleteNotice(int noticeNo) {
+		String query = "delete from notice_tbl where notice_no=?";
+		Object[] params = {noticeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int updateNotice(Notice n) {
+		String query = "update notice_tbl set notice_title=?, notice_content=? where notice_no=?";
+		Object[] params = {n.getNoticeTitle(), n.getNoticeContent(), n.getNoticeNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public NoticeFile selectOneNoticeFile(int fileNo) {
+		String query = "select * from notice_file where file_no=?";
+		Object[] params = {fileNo};
+		List list = jdbc.query(query, noticeFileRowMapper, params);
+		return (NoticeFile)list.get(0);
+	}
+
+	public int deleteNoticeFile(int fileNo) {
+		String query = "delete from notice_file where file_no=?";
+		Object[] params = {fileNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	
 	
 }
