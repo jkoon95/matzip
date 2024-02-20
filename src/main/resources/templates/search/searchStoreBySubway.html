@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 <!-- jquery -->
-<script src="/js/jquery-3.6.0.js"></script>
+<script src="/js/jquery-3.7.1.min.js"></script>
 	
 </head>
 <body>
@@ -16,16 +16,16 @@
 	<div class="page-wrap">
 		<div class="page-content">
 			<div class="menu">
-				<div id="menu">
-					<div onclick="toggleStations('line1')">1호선</div>
-					<div onclick="toggleStations('line2')">2호선</div>
-					<div onclick="toggleStations('line3')">3호선</div>
-					<div onclick="toggleStations('line4')">4호선</div>
-					<div onclick="toggleStations('line5')">5호선</div>
-					<div onclick="toggleStations('line6')">6호선</div>
-					<div onclick="toggleStations('line7')">7호선</div>
-					<div onclick="toggleStations('line8')">8호선</div>
-					<div onclick="toggleStations('line9')">9호선</div>
+				<div class="subway-line-menu" id="menu">
+					<div id="line1-menu" onclick="toggleStations('line1'); colorChange(this)">1호선</div>
+					<div id="line2-menu" onclick="toggleStations('line2'); colorChange(this)">2호선</div>
+					<div id="line3-menu" onclick="toggleStations('line3'); colorChange(this)">3호선</div>
+					<div id="line4-menu" onclick="toggleStations('line4'); colorChange(this)">4호선</div>
+					<div id="line5-menu" onclick="toggleStations('line5'); colorChange(this)">5호선</div>
+					<div id="line6-menu" onclick="toggleStations('line6'); colorChange(this)">6호선</div>
+					<div id="line7-menu" onclick="toggleStations('line7'); colorChange(this)">7호선</div>
+					<div id="line8-menu" onclick="toggleStations('line8'); colorChange(this)">8호선</div>
+					<div id="line9-menu" onclick="toggleStations('line9'); colorChange(this)">9호선</div>
 				</div>
 
 				<div id="line1" class="station-list" style="display: none;">
@@ -151,16 +151,100 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<script>
-			function toggleStations(lineId) {
-				  var stations = document.getElementById(lineId);
-				  if (stations.style.display === "none") {
-				    stations.style.display = "block";
-				  } else {
-				    stations.style.display = "none";
-				  }
-				}
-		</script>
-</body>
+		function toggleStations(lineId) {
+		    // 모든 역 목록을 숨김
+		    const allStations = document.querySelectorAll('.station-list');
+		    for (const station of allStations) {
+		      station.style.display = 'none';
+		    }
+
+		    // 선택된 노선의 역 목록을 토글
+		    let selectedStations = document.getElementById(lineId);
+		    if (selectedStations.style.display === 'none' || !selectedStations.style.display) {
+		      selectedStations.style.display = 'block';
+		    } else {
+		      selectedStations.style.display = 'none';
+		    }
+		  }
+
+		  function colorChange(element){
+			const allStations = document.querySelectorAll('.station-list');
+			const id = element.id;
+			const allMenu = document.querySelectorAll('.subway-line-menu > div');
+			
+			// 전부 흰색
+			allMenu.forEach(function(menu) {
+    			menu.style.backgroundColor = 'white';
+			});	
+
+			// for (const station of allStations) {
+		    //   station.style.backgroundColor = 'white';
+		    // }
+
+			// 모든 역의 배경색을 흰색으로 설정
+    			allStations.forEach(function(station) {
+       			station.style.backgroundColor = 'white';
+    		});
+
+
+			if(id=='line1-menu'){
+				element.style.backgroundColor = 'red';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'red';
+				})
+			}
+			if(id=='line2-menu'){
+				element.style.backgroundColor = 'orange';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'orange';
+				})
+			}
+			if(id=='line3-menu'){
+				element.style.backgroundColor = 'yellow';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'yellow';
+				})
+			}
+			if(id=='line4-menu'){
+				element.style.backgroundColor = 'green';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'green';
+				})
+			}
+			if(id=='line5-menu'){
+				element.style.backgroundColor = 'blue';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'blue';
+				})
+			}
+			if(id=='line6-menu'){
+				element.style.backgroundColor = 'indigo';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'indigo';
+				})
+			}
+			if(id=='line7-menu'){
+				element.style.backgroundColor = 'purple';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'purple';
+				})
+			}
+			if(id=='line8-menu'){
+				element.style.backgroundColor = 'pink';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'pink';
+				})
+			}
+			if(id=='line9-menu'){
+				element.style.backgroundColor = 'aqua';
+				allStations.forEach(function(i){
+					i.style.backgroundColor = 'aqua';
+				})
+			}
+
+
+		  }
+		</script></body>
 </html>
