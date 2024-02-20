@@ -200,7 +200,7 @@
 			allStations.css('background', 'white');
 
 
-	
+
 
 			if (id == 'line1-menu') {
 				$(element).css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
@@ -260,7 +260,37 @@
 				});
 			}
 		}
+		
+
+		$(".subway-station").on("click", function () {
+			const stationName = $(this).attr('id');
+			//console.log(stationName);
+
+			const newWindow = window.open("", "top5Store", "left=300px,top=150px,width=1200px,height=800px,menubar=no, status=no,scrollbars=yes");
+
+
+			newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${stationName} 정보</title>
+			<link rel="stylesheet" href="/css/top5Store.css">
+        </head>
+        <body>
+            <h1>Selected Station: ${stationName}</h1>
+            <p>이곳에 ${stationName}에 대한 정보를 표시할 수 있습니다.</p>
+
+			<div class="new-page-wrap">
+				<div class="page-content3"></div>
+			</div>
+        </body>
+        </html>
+    `);
+		})
 	</script>
+
+
+
 
 </body>
 <th:block th:include="common/footer"></th:block>
