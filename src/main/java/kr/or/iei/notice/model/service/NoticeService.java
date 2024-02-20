@@ -1,5 +1,6 @@
 package kr.or.iei.notice.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,29 @@ public class NoticeService {
 		List fileList = noticeDao.selectNoticeFile(noticeNo);
 		n.setFileList(fileList);
 		return n;
+	}
+
+	public List updateNotice(Notice n, List<NoticeFile> fileList, int[] delFileNo) {
+		List delFileList = new ArrayList<NoticeFile>();
+		int result = noticeDao.updateNotice(n);
+		if(result > 0) {
+			if(delFileNo != null) {
+				for(int fileNo : delFileNo) {
+					NoticeFile noticeFile = noticeDao.selectOneNoticeFile(fileNo);
+					delFileList.add(noticeFile);
+					result += noticeDao.deleteNoticeFile(fileNo);
+				}
+			}
+			for(NoticeFile noticeFile : fileList) {
+				result += noticeDao.insertNoticeFile(noticeFile);
+			}
+		}
+		int updateTotal = (delFileNo==null)?fileList.size()+1:fileList.size()+1+delFileNo.length;
+		if(updateTotal == result) {
+			return delFileList;
+		} else {
+			return null;
+		}
 	}
 	
 	
