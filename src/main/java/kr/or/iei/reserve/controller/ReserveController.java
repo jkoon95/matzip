@@ -2,6 +2,7 @@ package kr.or.iei.reserve.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -26,9 +27,10 @@ public class ReserveController {
 	}
 	
 	@PostMapping(value="/reserveList")
-	private String reserveList() {
+	private String reserveList(String reserveDate, Model model) {
 		//넘겨받은 정보 : storNo, memberNo, 
 		//입력받은 정보 : reserveDate(yyyy-mm-dd), reserveTime, reservePeople, menuNo, servings, reserveRequest
+		model.addAttribute("reserveDate", reserveDate);
 		return "reserve/reserveList";
 	}
 	
