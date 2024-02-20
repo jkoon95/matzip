@@ -5,7 +5,7 @@
 <title>공지사항 목록</title>
 </head>
 <body>
-	<!-- <th:block th:include="common/header"></th:block> -->
+	<th:block th:include="common/header"></th:block>
 	<div class="page-content">
 		<div class="page-title">공지사항</div>
 		<!-- <a id="write-btn" th:if="${session.member != null && session.member.memberLevel == 1}" class="btn" href="/notice/noticeWriteFrm">글쓰기</a> -->
@@ -31,6 +31,6 @@
 		<div id="pageNavi" th:utext="${pageNavi}"></div>
 	</div>
 	
-	<!-- <th:block th:include="common/footer"></th:block> -->
+	<th:block th:include="common/footer"></th:block>
 </body>
 </html>
