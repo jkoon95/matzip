@@ -107,6 +107,7 @@ header > .header-wrap > .header-right-box{
     box-sizing: border-box;
     padding: 0 25px;
     cursor: pointer;
+    background-color: #fff;
 }
 
 
