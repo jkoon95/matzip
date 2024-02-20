@@ -2,23 +2,112 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>매장 등록</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<style>
+
+#s-bussniessContent{
+    margin: 0 auto;
+    text-align: center;
+    padding: 150px;
+    width: 600px;
+}
+
+.s-inputDiv{
+    padding-top: 20px;
+    height: 100px;
+}
+.s-enrollbutton{
+    width: 200px;
+    height: 50px;
+    background-color: #72B37E;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+#s-enrollNonbutton{
+	background-color: #b5b5b5;
+}
+#s-enrollNextbutton{
+	display:none;
+}
+.s-title1{
+    font-family: ns-b;
+    padding-bottom: 10px;
+}
+#s-bussinessNum {
+    width: 300px;
+    padding: 0.8rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    height: 40px;
+}
+#s-bussinessNum:focus {
+    box-shadow: 0 0 0 0.1rem #eee;
+}
+
+#s-enrollStoreContent{
+	display= none;
+}
+
+.s-enrollbutton{
+    width: 200px;
+    height: 50px;
+    background-color: #72B37E;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+sup{
+	color:red;
+}
+
+</style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
-	 <h1>매장등록</h1>
-	 <form id="enrollStoreForm" method="post" action="/store/enrollStore">
+	
+	
+	<div id="s-bussniessContent">
+        <h1 class="s-title1">사업자 번호 조회</h1>
+        <div class="s-title2">등록할 사업자번호를 입력해주세요</div>
+        <div class="s-inputDiv">
+        	<input type="text" name="businessNo" class="s-bussinessNum" maxlength="12" id="s-bussinessNum" placeholder="000-00-00000">
+        	<br>
+        	<span id="s-enrollCheckMsg"></span>
+        </div>
+        <div>
+            <input class="s-enrollbutton" id="s-enrollNextbutton" type="text" value="다음">
+            <input class="s-enrollbutton" id="s-enrollNonbutton" type="text" value="다음" disabled>
+        </div>
+    </div>
+
+
+
+	 <div id="s-enrollStoreContent">
+        <h1>매장등록</h1>
+        <form id="enrollStoreForm" method="post" action="/store/enrollStore">
             <div class="s-enrolldiv">
                 <div>▶ 매장정보</div>
                 <div class="input-wrap">
                     <label for="businessNo">사업자번호</label>
-                    <input type="text" name="businessNo" id="businessNo" class="input-form" th:value="${businessNo}"readonly>
-                </div> 
+                    <input type="text" name="businessNo" id="businessNo" class="input-form" readonly>
+                </div>
                 <div class="input-wrap">
                     <sup class="s-requiredMsg">* </sup><label for="storeNo">매장명</label>
                     <input type="text" name="storeNo" id="storeNo" class="input-form" required>
-                </div> 
+                </div>
                 <div class="input-wrap">
                     <sup class="s-requiredMsg">* </sup><label for="foodType">음식타입</label>
                     <select id="foodType" required>
@@ -34,25 +123,27 @@
                         <option value="국밥">국밥</option>
                         <option value="찜&탕&찌개">찜&탕&찌개</option>
                     </select>
-                </div> 
-       		</div>
-       		 <div class="input-wrap">
+                </div>
+                <div class="input-wrap">
                     <sup class="s-requiredMsg">* </sup><label for="subwayNo">주변역</label>
                     <select required id="subwayNo">
-                    	<!-- subway 목록 출력 -->
+                        <!-- subway 목록 출력 -->
                         <option value="">--</option>
-                        <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}" th:text="${subway.subwayName}"></option>
+                        <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}"
+                            th:text="${subway.subwayName}"></option>
                     </select>
-                </div> 
+                </div>
                 <div class="input-wrap">
                     <sup class="s-requiredMsg">* </sup><label for="address">주소</label><br>
-                    <input type="text" name="address" id="address" class="input-form" onclick="searchAddr();" required placeholder="주소찾기">
-                    <br><input type="text" name="detailAddress" id="detailAddress" class="input-form" placeholder="상세주소를 입력하세요(예:동, 층, 호)">
-                </div> 
+                    <input type="text" name="address" id="address" class="input-form" onclick="searchAddr();" required
+                        placeholder="주소찾기">
+                    <br><input type="text" name="detailAddress" id="detailAddress" class="input-form"
+                        placeholder="상세주소를 입력하세요(예:동, 층, 호)">
+                </div>
                 <div class="input-wrap">
                     <sup class="s-requiredMsg">* </sup><label for="storePhone">연락처</label>
                     <input type="text" name="storePhone" id="storePhone" class="input-form" maxlength="13" required>
-                </div> 
+                </div>
                 <div class="input-wrap">
                     <sup class="s-requiredMsg">* </sup><label for="">영업시간</label>
                     <select required>
@@ -113,7 +204,7 @@
                         <option value="24:00">24:00</option>
                     </select>
                     까지
-                </div> 
+                </div>
                 <div class="input-wrap">
                     <label for="">쉬는시간</label>
                     <select>
@@ -174,7 +265,7 @@
                         <option value="24:00">24:00</option>
                     </select>
                     까지
-                </div> 
+                </div>
                 <div class="input-wrap">
                     <label>휴무일</label>
                     <input type="checkbox" id="monday" name="closedDay" value="월">
@@ -197,48 +288,136 @@
 
                     <input type="checkbox" id="sunday" name="closedDay" value="일">
                     <label for="sunday">일</label>
-                </div> 
+                </div>
 
                 <div class="input-wrap">
                     <label for="homepage">홈페이지</label>
-                    <input type="text" name="homepage" id="homepage" class="input-form" >
-                </div> 
+                    <input type="text" name="homepage" id="homepage" class="input-form">
+                </div>
                 <div class="input-wrap">
                     <label for="store_sns">SNS</label>
-                    <input type="text" name="store_sns" id="storeSns" class="input-form" >
-                </div> 
+                    <input type="text" name="store_sns" id="storeSns" class="input-form">
+                </div>
                 <div class="input-wrap">
                     <label for="store_description">매장설명</label>
                     <textarea name="store_description" id="storeDescription" class="input-form"></textarea>
-                </div> 
+                </div>
+            </div>
+            <div class="input-wrap">
+                    <sup class="s-requiredMsg">* </sup><label for="timeToEat">식사가능시간</label>
+                    <select required id="timeToEat">
+                        <option value="">--</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
             </div>
             <div class="s-enrolldiv">
-                <div>▶ 매장 사진</div>
+                <div>▶ <sup class="s-requiredMsg">* </sup>매장 사진</div>
                 <div class="input-wrap">
-                    <input type="file" name="storeImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);" required>	
+                    <input type="file" name="storeImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);" required>
                     <div class="img-viewer">
                         <img class="img-view" width="100px" height="100px">
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="s-enrolldiv">
-                <div>▶ 메뉴 등록<span class="plusMenu">+</span><span class="minusMenu">-</span></div>
+                <div>▶ <sup class="s-requiredMsg">* </sup>메뉴 등록<span class="plusMenu">+</span><span class="minusMenu">-</span></div>
                 <div class="input-wrap-menu">
                     <div class="menu-div">
-                        <input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);">	
+                        <input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);">
                         <div class="img-viewer">
-                            <img class="img-view" width="100px" height="100px"><input type="text" name="menuName" placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격" required>
+                            <img class="img-view" width="100px" height="100px"><input type="text" name="menuName"
+                                placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격"
+                                required>
                         </div>
                     </div>
                 </div>
-                
             </div>
+            <input type="submit" value="매장등록" class="s-enrollbutton">
+        </form>
+    </div>
+    
+    
+    <script>
+    	$("#s-enrollStoreContent").css("display","none");
 
-            <input type="submit" value="매장등록">
-       	</form>
-       	
-	<script>
-	
+    	var input;
+    	var output;
+    	
+        $(".s-bussinessNum").on("input", function() {
+        	//성공 이외의 상태
+        	$("#s-enrollNextbutton").css("display","none");
+        	$("#s-enrollNonbutton").css("display","inline-block");
+            $("#s-enrollCheckMsg").text("");
+            $("#s-enrollStoreContent").css("display","none")
+            
+            input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
+            output = '';
+
+            if (input.length > 3) {
+                output += input.substr(0, 3) + '-';
+                if (input.length > 6) {
+                    output += input.substr(3, 2) + '-';
+                    output += input.substr(5);
+                } else {
+                    output += input.substr(3);
+                }
+            } else {
+                output = input;
+            }
+            //console.log(input);
+
+            $(this).val(output);
+			
+            if(input.length == 10){
+                var data = {
+                        "b_no": [""+input+""] // 사업자번호 "xxxxxxx" 로 조회 시,
+                }; 
+            }
+            
+            $.ajax({
+                //인코딩 키 주면 되고 디코딩 키주면 안댐
+                url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=8CPiAUJwtCcph1LZoyv2%2BHHEtTJDVb3oKNNLRju7DE%2BC%2F2E865koh2pLSdKHDbe0EtdzoSOwgmIkd6GBSXK4GQ%3D%3D",  
+                type: "POST",
+                data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    accept: "application/json",
+                    success: function(result) {
+                    let valid = result.data[0].b_stt_cd;
+            
+                    if (valid=='01'){
+                        $("#s-enrollCheckMsg").text("정상적인 사업자번호입니다.");
+                        $("#s-enrollCheckMsg").css("color", "green");               
+                        //console.log("있는 사업자입니다.")
+                        //$("#s-bussinessForm").attr("action", "/store/storeEnrollFrm");
+                        $("#s-enrollNextbutton").css("display","inline-block");
+                        $("#s-enrollNonbutton").css("display","none");
+                        //$("#s-enrollStoreContent").css("display","block")
+                        //$("#s-bussniessContent").css("display","none");
+                    }else {
+                        $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
+                        $("#s-enrollCheckMsg").css("color", "red");
+                        //console.log("없는 사업자입니다.")
+                    }
+                    },
+                    error: function(result) {
+                        console.log(result.responseText); //responseText의 에러메세지 확인
+                    }
+             });
+            
+            $("#s-enrollNextbutton").on("click",function(){
+            	$("#s-enrollStoreContent").css("display","block")
+                $("#s-bussniessContent").css("display","none");
+            	$("[name=businessNo]").val(output);
+            });
+            
+            
+            
+
+        });
+        
+		/////////////////////////////////////////
 		//주소 길찾기
 		function searchAddr(){
 		    new daum.Postcode({
@@ -284,6 +463,7 @@
 				$(obj).parent().find(".img-view").attr("src","");
 			}
 		}
+		
 	</script>
 	<th:block th:include="common/footer"></th:block>
 </body>
