@@ -267,6 +267,7 @@
                 
                 <div class="s-title3">• 메뉴 등록<sup class="s-requiredMsg">* </sup>
                     <span class="plusMenu">추가</span>
+                    <span class="menuCheckMsg" style="color: red; font-size: 15px;font-weight:500;"></span>
                 </div>
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-input-wrap-menu">
@@ -388,6 +389,7 @@
             //메뉴 +/-
                 // 추가
                 $('.plusMenu').on('click', function () {
+                	$(".menuCheckMsg").text("");
                     $('.s-input-wrap-menu').append(
                         '<div class="s-menu-div">' +
                         '<div class="s-img-viewer">' +
@@ -406,31 +408,16 @@
                 // 삭제
                 $(document).on('click', '.minusMenu', function () {
                     var menuDivCount = $('.s-menu-div').length;
-                    if (menuDivCount === 1) {
-                        return;
-                    }
                     $(this).closest('.s-menu-div').remove();
                 });
 
-            /*
-            $(".plusMenu").click(function () {
-                var addMenuDiv = $('<div class="s-menu-div"><div class="s-img-viewer"><img class="s-img-view" width="100px" height="100px"></div><div class="s-img-viewerVal"><input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);"><input type="text" class="s-menu-input" name="menuName" placeholder="메뉴명" required><input type="text" class="s-menu-input" name="menuPrice" placeholder="가격" required><span class="minusMenu"> 삭제</span></div></div>');
-                $(".s-input-wrap-menu").append(addMenuDiv)
-            });
-    
-            $('.minusMenu').on('click', function() {
-                //if ($('.s-menu-div').length === 1) {
-                  //  return;
-                //}
-                $(this).parents(".s-menu-div").remove();
-            });*/
-            /*
-            $(".minusMenu").click(function () {
-                //$(".s-input-wrap-menu").find(".s-menu-div").not(":first").last().remove();
-                //$(this).parents("s-menu-div").remove();
-                $(this).closest('.s-menu-div').remove();
-            });
-            */
+                $('#enrollStoreForm').on('submit', function(event) {
+                    var menuDivCount = $('.s-menu-div').length;
+                	if (menuDivCount === 0) {
+                    	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
+                    	event.preventDefault();	//폼제출 막음
+                	}
+            	});
 
             //이미지 불러오기
             function storeloadImg(obj) {
