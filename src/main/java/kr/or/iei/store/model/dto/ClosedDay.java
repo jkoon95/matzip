@@ -1,4 +1,4 @@
-package kr.or.iei.notice.model.dto;
+package kr.or.iei.store.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class NoticeViewData {
-	private Notice notice;
+public class ClosedDay {
+
+	private int storeNo; //FK
+	private String closedDay; //ex)
 }

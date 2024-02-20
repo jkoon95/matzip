@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpServletResponse;
 import kr.or.iei.FileUtils;
 import kr.or.iei.notice.model.dto.Notice;
 import kr.or.iei.notice.model.dto.NoticeFile;
@@ -39,6 +41,14 @@ public class NoticeController {
 	@GetMapping(value="/noticeWriteFrm")
 	public String noticeWriteFrm() {
 		return "notice/noticeWriteFrm";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/editor",produces="plain/text;charset=utf-8")
+	public String editorUpload(MultipartFile upfile) {
+		String savepath = root+"/notice/";
+		String filepath = fileUtils.upload(savepath,upfile);
+		 return "/notice/"+filepath;
 	}
 	
 	@PostMapping(value="/write")
@@ -69,5 +79,55 @@ public class NoticeController {
 		return "common/msg";
 	}
 	
+	@GetMapping(value="/view")
+	public String view(int noticeNo, Model model) {
+		Notice n = noticeService.selectOneNotice(noticeNo);
+		if(n == null) {
+			model.addAttribute("title", "조회실패");
+			model.addAttribute("msg", "삭제된 게시글입니다.");
+			model.addAttribute("icon", "info");
+			model.addAttribute("loc", "/notice/noticeList?reqPage=1");
+			return "common/msg";
+		} else {
+			model.addAttribute("n", n);
+			return "notice/view";
+		}
+	}
+	
+	@GetMapping(value="/filedown")
+	public void filedown(NoticeFile file, HttpServletResponse response) {
+		String savepath = root+"/notice/";
+		fileUtils.downloadFile(savepath,file.getFilename(),file.getFilepath(),response);
+	}
+	
+	@GetMapping(value="/delete")
+	public String delete(int noticeNo, Model model) {
+		List fileList = noticeService.deleteNotice(noticeNo);
+		if(fileList != null) {
+			String savepath = root+"/notice/";
+			for(Object item : fileList) {
+				NoticeFile file = (NoticeFile)item;
+				fileUtils.deleteFile(savepath,file.getFilepath());
+			}
+			model.addAttribute("title", "삭제 성공");
+			model.addAttribute("msg", "게시글이 삭제되었습니다.");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/notice/noticeList?reqPage=1");
+		} else {
+			model.addAttribute("title", "삭제 실패");
+			model.addAttribute("msg", "게시글 삭제에 실패했습니다. 개발자에게 문의하세요.");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/notice/view?noticeNo="+noticeNo);
+		}
+		return "common/msg";
+	}
+	
+	@GetMapping(value="/updateFrm")
+	public String updateFrm(int noticeNo, Model model) {
+		Notice n = noticeService.getOneNotice(noticeNo);
+		model.addAttribute("n", n);
+		return "notice/noticeUpdateFrm";
+	}
+
 	
 }

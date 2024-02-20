@@ -53,5 +53,37 @@ public class NoticeDao {
 		int noticeNo = jdbc.queryForObject(query, Integer.class);
 		return noticeNo;
 	}
+
+	public Notice selectOneNotice(int noticeNo) {
+		String query = "select * from notice_tbl where notice_no=?";
+		Object[] params = {noticeNo};
+		List list = jdbc.query(query, noticeRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Notice)list.get(0);
+	}
+
+	public List selectNoticeFile(int noticeNo) {
+		String query = "select * from notice_file where notice_no=?";
+		Object[] params = {noticeNo};
+		List list = jdbc.query(query, noticeFileRowMapper, params);
+		return list;
+	}
+
+	public int updateReadCount(int noticeNo) {
+		String query = "update notice_tbl set read_count = read_count+1 where notice_no=?";
+		Object[] params = {noticeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int deleteNotice(int noticeNo) {
+		String query = "delete from notice_tbl where notice_no=?";
+		Object[] params = {noticeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	
 	
 }
