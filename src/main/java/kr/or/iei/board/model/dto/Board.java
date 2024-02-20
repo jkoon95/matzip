@@ -18,8 +18,5 @@ public class Board {
 	private String regDate;
 
 	private List<BoardFile> fileList;
-	
-	public String getBoardContentBr() {
-		return boardContent.replaceAll("\r\n", "<br>");
-	}
+
 }
