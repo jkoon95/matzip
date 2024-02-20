@@ -11,13 +11,17 @@
         <div class="login-box">
             <form action="/member/signin" method="post">
                 <div class="login-choiceBtn">
+                	<label>
+                        <span>관리자</span>
+                        <input type="radio" name="memberLevel" value="1" checked>                        
+                    </label>
                     <label>
                         <span>매장</span>
-                        <input type="radio" name="memberLevel">                        
+                        <input type="radio" name="memberLevel" value="2">                        
                     </label>
                     <label>
                         <span>회원</span>
-                        <input type="radio" name="memberLevel">                                        
+                        <input type="radio" name="memberLevel" value="3">                                        
                     </label>
                 </div>                                        
                 <div class="login-wrap">

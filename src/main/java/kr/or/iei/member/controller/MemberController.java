@@ -26,8 +26,8 @@ public class MemberController {
 		return "/member/login";
 	}
 	@PostMapping(value="/signin")
-	public String signin(String memberId, String memberPw, HttpSession session, Model model) {
-		Member member = memberService.selectOneMember(memberId, memberPw);
+	public String signin(String memberId, String memberPw, int memberLevel, HttpSession session, Model model) {
+		Member member = memberService.selectOneMember(memberId, memberPw, memberLevel);
 		if(member ==null) {
 			model.addAttribute("title", "로그인");
 			model.addAttribute("msg", "아이디 또는 비밀번호를 확인하세요");
@@ -47,5 +47,21 @@ public class MemberController {
 	public String logout(HttpSession session) {
 		session.invalidate();		
 		return "redirect:/";
+	}
+	@PostMapping(value="/join")
+	public String join(Member m, Model model) {
+		int result = memberService.insertMember(m);
+		if(result>0) {
+			model.addAttribute("title", "congratulation");
+			model.addAttribute("msg", "together 맛'zip'");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/");
+		}else {
+			model.addAttribute("title", "다음기회에");
+			model.addAttribute("msg", "실패했습니다...ㅜㅜ");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/");
+		}
+		return "common/msg";
 	}
 }

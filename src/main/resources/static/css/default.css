@@ -92,9 +92,11 @@ header > .header-wrap > .header-right-box{
 }
 .header-right-box>ul>li>a{
     text-decoration: none;
-    color: #707070;
-    font-weight: bold;
+    color: #707070;    
     margin: 0 25px;    
+}
+.header-right-box > ul:first-child > li > a:hover {
+    font-weight: 900;
 }
 .header-right-box>ul>li{
     float: left;
@@ -307,6 +309,10 @@ header > .header-wrap > .header-right-box{
     color: #b3b3b3;
 }
 
+.login-choiceBtn >label:first-child{
+    display: none;
+}
+
 /* footer */
 
 footer {
@@ -336,6 +342,9 @@ footer > .sub-menu > ul > li {
     color: #b3b3b3;
     margin : 0 50px;
     text-decoration-style: none;       
+}
+footer ul li:last-child:hover{
+    font-weight: 900;
 }
 footer > .footer-content-box > .content{
     width: 1200px;
