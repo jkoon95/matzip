@@ -29,7 +29,7 @@
 				<td>
 					<th:block th:each="file : ${n.fileList}">
 						<img src="/img/files.png" width="16px">
-						<a th:href="@{/notice/filedown(filename=${file.filename},filepath=${file.filepath})}"></a>
+						<a th:href="@{/notice/filedown(filename=${file.filename},filepath=${file.filepath})}" th:text="다운로드"></a>
 					</th:block>
 				</td>
 				<th>조회수</th>

@@ -150,14 +150,17 @@ public class NoticeController {
 				NoticeFile noticeFile = (NoticeFile)item;
 			    fileUtils.deleteFile(savepath, noticeFile.getFilepath());
 			}
-			return "redirect:/notice/view2?noticeNo="+n.getNoticeNo();
+			model.addAttribute("title", "성공");
+			model.addAttribute("msg", "공지사항 수정에 성공했습니다.");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/notice/view2?noticeNo="+n.getNoticeNo());
 		} else {
 			model.addAttribute("title", "수정 실패");
 			model.addAttribute("msg", "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
 			model.addAttribute("icon", "error");
 			model.addAttribute("loc", "/notice/view2?noticeNo="+n.getNoticeNo());
-			return "common/msg";
 		}
+		return "common/msg";
 	}
 	
 	@GetMapping("/view2")
