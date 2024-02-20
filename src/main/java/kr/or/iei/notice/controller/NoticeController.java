@@ -46,9 +46,9 @@ public class NoticeController {
 	@ResponseBody
 	@PostMapping(value="/editor",produces="plain/text;charset=utf-8")
 	public String editorUpload(MultipartFile upfile) {
-		String savepath = root+"/notice/";
+		String savepath = root+"/notice/editor/";
 		String filepath = fileUtils.upload(savepath,upfile);
-		 return "/notice/"+filepath;
+		return "/notice/editor/"+filepath;
 	}
 	
 	@PostMapping(value="/write")
@@ -128,6 +128,51 @@ public class NoticeController {
 		model.addAttribute("n", n);
 		return "notice/noticeUpdateFrm";
 	}
-
+	
+	@PostMapping(value="/update")
+	public String update(Notice n, MultipartFile[] upfile, int[] delFileNo, Model model) {
+		List<NoticeFile> fileList = new ArrayList<NoticeFile>();
+		String savepath = root+"/notice/";
+		if(!upfile[0].isEmpty()) {
+			  for(MultipartFile file : upfile) {
+				  String filename = file.getOriginalFilename();
+				  String filepath = fileUtils.upload(savepath, file);
+				  NoticeFile noticeFile = new NoticeFile();
+				  noticeFile.setFilename(filename);
+				  noticeFile.setFilepath(filepath);
+				  noticeFile.setNoticeNo(n.getNoticeNo());
+				  fileList.add(noticeFile);
+			  }
+		}
+		List delFileList = noticeService.updateNotice(n,fileList,delFileNo);
+		if(delFileList != null) {
+			for(Object item : delFileList) {
+				NoticeFile noticeFile = (NoticeFile)item;
+			    fileUtils.deleteFile(savepath, noticeFile.getFilepath());
+			}
+			return "redirect:/notice/view2?noticeNo="+n.getNoticeNo();
+		} else {
+			model.addAttribute("title", "수정 실패");
+			model.addAttribute("msg", "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/notice/view2?noticeNo="+n.getNoticeNo());
+			return "common/msg";
+		}
+	}
+	
+	@GetMapping("/view2")
+	public String noticeView2(int noticeNo, Model model) {
+		Notice n = noticeService.getOneNotice(noticeNo);
+		if(n == null) {
+			model.addAttribute("title", "조회실패");
+			model.addAttribute("msg", "삭제된 게시글입니다.");
+			model.addAttribute("icon", "info");
+			model.addAttribute("loc", "/notice/noticeList?reqPage=1");
+			return "common/msg";
+		} else {
+			model.addAttribute("n", n);
+			return "notice/view";
+		}
+	}
 	
 }

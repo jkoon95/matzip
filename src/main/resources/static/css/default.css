@@ -40,7 +40,7 @@ header > .header-wrap{
     margin: 0 auto; 
     overflow: hidden;     
 }
-header > .header-wrap > img {
+header > .header-wrap > a >img {
     height: 200px;
     width: 200px;
     float: left;       
@@ -120,6 +120,7 @@ header > .header-wrap > .header-right-box{
 /* joinFrm */
 
 .join-title{
+	margin-top: 30px;
     text-align: center;  
     font-family: ns-r; 
     font-size: 200%; 
@@ -145,6 +146,7 @@ header > .header-wrap > .header-right-box{
 }
 .choiceBtn{
     margin:0 auto;
+    margin-top: 10px;
 }
 .choiceBtn > label{
     margin: 70px;
@@ -168,8 +170,15 @@ header > .header-wrap > .header-right-box{
     font-family: ns-eb;
 }
 #memberEmail{
-    width: 280px;
+    width: 200px;
 }
+
+.join-wrap > select {
+    width: 180px;
+    text-align: center;
+    font-size: 100%;
+}
+
 .agree-wrap{
     width: 500px;
     margin: 0 auto;    
@@ -188,6 +197,7 @@ header > .header-wrap > .header-right-box{
 .joinBtn-box{
     width: 500px;
     margin: 0 auto;
+    margin-bottom: 30px;
 }
 .joinBtn-box > button{
     width: 100%;
@@ -197,7 +207,7 @@ header > .header-wrap > .header-right-box{
     border-radius: 10px;
     font-family: ns-r;
     font-size: 100%;
-    cursor: pointer;
+    cursor: pointer;   
 }
 
 /* footer */

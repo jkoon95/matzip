@@ -28,8 +28,8 @@
 				<th>첨부파일</th>
 				<td>
 					<th:block th:each="file : ${n.fileList}">
-					<img src="/img/files.png" width="16px">
-					<a th:href="@{/notice/filedown(filename=${file.filename},filepath=${file.filepath})}"></a>
+						<img src="/img/files.png" width="16px">
+						<a th:href="@{/notice/filedown(filename=${file.filename},filepath=${file.filepath})}"></a>
 					</th:block>
 				</td>
 				<th>조회수</th>

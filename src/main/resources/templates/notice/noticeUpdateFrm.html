@@ -6,8 +6,89 @@
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
+	<script src="/summernote/summernote-lite.js"></script>
+	<script src="/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	
+	<div class="page-content">
+		<div class="page-title">공지사항</div>
+		<form action="/notice/update" class="noticeUpdateFrm" method="post" enctype="multipart/form-data">
+			<table class="tbl">
+				<tr>
+					<th>제목</th>
+					<td>
+						<input type="text" name="noticeTitle" class="input-form" th:value="${n.noticeTitle}">
+						<input type="hidden" name="noticeNo" th:value="${n.noticeNo}">
+					</td>
+				</tr>
+				<tr>
+					<th>첨부파일</th>
+					<td>
+						<div class="file-wrap">
+							<div th:each="file : ${n.fileList}" class="files">
+								<span class="delFilename" th:text="${file.filename}"></span>
+								<span class="material-icons delBtn" th:onclick="deleteFile(this,[[${file.fileNo}]]);">remove_circle</span>
+							</div>
+						</div>
+						<input type="file" name="upfile" multiple>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:left;">
+						<textarea class="input-form" id="noticeContent" name="noticeContent" th:text="${n.noticeContent}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button type="submit" class="btn">공지사항 수정</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 	
+	<script>
+		$("#noticeContent").summernote({
+			height : 500,
+			lang : "ko-KR",
+			callbacks : {
+				onImageUpload : function(files){
+					uploadImage(files[0],this);
+				}
+			},
+			disableResize : true,
+			disableResizeEditor : true,
+			resize : false
+		});
+		function uploadImage(file,editor){
+			const form = new FormData();
+			form.append("upfile",file);
+			$.ajax({
+				url : "/notice/editor",
+				type : "post",
+				data : form,
+				processData : false,
+				contentType : false,
+				success : function(data){
+					console.log($(editor));
+					$(editor).summernote("insertImage",data);
+				},
+				error : function(){
+					console.log("에러");
+				}
+			});
+		}
+		function deleteFile(obj, fileNo) {
+			if(confirm("파일을 삭제하시겠습니까?")) {
+				const input = $("<input>");
+				input.attr("name","delFileNo");
+				input.attr("type","hidden");
+				input.val(fileNo);
+				$(".noticeUpdateFrm").append(input);
+				$(obj).parent().remove();
+			}
+		}
+	</script>
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>

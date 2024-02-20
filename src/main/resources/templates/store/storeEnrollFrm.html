@@ -14,7 +14,7 @@
                 <div>▶ 매장정보</div>
                 <div class="input-wrap">
                     <label for="businessNo">사업자번호</label>
-                    <input type="text" name="businessNo" id="businessNo" class="input-form" readonly>
+                    <input type="text" name="businessNo" id="businessNo" class="input-form" th:value="${businessNo}"readonly>
                 </div> 
                 <div class="input-wrap">
                     <label for="storeNo">매장명</label>
@@ -34,12 +34,9 @@
        		 <div class="input-wrap">
                     <label for="subwayNo">주변역</label>
                     <select required id="subwayNo">
+                    	<!-- subway 목록 출력 -->
                         <option value="">--</option>
-                        <option value="1">11</option>
-                        <option value="2">22</option>
-                        <option value="3">33</option>
-                        <option value="4">44</option>
-                        <option value="5">55</option>
+                        <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}" th:text="${subway.subwayName}"></option>
                     </select>
                 </div> 
                 <div class="input-wrap">
