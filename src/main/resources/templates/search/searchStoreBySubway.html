@@ -11,9 +11,10 @@
 
 </head>
 <th:block th:include="common/header"></th:block>
+
 <body>
 	<div class="page-wrap">
-		<div class="page-content">
+		<div class="page-content1">
 			<div class="menu">
 				<div class="subway-line-menu" id="menu">
 					<div id="line1-menu" onclick="toggleStations('line1'); colorChange(this)">1호선</div>
@@ -150,105 +151,118 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="page-content2">
+			<div class="division-bar"></div>
+
+			<div>
+				<form action="" method="get" id="">
+
+				</form>
+			</div>
+		</div>
 	</div>
 
-		<script>
-			function toggleStations(lineId) {
-				// 모든 역 목록을 숨김
-				const allStations = document.querySelectorAll('.station-list');
-				for (const station of allStations) {
-					station.style.display = 'none';
-				}
-
-				// 선택된 노선의 역 목록을 토글
-				let selectedStations = document.getElementById(lineId);
-				if (selectedStations.style.display === 'none' || !selectedStations.style.display) {
-					selectedStations.style.display = 'block';
-				} else {
-					selectedStations.style.display = 'none';
-				}
-			}
-
-			function colorChange(element) {
-				const allStations = document.querySelectorAll('.station-list');
-				const id = element.id;
-				const allMenu = document.querySelectorAll('.subway-line-menu > div');
-
-				// 전부 흰색
-				allMenu.forEach(function (menu) {
-					menu.style.backgroundColor = 'white';
-				});
-
-				// for (const station of allStations) {
-				//   station.style.backgroundColor = 'white';
-				// }
-
-				// 모든 역의 배경색을 흰색으로 설정
-				allStations.forEach(function (station) {
-					station.style.backgroundColor = 'white';
-				});
 
 
-				if (id == 'line1-menu') {
-					element.style.backgroundColor = 'red';
-					
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'red';
-					})
-				}
-				if (id == 'line2-menu') {
-					element.style.backgroundColor = 'orange';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'orange';
-					})
-				}
-				if (id == 'line3-menu') {
-					element.style.backgroundColor = 'yellow';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'yellow';
-					})
-				}
-				if (id == 'line4-menu') {
-					element.style.backgroundColor = 'green';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'green';
-					})
-				}
-				if (id == 'line5-menu') {
-					element.style.backgroundColor = 'blue';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'blue';
-					})
-				}
-				if (id == 'line6-menu') {
-					element.style.backgroundColor = 'indigo';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'indigo';
-					})
-				}
-				if (id == 'line7-menu') {
-					element.style.backgroundColor = 'purple';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'purple';
-					})
-				}
-				if (id == 'line8-menu') {
-					element.style.backgroundColor = 'pink';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'pink';
-					})
-				}
-				if (id == 'line9-menu') {
-					element.style.backgroundColor = 'aqua';
-					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'aqua';
-					})
-				}
 
 
-			}
-		</script>
+	<script>
+		function toggleStations(lineId) {
+			scrollToTop(0, 70);
+
+			// 모든 역 목록을 숨김
+			//const allStations = document.querySelectorAll('.station-list');
+			const allStations = $(".station-list");
+			allStations.hide();
+
+			// 선택된 노선의 역 목록을 토글
+			let selectedStations = $("#lineId");
+
+			$("#" + lineId).toggle();
+		}
+
+		function scrollToTop(x, y) {
+			window.scrollTo(x, y);
+		}
+
+		function colorChange(element) {
+			const allStations = $(".station-list");
+			const id = element.id;
+
+			//const allMenu = document.querySelectorAll('.subway-line-menu > div');
+			const allMenu = $(".subway-line-menu > div");
+
+			// // 전부 흰색
+			allMenu.css('background', 'white');
+
+			// // 모든 역의 배경색을 흰색으로 설정
+			allStations.css('background', 'white');
+
+
 	
+
+			if (id == 'line1-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
+				allStations.each(function (index, item) {
+					//$(this)
+					//$유의
+					$(item).css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
+				});
+			}
+
+			if (id == 'line2-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #D65DB1, #FF6F91)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #D65DB1, #FF6F91)');
+				});
+			}
+			if (id == 'line3-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FF6F91, #FF9671)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FF6F91, #FF9671)');
+				});
+			}
+			if (id == 'line4-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+				});
+			}
+			if (id == 'line5-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+				});
+			}
+			if (id == 'line6-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #F9F871)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #F9F871)');
+				});
+			}
+			if (id == 'line7-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+				});
+			}
+			if (id == 'line8-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+				});
+			}
+			if (id == 'line9-menu') {
+				$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FF6F91)');
+				allStations.each(function () {
+					$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FF6F91)');
+				});
+			}
+		}
+	</script>
+
 </body>
-<th:block th:include="common/footer"></th:block> 
+<th:block th:include="common/footer"></th:block>
+
 </html>

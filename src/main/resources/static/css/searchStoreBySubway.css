@@ -4,7 +4,7 @@
     margin: 0 auto;
 }
 
-.page-content{
+.page-content1{
 /*     height: 500px; */
     width: 1200px;
     
@@ -26,7 +26,7 @@
     
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .search-by-subway > img{
@@ -104,11 +104,12 @@
 }
 
 .subway-line-menu div{
-    height: 120px;
-    line-height: 120px;
+    height: 80px;
+    line-height: 80px;
     text-align: center;
-    font-size: 30px;
+    font-size: 18px;
     font-weight: 900;
+    font-family: ns-r;
 }
 
 
@@ -118,4 +119,44 @@
 
 .station-list ul{
     list-style-type: none;
+    
+}
+
+.station-list li{
+    height: 40px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+}
+
+.station-list li:first-child{
+    padding-top: 30px;
+    font-family: ns-r;
+    
+}
+
+.search-by-subway>img{
+    width: 70%;
+}
+
+.page-content2{
+    /* margin-top: 300px; */
+
+    width: 1200px;
+    height: 1000px;
+    background-color: aquamarine;
+    margin: 0 auto;
+    /* display: flex; */
+}
+
+/* .page-wrap{
+    display: flex;
+    flex-direction: column;
+} */
+
+.division-bar{
+    height: 10px;
+    width: 100%;
+    background-color: gray;
 }
