@@ -6,8 +6,6 @@
     <script src="/js/jquery-3.7.1.js"></script>
     <!-- 기본 CSS -->
     <link rel="stylesheet" href="/css/default.css" /> 
-    <!-- 기본 js -->
-    <script src="/js/default.js"></script>
     
     <header>
         <div class="header-wrap">           
@@ -23,11 +21,20 @@
                 </div>
             </div>
             <div class="header-right-box">
+            	<th:block th:if="${session.member == null}">
                 <ul>
                     <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
                     <li><a href="/member/joinFrm">회원가입</a></li>
-                    <li><a href="#">로그인</a></li>
+                    <li><a href="/member/login">login</a></li>
                 </ul>
+                </th:block>
+                <th:block th:unless="${session.member == null}">
+                <ul>
+                    <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
+                    <li><a href="/member/mypage">MyPage</a></li>
+                    <li><a href="/member/logout">logout</a></li>
+                </ul>
+                </th:block>
                 <ul>
                     <li><button onclick="searchBySubway();">역으로 보기</button></li>
                     <li><button>맛집 목록</button></li>
@@ -35,7 +42,7 @@
 
                 <script>
                     function searchBySubway(){
-                        location.href="/searchStoreBySubway";
+                        location.href="/search/searchStoreBySubway";
                     }
                     
                     function main(){
