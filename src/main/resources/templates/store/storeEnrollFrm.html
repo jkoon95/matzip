@@ -7,9 +7,8 @@
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
-	<h1>매장등록...</h1>
-	
-	 <form id="enrollStoreForm" method="post" action="#">
+	 <h1>매장등록</h1>
+	 <form id="enrollStoreForm" method="post" action="/store/enrollStore">
             <div class="s-enrolldiv">
                 <div>▶ 매장정보</div>
                 <div class="input-wrap">
@@ -17,22 +16,28 @@
                     <input type="text" name="businessNo" id="businessNo" class="input-form" th:value="${businessNo}"readonly>
                 </div> 
                 <div class="input-wrap">
-                    <label for="storeNo">매장명</label>
+                    <sup class="s-requiredMsg">* </sup><label for="storeNo">매장명</label>
                     <input type="text" name="storeNo" id="storeNo" class="input-form" required>
                 </div> 
                 <div class="input-wrap">
-                    <label for="foodType">음식타입</label>
+                    <sup class="s-requiredMsg">* </sup><label for="foodType">음식타입</label>
                     <select id="foodType" required>
                         <option value="">--</option>
+                        <option value="양식">양식</option>
                         <option value="중식">중식</option>
                         <option value="한식">한식</option>
-                        <option value="일식">일식</option>
-                        
-                        </select>
+                        <option value="돈가스">돈가스</option>
+                        <option value="치킨">치킨</option>
+                        <option value="피자">피자</option>
+                        <option value="족발">족발</option>
+                        <option value="고기">고기</option>
+                        <option value="국밥">국밥</option>
+                        <option value="찜&탕&찌개">찜&탕&찌개</option>
+                    </select>
                 </div> 
        		</div>
        		 <div class="input-wrap">
-                    <label for="subwayNo">주변역</label>
+                    <sup class="s-requiredMsg">* </sup><label for="subwayNo">주변역</label>
                     <select required id="subwayNo">
                     	<!-- subway 목록 출력 -->
                         <option value="">--</option>
@@ -40,16 +45,16 @@
                     </select>
                 </div> 
                 <div class="input-wrap">
-                    <label for="address">주소</label><br>
+                    <sup class="s-requiredMsg">* </sup><label for="address">주소</label><br>
                     <input type="text" name="address" id="address" class="input-form" onclick="searchAddr();" required placeholder="주소찾기">
                     <br><input type="text" name="detailAddress" id="detailAddress" class="input-form" placeholder="상세주소를 입력하세요(예:동, 층, 호)">
                 </div> 
                 <div class="input-wrap">
-                    <label for="storePhone">연락처</label>
-                    <input type="text" name="storePhone" id="storePhone" class="input-form" required>
+                    <sup class="s-requiredMsg">* </sup><label for="storePhone">연락처</label>
+                    <input type="text" name="storePhone" id="storePhone" class="input-form" maxlength="13" required>
                 </div> 
                 <div class="input-wrap">
-                    <label for="">영업시간</label>
+                    <sup class="s-requiredMsg">* </sup><label for="">영업시간</label>
                     <select required>
                         <option value="">--</option>
                         <option value="00:00">00:00</option>
@@ -211,8 +216,8 @@
                 <div>▶ 매장 사진</div>
                 <div class="input-wrap">
                     <input type="file" name="storeImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);" required>	
-                    <div id="img-viewer">
-                        <img id="img-view" width="100px" height="100px">
+                    <div class="img-viewer">
+                        <img class="img-view" width="100px" height="100px">
                     </div>
                 </div> 
             </div>
@@ -221,8 +226,8 @@
                 <div class="input-wrap-menu">
                     <div class="menu-div">
                         <input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);">	
-                        <div id="img-viewer">
-                            <img id="img-view" width="100px" height="100px"><input type="text" name="menuName" placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격" required>
+                        <div class="img-viewer">
+                            <img class="img-view" width="100px" height="100px"><input type="text" name="menuName" placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격" required>
                         </div>
                     </div>
                 </div>
@@ -233,6 +238,8 @@
        	</form>
        	
 	<script>
+	
+		//주소 길찾기
 		function searchAddr(){
 		    new daum.Postcode({
 		    	oncomplete: function(data) {
@@ -242,17 +249,41 @@
 		    	    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
 		    	    // 예제를 참고하여 다양한 활용법을 확인해 보세요.
 		    	}
-		    	}).open();
-		    }
-		    var menuDiv = $(".menu-div");
-		    $(".plusMenu").click(function() {
-		        var addMenuDiv = menuDiv.clone();
-		        $(".input-wrap-menu").append(addMenuDiv)
-		    });
-		    $(".minusMenu").click(function() {
-		        $(".input-wrap-menu").find(".menu-div").not(":first").last().remove();
+		    }).open();
+		}
 		
-		    });
+		
+		//메뉴 +/-
+		$(".plusMenu").click(function() {
+		    //값이 안들어간 새 메뉴div 추가
+		    //<div class="menu-div"><input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);">	<div class="img-viewer"><img class="img-view" width="100px" height="100px"><input type="text" name="menuName" placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격" required></div></div>);
+		    var addMenuDiv = $("<div class='menu-div'><input type='file' name='menuImg' accept='.jpg,.png,.jpeg' onchange='loadImg(this);'>	<div class='img-viewer'><img class='img-view' width='100px' height='100px'><input type='text' name='menuName' placeholder='메뉴명' required><input type='text' name='menuPrice' placeholder='가격' required></div></div>");
+		    $(".input-wrap-menu").append(addMenuDiv)
+		});
+		
+		$(".minusMenu").click(function() {
+			$(".input-wrap-menu").find(".menu-div").not(":first").last().remove();
+		});
+		
+		
+		//이미지 보여주기
+		function loadImg(obj){
+			//input type file dom객체의 files라는 속성이 첨부한 파일 정보
+			console.log(obj.files);
+			//파일갯수가 0개가 아니고 && 해당파일이 정상이면
+			if(obj.files.length != 0 && obj.files[0] != 0){
+				const reader = new FileReader();//파일정보를 읽어올 수 있는 js객체
+				//선택한 파일 정보를 읽어옴
+				reader.readAsDataURL(obj.files[0]);
+				//파일리더가 정보를 다 읽어오고 나면 동작할 함수
+				reader.onload = function(e){
+					//읽어온파일정보로 img태그의 src값 세팅
+					$(obj).parent().find(".img-view").attr("src",e.target.result);
+				}
+			}else{
+				$(obj).parent().find(".img-view").attr("src","");
+			}
+		}
 	</script>
 	<th:block th:include="common/footer"></th:block>
 </body>

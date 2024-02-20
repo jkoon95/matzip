@@ -139,3 +139,25 @@
 .search-by-subway>img{
     width: 70%;
 }
+
+.page-content2{
+    /* margin-top: 300px; */
+
+    width: 1200px;
+    height: 1000px;
+    background-color: aquamarine;
+    margin: 0 auto;
+    /* display: flex; */
+}
+
+/* .page-wrap{
+    display: flex;
+    flex-direction: column;
+} */
+
+.division-bar{
+    height: 10px;
+    width: 100%;
+    background-color: gray;
+}
+

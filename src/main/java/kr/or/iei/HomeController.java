@@ -10,14 +10,4 @@ public class HomeController {
 	public String main() {
 		return "index";
 	}
-	
-	@GetMapping(value="/searchStoreBySubway")
-	public String searchStorePageBySubway() {
-		return "search/searchStoreBySubway";
-	}
-	
-	@GetMapping(value="/searchStore")
-	public String searchStore() {
-		return "search/searchStore";
-	}
 }

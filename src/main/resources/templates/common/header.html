@@ -6,12 +6,11 @@
     <script src="/js/jquery-3.7.1.js"></script>
     <!-- 기본 CSS -->
     <link rel="stylesheet" href="/css/default.css" /> 
-    <!-- 기본 js -->
-    <script src="/js/default.js"></script>
     
     <header>
         <div class="header-wrap">           
              <a href="/"><img src="/img/맛zip로고.png"></a>          
+
             <div class="header-middle-box">
                 <div>
                     <h1>" 무엇을 도와드릴까요? "</h1>
@@ -23,7 +22,7 @@
             </div>
             <div class="header-right-box">
                 <ul>
-                    <li><a href="#">Q&A</a></li>
+                    <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
                     <li><a href="/member/joinFrm">회원가입</a></li>
                     <li><a href="/member/login">로그인</a></li>
                 </ul>
@@ -34,7 +33,11 @@
 
                 <script>
                     function searchBySubway(){
-                        location.href="/searchStoreBySubway";
+                        location.href="/search/searchStoreBySubway";
+                    }
+                    
+                    function main(){
+                    	location.href="/";
                     }
                 </script>
             </div>
