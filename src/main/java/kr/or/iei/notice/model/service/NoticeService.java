@@ -84,4 +84,36 @@ public class NoticeService {
 		}
 		return result;
 	}
+
+	@Transactional
+	public Notice selectOneNotice(int noticeNo) {
+		int result = noticeDao.updateReadCount(noticeNo);
+		if(result > 0) {
+			Notice n = noticeDao.selectOneNotice(noticeNo);
+			List fileList = noticeDao.selectNoticeFile(noticeNo);
+			n.setFileList(fileList);
+			return n;
+		} else {
+			return null;
+		}
+	}
+
+	@Transactional
+	public List deleteNotice(int noticeNo) {
+		List fileList = noticeDao.selectNoticeFile(noticeNo);
+		int result = noticeDao.deleteNotice(noticeNo);
+		if(result > 0) {
+			return fileList;
+		}
+		return null;
+	}
+
+	public Notice getOneNotice(int noticeNo) {
+		Notice n = noticeDao.selectOneNotice(noticeNo);
+		List fileList = noticeDao.selectNoticeFile(noticeNo);
+		n.setFileList(fileList);
+		return n;
+	}
+	
+	
 }
