@@ -1,0 +1,263 @@
+@font-face {
+    font-family: ns-r;
+    src: url(Noto_Sans_KR/static/NotoSansKR-Regular.ttf);
+}
+@font-face {
+    font-family: ns-black;
+    src: url(Noto_Sans_KR/static/NotoSansKR-Black.ttf);
+}
+@font-face{
+    font-family: ns-b;
+    src: url(Noto_Sans_KR/static/NotoSansKR-Bold.ttf)
+}
+.s-content *{
+    margin: 0;
+    padding: 0;
+    font-family: ns-r;
+    box-sizing: border-box;
+}
+.s-content a{
+    text-decoration: none;
+}
+.s-bg{
+    background-color: #72B37E;
+}
+.s-tbl {
+    width: 100%;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+s-bc{   /*버튼*/
+    border: none;
+    padding: 1rem;
+    display: inline-block;
+    box-sizing: border-box;
+    transition-duration: 0.5s;
+    font-size: 16px;
+    font-family: ns-light;
+}
+s-bc:hover{
+    cursor: pointer;
+    font-size: 1.1em;
+}
+.s-input-form {
+    width: 100%;
+    display: block;
+    padding: 0.5rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.s-input-form:focus {
+    box-shadow: 0 0 0 0.1rem #eee;
+}
+textarea.s-input-form {
+    resize: none;
+    min-height: 70px;
+    margin-left: 10px;
+}
+.s-input-form:read-only:not(select),
+.s-input-form:disabled {
+    background-color: #f7f7f9;
+}
+.s-input-wrap{
+	padding : 5px;
+}
+.s-input-wrap>label{
+	display: block;
+	margin-bottom: 10px;
+}
+s-img-view{
+    text-align: center;
+}
+#s-selectLable{
+    display: inline;
+}
+
+
+/*사업자번호 인증, 매장등록*/
+[name=closedDay]{
+    margin-left: 10px;
+}
+#s-bussniessContent{
+    margin: 0 auto;
+    text-align: center;
+    padding: 140px;
+    width: 600px;
+}
+.s-title1{
+    font-family: ns-b;
+    padding-bottom: 10px;
+}
+.s-title2{
+    font-family: ns-b;
+    padding-bottom: 20px;
+}
+.s-title3{
+    font-family: ns-b;
+    padding-bottom: 10px;
+    font-size: 18px;
+    padding-left: 30px;
+}
+.s-inputDiv{
+    padding-top: 20px;
+    height: 100px;
+}
+.s-enrollbutton{
+    width: 200px;
+    height: 50px;
+    background-color: #72B37E;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+#s-enrollNonbutton{
+	background-color: #b5b5b5;
+}
+#s-enrollNextbutton{
+	display:none;
+}
+#s-bussinessNum {
+    width: 300px;
+    padding: 0.8rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    height: 40px;
+}
+#s-bussinessNum:focus {
+    box-shadow: 0 0 0 0.1rem #eee;
+}
+
+#s-enrollStoreContent{
+	display: none;
+    padding: 80px;
+    width: 800px;
+    box-sizing: border-box;
+    margin: 0 auto;
+
+}
+.s-enrolldiv{
+    margin: 0 auto;
+    padding-left: 30px;
+    width: 600px;
+    box-sizing: border-box;
+    padding-right: 30px;
+}
+.s-enrollbutton{
+    width: 200px;
+    height: 50px;
+    background-color: #72B37E;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.s-content sup{
+	color:red;
+}
+
+.s-input-wrap {
+    margin-bottom: 10px;
+}
+s
+.s-input-wrap label {
+    display: inline-block;
+    width: 120px;
+}
+
+
+.s-input-wrap select{
+    width: 50px;
+    margin-left: 10px;
+}
+
+.s-input-wrap input[type="text"],
+.s-input-wrap input[type="file"] {
+    /*width: 100%;*/
+    margin-left: 10px;
+}
+
+.s-img-view {
+    margin-top: 5px;
+}
+
+.s-enrollStoreForm{
+    width: 800px;
+    margin: 0 auto;
+
+}
+
+.s-smallexplain{
+    color: #b3b3b3;
+    font-size: 14px;
+    text-align: right;
+}
+
+.s-enrollStoreImgBox{
+    padding-left: 65px;
+}
+
+.s-menu-div{
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    height: 150px;
+}
+
+.s-menu-input{
+    display: inline;
+    padding: 0.5rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 160px;
+    height: 30px;
+    margin-top: 10px;
+}
+.s-menu-input{
+    display: inline;
+    padding: 0.5rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 160px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.s-menu-input:focus {
+    box-shadow: 0 0 0 0.1rem #eee;
+}
+
+.s-img-viewer{
+    width: 150px;
+    padding: 10px;
+
+}
+
+.s-img-viewerVal{
+    padding-top: 30px;
+}
+
+.minusMenu,.plusMenu{
+    font-size: 15px;
+    color: rgb(248, 114, 37);
+    background-color: #ffffff;
+    border-radius: 3px;
+    cursor: pointer;
+}

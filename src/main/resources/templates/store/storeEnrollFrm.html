@@ -4,467 +4,456 @@
 <meta charset="UTF-8">
 <title>매장 등록</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<style>
-
-#s-bussniessContent{
-    margin: 0 auto;
-    text-align: center;
-    padding: 150px;
-    width: 600px;
-}
-
-.s-inputDiv{
-    padding-top: 20px;
-    height: 100px;
-}
-.s-enrollbutton{
-    width: 200px;
-    height: 50px;
-    background-color: #72B37E;
-    color: #fff;
-    font-size: 18px;
-    border-radius: 5px;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-}
-#s-enrollNonbutton{
-	background-color: #b5b5b5;
-}
-#s-enrollNextbutton{
-	display:none;
-}
-.s-title1{
-    font-family: ns-b;
-    padding-bottom: 10px;
-}
-#s-bussinessNum {
-    width: 300px;
-    padding: 0.8rem;
-    background-color: #fff;
-    outline: none;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
-    height: 40px;
-}
-#s-bussinessNum:focus {
-    box-shadow: 0 0 0 0.1rem #eee;
-}
-
-#s-enrollStoreContent{
-	display= none;
-}
-
-.s-enrollbutton{
-    width: 200px;
-    height: 50px;
-    background-color: #72B37E;
-    color: #fff;
-    font-size: 18px;
-    border-radius: 5px;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-sup{
-	color:red;
-}
-
-</style>
+<link rel="stylesheet" href="/css/storeInfo.css">
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
-	
-	
-	<div id="s-bussniessContent">
-        <h1 class="s-title1">사업자 번호 조회</h1>
-        <div class="s-title2">등록할 사업자번호를 입력해주세요</div>
-        <div class="s-inputDiv">
-        	<input type="text" name="businessNo" class="s-bussinessNum" maxlength="12" id="s-bussinessNum" placeholder="000-00-00000">
-        	<br>
-        	<span id="s-enrollCheckMsg"></span>
-        </div>
-        <div>
-            <input class="s-enrollbutton" id="s-enrollNextbutton" type="text" value="다음">
-            <input class="s-enrollbutton" id="s-enrollNonbutton" type="text" value="다음" disabled>
-        </div>
-    </div>
-
-
-
-	 <div id="s-enrollStoreContent">
-        <h1>매장등록</h1>
-        <form id="enrollStoreForm" method="post" action="/store/enrollStore">
-            <div class="s-enrolldiv">
-                <div>▶ 매장정보</div>
-                <div class="input-wrap">
-                    <label for="businessNo">사업자번호</label>
-                    <input type="text" name="businessNo" id="businessNo" class="input-form" readonly>
-                </div>
-                <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="storeNo">매장명</label>
-                    <input type="text" name="storeNo" id="storeNo" class="input-form" required>
-                </div>
-                <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="foodType">음식타입</label>
-                    <select id="foodType" required>
-                        <option value="">--</option>
-                        <option value="양식">양식</option>
-                        <option value="중식">중식</option>
-                        <option value="한식">한식</option>
-                        <option value="돈가스">돈가스</option>
-                        <option value="치킨">치킨</option>
-                        <option value="피자">피자</option>
-                        <option value="족발">족발</option>
-                        <option value="고기">고기</option>
-                        <option value="국밥">국밥</option>
-                        <option value="찜&탕&찌개">찜&탕&찌개</option>
-                    </select>
-                </div>
-                <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="subwayNo">주변역</label>
-                    <select required id="subwayNo">
-                        <!-- subway 목록 출력 -->
-                        <option value="">--</option>
-                        <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}"
-                            th:text="${subway.subwayName}"></option>
-                    </select>
-                </div>
-                <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="address">주소</label><br>
-                    <input type="text" name="address" id="address" class="input-form" onclick="searchAddr();" required
-                        placeholder="주소찾기">
-                    <br><input type="text" name="detailAddress" id="detailAddress" class="input-form"
-                        placeholder="상세주소를 입력하세요(예:동, 층, 호)">
-                </div>
-                <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="storePhone">연락처</label>
-                    <input type="text" name="storePhone" id="storePhone" class="input-form" maxlength="13" required>
-                </div>
-                <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="">영업시간</label>
-                    <select required>
-                        <option value="">--</option>
-                        <option value="00:00">00:00</option>
-                        <option value="01:00">01:00</option>
-                        <option value="02:00">02:00</option>
-                        <option value="03:00">03:00</option>
-                        <option value="04:00">04:00</option>
-                        <option value="05:00">05:00</option>
-                        <option value="06:00">06:00</option>
-                        <option value="07:00">07:00</option>
-                        <option value="08:00">08:00</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                        <option value="21:00">21:00</option>
-                        <option value="22:00">22:00</option>
-                        <option value="23:00">23:00</option>
-                        <option value="24:00">24:00</option>
-                    </select>
-                    시부터
-                    <select required>
-                        <option value="">--</option>
-                        <option value="00:00">00:00</option>
-                        <option value="01:00">01:00</option>
-                        <option value="02:00">02:00</option>
-                        <option value="03:00">03:00</option>
-                        <option value="04:00">04:00</option>
-                        <option value="05:00">05:00</option>
-                        <option value="06:00">06:00</option>
-                        <option value="07:00">07:00</option>
-                        <option value="08:00">08:00</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                        <option value="21:00">21:00</option>
-                        <option value="22:00">22:00</option>
-                        <option value="23:00">23:00</option>
-                        <option value="24:00">24:00</option>
-                    </select>
-                    까지
-                </div>
-                <div class="input-wrap">
-                    <label for="">쉬는시간</label>
-                    <select>
-                        <option value="">--</option>
-                        <option value="00:00">00:00</option>
-                        <option value="01:00">01:00</option>
-                        <option value="02:00">02:00</option>
-                        <option value="03:00">03:00</option>
-                        <option value="04:00">04:00</option>
-                        <option value="05:00">05:00</option>
-                        <option value="06:00">06:00</option>
-                        <option value="07:00">07:00</option>
-                        <option value="08:00">08:00</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                        <option value="21:00">21:00</option>
-                        <option value="22:00">22:00</option>
-                        <option value="23:00">23:00</option>
-                        <option value="24:00">24:00</option>
-                    </select>
-                    시부터
-                    <select>
-                        <option value="">--</option>
-                        <option value="00:00">00:00</option>
-                        <option value="01:00">01:00</option>
-                        <option value="02:00">02:00</option>
-                        <option value="03:00">03:00</option>
-                        <option value="04:00">04:00</option>
-                        <option value="05:00">05:00</option>
-                        <option value="06:00">06:00</option>
-                        <option value="07:00">07:00</option>
-                        <option value="08:00">08:00</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
-                        <option value="21:00">21:00</option>
-                        <option value="22:00">22:00</option>
-                        <option value="23:00">23:00</option>
-                        <option value="24:00">24:00</option>
-                    </select>
-                    까지
-                </div>
-                <div class="input-wrap">
-                    <label>휴무일</label>
-                    <input type="checkbox" id="monday" name="closedDay" value="월">
-                    <label for="monday">월</label>
-
-                    <input type="checkbox" id="tuesday" name="closedDay" value="화">
-                    <label for="tuesday">화</label>
-
-                    <input type="checkbox" id="wednesday" name="closedDay" value="수">
-                    <label for="wednesday">수</label>
-
-                    <input type="checkbox" id="thursday" name="closedDay" value="목">
-                    <label for="thursday">목</label>
-
-                    <input type="checkbox" id="friday" name="closedDay" value="금">
-                    <label for="friday">금</label>
-
-                    <input type="checkbox" id="saturday" name="closedDay" value="토">
-                    <label for="saturday">토</label>
-
-                    <input type="checkbox" id="sunday" name="closedDay" value="일">
-                    <label for="sunday">일</label>
-                </div>
-
-                <div class="input-wrap">
-                    <label for="homepage">홈페이지</label>
-                    <input type="text" name="homepage" id="homepage" class="input-form">
-                </div>
-                <div class="input-wrap">
-                    <label for="store_sns">SNS</label>
-                    <input type="text" name="store_sns" id="storeSns" class="input-form">
-                </div>
-                <div class="input-wrap">
-                    <label for="store_description">매장설명</label>
-                    <textarea name="store_description" id="storeDescription" class="input-form"></textarea>
-                </div>
+    <div class="s-content">
+        <div id="s-bussniessContent">
+            <h1 class="s-title1">사업자 번호 조회</h1>
+            <div class="s-title2">등록할 사업자번호를 입력해주세요</div>
+            <div class="s-inputDiv">
+                <input type="text" name="businessNo" class="s-bussinessNum" maxlength="12" id="s-bussinessNum"
+                    placeholder="000-00-00000">
+                <br>
+                <span id="s-enrollCheckMsg"></span>
             </div>
-            <div class="input-wrap">
-                    <sup class="s-requiredMsg">* </sup><label for="timeToEat">식사가능시간</label>
-                    <select required id="timeToEat">
-                        <option value="">--</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
+            <div>
+                <input class="s-enrollbutton" id="s-enrollNextbutton" type="text" value="다음">
+                <input class="s-enrollbutton" id="s-enrollNonbutton" type="text" value="다음" disabled>
             </div>
-            <div class="s-enrolldiv">
-                <div>▶ <sup class="s-requiredMsg">* </sup>매장 사진</div>
-                <div class="input-wrap">
-                    <input type="file" name="storeImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);" required>
-                    <div class="img-viewer">
-                        <img class="img-view" width="100px" height="100px">
+        </div>
+
+
+
+        <div id="s-enrollStoreContent">
+            <h1 class="s-title2">매장등록</h1>
+            <form id="enrollStoreForm" method="post" action="/store/enrollStore">
+                <div class="s-smallexplain">
+                    <sup>* </sup> 표시된 곳은 필수입력 항목입니다.
+                </div>
+                <div class="s-title3">• 매장정보</div>
+                <div class="s-enrolldiv">
+                    <div class="s-input-wrap">
+                        <label for="businessNo">사업자번호</label>
+                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" readonly>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="storeNo">매장명<sup class="s-requiredMsg">* </sup></label>
+                        <input type="text" name="storeNo" id="storeNo" class="s-input-form" required>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
+                        <select id="foodType" required>
+                            <option value="">--</option>
+                            <option value="양식">양식</option>
+                            <option value="중식">중식</option>
+                            <option value="한식">한식</option>
+                            <option value="돈가스">돈가스</option>
+                            <option value="치킨">치킨</option>
+                            <option value="피자">피자</option>
+                            <option value="족발">족발</option>
+                            <option value="고기">고기</option>
+                            <option value="국밥">국밥</option>
+                            <option value="찜&탕&찌개">찜&탕&찌개</option>
+                        </select>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="subwayNo" id="s-selectLable">주변역<sup class="s-requiredMsg">* </sup></label>
+                        <select required id="subwayNo">
+                            <!-- subway 목록 출력 -->
+                            <option value="">--</option>
+                            <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}"
+                                th:text="${subway.subwayName}"></option>
+                        </select>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
+                        <input type="text" name="address" id="address" class="s-input-form" onclick="searchAddr();"
+                            required placeholder="주소찾기">
+                        <input type="text" name="detailAddress" id="detailAddress" class="s-input-form"
+                            placeholder="상세주소를 입력하세요(예:동, 층, 호)">
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="storePhone">연락처<sup class="s-requiredMsg">* </sup></label>
+                        <input type="text" name="storePhone" id="storePhone" class="s-input-form" maxlength="13"
+                            required>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
+                        <select required>
+                            <option value="">--</option>
+                            <option value="00:00">00:00</option>
+                            <option value="01:00">01:00</option>
+                            <option value="02:00">02:00</option>
+                            <option value="03:00">03:00</option>
+                            <option value="04:00">04:00</option>
+                            <option value="05:00">05:00</option>
+                            <option value="06:00">06:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+                            <option value="24:00">24:00</option>
+                        </select>
+                        시부터
+                        <select required>
+                            <option value="">--</option>
+                            <option value="00:00">00:00</option>
+                            <option value="01:00">01:00</option>
+                            <option value="02:00">02:00</option>
+                            <option value="03:00">03:00</option>
+                            <option value="04:00">04:00</option>
+                            <option value="05:00">05:00</option>
+                            <option value="06:00">06:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+                            <option value="24:00">24:00</option>
+                        </select>
+                        까지
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="" id="s-selectLable">쉬는시간</label>
+                        <select>
+                            <option value="">--</option>
+                            <option value="00:00">00:00</option>
+                            <option value="01:00">01:00</option>
+                            <option value="02:00">02:00</option>
+                            <option value="03:00">03:00</option>
+                            <option value="04:00">04:00</option>
+                            <option value="05:00">05:00</option>
+                            <option value="06:00">06:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+                            <option value="24:00">24:00</option>
+                        </select>
+                        시부터
+                        <select>
+                            <option value="">--</option>
+                            <option value="00:00">00:00</option>
+                            <option value="01:00">01:00</option>
+                            <option value="02:00">02:00</option>
+                            <option value="03:00">03:00</option>
+                            <option value="04:00">04:00</option>
+                            <option value="05:00">05:00</option>
+                            <option value="06:00">06:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                            <option value="22:00">22:00</option>
+                            <option value="23:00">23:00</option>
+                            <option value="24:00">24:00</option>
+                        </select>
+                        까지
+                    </div>
+                    <div class="s-input-wrap">
+                        <label>휴무일</label>
+                        <input type="checkbox" id="monday" name="closedDay" value="월">
+                        <span for="monday">월</span>
+
+                        <input type="checkbox" id="tuesday" name="closedDay" value="화">
+                        <span for="tuesday">화</span>
+
+                        <input type="checkbox" id="wednesday" name="closedDay" value="수">
+                        <span for="wednesday">수</span>
+
+                        <input type="checkbox" id="thursday" name="closedDay" value="목">
+                        <span for="thursday">목</span>
+
+                        <input type="checkbox" id="friday" name="closedDay" value="금">
+                        <span for="friday">금</span>
+
+                        <input type="checkbox" id="saturday" name="closedDay" value="토">
+                        <span for="saturday">토</span>
+
+                        <input type="checkbox" id="sunday" name="closedDay" value="일">
+                        <span for="sunday">일</span>
+                    </div>
+
+                    <div class="s-input-wrap">
+                        <label for="homepage">홈페이지</label>
+                        <input type="text" name="homepage" id="homepage" class="s-input-form">
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="store_sns">SNS</label>
+                        <input type="text" name="store_sns" id="storeSns" class="s-input-form">
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="store_description">매장설명</label>
+                        <textarea name="store_description" id="storeDescription" class="s-input-form"></textarea>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
+                        <select required id="timeToEat">
+                            <option value="">--</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div class="s-enrolldiv">
-                <div>▶ <sup class="s-requiredMsg">* </sup>메뉴 등록<span class="plusMenu">+</span><span class="minusMenu">-</span></div>
-                <div class="input-wrap-menu">
-                    <div class="menu-div">
-                        <input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);">
-                        <div class="img-viewer">
-                            <img class="img-view" width="100px" height="100px"><input type="text" name="menuName"
-                                placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격"
-                                required>
+
+                <div class="s-title3">• 매장 사진<sup class="s-requiredMsg">* </sup></div>
+                <div class="s-enrolldiv">
+                    <div class="s-input-wrap s-enrollStoreImgBox">
+                        <img class="s-img-view" width="200px" height="200px">
+                        <input type="file" name="storeImg" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
+                            required>
+                    </div>
+                </div>
+
+                <div class="s-title3">• 메뉴 등록<sup class="s-requiredMsg">* </sup>
+                    <span class="plusMenu">추가</span>
+                </div>
+                <div class="s-enrolldiv">
+                    <div class="s-input-wrap s-input-wrap-menu">
+
+                        <div class="s-menu-div">
+                            <div class="s-img-viewer">
+                                <img class="s-img-view" width="100px" height="100px">
+                            </div>
+                            <div class="s-img-viewerVal">
+                                <input type="file" name="menuImg" accept=".jpg,.png,.jpeg"
+                                    onchange="menuloadImg(this);">
+                                <input type="text" class="s-menu-input" name="menuName" placeholder="메뉴명" required>
+                                <input type="text" class="s-menu-input" name="menuPrice" width="150px" placeholder="가격"
+                                    required>
+                                <span class="minusMenu"> 삭제</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <input type="submit" value="매장등록" class="s-enrollbutton">
-        </form>
-    </div>
-    
-    
-    <script>
-    	$("#s-enrollStoreContent").css("display","none");
+                <input type="submit" value="매장등록" class="s-enrollbutton" style="width: 100%;">                
+            </form>
+        </div>
 
-    	var input;
-    	var output;
-    	
-        $(".s-bussinessNum").on("input", function() {
-        	//성공 이외의 상태
-        	$("#s-enrollNextbutton").css("display","none");
-        	$("#s-enrollNonbutton").css("display","inline-block");
-            $("#s-enrollCheckMsg").text("");
-            $("#s-enrollStoreContent").css("display","none")
-            
-            input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
-            output = '';
 
-            if (input.length > 3) {
-                output += input.substr(0, 3) + '-';
-                if (input.length > 6) {
-                    output += input.substr(3, 2) + '-';
-                    output += input.substr(5);
+        <script>
+            //$("#s-enrollStoreContent").css("display","none");
+
+            var input;
+            var output;
+
+            $(".s-bussinessNum").on("input", function () {
+                //성공 이외의 상태
+                $("#s-enrollNextbutton").css("display", "none");
+                $("#s-enrollNonbutton").css("display", "inline-block");
+                $("#s-enrollCheckMsg").text("");
+                $("#s-enrollStoreContent").css("display", "none")
+
+                input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
+                output = '';
+
+                if (input.length > 3) {
+                    output += input.substr(0, 3) + '-';
+                    if (input.length > 6) {
+                        output += input.substr(3, 2) + '-';
+                        output += input.substr(5);
+                    } else {
+                        output += input.substr(3);
+                    }
                 } else {
-                    output += input.substr(3);
+                    output = input;
                 }
-            } else {
-                output = input;
-            }
-            //console.log(input);
+                //console.log(input);
 
-            $(this).val(output);
-			
-            if(input.length == 10){
-                var data = {
-                        "b_no": [""+input+""] // 사업자번호 "xxxxxxx" 로 조회 시,
-                }; 
-            }
-            
-            $.ajax({
-                //인코딩 키 주면 되고 디코딩 키주면 안댐
-                url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=8CPiAUJwtCcph1LZoyv2%2BHHEtTJDVb3oKNNLRju7DE%2BC%2F2E865koh2pLSdKHDbe0EtdzoSOwgmIkd6GBSXK4GQ%3D%3D",  
-                type: "POST",
-                data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+                $(this).val(output);
+
+                if (input.length == 10) {
+                    var data = {
+                        "b_no": ["" + input + ""] // 사업자번호 "xxxxxxx" 로 조회 시,
+                    };
+                }
+
+                $.ajax({
+                    //인코딩 키 주면 되고 디코딩 키주면 안댐
+                    url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=8CPiAUJwtCcph1LZoyv2%2BHHEtTJDVb3oKNNLRju7DE%2BC%2F2E865koh2pLSdKHDbe0EtdzoSOwgmIkd6GBSXK4GQ%3D%3D",
+                    type: "POST",
+                    data: JSON.stringify(data), // json 을 string으로 변환하여 전송
                     dataType: "JSON",
                     contentType: "application/json",
                     accept: "application/json",
-                    success: function(result) {
-                    let valid = result.data[0].b_stt_cd;
-            
-                    if (valid=='01'){
-                        $("#s-enrollCheckMsg").text("정상적인 사업자번호입니다.");
-                        $("#s-enrollCheckMsg").css("color", "green");               
-                        //console.log("있는 사업자입니다.")
-                        //$("#s-bussinessForm").attr("action", "/store/storeEnrollFrm");
-                        $("#s-enrollNextbutton").css("display","inline-block");
-                        $("#s-enrollNonbutton").css("display","none");
-                        //$("#s-enrollStoreContent").css("display","block")
-                        //$("#s-bussniessContent").css("display","none");
-                    }else {
-                        $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
-                        $("#s-enrollCheckMsg").css("color", "red");
-                        //console.log("없는 사업자입니다.")
-                    }
+                    success: function (result) {
+                        let valid = result.data[0].b_stt_cd;
+
+                        if (valid == '01') {
+                            $("#s-enrollCheckMsg").text("정상적인 사업자번호입니다.");
+                            $("#s-enrollCheckMsg").css("color", "green");
+                            //console.log("있는 사업자입니다.")
+                            //$("#s-bussinessForm").attr("action", "/store/storeEnrollFrm");
+                            $("#s-enrollNextbutton").css("display", "inline-block");
+                            $("#s-enrollNonbutton").css("display", "none");
+                            //$("#s-enrollStoreContent").css("display","block")
+                            //$("#s-bussniessContent").css("display","none");
+                        } else {
+                            $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
+                            $("#s-enrollCheckMsg").css("color", "red");
+                            //console.log("없는 사업자입니다.")
+                        }
                     },
-                    error: function(result) {
+                    error: function (result) {
                         console.log(result.responseText); //responseText의 에러메세지 확인
                     }
-             });
-            
-            $("#s-enrollNextbutton").on("click",function(){
-            	$("#s-enrollStoreContent").css("display","block")
-                $("#s-bussniessContent").css("display","none");
-            	$("[name=businessNo]").val(output);
-            });
-            
-            
-            
+                });
 
-        });
-        
-		/////////////////////////////////////////
-		//주소 길찾기
-		function searchAddr(){
-		    new daum.Postcode({
-		    	oncomplete: function(data) {
-		    	    console.log(data);
-		    	    $("#address").val(data.address);
-		    	    $("#detailAddress").focus();
-		    	    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-		    	    // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-		    	}
-		    }).open();
-		}
-		
-		
-		//메뉴 +/-
-		$(".plusMenu").click(function() {
-		    //값이 안들어간 새 메뉴div 추가
-		    //<div class="menu-div"><input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="loadImg(this);">	<div class="img-viewer"><img class="img-view" width="100px" height="100px"><input type="text" name="menuName" placeholder="메뉴명" required><input type="text" name="menuPrice" placeholder="가격" required></div></div>);
-		    var addMenuDiv = $("<div class='menu-div'><input type='file' name='menuImg' accept='.jpg,.png,.jpeg' onchange='loadImg(this);'>	<div class='img-viewer'><img class='img-view' width='100px' height='100px'><input type='text' name='menuName' placeholder='메뉴명' required><input type='text' name='menuPrice' placeholder='가격' required></div></div>");
-		    $(".input-wrap-menu").append(addMenuDiv)
-		});
-		
-		$(".minusMenu").click(function() {
-			$(".input-wrap-menu").find(".menu-div").not(":first").last().remove();
-		});
-		
-		
-		//이미지 보여주기
-		function loadImg(obj){
-			//input type file dom객체의 files라는 속성이 첨부한 파일 정보
-			console.log(obj.files);
-			//파일갯수가 0개가 아니고 && 해당파일이 정상이면
-			if(obj.files.length != 0 && obj.files[0] != 0){
-				const reader = new FileReader();//파일정보를 읽어올 수 있는 js객체
-				//선택한 파일 정보를 읽어옴
-				reader.readAsDataURL(obj.files[0]);
-				//파일리더가 정보를 다 읽어오고 나면 동작할 함수
-				reader.onload = function(e){
-					//읽어온파일정보로 img태그의 src값 세팅
-					$(obj).parent().find(".img-view").attr("src",e.target.result);
-				}
-			}else{
-				$(obj).parent().find(".img-view").attr("src","");
-			}
-		}
-		
-	</script>
-	<th:block th:include="common/footer"></th:block>
+                $("#s-enrollNextbutton").on("click", function () {
+                    $("#s-enrollStoreContent").css("display", "block")
+                    $("#s-bussniessContent").css("display", "none");
+                    $("[name=businessNo]").val(output);
+                });
+
+
+
+
+            });
+
+            /////////////////////////////////////////
+            //주소 길찾기
+            function searchAddr() {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        console.log(data);
+                        $("#address").val(data.address);
+                        $("#detailAddress").focus();
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+                        // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+                    }
+                }).open();
+            }
+
+
+            //메뉴 +/-
+                // 추가
+                $('.plusMenu').on('click', function () {
+                    $('.s-input-wrap-menu').append(
+                        '<div class="s-menu-div">' +
+                        '<div class="s-img-viewer">' +
+                        '<img class="s-img-view" width="100px" height="100px">' +
+                        '</div>' +
+                        '<div class="s-img-viewerVal">' +
+                        '<input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">' +
+                        '<input type="text" class="s-menu-input" name="menuName" placeholder="메뉴명" required>' +
+                        '<input type="text" class="s-menu-input" name="menuPrice" width="150px" placeholder="가격" required>' +
+                        '<span class="minusMenu"> 삭제</span>' +
+                        '</div>' +
+                        '</div>'
+                    );
+                });
+
+                // 삭제
+                $(document).on('click', '.minusMenu', function () {
+                    var menuDivCount = $('.s-menu-div').length;
+                    if (menuDivCount === 1) {
+                        return;
+                    }
+                    $(this).closest('.s-menu-div').remove();
+                });
+
+            /*
+            $(".plusMenu").click(function () {
+                var addMenuDiv = $('<div class="s-menu-div"><div class="s-img-viewer"><img class="s-img-view" width="100px" height="100px"></div><div class="s-img-viewerVal"><input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);"><input type="text" class="s-menu-input" name="menuName" placeholder="메뉴명" required><input type="text" class="s-menu-input" name="menuPrice" placeholder="가격" required><span class="minusMenu"> 삭제</span></div></div>');
+                $(".s-input-wrap-menu").append(addMenuDiv)
+            });
+    
+            $('.minusMenu').on('click', function() {
+                //if ($('.s-menu-div').length === 1) {
+                  //  return;
+                //}
+                $(this).parents(".s-menu-div").remove();
+            });*/
+            /*
+            $(".minusMenu").click(function () {
+                //$(".s-input-wrap-menu").find(".s-menu-div").not(":first").last().remove();
+                //$(this).parents("s-menu-div").remove();
+                $(this).closest('.s-menu-div').remove();
+            });
+            */
+
+            //이미지 불러오기
+            function storeloadImg(obj) {
+                console.log(obj.files);
+                if (obj.files.length != 0 && obj.files[0] != 0) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(obj.files[0]);
+                    reader.onload = function (e) {
+                        $(obj).parent().find(".s-img-view").attr("src", e.target.result);
+                        //$(obj).parents(".s-input-wrap").find(".s-img-view").attr("src",e.target.result);
+                    }
+                } else {
+                    $(obj).parent().find(".s-img-view").attr("src", "");
+                    //$(obj).parents(".s-input-wrap").find(".s-img-view").attr("src","");
+                }
+            }
+
+            function menuloadImg(obj) {
+                //console.log(obj.files);
+                if (obj.files.length != 0 && obj.files[0] != 0) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(obj.files[0]);
+                    reader.onload = function (e) {
+                        $(obj).parent().parent().find(".s-img-view").attr("src", e.target.result);
+                    }
+                } else {
+                    $(obj).parent().parent().find(".s-img-view").attr("src", "");
+                }
+            }
+
+        </script>
+    </div>
+    <th:block th:include="common/footer"></th:block>
 </body>
 </html>
