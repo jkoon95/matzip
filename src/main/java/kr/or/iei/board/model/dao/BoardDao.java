@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.or.iei.board.model.dto.Board;
+import kr.or.iei.board.model.dto.BoardComment;
 import kr.or.iei.board.model.dto.BoardCommentRowMapper;
 import kr.or.iei.board.model.dto.BoardFile;
 import kr.or.iei.board.model.dto.BoardFileRowMapper;
@@ -106,6 +107,42 @@ public class BoardDao {
 		String query = "delete from board_file where file_no=?";
 		Object[] params = {fileNo};
 		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int insertComment(BoardComment bc) {
+		String query = "insert into board_comment values(board_comment_seq.nextval,?,?,to_char(sysdate,'yyyy-mm-dd'),?,?)";
+		String boardCommentRef = bc.getCommentRef()==0 ? null : String.valueOf(bc.getCommentRef());
+		Object[] params = {bc.getCommentWriter(),bc.getCommentContent(),bc.getBoardRef(),boardCommentRef};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectCommentList(int boardNo) {
+		String query = "select * from board_comment where board_ref=? and comment_ref is null order by 1";
+		Object[] params = {boardNo};
+		List CommentList = jdbc.query(query, boardCommentRowMapper, params);
+		return CommentList;
+	}
+
+	public List selectRecommentList(int boardNo) {
+		String query = "select * from board_comment where board_ref=? and comment_ref is not null order by 1";
+		Object[] params = {boardNo};
+		List ReCommentList = jdbc.query(query, boardCommentRowMapper, params);
+		return ReCommentList;
+	}
+
+	public int updateComent(BoardComment bc) {
+		String query = "update board_comment set comment_content=? where comment_no=?";
+		Object[] params = {bc.getCommentContent(),bc.getCommentNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int deleteComment(int boardCommentNo) {
+		String query = "delete from board_comment where comment_no=?";
+		Object[] params = {boardCommentNo};
+		int result = jdbc.update(query, params);
 		return result;
 	}
 	

@@ -32,8 +32,7 @@
 			<button type="submit" class="btn" onclick="return checkKeyword();">검색</button>
 		</form>
 		
-		<!-- <a id="write-btn" th:if="${session.member != null}" class="btn" href="/board/boardWriteFrm">글쓰기</a> -->
-		<a id="write-btn" th:if="${session.member == null}" class="btn" href="/board/boardWriteFrm">글쓰기</a>
+		<a id="write-btn" th:if="${session.member != null}" class="btn" href="/board/boardWriteFrm">글쓰기</a>
 		
 		<table class="tbl board-tbl">
 			<tr class="tr-2">

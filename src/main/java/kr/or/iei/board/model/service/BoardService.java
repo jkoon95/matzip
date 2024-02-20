@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.board.model.dao.BoardDao;
 import kr.or.iei.board.model.dto.Board;
+import kr.or.iei.board.model.dto.BoardComment;
 import kr.or.iei.board.model.dto.BoardFile;
 import kr.or.iei.board.model.dto.BoardListData;
 import kr.or.iei.board.model.dto.BoardViewData;
@@ -85,22 +86,22 @@ public class BoardService {
 		return result;
 	}
 
-//	@Transactional
-//	public BoardViewData selectOneBoard(int boardNo) {
-//		int result = boardDao.updateReadCount(boardNo);
-//		if(result > 0) {
-//			Board b = boardDao.selectOneBoard(boardNo);
-//			List fileList = boardDao.selectBoardFile(boardNo);
-//			b.setFileList(fileList);
-//			
-//			List commentList = boardDao.selectCommentList(boardNo);
-//			List reCommentList = boardDao.selectRecommentList(boardNo);
-//			BoardViewData bvd = new BoardViewData(b,commentList,reCommentList);
-//			return bvd;
-//		} else {
-//			return null;
-//		}
-//	}
+	@Transactional
+	public BoardViewData selectOneBoard(int boardNo) {
+		int result = boardDao.updateReadCount(boardNo);
+		if(result > 0) {
+			Board b = boardDao.selectOneBoard(boardNo);
+			List fileList = boardDao.selectBoardFile(boardNo);
+			b.setFileList(fileList);
+			
+			List commentList = boardDao.selectCommentList(boardNo);
+			List reCommentList = boardDao.selectRecommentList(boardNo);
+			BoardViewData bvd = new BoardViewData(b,commentList,reCommentList);
+			return bvd;
+		} else {
+			return null;
+		}
+	}
 
 	@Transactional
 	public List deleteBoard(int boardNo) {
@@ -112,15 +113,15 @@ public class BoardService {
 		return null;
 	}
 
-//	public BoardViewData getOneBoard(int boardNo) {
-//		Board b = boardDao.selectOneBoard(boardNo);
-//		List fileList = boardDao.selectBoardFile(boardNo);
-//		b.setFileList(fileList);
-//		List commentList = boardDao.selectCommentList(boardNo);
-//		List reCommentList = boardDao.selectRecommentList(boardNo);
-//		BoardViewData bvd = new BoardViewData(b, commentList, reCommentList);
-//		return bvd;
-//	}
+	public BoardViewData getOneBoard(int boardNo) {
+		Board b = boardDao.selectOneBoard(boardNo);
+		List fileList = boardDao.selectBoardFile(boardNo);
+		b.setFileList(fileList);
+		List commentList = boardDao.selectCommentList(boardNo);
+		List reCommentList = boardDao.selectRecommentList(boardNo);
+		BoardViewData bvd = new BoardViewData(b, commentList, reCommentList);
+		return bvd;
+	}
 
 	public List updateBoard(Board b, List<BoardFile> fileList, int[] delFileNo) {
 		List delFileList = new ArrayList<BoardFile>();
@@ -144,6 +145,24 @@ public class BoardService {
 			return null;
 		}
 		
+	}
+
+	@Transactional
+	public int insertComment(BoardComment bc) {
+		int result = boardDao.insertComment(bc);
+		return result;
+	}
+
+	@Transactional
+	public int updateComment(BoardComment bc) {
+		int result = boardDao.updateComent(bc);
+		return result;
+	}
+
+	@Transactional
+	public int deleteComment(int boardCommentNo) {
+		int result = boardDao.deleteComment(boardCommentNo);
+		return result;
 	}
 	
 	

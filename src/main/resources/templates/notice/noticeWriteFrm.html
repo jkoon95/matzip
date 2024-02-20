@@ -17,6 +17,9 @@
 				<tr>
 					<th>제목</th>
 					<td><input type="text" name="noticeTitle" class="input-form"></td>
+					<td>
+						<input type="hidden" name="noticeWriter" th:value="${session.member.memberNickname}">
+					</td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>

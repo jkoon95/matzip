@@ -15,11 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.or.iei.FileUtils;
 import kr.or.iei.board.model.dto.Board;
+import kr.or.iei.board.model.dto.BoardComment;
 import kr.or.iei.board.model.dto.BoardFile;
 import kr.or.iei.board.model.dto.BoardListData;
 import kr.or.iei.board.model.dto.BoardViewData;
 import kr.or.iei.board.model.service.BoardService;
-import kr.or.iei.notice.model.dto.Notice;
 
 @Controller
 @RequestMapping(value="/board")
@@ -173,6 +173,52 @@ public class BoardController {
 			model.addAttribute("reCommentList", bvd.getReCommentList());
 			return "board/view";
 		}
+	}
+	
+	@PostMapping(value="/insertComment")
+	public String insertComment(BoardComment bc, Model model) {
+		int result = boardService.insertComment(bc);
+		if(result>0) {
+			model.addAttribute("title", "작성 성공");
+			model.addAttribute("msg", "댓글이 작성되었습니다.");
+			model.addAttribute("icon", "success");
+		} else {
+			model.addAttribute("title", "댓글작성 실패");
+			model.addAttribute("msg", "댓글 작성 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+			model.addAttribute("icon", "warning");
+		}
+		model.addAttribute("loc", "/board/view2?boardNo="+bc.getBoardRef());
+		return "common/msg";
+	}
+	
+	@PostMapping(value="/updateComment")
+	public String updateComment(BoardComment bc,Model model) {
+		int result = boardService.updateComment(bc);
+		if(result>0) {
+			model.addAttribute("title", "성공");
+			model.addAttribute("msg", "댓글이 수정되었습니다.");
+			model.addAttribute("icon", "success");
+		} else {
+			model.addAttribute("title", "실패");
+			model.addAttribute("msg", "잠시 후 다시 시도해주세요.");
+			model.addAttribute("icon", "warning");
+		}
+		model.addAttribute("loc", "/board/view2?boardNo="+bc.getBoardRef());
+		return "common/msg";
+	}
+
+	@GetMapping(value="/deleteComment")
+	public String deleteComment(int boardCommentNo, int boardNo, Model model) {
+		 int result = boardService.deleteComment(boardCommentNo);
+		 if(result > 0) {
+			 return "redirect:/board/view2?boardNo="+boardNo;
+		 } else {
+			 model.addAttribute("title", "삭제 실패");
+			 model.addAttribute("msg", "댓글 삭제에 실패했습니다.");
+			 model.addAttribute("icon", "warning");
+			 model.addAttribute("loc", "/board/view2?boardNo="+boardNo);
+			 return "common/msg";
+		 }
 	}
 	
 	
