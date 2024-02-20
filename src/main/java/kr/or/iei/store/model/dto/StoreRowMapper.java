@@ -39,7 +39,7 @@ public class StoreRowMapper implements RowMapper<Store>{
 		Store store = new Store();
 		store.setBreakEnd(rs.getString("BREAK_END"));
 		store.setBreakStart(rs.getString("BREAK_START"));
-		store.setBusinessNo(rs.getInt("BUSINESS_NO"));
+		store.setBusinessNo(rs.getString("BUSINESS_NO"));
 		store.setClosingHour(rs.getString("CLOSING_HOUR"));
 		store.setFoodType(rs.getString("FOOD_TYPE"));
 		store.setHomePage(rs.getString("HOMEPAGE"));
@@ -51,7 +51,7 @@ public class StoreRowMapper implements RowMapper<Store>{
 		store.setStorePhone(rs.getString("STORE_PHONE"));
 		store.setStoreSns(rs.getString("STORE_SNS"));
 		store.setStoreStatus(rs.getInt("STORE_STATUS"));
-		store.setSubwayNo(rs.getInt("SUBWAY_NO"));
+		store.setSubwayName(rs.getString("SUBWAY_NAME"));
 		store.setTimeToEat(rs.getString("TIME_TO_EAT"));
 		
 		return store;
