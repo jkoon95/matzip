@@ -165,9 +165,27 @@
 
 
 
+	<div id="modal" class="modal-bg">
+		<div class="modal-content">
+			<span class="close-button">&times;</span>
+			<h2>Station Name</h2>
+
+			<div class="">
+
+			</div>
+
+
+
+
+		</div>
+	</div>
 
 
 	<script>
+		$(".subway-station").click(function() {
+    		
+		});
+
 		function toggleStations(lineId) {
 			scrollToTop(0, 70);
 
@@ -260,34 +278,52 @@
 				});
 			}
 		}
-		
-
-		$(".subway-station").on("click", function () {
-			const stationName = $(this).attr('id');
-			//console.log(stationName);
-
-			const newWindow = window.open("", "top5Store", "left=300px,top=150px,width=1200px,height=800px,menubar=no, status=no,scrollbars=yes");
 
 
-			newWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>${stationName} 정보</title>
-			<link rel="stylesheet" href="/css/top5Store.css">
-        </head>
-        <body>
-            <h1>Selected Station: ${stationName}</h1>
-            <p>이곳에 ${stationName}에 대한 정보를 표시할 수 있습니다.</p>
+		$(document).ready(function () {
+			$(".subway-station").click(function () {
+				const stationName = $(this).find(".subway-station-name").text(); // 역 이름 가져오기
 
-			<div class="new-page-wrap">
-				<div class="page-content3"></div>
-			</div>
-        </body>
-        </html>
-    `);
-		})
+				// const clickedSubway = $(this).attr('id'); 
+				// console.log(clickedSubway);
+				console.log(stationName);
+				
+
+				$.ajax({
+					url : "/search/ajaxSelectTop5Store",
+					type : "get",
+					data : {stationName : stationName},
+					success : function(data){
+
+					},
+					error : function(data){
+						
+					}
+				})
+
+				$("#modal").show(); // 모달 보여주기
+				$("#modal .modal-content h2").text(stationName); // 모달에 역 이름 설정
+				$("body").css("overflow", "hidden"); // 스크롤 비활성화
+				
+			});
+
+			$(".close-button").click(function () {
+				$("#modal").hide(); // 모달 숨기기
+				$("body").css("overflow", "auto"); // 스크롤 다시 활성화
+				
+			});
+
+			// 모달 바깥 영역 클릭 시 모달 닫기
+			$(window).click(function (e) {
+				if ($(e.target).is("#modal")) {
+					$("#modal").hide();
+					$("body").css("overflow", "auto"); // 스크롤 다시 활성화
+					
+				}
+			});
+		});
 	</script>
+
 
 
 
