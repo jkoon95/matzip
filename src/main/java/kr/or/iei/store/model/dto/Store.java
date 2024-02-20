@@ -33,7 +33,7 @@ CREATE TABLE STORE_TBL(
 public class Store {
 	private int storeNo;
 	private int memberNo;
-	private int businessNo;
+	private String businessNo;
 	private String storeName;
 	private String storeAddr;
 	private String storePhone;
@@ -47,7 +47,7 @@ public class Store {
 	private String breakStart;
 	private String breakEnd;
 	private int storeLevel;
-	private int subwayNo;
+	private String subwayName;
 	private int storeStatus;
 	private String timeToEat;
 }
