@@ -9,11 +9,12 @@
 <body>
 	<th:block th:include="common/header"></th:block>
     <div class="s-content">
+    	<!-- 사업자 조회  -->
         <div id="s-bussniessContent">
             <h1 class="s-title1">사업자 번호 조회</h1>
             <div class="s-title2">등록할 사업자번호를 입력해주세요</div>
             <div class="s-inputDiv">
-                <input type="text" name="businessNo" class="s-bussinessNum" maxlength="12" id="s-bussinessNum"
+                <input type="text" name="businessNum" class="s-bussinessNum" maxlength="12" id="s-bussinessNum"
                     placeholder="000-00-00000">
                 <br>
                 <span id="s-enrollCheckMsg"></span>
@@ -25,7 +26,7 @@
         </div>
 
 
-
+		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장등록</h1>
             <form id="enrollStoreForm" method="post" action="/store/enrollStore">
@@ -36,8 +37,14 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
-                        <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>
+                        <!-- 
+                         <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>                        
+                         -->
                         <input type="text" name="businessNo" id="businessNo" class="s-input-form" readonly>
+                    </div>
+                    <div class="s-input-wrap">
+                        <label for="store_sns">증빙서류 첨부<sup class="s-requiredMsg">* </sup></label>
+                        <input type="file" name="edvienceFile" multiple required>
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeNo">매장명<sup class="s-requiredMsg">* </sup></label>
@@ -225,7 +232,14 @@
                         <input type="checkbox" id="sunday" name="closedDay" value="일">
                         <span for="sunday">일</span>
                     </div>
-
+					<div class="s-input-wrap">
+                        <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
+                        <select required name="timeToEat">
+                            <option value="">--</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
                     <div class="s-input-wrap">
                         <label for="homepage">홈페이지</label>
                         <input type="text" name="homepage" id="homepage" class="s-input-form">
@@ -238,25 +252,19 @@
                         <label for="storeDescription">매장설명</label>
                         <textarea name="storeDescription" id="storeDescription" class="s-input-form"></textarea>
                     </div>
-                    <div class="s-input-wrap">
-                        <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
-                        <select required name="timeToEat">
-                            <option value="">--</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div class="s-title3">• 매장 사진<sup class="s-requiredMsg">* </sup></div>
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-enrollStoreImgBox">
-                        <img class="s-img-view" width="200px" height="200px">
+                        <img class="s-img-view" width="300px" height="300px">
                         <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
                             required>
                     </div>
                 </div>
-
+                
+					
+                
                 <div class="s-title3">• 메뉴 등록<sup class="s-requiredMsg">* </sup>
                     <span class="plusMenu">추가</span>
                 </div>
@@ -277,14 +285,15 @@
                         </div>
                     </div>
                 </div>
-                <input type="submit" value="매장등록" class="s-enrollbutton" style="width: 100%;">                
+                <div class="s-enrolldiv">
+                	<input type="submit" value="매장등록" class="s-enrollbutton" style="width: 100%;">   
+                </div>             
             </form>
         </div>
 
 
         <script>
-            //$("#s-enrollStoreContent").css("display","none");
-
+        
             var input;
             var output;
 
