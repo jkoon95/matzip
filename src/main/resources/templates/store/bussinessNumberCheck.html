@@ -3,87 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <title>사업자 인증 확인</title>
+<style>
+.s-content{
+    margin: 0 auto;
+    text-align: center;
+    padding: 150px;
+    width: 600px;
+}
+.s-inputDiv{
+    padding-top: 20px;
+    height: 100px;
+}
+.s-enrollStore{
+    width: 200px;
+    height: 50px;
+    background-color: #72B37E;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+}
+.s-title1{
+    font-family: ns-b;
+    padding-bottom: 10px;
+}
+#s-bussinessNum {
+    width: 300px;
+    padding: 0.8rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    height: 40px;
+}
+#s-bussinessNum:focus {
+    box-shadow: 0 0 0 0.1rem #eee;
+}
+</style>
 <script src="/js/jquery-3.7.1.js"></script>
-<!-- <link rel="stylesheet" href="css/사업사인증.css"> -->
 </head>
 <body>
-    <div class="content">
-        <h1>사업자 번호 확인</h1>
-        <div class="title">등록할 사업자번호를 입력해주세요</div>
-        <form id="bussinessForm" method="post" action="#">
-            <div>
-                <input type="text" name="num1" class="num1" size="3" maxlength="3" id="inputBox"> -
-                <input type="text" name="num2" class="num2" size="2" maxlength="2" id="inputBox"> -
-                <input type="text" name="num3" class="num3" size="5" maxlength="5" id="inputBox">
+	<th:block th:include="common/header"></th:block>
+    <div class="s-content">
+        <h1 class="s-title1">사업자 번호 조회</h1>
+        <div class="s-title2">등록할 사업자번호를 입력해주세요</div>
+        <form id="s-bussinessForm" method="get" action="#">
+            <div class="s-inputDiv">
+                <input type="text" name="s-bussinessNum" class="s-bussinessNum" maxlength="12" id="s-bussinessNum" placeholder="000-00-00000">
+                <br>
+                <span id="s-ajaxCheck"></span>
             </div>
             <div>
-                <input type="button" value="사업자 등록번호 조회" id="check">
-            </div>
-            <div>
-                <span id="ajaxCheck"></span>
             </div>	
             <div>
-                <input class="enrollStore" type="submit" value="회원가입하기">
+                <input class="s-enrollStore" type="submit" value="다음">
             </div>
         </form>
     </div>
 
-
 	<script>
-		//사업자 등록번호 조회
-		$("#check").on("click",function(){
-		    var reg1 = $(".num1").val();
-	        var reg2 = $(".num2").val();
-	        var reg3 = $(".num3").val();
-	       //console.log(reg1);
-	       //console.log(reg2);
-	       //console.log(reg3); 
-	       
-	       var bs_num = reg1 + "" + reg2 + "" + reg3;
-	       //console.log(bs_num, typeof(bs_num));
-	       
-	       var data = {
-           		"b_no": [""+bs_num+""] // 사업자번호 "xxxxxxx" 로 조회 시,
-           	   }; 
-	       //console.log(data);	   
-	       
-           $.ajax({
-        	  //인코딩 키 주면 되고 디코딩 키주면 안댐
-           	  url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=8CPiAUJwtCcph1LZoyv2%2BHHEtTJDVb3oKNNLRju7DE%2BC%2F2E865koh2pLSdKHDbe0EtdzoSOwgmIkd6GBSXK4GQ%3D%3D",  
-           	  type: "POST",
-           	  data: JSON.stringify(data), // json 을 string으로 변환하여 전송
-           	  dataType: "JSON",
-           	  contentType: "application/json",
-           	  accept: "application/json",
-           	  success: function(result) {
-           	    //console.log(result);
-           	    //console.log(result.data[0].b_stt_cd); //사업자 01번 호출되어야 정상
-           	    //console.log(result.data[0].b_no);
-                let valid = result.data[0].b_stt_cd;
+        
+        $('.s-bussinessNum').on('input', function() {
+            $("#s-bussinessForm").attr("action", "");
+            $("#s-ajaxCheck").text("");
+            var input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
+            var output = '';
 
-                if (valid=='01'){
-                	 $("#ajaxCheck").text("정상적인 사업자번호입니다.");
-                     $("#ajaxCheck").css("color", "green");               
-                     console.log("있는 사업자입니다.")
-                     $("#bussinessForm").attr("action", "https://www.naver.com/");
-                     //$('#Button').removeAttr('disabled');
-                     
-                     
-                    }else {
-                        $("#ajaxCheck").text("사업자등록번호 확인 후 다시 입력해주세요.");
-                        $("#ajaxCheck").css("color", "red");
-                        // $('#Button').attr('disabled','disabled');
-                        $("#bussinessForm").attr("action", "#");
-                	console.log("없는 사업자입니다.")
+            if (input.length > 3) {
+                output += input.substr(0, 3) + '-';
+                if (input.length > 6) {
+                    output += input.substr(3, 2) + '-';
+                    output += input.substr(5);
+                } else {
+                    output += input.substr(3);
                 }
-           	  },
-           	  error: function(result) {
-           	      console.log(result.responseText); //responseText의 에러메세지 확인
-           	  }
-           	});
-	       
-		});
-	</script>
-	
+            } else {
+                output = input;
+            }
+            //console.log(input);
+
+            $(this).val(output);
+
+            if(input.length == 10){
+                var data = {
+                        "b_no": [""+input+""] // 사업자번호 "xxxxxxx" 로 조회 시,
+                }; 
+
+                $.ajax({
+                //인코딩 키 주면 되고 디코딩 키주면 안댐
+                url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=8CPiAUJwtCcph1LZoyv2%2BHHEtTJDVb3oKNNLRju7DE%2BC%2F2E865koh2pLSdKHDbe0EtdzoSOwgmIkd6GBSXK4GQ%3D%3D",  
+                type: "POST",
+                data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    accept: "application/json",
+                    success: function(result) {
+                    let valid = result.data[0].b_stt_cd;
+            
+                    if (valid=='01'){
+                        $("#s-ajaxCheck").text("정상적인 사업자번호입니다.");
+                        $("#s-ajaxCheck").css("color", "green");               
+                        //console.log("있는 사업자입니다.")
+                        $("#s-bussinessForm").attr("action", "/store/storeEnrollFrm");
+                    }else {
+                        $("#s-ajaxCheck").text("사업자등록번호 확인 후 다시 입력해주세요.");
+                        $("#s-ajaxCheck").css("color", "red");
+                        $("#s-bussinessForm").attr("action", "");
+                        //console.log("없는 사업자입니다.")
+                    }
+                    },
+                    error: function(result) {
+                        console.log(result.responseText); //responseText의 에러메세지 확인
+                    }
+                });
+            }
+
+        });
+    </script>
+	<th:block th:include="common/footer"></th:block>
 </body>
 </html>
