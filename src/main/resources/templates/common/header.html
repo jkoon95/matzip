@@ -24,13 +24,19 @@
             <div class="header-right-box">
                 <ul>
                     <li><a href="#">Q&A</a></li>
-                    <li><a href="#">회원가입</a></li>
+                    <li><a href="/member/joinFrm">회원가입</a></li>
                     <li><a href="#">로그인</a></li>
                 </ul>
                 <ul>
-                    <li><button>역으로 보기</button></li>
+                    <li><button onclick="searchBySubway();">역으로 보기</button></li>
                     <li><button>맛집 목록</button></li>
                 </ul>
+
+                <script>
+                    function searchBySubway(){
+                        location.href="/searchStoreBySubway";
+                    }
+                </script>
             </div>
         </div>    
     </header>

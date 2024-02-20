@@ -13,7 +13,7 @@
 <th:block th:include="common/header"></th:block>
 <body>
 	<div class="page-wrap">
-		<div class="page-content">
+		<div class="page-content1">
 			<div class="menu">
 				<div class="subway-line-menu" id="menu">
 					<div id="line1-menu" onclick="toggleStations('line1'); colorChange(this)">1호선</div>
@@ -150,10 +150,16 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="page-content2">
+			
+		</div>
 	</div>
 
 		<script>
 			function toggleStations(lineId) {
+				scrollToTop(0,70);
+
 				// 모든 역 목록을 숨김
 				const allStations = document.querySelectorAll('.station-list');
 				for (const station of allStations) {
@@ -169,6 +175,10 @@
 				}
 			}
 
+			function scrollToTop(x,y) {
+  				window.scrollTo(x, y);
+			}
+
 			function colorChange(element) {
 				const allStations = document.querySelectorAll('.station-list');
 				const id = element.id;
@@ -177,6 +187,7 @@
 				// 전부 흰색
 				allMenu.forEach(function (menu) {
 					menu.style.backgroundColor = 'white';
+					menu.style.background = 'white';
 				});
 
 				// for (const station of allStations) {
@@ -185,63 +196,80 @@
 
 				// 모든 역의 배경색을 흰색으로 설정
 				allStations.forEach(function (station) {
-					station.style.backgroundColor = 'white';
+					// station.style.backgroundColor = 'white';
+					station.style.background = 'white';	
 				});
 
 
 				if (id == 'line1-menu') {
-					element.style.backgroundColor = 'red';
-					
+					element.style.background = 'linear-gradient(to bottom,#C34A36,#FF8066)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'red';
+						i.style.background = 'linear-gradient(to bottom,#C34A36,#FF8066)';
 					})
 				}
+
 				if (id == 'line2-menu') {
-					element.style.backgroundColor = 'orange';
+					// element.style.backgroundColor = '#D65DB1';
+					element.style.background = 'linear-gradient(to bottom,#D65DB1,#FF6F91)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'orange';
+						// i.style.backgroundColor = '#D65DB1';
+						i.style.background = 'linear-gradient(to bottom,#D65DB1,#FF6F91)';
 					})
 				}
 				if (id == 'line3-menu') {
-					element.style.backgroundColor = 'yellow';
+					// element.style.backgroundColor = '#FF6F91';
+					element.style.background = 'linear-gradient(to bottom,#FF6F91,#FF9671)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'yellow';
+						// i.style.backgroundColor = '#FF6F91';
+						i.style.background = 'linear-gradient(to bottom,#FF6F91,#FF9671)';
 					})
 				}
 				if (id == 'line4-menu') {
-					element.style.backgroundColor = 'green';
+					// element.style.backgroundColor = '#FF9671';
+					element.style.background = 'linear-gradient(to bottom,#FF9671,#FFC75F)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'green';
+						// i.style.backgroundColor = '#FF9671';
+						i.style.background = 'linear-gradient(to bottom,#FF9671,#FFC75F)';
 					})
 				}
 				if (id == 'line5-menu') {
-					element.style.backgroundColor = 'blue';
+					// element.style.backgroundColor = '#FFC75F';
+					element.style.background = 'linear-gradient(to bottom,#FFC75F,#FF9671)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'blue';
+						// i.style.backgroundColor = '#FFC75F';
+						i.style.background = 'linear-gradient(to bottom,#FFC75F,#FF9671)';
 					})
 				}
 				if (id == 'line6-menu') {
-					element.style.backgroundColor = 'indigo';
+					// element.style.backgroundColor = '#F9F871';
+					element.style.background = 'linear-gradient(to bottom,#FFC75F,#F9F871)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'indigo';
+						// i.style.backgroundColor = '#F9F871';
+						i.style.background = 'linear-gradient(to bottom,#FFC75F,#F9F871)';
 					})
 				}
 				if (id == 'line7-menu') {
-					element.style.backgroundColor = 'purple';
+					// element.style.backgroundColor = '#FFC75F';
+					element.style.background = 'linear-gradient(to bottom,#FF9671,#FFC75F)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'purple';
+						// i.style.backgroundColor = '#FFC75F';
+						i.style.background = 'linear-gradient(to bottom,#FF9671,#FFC75F)';
 					})
 				}
 				if (id == 'line8-menu') {
-					element.style.backgroundColor = 'pink';
+					// element.style.backgroundColor = '#FF9671';
+					element.style.background = 'linear-gradient(to bottom,#FFC75F,#FF9671)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'pink';
+						// i.style.backgroundColor = '#FF9671';
+						i.style.background = 'linear-gradient(to bottom,#FFC75F,#FF9671)';
 					})
 				}
 				if (id == 'line9-menu') {
-					element.style.backgroundColor = 'aqua';
+					// element.style.backgroundColor = '#FF6F91';
+					element.style.background = 'linear-gradient(to bottom,#FF9671,#FF6F91)';
 					allStations.forEach(function (i) {
-						i.style.backgroundColor = 'aqua';
+						// i.style.backgroundColor = '#FF6F91';
+						i.style.background = 'linear-gradient(to bottom,#FF9671,#FF6F91)';
 					})
 				}
 
