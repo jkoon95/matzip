@@ -13,11 +13,11 @@
             <form action="#" method="post">
                 <div class="choiceBtn">
                     <label>
-                        <input type="radio" name="memberLevel">
+                        <input type="radio" name="memberLevel" value="2">
                         <span>매장</span>
                     </label>
                     <label>
-                        <input type="radio" name="memberLevel">
+                        <input type="radio" name="memberLevel" value="3">
                         <span>회원</span>                
                     </label>
                 </div>
@@ -29,17 +29,17 @@
                     <label for="memberEmail">이메일</label>
                     <input type="text" name="memberEmail" id="memberEmail" class="input-from"> @
                     <select name="emailAdress">
-                        <option value="@naver.com">naver.com</option>
-                        <option value="@hanmail.net">hanmail.net</option>
+                        <option value="@naver.com">--- naver.com ---</option>
+                        <option value="@hanmail.net">---hanmail.net---</option>
                     </select>
                 </div>
                 <div class="join-wrap">
                     <label for="memberPw">비밀번호<sup>*</sup></label>
-                    <input type="text" name="memberPw" id="memberPw" class="input-from">
+                    <input type="password" name="memberPw" id="memberPw" class="input-from">
                 </div>
                 <div class="join-wrap">
-                    <label for="memberPw">비밀번호 확인<sup>*</sup></label>
-                    <input type="text" name="memberPw" id="memberPw" class="input-from">
+                    <label for="reMemberPw">비밀번호 확인<sup>*</sup></label>
+                    <input type="password" id="reMemberPw" class="input-from">
                 </div>
                 <div class="join-wrap">
                     <label for="memberName">이름</label>
