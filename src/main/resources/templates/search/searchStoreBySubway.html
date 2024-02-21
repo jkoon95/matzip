@@ -167,11 +167,11 @@
 
 	<div id="modal" class="modal-bg">
 		<div class="modal-content">
-			<span class="close-button">&times;</span>
+			<div class="close-button">&times;</div>
 			<h2>Station Name</h2>
-
-			<div class="">
-
+				
+			<div class="store-top5">
+				
 			</div>
 
 
@@ -295,6 +295,7 @@
 					data : {stationName : stationName},
 					success : function(data){
 						console.log(data[2]);
+						//$(".store-top5").append()
 					},
 					error : function(data){
 						
