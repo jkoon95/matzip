@@ -80,9 +80,7 @@ public class StoreDao {
 				"BETWEEN s.break_start AND s.break_end THEN 'break time' WHEN to_char(SYSDATE,'hh24:mi') \r\n" + 
 				"BETWEEN s.OPENING_HOUR AND s.CLOSING_HOUR THEN '영업중' ELSE '마감' END\r\n" + 
 				"    ORDER BY\r\n" + 
-				"        LIKE_COUNT DESC,\r\n" + 
-				"        REVIEW_COUNT DESC,\r\n" + 
-				"        s.STORE_NO\r\n" + 
+				"        LIKE_COUNT DESC\r\n" + 
 				") WHERE ROWNUM <= ?";
 		Object[] params = {stationName , number};
 		List list = jdbc.query(query, storeRowMapper,params);
