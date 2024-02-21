@@ -37,22 +37,26 @@ public class StoreRowMapper implements RowMapper<Store>{
 	@Override
 	public Store mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Store store = new Store();
-		store.setBreakEnd(rs.getString("BREAK_END"));
-		store.setBreakStart(rs.getString("BREAK_START"));
-		store.setBusinessNo(rs.getString("BUSINESS_NO"));
-		store.setClosingHour(rs.getString("CLOSING_HOUR"));
-		store.setFoodType(rs.getString("FOOD_TYPE"));
-		store.setHomePage(rs.getString("HOMEPAGE"));
-		store.setMemberNo(rs.getInt("MEMBER_NO"));
-		store.setOpeningHour(rs.getString("OPENING_HOUR"));
-		store.setStoreImg(rs.getString("STORE_IMG"));
-		store.setStoreLevel(rs.getInt("STORE_LEVEL"));
 		store.setStoreNo(rs.getInt("STORE_NO"));
+		store.setMemberNo(rs.getInt("MEMBER_NO"));
+		store.setBusinessNo(rs.getString("BUSINESS_NO"));
+		store.setStoreName(rs.getString("STORE_NAME"));
+		store.setStoreAddr(rs.getString("STORE_ADDR"));
 		store.setStorePhone(rs.getString("STORE_PHONE"));
+		store.setHomePage(rs.getString("HOMEPAGE"));
 		store.setStoreSns(rs.getString("STORE_SNS"));
-		store.setStoreStatus(rs.getInt("STORE_STATUS"));
+		store.setStoreDescription(rs.getString("STORE_DESCRIPTION"));
+		store.setFoodType(rs.getString("FOOD_TYPE"));
+		store.setStoreImg(rs.getString("STORE_IMG"));
+		store.setOpeningHour(rs.getString("OPENING_HOUR"));
+		store.setClosingHour(rs.getString("CLOSING_HOUR"));
+		store.setBreakStart(rs.getString("BREAK_START"));
+		store.setBreakEnd(rs.getString("BREAK_END"));
+		store.setStoreLevel(rs.getInt("STORE_LEVEL"));
 		store.setSubwayName(rs.getString("SUBWAY_NAME"));
+		store.setStoreStatus(rs.getInt("STORE_STATUS"));
 		store.setTimeToEat(rs.getString("TIME_TO_EAT"));
+		store.setLikeCount(rs.getInt("LIKE_COUNT")); // LIKE_COUNT 매핑 추가
 		
 		return store;
 	}

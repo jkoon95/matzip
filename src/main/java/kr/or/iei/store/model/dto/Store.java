@@ -50,4 +50,5 @@ public class Store {
 	private String subwayName;
 	private int storeStatus;
 	private String timeToEat;
+	private int likeCount;
 }

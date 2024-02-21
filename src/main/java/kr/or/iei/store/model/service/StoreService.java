@@ -19,8 +19,8 @@ public class StoreService {
 		return list;
 	}
 
-	public List selectTop5Store(String stationName) {
-		List list = storeDao.selectTop5Store(stationName);
+	public List selectTopStore(String stationName,int number) {
+		List list = storeDao.selectTopStore(stationName,number);
 		return list;
 	}
 }
