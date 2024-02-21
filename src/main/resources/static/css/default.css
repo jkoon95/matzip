@@ -42,27 +42,26 @@ header > .header-wrap{
     margin: 0 auto; 
     overflow: hidden;     
 }
-header > .header-wrap > a >img {
-    height: 200px;
-    width: 200px;
+header > .header-wrap > img {
+    height: 150px;
+    width: 150px;
     float: left;       
 }
 header > .header-wrap > .header-middle-box{
-    width: 700px;    
+    width: 650px;    
     float: left;
     text-align: center;    
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 200px;
+    height: 150px;
 }
 .header-middle-box> div > h1{
     font-family: ns-r;
     color:#707070;
 }
 .header-middle-box>div{
-    width: 100%;
-    margin: 20px;    
+    width: 100%;      
 }
 .header-search-box{
     display: flex;
@@ -77,8 +76,8 @@ header > .header-wrap > .header-middle-box > .header-search-box >input{
     line-height: 50px;    
     border-bottom: 2px solid #b3b3b3;
     text-align: center;
-    font-size: 90%; 
-    background-color: #fafcf6;   
+    font-size: 90%;
+    background-color: #fafcf6; 
 }
 #search-icon{
     font-size: 250%;
@@ -92,12 +91,12 @@ header > .header-wrap > .header-right-box{
     overflow: hidden;
     list-style-type: none;
     float: right;
-    margin : 35px 0;          
+    margin : 25px 0;          
 }
 .header-right-box>ul>li>a{
     text-decoration: none;
     color: #707070;    
-    margin: 0 25px;    
+    margin: 0 20px;    
 }
 .header-right-box > ul:first-child > li > a:hover {
     font-weight: 900;
@@ -116,6 +115,7 @@ header > .header-wrap > .header-right-box{
     background-color: #fff;
 }
 
+/* 중간 내용*/
 
 .mid{    
     width: 1200px;
