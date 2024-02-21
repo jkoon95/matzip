@@ -104,10 +104,10 @@ header > .header-wrap > .header-right-box{
     float: left;
 }
 .header-right-box>ul:nth-child(2)>li>button{
-    border: 1px solid #707070;
+    border: 2px solid #707070;
     margin: 0 10px;
     font-size: 100%;
-    border-radius: 3px;
+    border-radius: 2px;
     box-sizing: border-box;
     padding: 0 25px;
     cursor: pointer;

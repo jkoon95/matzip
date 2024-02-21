@@ -7,16 +7,16 @@
 <body>
 	<th:block th:include="common/header"></th:block>
 		<div class="mid">
-	        <div class="info-join-title">내 정보</div>
+	        <div class="info-join-title">사장님 정보</div>
 	        <div class="info-join-wrap-box">            
-	            <form action="/member/update" method="post">                
+	            <form action="/member/storeupdate" method="post">                
 	                <div class="info-join-box">
-	                	<div class="info-join-wrap">
-	                        <label for="memberNo"></label>
-	                        <input type="hidden" name="memberNo" id="memberNo" class="input-from"
-	                        	th:value="${session.member.memberNo}">
-	                    </div>
 	                    <div class="info-join-wrap">
+		                    <div class="info-join-wrap">
+		                        <label for="memberNo"></label>
+		                        <input type="hidden" name="memberNo" id="memberNo" class="input-from"
+		                        	th:value="${session.member.memberNo}">
+		                    </div>
 	                        <label for="memberId">아이디(수정불가)</label>
 	                        <input type="text" name="memberId" id="memberId" class="input-from" 
 	                        	th:value="${session.member.memberId}" readonly>
@@ -32,12 +32,11 @@
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPw">비밀번호</label>
-	                        <input type="password" name="memberPw" id="memberPw" class="input-from"
-	                        	th:value="${session.member.memberPw}">
+	                        <input type="password" name="memberPw" id="memberPw" class="input-from">
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPwRe">비밀번호 확인</label>
-	                        <input type="password" id="memberPwRe" class="input-from">
+	                        <input type="password"  id="memberPw" class="input-from">
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberName">이름</label>
@@ -46,8 +45,8 @@
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberNickname">닉네임(수정불가)</label>
-	                        <input type="text"  name="memberNickname" id="memberNickname" class="input-from"
-	                        	th:value="${session.member.memberNickname}" readonly>
+	                        <input type="text" name="memberNickname" id="memberNickname" class="input-from"
+	                        	th:value="${session.member.memberNickname}" disabled>
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPhone">휴대전화번호 (ex:010-1234-5678)</label>

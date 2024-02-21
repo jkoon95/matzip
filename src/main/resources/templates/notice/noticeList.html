@@ -4,27 +4,21 @@
 <meta charset="UTF-8">
 <title>공지사항 목록</title>
 <style>
-	#searchFrm{
-		width: 400px;
-		display: flex;
-		float: right;
-	}
-	#searchFrm>select{
-		width: 80px;
-	}
-	#searchFrm>input{
-		width: 220px;
-	}
-	#searchFrm>button{
-		width: 100px;
-	}
-	#searchFrm>*{
-		padding: 0.4rem;
-	}
 	#write-btn{
 		padding: 0.4rem;
-		width: 100px;
 		text-align: center;
+		float: right;
+		width: 200px;
+	}
+	th {
+  		font-weight: 900;
+ 		font-size: 18px;
+  		color: #191919;
+	}
+	.tr-1>* {
+  		font-weight: 600;
+  		font-size: 16px;
+  		color: #191919;
 	}
 </style>
 <link rel="stylesheet" href="/css/notice.css">
@@ -33,13 +27,13 @@
 	<th:block th:include="common/header"></th:block>
 	<div class="page-content">
 		<div class="page-title">공지사항</div>
-		<a id="write-btn" th:if="${session.member != null && session.member.memberLevel == 1}" class="btn bc4" href="/notice/noticeWriteFrm">글쓰기</a>
+		<a id="write-btn" th:if="${session.member != null && session.member.memberLevel == 1}" class="btn bc1" href="/notice/noticeWriteFrm">글쓰기</a>
 		
-		<table class="tbl notice-tbl">
-			<tr class="tr-2">
+		<table class="tbl tbl-hover notice-tbl">
+			<tr>
 				<th style="width:10%;">번호</th>
-				<th style="width:45%;">제목</th>
-				<th style="width:15%;">작성자</th>
+				<th style="width:35%;">제목</th>
+				<th style="width:25%;">작성자</th>
 				<th style="width:20%;">작성일</th>
 				<th style="width:10%;">조회수</th>
 			</tr>
