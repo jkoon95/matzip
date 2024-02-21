@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,6 +45,14 @@ public class BoardController {
 		return "board/boardWriteFrm";
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/editor",produces="plain/text;charset=utf-8")
+	public String editorUpload(MultipartFile upfile) {
+		String savepath = root+"/board/editor/";
+		String filepath = fileUtils.upload(savepath,upfile);
+		return "/board/editor/"+filepath;
+	}
+
 	@PostMapping(value="/write")
 	public String write(Board b, MultipartFile[] upfile, Model model) {
 		List<BoardFile> fileList = new ArrayList<BoardFile>();
@@ -168,7 +177,7 @@ public class BoardController {
 			model.addAttribute("loc", "/board/boardList?reqPage=1");
 			return "common/msg";
 		} else {
-			model.addAttribute("n", bvd.getBoard());
+			model.addAttribute("b", bvd.getBoard());
 			model.addAttribute("commentList", bvd.getCommentList());
 			model.addAttribute("reCommentList", bvd.getReCommentList());
 			return "board/view";
@@ -208,8 +217,8 @@ public class BoardController {
 	}
 
 	@GetMapping(value="/deleteComment")
-	public String deleteComment(int boardCommentNo, int boardNo, Model model) {
-		 int result = boardService.deleteComment(boardCommentNo);
+	public String deleteComment(int commentNo, int boardNo, Model model) {
+		 int result = boardService.deleteComment(commentNo);
 		 if(result > 0) {
 			 return "redirect:/board/view2?boardNo="+boardNo;
 		 } else {

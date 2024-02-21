@@ -160,8 +160,8 @@ public class BoardService {
 	}
 
 	@Transactional
-	public int deleteComment(int boardCommentNo) {
-		int result = boardDao.deleteComment(boardCommentNo);
+	public int deleteComment(int commentNo) {
+		int result = boardDao.deleteComment(commentNo);
 		return result;
 	}
 

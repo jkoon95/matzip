@@ -139,9 +139,9 @@ public class BoardDao {
 		return result;
 	}
 
-	public int deleteComment(int boardCommentNo) {
+	public int deleteComment(int commentNo) {
 		String query = "delete from board_comment where comment_no=?";
-		Object[] params = {boardCommentNo};
+		Object[] params = {commentNo};
 		int result = jdbc.update(query, params);
 		return result;
 	}
