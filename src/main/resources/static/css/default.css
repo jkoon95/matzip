@@ -33,6 +33,7 @@ a {
 }
 
 /* header */
+
 header {
     border-bottom: 2px solid #ebebeb;
     background-color: #fafcf6;
@@ -42,7 +43,7 @@ header > .header-wrap{
     margin: 0 auto; 
     overflow: hidden;     
 }
-header > .header-wrap > img {
+header > .header-wrap > a >img {
     height: 150px;
     width: 150px;
     float: left;       
@@ -115,8 +116,7 @@ header > .header-wrap > .header-right-box{
     background-color: #fff;
 }
 
-/* 중간 내용*/
-
+/* 중간 내용 */
 .mid{    
     width: 1200px;
     margin: 0 auto;
