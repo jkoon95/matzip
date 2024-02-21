@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.iei.FileUtils;
+import kr.or.iei.board.model.dto.BoardFile;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
@@ -46,6 +47,7 @@ public class StoreController {
 			
 			//store 값 설정
 			store.setStoreAddr(address+" "+detailAddress);	//도로명 + 상세주소
+			
 			String storeSavepath = root+"/store/";	//첨부파일이 무조건 있다는 가정하에(검사안함)
 			String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
 			store.setStoreImg(storeFilepath);
@@ -53,9 +55,8 @@ public class StoreController {
 			//사업자증빙자료
 			List<EvidenceFile> evidenceFileList = new ArrayList<EvidenceFile>();
 			if(!edvienceUpFile[0].isEmpty()) { 
-				String evidenceSavepath = root+"/evidence/";	//-> 웹컨피그가서 값설정해줘야함 아직안함
+				String evidenceSavepath = root+"/store/evidence/";	
 				for(MultipartFile file : edvienceUpFile) {
-					//업로드한 파일명을 추출
 					String evidenceFilename = file.getOriginalFilename();
 					String evidenceFilepath = fileUtils.upload(evidenceSavepath, file);
 					EvidenceFile evidenceFile = new EvidenceFile();
@@ -65,15 +66,11 @@ public class StoreController {
 				}
 			}
 			
-			//휴무일 날짜
-			//휴무일 배열 보냄
-			//휴무일 널체크 해줘야함??????????????하나라도 안들어올시 for length에서 에러
-			//closedDays
-			
+			//휴무일 
 			
 			//메뉴 등록값
 			List<Menu> menuList = new ArrayList<Menu>();
-			String menuSavepath = root+"/menu/";		//->얘도 웹컨피그가서 해줘야댐
+			String menuSavepath = root+"/store/menu/";		
 			for(int i=0; i<name.length; i++) {
 				Menu menu = new Menu();
 				String menuFilepath = fileUtils.upload(menuSavepath, menuImgFile[i]);				
@@ -85,10 +82,21 @@ public class StoreController {
 				menuList.add(menu);
 			}
 			
+			int result = storeService.insertStore(store,evidenceFileList,closedDays,menuList);
 			
+			//성공갯수 구해서 결과 화면 출력	-> 구해야댐..
 			
-			
-			//성공갯수 구해야댐
+			int count = 1+evidenceFileList.size()+closedDays.length+menuList.size();
+			if(result==count) {
+				model.addAttribute("title","성공");
+				model.addAttribute("msg","매장등록에 성공했습니다.");
+				model.addAttribute("icon","success");
+			}else {
+				model.addAttribute("title","실패");
+				model.addAttribute("msg","매장등록에 실패했습니다.");
+				model.addAttribute("icon","error");
+			}
+				model.addAttribute("loc","/");
 			
 			
 			/*데이터 확인용
@@ -107,10 +115,8 @@ public class StoreController {
 				System.out.println(menuPrice);
 			}
 			*/
-			model.addAttribute("title","성공");
-			model.addAttribute("msg","환영합니다");
-			model.addAttribute("icon","success");
-			model.addAttribute("loc","/");
+			
+			
 			return "common/msg";
 		}
 }

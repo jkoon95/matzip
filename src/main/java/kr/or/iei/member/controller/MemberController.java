@@ -49,8 +49,8 @@ public class MemberController {
 		return "redirect:/";
 	}
 	@PostMapping(value="/join")
-	public String join(Member m, String emailAddress, Model model) {
-		m.setMemberEmail(m.getMemberEmail()+emailAddress);
+	public String join(Member m, Model model) {
+		
 		int result = memberService.insertMember(m);
 		if(result>0) {
 			model.addAttribute("title", "congratulation");
@@ -68,5 +68,33 @@ public class MemberController {
 	@GetMapping(value="mypage")
 	public String mypage() {
 		return "member/mypage";
+	}
+	@PostMapping(value="/update")
+	public String update(Member m, Model model,HttpSession session) {
+		
+		
+		int result = memberService.updateMember(m);
+		if(result>0) {
+			Member member = (Member)session.getAttribute("member");
+			member.setMemberEmail(m.getMemberEmail());
+			member.setMemberPw(m.getMemberPw());
+			member.setMemberName(m.getMemberName());
+			member.setMemberPhone(m.getMemberPhone());
+			
+			model.addAttribute("title", "congratulation");;
+			model.addAttribute("msg", "정보수정 성공'");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/");
+		}else {
+			model.addAttribute("title", "다시 확인해주세요.");
+			model.addAttribute("msg", "실패");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/");
+		}
+		return "common/msg";
+	}
+	@GetMapping(value="mystorepage")
+	public String mystorepage() {
+		return "member/mystorepage";
 	}
 }
