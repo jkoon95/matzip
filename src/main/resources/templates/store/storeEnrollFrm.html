@@ -30,7 +30,7 @@
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장등록</h1>
-            <form action="/store/storeEnroll" id="enrollStoreForm" method="post" >
+            <form action="/store/storeEnroll" id="enrollStoreForm" method="post" enctype="multipart/form-data">
                 <div class="s-smallexplain">
                     <sup>* </sup> 표시된 곳은 필수입력 항목입니다.
                 </div>
@@ -334,8 +334,8 @@
                         </select>
                     </div>
                     <div class="s-input-wrap">
-                        <label for="homepage">홈페이지</label>
-                        <input type="text" name="homepage" id="homepage" class="s-input-form">
+                        <label for="homePage">홈페이지</label>
+                        <input type="text" name="homePage" id="homepage" class="s-input-form">
                     </div>
                     <div class="s-input-wrap">
                         <label for="store_sns">SNS</label>

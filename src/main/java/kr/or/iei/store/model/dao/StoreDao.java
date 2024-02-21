@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.store.model.dto.EvidenceFile;
+import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreRowMapper;
 import kr.or.iei.subway.model.dto.subwayRowMapper;
@@ -80,12 +82,44 @@ public class StoreDao {
 				"BETWEEN s.break_start AND s.break_end THEN 'break time' WHEN to_char(SYSDATE,'hh24:mi') \r\n" + 
 				"BETWEEN s.OPENING_HOUR AND s.CLOSING_HOUR THEN '영업중' ELSE '마감' END\r\n" + 
 				"    ORDER BY\r\n" + 
-				"        LIKE_COUNT DESC,\r\n" + 
-				"        REVIEW_COUNT DESC,\r\n" + 
-				"        s.STORE_NO\r\n" + 
+				"        LIKE_COUNT DESC\r\n" + 
 				") WHERE ROWNUM <= ?";
 		Object[] params = {stationName , number};
 		List list = jdbc.query(query, storeRowMapper,params);
 		return list;
+	}
+
+	public int insertStore(Store store) {
+		String query = "INSERT INTO STORE_TBL VALUES (STORE_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,2,?)";
+		Object[] params = {store.getMemberNo(),store.getBusinessNo(),store.getStoreName(),store.getStoreAddr(),store.getStorePhone(),store.getHomePage(),store.getStoreSns(),store.getStoreDescription(),store.getFoodType(),store.getStoreImg(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getSubwayName(),store.getTimeToEat()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int selectStoreNo() {
+		String query="select max(store_no) from STORE_TBL";
+		int storeNo = jdbc.queryForObject(query, Integer.class);
+		return storeNo;
+	}
+
+	public int insertEvidenceFile(EvidenceFile evidenceFile) {
+		String query = "insert into EVIDENCE_FILE values(EVIDENCE_FILE_SEQ.nextval,?,?,?)";
+		Object[] params = {evidenceFile.getStoreNo(),evidenceFile.getFilename(),evidenceFile.getFilepath()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int insertClosedDay(int storeNo, String closedDay) {
+		String query = "insert into closed_day_tbl values(?,?)";
+		Object[] params = {storeNo, closedDay};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int insertMenu(Menu menu) {
+		String query = "INSERT INTO MENU_TBL VALUES (MENU_SEQ.NEXTVAL,?,?,?,?)";
+		Object[] params= {menu.getStoreNo(),menu.getMenuName(),menu.getMenuPrice(),menu.getMenuImg()};
+		int result = jdbc.update(query,params);
+		return result;
 	}
 }
