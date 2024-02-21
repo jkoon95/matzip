@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/css/storeInfo.css">
 </head>
 <body>
+	<!-- 사장만 들어갈 수 있도록 하기-->
 	<th:block th:include="common/header"></th:block>
     <div class="s-content">
     	<!-- 사업자 조회  -->
@@ -29,7 +30,7 @@
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장등록</h1>
-            <form id="enrollStoreForm" method="post" action="/store/enrollStore">
+            <form action="/store/storeEnroll" id="enrollStoreForm" method="post" >
                 <div class="s-smallexplain">
                     <sup>* </sup> 표시된 곳은 필수입력 항목입니다.
                 </div>
@@ -236,8 +237,10 @@
                         <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
                         <select required name="timeToEat">
                             <option value="">--</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
+                            <option value="1">30분</option>
+                            <option value="2">1시간</option>
+                            <option value="3">1시간 30분</option>
+                            <option value="4">2시간</option>
                         </select>
                     </div>
                     <div class="s-input-wrap">
@@ -447,7 +450,7 @@
                     $(obj).parent().parent().find(".s-img-view").attr("src", "");
                 }
             }
-
+			
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>
