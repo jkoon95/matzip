@@ -182,11 +182,12 @@
     width: 80%; /* Could be more or less, depending on screen size */
     max-height: 70vh; /* Maximum height of the modal content */
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .close-button {
     color: #aaa;
-    float: right;
     font-size: 40px;
     font-weight: bold;
 }

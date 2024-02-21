@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/css/storeInfo.css">
 </head>
 <body>
+	<!-- 사장만 들어갈 수 있도록 하기-->
 	<th:block th:include="common/header"></th:block>
     <div class="s-content">
     	<!-- 사업자 조회  -->
@@ -29,7 +30,7 @@
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장등록</h1>
-            <form id="enrollStoreForm" method="post" action="/store/enrollStore">
+            <form action="/store/storeEnroll" id="enrollStoreForm" method="post" >
                 <div class="s-smallexplain">
                     <sup>* </sup> 표시된 곳은 필수입력 항목입니다.
                 </div>
@@ -37,9 +38,7 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
-                        <!-- 
                          <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>                        
-                         -->
                         <input type="text" name="businessNo" id="businessNo" class="s-input-form" readonly>
                     </div>
                     <div class="s-input-wrap">
@@ -52,7 +51,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
-                        <select id="foodType" required>
+                        <select name="foodType" required>
                             <option value="">--</option>
                             <option value="양식">양식</option>
                             <option value="중식">중식</option>
@@ -211,33 +210,35 @@
                     </div>
                     <div class="s-input-wrap">
                         <label>휴무일</label>
-                        <input type="checkbox" id="monday" name="closedDay" value="월">
+                        <input type="checkbox" id="monday" name="closedDays" value="월">
                         <span for="monday">월</span>
 
-                        <input type="checkbox" id="tuesday" name="closedDay" value="화">
+                        <input type="checkbox" id="tuesday" name="closedDays" value="화">
                         <span for="tuesday">화</span>
 
-                        <input type="checkbox" id="wednesday" name="closedDay" value="수">
+                        <input type="checkbox" id="wednesday" name="closedDays" value="수">
                         <span for="wednesday">수</span>
 
-                        <input type="checkbox" id="thursday" name="closedDay" value="목">
+                        <input type="checkbox" id="thursday" name="closedDays" value="목">
                         <span for="thursday">목</span>
 
-                        <input type="checkbox" id="friday" name="closedDay" value="금">
+                        <input type="checkbox" id="friday" name="closedDays" value="금">
                         <span for="friday">금</span>
 
-                        <input type="checkbox" id="saturday" name="closedDay" value="토">
+                        <input type="checkbox" id="saturday" name="closedDays" value="토">
                         <span for="saturday">토</span>
 
-                        <input type="checkbox" id="sunday" name="closedDay" value="일">
+                        <input type="checkbox" id="sunday" name="closedDays" value="일">
                         <span for="sunday">일</span>
                     </div>
 					<div class="s-input-wrap">
                         <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
                         <select required name="timeToEat">
                             <option value="">--</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
+                            <option value="1">30분</option>
+                            <option value="2">1시간</option>
+                            <option value="3">1시간 30분</option>
+                            <option value="4">2시간</option>
                         </select>
                     </div>
                     <div class="s-input-wrap">
@@ -271,7 +272,6 @@
                 </div>
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-input-wrap-menu">
-
                         <div class="s-menu-div">
                             <div class="s-img-viewer">
                                 <img class="s-img-view" width="100px" height="100px">
@@ -279,8 +279,7 @@
                             <div class="s-img-viewerVal">
                                 <input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">
                                 <input type="text" class="s-menu-input" name="name" placeholder="메뉴명" required>
-                                <input type="text" class="s-menu-input" name="price" width="150px" placeholder="가격"
-                                    required>
+                                <input type="text" class="s-menu-input" name="price" width="150px" placeholder="가격" required>
                                 <span class="minusMenu"> 삭제</span>
                             </div>
                         </div>
@@ -396,9 +395,9 @@
                         '<img class="s-img-view" width="100px" height="100px">' +
                         '</div>' +
                         '<div class="s-img-viewerVal">' +
-                        '<input type="file" name="menuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">' +
-                        '<input type="text" class="s-menu-input" name="menuName" placeholder="메뉴명" required>' +
-                        '<input type="text" class="s-menu-input" name="menuPrice" width="150px" placeholder="가격" required>' +
+                        '<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">' +
+                        '<input type="text" class="s-menu-input" name="name" placeholder="메뉴명" required>' +
+                        '<input type="text" class="s-menu-input" name="price" width="150px" placeholder="가격" required>' +
                         '<span class="minusMenu"> 삭제</span>' +
                         '</div>' +
                         '</div>'
@@ -406,8 +405,7 @@
                 });
 
                 // 삭제
-                $(document).on('click', '.minusMenu', function () {
-                    var menuDivCount = $('.s-menu-div').length;
+                 $(".minusMenu").click(function() {
                     $(this).closest('.s-menu-div').remove();
                 });
 
@@ -447,7 +445,7 @@
                     $(obj).parent().parent().find(".s-img-view").attr("src", "");
                 }
             }
-
+			
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>

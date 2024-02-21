@@ -160,9 +160,79 @@ public class BoardService {
 	}
 
 	@Transactional
-	public int deleteComment(int boardCommentNo) {
-		int result = boardDao.deleteComment(boardCommentNo);
+	public int deleteComment(int commentNo) {
+		int result = boardDao.deleteComment(commentNo);
 		return result;
+	}
+
+	public BoardListData searchBoard(int reqPage, String type, String keyword) {
+		int numPerPage = 10;
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage + 1;
+		List list = null;
+		
+		if(type.equals("title")) {
+			list = boardDao.selectSearchTitle(start,end,keyword);
+		} else if(type.equals("writer")) {
+			list = boardDao.selectSearchWriter(start,end,keyword);
+		} else if(type.equals("content")) {
+			list = boardDao.selectSearchContent(start,end,keyword);
+		}
+		
+		int totalCount = 0;
+		if(type.equals("title")) {
+			totalCount = boardDao.titleTotalCount(keyword);
+		} else if(type.equals("writer")) {
+			totalCount = boardDao.writerTotalCount(keyword);
+		} else if(type.equals("content")) {
+			totalCount = boardDao.contentTotalCount(keyword);
+		}
+		
+		int totalPage = 0;
+		if(totalCount%numPerPage == 0) {
+			totalPage = totalCount/numPerPage;
+		} else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+		int pageNaviSize = 5;
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
+		String pageNavi = "<ul class='pagination'>";
+
+		if(pageNo != 1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/board/search?reqPage="+(pageNo-1)+"&type="+type+"&keyword="+keyword+"'>";
+			pageNavi += "<span class='material-icons'>navigate_before</span>";
+			pageNavi += "</a></li>";
+		}
+		
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/board/search?reqPage="+(pageNo-1)+"&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			} else {
+				pageNavi += "<li>";
+				pageNavi += "<a href='/board/boardList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+		
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a href='/board/search?reqPage="+(pageNo-1)+"&type="+type+"&keyword="+keyword+"'>";
+			pageNavi += "<span class='material-icons'>navigate_next</span>";
+			pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+		
+		BoardListData bld = new BoardListData(list, pageNavi);
+		return bld;
 	}
 	
 	
