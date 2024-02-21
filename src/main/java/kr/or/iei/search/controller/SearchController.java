@@ -32,7 +32,8 @@ public class SearchController {
 	@ResponseBody
 	@GetMapping(value = "/ajaxSelectTop5Store")
 	public List ajaxSelectTop5Store(String stationName) {
-		List list = storeService.selectTop5Store(stationName);
+		int number = 5;
+		List list = storeService.selectTopStore(stationName,number);
 		if(list.isEmpty()) {
 			return null;
 		}else {
