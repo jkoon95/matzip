@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.member.model.dto.Member;
+import kr.or.iei.notice.model.dto.Notice;
+import kr.or.iei.store.model.dto.ClosedDayRowMapper;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
@@ -21,6 +24,8 @@ public class StoreDao {
 	private StoreRowMapper storeRowMapper;
 	@Autowired
 	private subwayRowMapper subwayRowMapper;
+	@Autowired
+	private ClosedDayRowMapper closedDayRowMapper;
 	
 	public List selectAllSubway() {
 		String query = "select * from subway_tbl order by 1";
@@ -128,5 +133,29 @@ public class StoreDao {
 		Object[] params = {memberNo};
 		int count = jdbc.queryForObject(query, Integer.class, params);
 		return count;
+	}
+
+	public Store selectOneStore(int memberNo) {
+		String query = "select * from store_tbl where member_no=?";
+		Object[] params = {memberNo};
+		List list = jdbc.query(query, storeRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Store)list.get(0);
+	}
+
+	public List selectStoreClosedDay(int storeNo) {
+		String query = "SELECT * FROM closed_day_tbl where store_no=?";
+		Object[] params = {storeNo};
+		List list = jdbc.query(query, closedDayRowMapper, params);
+		return list;
+	}
+
+	public List selectStoreMenu(int storeNo) {
+		String query = "SELECT * FROM MENU_TBL where store_no=?";
+		Object[] params = {storeNo};
+		List list = jdbc.query(query, closedDayRowMapper, params);
+		return list;
 	}
 }

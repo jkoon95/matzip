@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import kr.or.iei.FileUtils;
-import kr.or.iei.board.model.dto.BoardFile;
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreInfoData;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -55,7 +57,7 @@ public class StoreController {
 		public String storeEnroll(Store store, MultipartFile[] edvienceUpFile, String address,String detailAddress, String[] closedDays, MultipartFile storeImgFile, MultipartFile[] menuImgFile, String[] name, int[] price, Model model) {
 			//매장
 			store.setStoreAddr(address+" "+detailAddress);	//도로명 + 상세주소
-			String storeSavepath = root+"/store/";	//첨부파일이 무조건 있다는 가정하에(검사안함)
+			String storeSavepath = root+"/store/";
 			String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
 			store.setStoreImg(storeFilepath);
 			//사업자증빙자료
@@ -104,4 +106,28 @@ public class StoreController {
 				model.addAttribute("loc","/");
 			return "common/msg";
 		}
+		
+		@GetMapping(value="/myStore")
+		public String mypage(HttpSession session, Model model) {
+			//매장없을시 등록페이지로이동
+			Member member = (Member)session.getAttribute("member");
+			int memberNo = member.getMemberNo();
+			int count = storeService.selectStoreCount(memberNo);
+			if(count==0) {
+				model.addAttribute("title","실패");
+				model.addAttribute("msg","매장을 먼저 등록해주세요.");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/store/bussinessNumberCheck");
+				return "common/msg";
+			}else {
+				//스토어,휴무일,메뉴
+				StoreInfoData sid = storeService.selectOneStore(memberNo);
+				model.addAttribute("store",sid.getStore());
+				model.addAttribute("closedDayList",sid.getClosedDayList());
+				model.addAttribute("MenuList",sid.getMenuList());
+				return "store/myStore";
+			}
+		}
+		
+		
 }
