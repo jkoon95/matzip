@@ -142,7 +142,7 @@ s-img-view{
 }
 
 #s-enrollStoreContent{
-	/*display: none;4444444444444444444*/
+	display: none;
     padding: 80px;
     width: 800px;
     box-sizing: border-box;
