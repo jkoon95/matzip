@@ -7,26 +7,9 @@
 <link rel="stylesheet" href="/css/storeInfo.css">
 </head>
 <body>
-	<!-- 사장만 들어갈 수 있도록 하기-->
+	<!-- 매장만 들어갈 수 있도록 하기-->
 	<th:block th:include="common/header"></th:block>
     <div class="s-content">
-    	<!-- 사업자 조회  -->
-        <div id="s-bussniessContent">
-            <h1 class="s-title1">사업자 번호 조회</h1>
-            <div class="s-title2">등록할 사업자번호를 입력해주세요</div>
-            <div class="s-inputDiv">
-                <input type="text" name="businessNum" class="s-bussinessNum" maxlength="12" id="s-bussinessNum"
-                    placeholder="000-00-00000">
-                <br>
-                <span id="s-enrollCheckMsg"></span>
-            </div>
-            <div>
-                <input class="s-enrollbutton" id="s-enrollNextbutton" type="text" value="다음">
-                <input class="s-enrollbutton" id="s-enrollNonbutton" type="text" value="다음" disabled>
-            </div>
-        </div>
-
-
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장등록</h1>
@@ -39,7 +22,7 @@
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
                          <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>                        
-                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" readonly>
+                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value=${businessNo} readonly>
                     </div>
                     <div class="s-input-wrap">
                         <label for="store_sns">증빙서류 첨부<sup class="s-requiredMsg">* </sup></label>
@@ -385,84 +368,6 @@
 
 
         <script>
-        
-            var input;
-            var output;
-
-            $(".s-bussinessNum").on("input", function () {
-                //성공 이외의 상태
-                $("#s-enrollNextbutton").css("display", "none");
-                $("#s-enrollNonbutton").css("display", "inline-block");
-                $("#s-enrollCheckMsg").text("");
-                $("#s-enrollStoreContent").css("display", "none")
-
-                input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
-                output = '';
-
-                if (input.length > 3) {
-                    output += input.substr(0, 3) + '-';
-                    if (input.length > 6) {
-                        output += input.substr(3, 2) + '-';
-                        output += input.substr(5);
-                    } else {
-                        output += input.substr(3);
-                    }
-                } else {
-                    output = input;
-                }
-                //console.log(input);
-
-                $(this).val(output);
-
-                if (input.length == 10) {
-                    var data = {
-                        "b_no": ["" + input + ""] // 사업자번호 "xxxxxxx" 로 조회 시,
-                    };
-                }
-
-                $.ajax({
-                    //인코딩 키 주면 되고 디코딩 키주면 안댐
-                    url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=8CPiAUJwtCcph1LZoyv2%2BHHEtTJDVb3oKNNLRju7DE%2BC%2F2E865koh2pLSdKHDbe0EtdzoSOwgmIkd6GBSXK4GQ%3D%3D",
-                    type: "POST",
-                    data: JSON.stringify(data), // json 을 string으로 변환하여 전송
-                    dataType: "JSON",
-                    contentType: "application/json",
-                    accept: "application/json",
-                    success: function (result) {
-                        let valid = result.data[0].b_stt_cd;
-
-                        if (valid == '01') {
-                            $("#s-enrollCheckMsg").text("정상적인 사업자번호입니다.");
-                            $("#s-enrollCheckMsg").css("color", "green");
-                            //console.log("있는 사업자입니다.")
-                            //$("#s-bussinessForm").attr("action", "/store/storeEnrollFrm");
-                            $("#s-enrollNextbutton").css("display", "inline-block");
-                            $("#s-enrollNonbutton").css("display", "none");
-                            //$("#s-enrollStoreContent").css("display","block")
-                            //$("#s-bussniessContent").css("display","none");
-                        } else {
-                            $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
-                            $("#s-enrollCheckMsg").css("color", "red");
-                            //console.log("없는 사업자입니다.")
-                        }
-                    },
-                    error: function (result) {
-                        console.log(result.responseText); //responseText의 에러메세지 확인
-                    }
-                });
-
-                $("#s-enrollNextbutton").on("click", function () {
-                    $("#s-enrollStoreContent").css("display", "block")
-                    $("#s-bussniessContent").css("display", "none");
-                    $("[name=businessNo]").val(output);
-                });
-
-
-
-
-            });
-
-            /////////////////////////////////////////
             //주소 길찾기
             function searchAddr() {
                 new daum.Postcode({
@@ -479,7 +384,6 @@
 
 
             //메뉴 +/-
-                // 추가
                 $('.plusMenu').on('click', function () {
                 	$(".menuCheckMsg").text("");
                     $('.s-input-wrap-menu').append(
@@ -497,11 +401,6 @@
                     );
                 });
 
-                // 삭제
-                //$(".minusMenu").click(function() {
-                    //$(this).parent('.s-menu-div').remove();
-                //});
-                
                 $(document).on('click', '.minusMenu', function () {
                     $(this).closest('.s-menu-div').remove();
                 });
@@ -515,19 +414,18 @@
                     
                     if (menuDivCount === 0) {
                     	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
-                    	event.preventDefault();	//폼제출 막음
+                    	event.preventDefault();
                 	}
-                    
-                    // 둘 다 -1이거나 둘 다 -1이 아니어야 form을 제출할 수 있음
+
                     if ((breakStart !== "-1" && breakEnd !== "-1") || (breakStart === "-1" && breakEnd === "-1")) {
-                        // form 제출
+                        
                     } else {
-                        // form 제출 방지
+                        
                         event.preventDefault();
                         $(".breakCheckMsg").text("← 쉬는시간을 제대로 입력해주세요.");
                         if (menuDivCount === 0) {
                         	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
-                        	event.preventDefault();	//폼제출 막음
+                        	event.preventDefault();
                     	}
                     }
                     
@@ -542,16 +440,13 @@
                     reader.readAsDataURL(obj.files[0]);
                     reader.onload = function (e) {
                         $(obj).parent().find(".s-img-view").attr("src", e.target.result);
-                        //$(obj).parents(".s-input-wrap").find(".s-img-view").attr("src",e.target.result);
                     }
                 } else {
                     $(obj).parent().find(".s-img-view").attr("src", "");
-                    //$(obj).parents(".s-input-wrap").find(".s-img-view").attr("src","");
                 }
             }
 
             function menuloadImg(obj) {
-                //console.log(obj.files);
                 if (obj.files.length != 0 && obj.files[0] != 0) {
                     const reader = new FileReader();
                     reader.readAsDataURL(obj.files[0]);
@@ -562,7 +457,7 @@
                     $(obj).parent().parent().find(".s-img-view").attr("src", "");
                 }
             }
-			
+            
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>

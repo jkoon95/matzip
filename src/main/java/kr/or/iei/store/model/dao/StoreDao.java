@@ -124,4 +124,11 @@ public class StoreDao {
 		int result = jdbc.update(query,params);
 		return result;
 	}
+
+	public int selectStoreCount(int memberNo) {
+		String query = "select count(*) from store_tbl where member_no= ?";
+		Object[] params = {memberNo};
+		int count = jdbc.queryForObject(query, Integer.class, params);
+		return count;
+	}
 }

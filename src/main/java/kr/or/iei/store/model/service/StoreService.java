@@ -53,4 +53,11 @@ public class StoreService {
 		}
 		return result;
 	}
+
+	public int selectStoreCount(int memberNo) {
+		int count = storeDao.selectStoreCount(memberNo);
+		return count;
+	}
+
+	
 }
