@@ -49,5 +49,5 @@ public class Store {
 	private int storeLevel;
 	private int subwayNo;
 	private int storeStatus;
-	private String timeToEat;
+	private int timeToEat;
 }
