@@ -49,6 +49,9 @@ public class Store {
 	private int storeLevel;
 	private String subwayName;
 	private int storeStatus;
-	private int timeToEat;
+	private String timeToEat;
 	private int likeCount;
+	private int reviewCount;
+	private int reviewScore;
+	private String operationStatus;
 }
