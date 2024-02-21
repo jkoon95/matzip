@@ -39,5 +39,11 @@ public class MemberDao {
 		int result = jdbc.update(query, params);
 		return result;
 	}
+	public int storeUpdate(Member m) {
+		String query = "update member_tbl set member_email=?,member_pw=?,member_name=?,member_phone=? where member_no=?";
+		Object[] params = {m.getMemberEmail(),m.getMemberPw(),m.getMemberName(),m.getMemberPhone(),m.getMemberNo()};
+		int result = jdbc.update(query, params);
+		return result;
+	}
 	
 }

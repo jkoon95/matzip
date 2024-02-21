@@ -165,25 +165,58 @@
 
 
 
-	<div id="modal" class="modal-bg">
+	<!-- <div id="modal" class="modal-bg">
 		<div class="modal-content">
-			<div class="close-button">&times;</div>
-			<h2>Station Name</h2>
-				
-			<div class="store-top5">
-				
+			<div class="close-wrap">
+				<h2 id="station-name">Station Name</h2>
+				<div class="close-button">&times;</div>
 			</div>
 
 
+			<div class="store-top5">
+				<div class="store-content1">
+					<div><img src="/img/맛zip로고.png" alt=""></div>
+					<span class="material-icons">
+						favorite_border
+						</span>
+				</div>
 
+				<div class="store-content2">
+					<div>1</div>
+					<div>
+						<span>1</span>
+						<span>1</span>
+					</div>
+					<div>1</div>
+					<div>1</div>
+					<div>
+						<span class="material-icons">
+							comment
+							</span>
+						<span>1</span>
+						<span class="material-icons">
+							favorite
+							</span>
+						<span>1</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
 
+	<div id="modal" class="modal-bg">
+		<div class="modal-content">
+			<div class="close-wrap">
+				<h2 id="station-name">Station Name</h2>
+				<div class="close-button">&times;</div>
+			</div>
 		</div>
 	</div>
 
 
 	<script>
-		$(".subway-station").click(function() {
-    		
+		$(".subway-station").click(function () {
+
 		});
 
 		function toggleStations(lineId) {
@@ -287,31 +320,68 @@
 				// const clickedSubway = $(this).attr('id'); 
 				// console.log(clickedSubway);
 				console.log(stationName);
-				
+
 
 				$.ajax({
-					url : "/search/ajaxSelectTop5Store",
-					type : "get",
-					data : {stationName : stationName},
-					success : function(data){
-						console.log(data[2]);
-						//$(".store-top5").append()
+					url: "/search/ajaxSelectTop5Store",
+					type: "get",
+					data: { stationName: stationName },
+					success: function (data) {
+						console.log(data);
+						$(".store-top5").remove(); // 기존의 내용을 비웁니다.
+
+						//data 배열을 반복 처리하여 각 상점에 대한 HTML 마크업을 생성합니다.
+						$.each(data, function (index, store) {
+							if (store !== null) {
+								const storeHtml = 
+								'<div class="store-top5">'+
+									'<div class="store-content1">' +
+										//'<div>' + store.storeImg + '</div>' +
+										'<img src="/img/맛zip로고.png" alt="">'+
+										'<span class="material-icons heart-text">favorite_border</span>' +
+									'</div>' +
+									'<div class="store-content2 padding-left80">' +
+										'<div id="reviewScore-text">' + store.reviewScore +'점</div>' +
+										'<div>' +
+										'<span>' + store.storeName + '</span>' +
+										'<span class="padding-left20" id="operationStatus-text">' + store.operationStatus + '</span>' +
+									'</div>' +
+
+									'<div>' + store.subwayName + '역</div>' +
+									'<div>' + store.foodType + '</div>' +
+									'<div>' +
+										'<span class="material-icons message-text">comment</span>' +
+										'<span class="padding-right20 font-size20">' + store.reviewCount + '</span>' +
+										'<span class="material-icons heart-text">favorite</span>' +
+										'<span class="font-size20">' + store.likeCount + '</span>' +
+									'</div>' +
+									'</div>'
+								'</div>';
+							$(".modal-content").append(storeHtml);
+							const moreBtn = 
+							'<div>' + 
+								'<button>버튼</button>' +
+							'</div>';
+
+							
+							}
+						});
 					},
-					error : function(data){
-						
+					error: function (data) {
+
 					}
 				})
 
 				$("#modal").show(); // 모달 보여주기
 				$("#modal .modal-content h2").text(stationName); // 모달에 역 이름 설정
 				$("body").css("overflow", "hidden"); // 스크롤 비활성화
-				
+
 			});
 
 			$(".close-button").click(function () {
 				$("#modal").hide(); // 모달 숨기기
 				$("body").css("overflow", "auto"); // 스크롤 다시 활성화
-				
+
 			});
 
 			// 모달 바깥 영역 클릭 시 모달 닫기
@@ -319,7 +389,7 @@
 				if ($(e.target).is("#modal")) {
 					$("#modal").hide();
 					$("body").css("overflow", "auto"); // 스크롤 다시 활성화
-					
+
 				}
 			});
 		});

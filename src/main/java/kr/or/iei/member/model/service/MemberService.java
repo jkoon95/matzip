@@ -26,5 +26,10 @@ public class MemberService {
 		int result = memberDao.updateMember(m);
 		return result;
 	}
+	@Transactional
+	public int storeUpdate(Member m) {
+		int result = memberDao.storeUpdate(m);
+		return result;
+	}
 	
 }

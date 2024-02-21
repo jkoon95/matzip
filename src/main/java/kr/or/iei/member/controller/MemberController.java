@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
@@ -70,9 +71,8 @@ public class MemberController {
 		return "member/mypage";
 	}
 	@PostMapping(value="/update")
-	public String update(Member m, Model model,HttpSession session) {
-		
-		
+	public String update(Member m, Model model, String emailAdress, HttpSession session) {
+		m.setMemberEmail(m.getMemberEmail()+emailAdress);		
 		int result = memberService.updateMember(m);
 		if(result>0) {
 			Member member = (Member)session.getAttribute("member");
@@ -96,5 +96,30 @@ public class MemberController {
 	@GetMapping(value="mystorepage")
 	public String mystorepage() {
 		return "member/mystorepage";
+	}
+	@PostMapping(value="storeupdate")
+	public String storeUpdate(Member m, String emailAdress, Model model, HttpServletRequest session) {
+		m.setMemberEmail(m.getMemberEmail()+ emailAdress);
+		int result = memberService.storeUpdate(m);
+
+		if(result>0) {
+			/* 
+			Member member = (Member)session.getAttribute("member");
+			member.setMemberEmail(m.getMemberEmail());
+			member.setMemberPw(m.getMemberPw());
+			member.setMemberName(m.getMemberName());
+			member.setMemberPhone(m.getMemberPhone());
+			*/
+			model.addAttribute("title", "congratulation");;
+			model.addAttribute("msg", "정보수정 성공'");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/");
+		}else {
+			model.addAttribute("title", "다시 확인해주세요.");
+			model.addAttribute("msg", "실패");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/");
+		}
+		return "common/msg";
 	}
 }
