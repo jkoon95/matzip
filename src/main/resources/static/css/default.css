@@ -18,7 +18,7 @@
     src: url(Noto_Sans_KR/static/NotoSansKR-Thin.ttf);
 }
 
-*{
+*:not(font) {
     margin: 0;
     padding: 0;
     font-family: ns-r;
@@ -28,10 +28,11 @@ body{
     flex-direction: column;
     min-height: 100vh;
 }
-
+a {
+  text-decoration: none;
+}
 
 /* header */
-
 header {
     border-bottom: 2px solid #ebebeb;
 }
