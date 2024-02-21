@@ -14,8 +14,10 @@ public class Reserve {
 	private String reserveTime; //ex) 12:00
 	private int reservePeople;
 	private String reserveRequest;
-	private int reserveStatus; //대기 : 1, 확정 : 2, 취소 : 3
+	private int reserveStatus; //정상 : 1, 더미 : 2, 취소 : 3
 	private int storeNo; //FK
 	private int memberNo; //FK
 	private int tableNo; //FK
+	
+	
 }
