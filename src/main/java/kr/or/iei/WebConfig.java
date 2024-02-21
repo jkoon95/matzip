@@ -17,7 +17,9 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 		 .addResourceHandler("/notice/editor/**")
 		 .addResourceLocations("file:///C:/Temp/upload/notice/editor/");
-
+		registry
+		.addResourceHandler("/store/**")
+		.addResourceLocations("file:///C:/Temp/upload/photo/");
 
 	}
 
