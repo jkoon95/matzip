@@ -70,11 +70,12 @@ header > .header-wrap > .header-middle-box{
 header > .header-wrap > .header-middle-box > .header-search-box >input{
     border-width: 0;
     outline: none;
-    width: 550px;
+    width: 500px;
     height: 50px;
     line-height: 50px;    
     border-bottom: 2px solid #b3b3b3;
-    padding-left: 20px;    
+    text-align: center;
+    font-size: 90%;    
 }
 #search-icon{
     font-size: 250%;
@@ -285,6 +286,7 @@ header > .header-wrap > .header-right-box{
     font-family: ns-eb;    
     border: none;
     border-radius: 10px;
+    cursor: pointer;
 }
 .info-search{
     width: 500px;
