@@ -3,19 +3,19 @@
 /*사용할 폰트*/
 @font-face {
     font-family: ns-b;
-    src: url(Noto_Sans_KR/static/NotoSansKR-Black.ttf);
+    src: url(../font/Noto_Sans_KR/static/NotoSansKR-Black.ttf);
 }
 @font-face {
     font-family: ns-eb;
-    src: url(Noto_Sans_KR/static/NotoSansKR-ExtraBold.ttf);
+    src: url(../font/Noto_Sans_KR/static/NotoSansKR-ExtraBold.ttf);
 }
 @font-face {
     font-family: ns-r;
-    src: url(Noto_Sans_KR/static/NotoSansKR-Regular.ttf);
+    src: url(../font/Noto_Sans_KR/static/NotoSansKR-Regular.ttf);
 }
 @font-face {
     font-family: ns-thin;
-    src: url(Noto_Sans_KR/static/NotoSansKR-Thin.ttf);
+    src: url(../font/Noto_Sans_KR/static/NotoSansKR-Thin.ttf);
 }
 
 *:not(font) {
@@ -125,9 +125,9 @@ header > .header-wrap > .header-right-box{
 
 .join-title{
 	margin-top : 15px;
-    text-align: center;  
-    font-family: ns-r; 
-    font-size: 200%; 
+    text-align: center;       
+    font-size: 200%;
+    font-family: ns-b; 
 }
 .join-wrap-box{
     width: 500px;
@@ -179,6 +179,8 @@ header > .header-wrap > .header-right-box{
     height: 25px;
     width: 100%;   
     border-bottom: 2px solid #ebebeb;
+    font-size: 100%;
+    font-family: ns-b;
 }
 .join-wrap>label>sup{
     color: #ff0000;
@@ -315,6 +317,116 @@ header > .header-wrap > .header-right-box{
 .login-choiceBtn >label:first-child{
     display: none;
 }
+
+/* update 정보수정*/
+
+.info-join-title{
+	margin-top : 15px;
+    text-align: center;  
+    font-family: ns-b; 
+    font-size: 200%; 
+}
+.info-join-wrap-box{
+    width: 500px;
+    margin: 0 auto;
+}
+.info-join-box{
+    background-color: #ffffff;    
+    width: 500px;
+    border: 1px solid #b3b3b3;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.info-join-box>p{
+    color: #b3b3b3;
+    font-size: 80%;
+}
+.info-join-box > p>span{
+    color: #ff0000;
+    font-family: ns-eb;
+}
+.info-join-box > .choiceBtn{
+    margin:0 auto;
+}
+.info-join-box > .choiceBtn > label{
+    margin: 60px;
+}
+.info-join-box >.choiceBtn>label>span{
+    padding-right: 20px;
+    font-size: 150%;    
+}
+.info-join-box >.choiceBtn>label>input{
+    width: 30px;
+    height: 20px;
+}
+.info-join-box >.info-join-wrap{
+    margin: 30px 0;       
+}
+.info-join-box> .info-join-wrap>input{
+    border-width: 0;
+    outline: none;
+    height: 35px;
+    width: 100%;   
+    border-bottom: 2px solid #ebebeb;
+    font-size: 100%;
+    font-family: ns-b;
+}
+.info-join-wrap>label>sup{
+    color: #ff0000;
+    font-family: ns-eb;
+}
+#memberEmail{
+    width: 200px;
+    text-align: center;
+}
+.info-join-wrap input {
+    text-indent: 20px;
+}
+.info-join-wrap > select {
+    width: 180px;
+    text-align: center;
+    font-size: 100%;
+}
+
+.info-joinBtn-box{
+    width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-bottom : 30px;
+}
+#update{
+    float: left;
+    margin: 0 10px;
+    width: 230px;
+    height: 50px;
+    background-color: #72B37E;    
+    border: 1px solid #b3b3b3;
+    border-radius: 10px;
+    font-family: ns-b; 
+    font-size: 100%;   
+    cursor: pointer;
+    color: #fff;
+    word-spacing: 50px;
+}
+#out{
+    margin: 0 10px;
+    width: 230px;
+    height: 50px;
+    background-color: #f34a4a;    
+    border: 1px solid #b3b3b3;
+    border-radius: 10px;
+    font-family: ns-b;
+    font-size: 100%;   
+    cursor: pointer;
+    color: #fff;
+    word-spacing: 50px;
+}
+
+
 
 /* footer */
 

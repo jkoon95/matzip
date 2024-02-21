@@ -49,7 +49,8 @@ public class MemberController {
 		return "redirect:/";
 	}
 	@PostMapping(value="/join")
-	public String join(Member m, Model model) {
+	public String join(Member m, String emailAddress, Model model) {
+		m.setMemberEmail(m.getMemberEmail()+emailAddress);
 		int result = memberService.insertMember(m);
 		if(result>0) {
 			model.addAttribute("title", "congratulation");
@@ -63,5 +64,9 @@ public class MemberController {
 			model.addAttribute("loc", "/");
 		}
 		return "common/msg";
+	}
+	@GetMapping(value="mypage")
+	public String mypage() {
+		return "member/mypage";
 	}
 }
