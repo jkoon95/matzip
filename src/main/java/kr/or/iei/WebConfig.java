@@ -12,14 +12,21 @@ public class WebConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
-		 .addResourceHandler("/**")
-		 .addResourceLocations("classpath:/templates/","classpath:/static/");
+			.addResourceHandler("/**")
+			.addResourceLocations("classpath:/templates/","classpath:/static/");
 		registry
 		 .addResourceHandler("/notice/editor/**")
 		 .addResourceLocations("file:///C:/Temp/upload/notice/editor/");
 		registry
 		.addResourceHandler("/store/**")
 		.addResourceLocations("file:///C:/Temp/upload/photo/");
+		registry
+			.addResourceHandler("/notice/editor/**")
+			.addResourceLocations("file:///C:/Temp/upload/notice/editor/");
+		registry
+			.addResourceHandler("/board/editor/**")
+			.addResourceLocations("file:///C:/Temp/upload/board/editor/");
+		
 
 	}
 
