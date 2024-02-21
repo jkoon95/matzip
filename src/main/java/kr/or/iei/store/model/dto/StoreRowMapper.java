@@ -52,7 +52,7 @@ public class StoreRowMapper implements RowMapper<Store>{
 		store.setStoreSns(rs.getString("STORE_SNS"));
 		store.setStoreStatus(rs.getInt("STORE_STATUS"));
 		store.setSubwayNo(rs.getInt("SUBWAY_NO"));
-		store.setTimeToEat(rs.getString("TIME_TO_EAT"));
+		store.setTimeToEat(rs.getInt("TIME_TO_EAT"));
 		
 		return store;
 	}
