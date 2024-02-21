@@ -21,5 +21,10 @@ public class MemberService {
 		int result = memberDao.insertMember(m);
 		return result;
 	}
+	@Transactional
+	public int updateMember(Member m) {
+		int result = memberDao.updateMember(m);
+		return result;
+	}
 	
 }
