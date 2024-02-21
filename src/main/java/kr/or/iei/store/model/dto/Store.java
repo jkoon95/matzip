@@ -51,4 +51,7 @@ public class Store {
 	private int storeStatus;
 	private String timeToEat;
 	private int likeCount;
+	private int reviewCount;
+	private int reviewScore;
+	private String operationStatus;
 }
