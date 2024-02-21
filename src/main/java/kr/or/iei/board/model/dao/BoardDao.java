@@ -145,6 +145,47 @@ public class BoardDao {
 		int result = jdbc.update(query, params);
 		return result;
 	}
-	
+
+	public List selectSearchTitle(int start, int end, String keyword) {
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, B.* FROM (SELECT * FROM BOARD_TBL WHERE BOARD_TITLE LIKE '%'||?||'%' ORDER BY 1 DESC)B) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword, start, end};
+		List list = jdbc.query(query,boardRowMapper,params);
+		return list;
+	}
+
+	public List selectSearchWriter(int start, int end, String keyword) {
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, B.* FROM (SELECT * FROM BOARD_TBL WHERE BOARD_WRITER LIKE '%'||?||'%' ORDER BY 1 DESC)B) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword, start, end};
+		List list = jdbc.query(query,boardRowMapper,params);
+		return list;
+	}
+
+	public List selectSearchContent(int start, int end, String keyword) {
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, B.* FROM (SELECT * FROM BOARD_TBL WHERE BOARD_TITLE||BOARD_CONTENT LIKE '%'||?||'%' ORDER BY 1 DESC)B) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword, start, end};
+		List list = jdbc.query(query,boardRowMapper,params);
+		return list;
+	}
+
+	public int titleTotalCount(String keyword) {
+		String query = "SELECT COUNT(*) FROM BOARD_TBL WHERE BOARD_TITLE LIKE '%'||?||'%'";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class,params);
+		return totalCount;
+	}
+
+	public int writerTotalCount(String keyword) {
+		String query = "SELECT COUNT(*) FROM BOARD_TBL WHERE BOARD_WRITER LIKE '%'||?||'%'";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class,params);
+		return totalCount;
+	}
+
+	public int contentTotalCount(String keyword) {
+		String query = "SELECT COUNT(*) FROM BOARD_TBL WHERE BOARD_TITLE||BOARD_CONTENT LIKE '%'||?||'%'";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class,params);
+		return totalCount;
+	}
 	
 }

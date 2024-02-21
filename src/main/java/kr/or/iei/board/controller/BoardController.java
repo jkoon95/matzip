@@ -82,7 +82,7 @@ public class BoardController {
 			model.addAttribute("loc", "/board/boardList?reqPage=1");
 			return "common/msg";
 		} else {
-			model.addAttribute("n", bvd.getBoard());
+			model.addAttribute("b", bvd.getBoard());
 			model.addAttribute("commentList", bvd.getCommentList());
 			model.addAttribute("reCommentList", bvd.getReCommentList());
 			return "board/view";
@@ -146,7 +146,7 @@ public class BoardController {
 				fileUtils.deleteFile(savepath, boardFile.getFilepath());
 			}
 			model.addAttribute("title", "성공");
-			model.addAttribute("msg", "공지사항 수정에 성공했습니다.");
+			model.addAttribute("msg", "게시글 수정에 성공했습니다.");
 			model.addAttribute("icon", "success");
 			model.addAttribute("loc", "/board/view2?boardNo="+b.getBoardNo());
 		} else {
@@ -219,6 +219,16 @@ public class BoardController {
 			 model.addAttribute("loc", "/board/view2?boardNo="+boardNo);
 			 return "common/msg";
 		 }
+	}
+	
+	@GetMapping(value="/search")
+	public String search(int reqPage, String type, String keyword, Model model) {
+		BoardListData bld = boardService.searchBoard(reqPage,type,keyword);
+		model.addAttribute("boardList",bld.getList());
+		model.addAttribute("pageNavi",bld.getPageNavi());
+		model.addAttribute("type", type);
+		model.addAttribute("keyword", keyword);
+		return "board/boardList";
 	}
 	
 	

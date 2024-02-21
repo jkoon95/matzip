@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 상세보기</title>
+<style>
+	.comment-info{
+		display: flex;
+	}
+</style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -11,8 +16,7 @@
 		
 		<div class="btn-zone">
 			<a th:href="@{/board/boardList?reqPage=1}" class="btn">목록으로</a>
-			<!-- <th:block th:if="${session.member != null && (session.member.memberId == b.boardWriter || session.member.memberLevel == 1)}"> -->
-			<th:block th:if="${session.member == null}">
+			<th:block th:if="${session.member != null && (session.member.memberNickname == b.boardWriter || session.member.memberLevel == 1)}">
 				<a th:href="@{/board/updateFrm(boardNo=${b.boardNo})}" class="btn">수정</a>
 				<button class="btn" th:onclick="boardDelete([[${b.boardNo}]]);">삭제</button>
 			</th:block>
@@ -41,7 +45,8 @@
 				</td>
 			</tr>
 		</table>
-		<!-- 댓글 공간 -->
+		
+		<!-- 댓글 입력 -->
 		<div class="inputCommentBox" th:if="${session.member != null}">
 			<form action="/board/insertComment" method="post">
 				<ul>
@@ -49,10 +54,10 @@
 						<span class="material-icons">account_circle</span>
 					</li>
 					<li>
-						<input type="hidden" name="CommentWriter" th:value="${session.member.memberNickname}">
+						<input type="hidden" name="commentWriter" th:value="${session.member.memberNickname}">
 						<input type="hidden" name="boardRef" th:value="${b.boardNo}">
-						<input type="hidden" name="CommentRef" th:value=0>
-						<textarea name="CommentContent" class="input-form"></textarea>
+						<input type="hidden" name="commentRef" th:value=0>
+						<textarea name="commentContent" class="input-form"></textarea>
 					</li>
 					<li>
 						<button type="submit" class="btn bc1 bs4">등록</button>
@@ -60,7 +65,7 @@
 				</ul>
 			</form>
 		</div>
-		
+		<!-- 댓글 출력 -->
 		<div class="commentBox">
 			<th:block th:each="bc : ${commentList}">
 				<ul class="posting-comment">
@@ -69,48 +74,48 @@
 					</li>
 					<li>
 						<p class="comment-info">
-							<span th:text="${bc.CommentWriter}"></span>
-							<span th:text="${bc.CommentDate}"></span>
+							<span th:text="${bc.commentWriter}"></span>
+							<span th:text="${bc.commentDate}"></span>
 						</p>
-						<p class="comment-content" th:utext="${bc.CommentContent.replace('\n','<br>')}" style="white-space: pre-line;"></p>
-						<textarea name="CommentContent" class="input-form" th:text="${bc.CommentContent}" style="min-height:90px;display:none"></textarea>
+						<p class="comment-content" th:utext="${bc.commentContent.replace('\n','<br>')}" style="white-space: pre-line;"></p>
+						<textarea name="commentContent" class="input-form" th:text="${bc.commentContent}" style="min-height:90px;display:none"></textarea>
 						<p class="comment-link">
 							<th:block th:if="${session.member != null}">
-								<th:block th:if="${session.member.memberNickname == bc.boardCommentWriter || session.member.memberLevel == 1}">
-									<a href="javascript:void(0)" th:onclick="modifyComment(this,[[${bc.CommentNo}]],[[${b.boardNo}]])">수정</a>
-									<a href="javascript:void(0)" th:onclick="deleteComment(this,[[${bc.CommentNo}]],[[${b.boardNo}]])">삭제</a>
+								<th:block th:if="${session.member.memberNickname == bc.commentWriter || session.member.memberLevel == 1}">
+									<a href="javascript:void(0)" th:onclick="modifyComment(this,[[${bc.commentNo}]],[[${b.boardNo}]])">수정</a>
+									<a href="javascript:void(0)" th:onclick="deleteComment(this,[[${bc.commentNo}]],[[${b.boardNo}]])">삭제</a>
 								</th:block>
 								<a href="javascript:void(0)" class="recShow">답글달기</a>
 							</th:block>
 						</p>
 					</li>
 				</ul>
-				
+				<!-- 대댓글 출력 bc:위에 출력한 댓글, bcc:대댓글 -->
 				<th:block th:each="bcc : ${reCommentList}">
-					<ul class="posting-comment reply" th:if="${bc.CommentNo == bcc.CommentRef}">
+					<ul class="posting-comment reply" th:if="${bc.commentNo == bcc.commentRef}">
 						<li>
 							<span class="material-icons">subdirectory_arrow_right</span>
 							<span class="material-icons">account_circle</span>
 						</li>
 						<li>
 							<p class="comment-info">
-								<span th:text="${bcc.CommentWriter}"></span>
-								<span th:text="${bcc.CommentDate}"></span>
+								<span th:text="${bcc.commentWriter}"></span>
+								<span th:text="${bcc.commentDate}"></span>
 							</p>
-							<p class="comment-content" th:utext="${bcc.CommentContent.replace('\n','<br>')}" style="white-space: pre-line;"></p>
-							<textarea name="CommentContent" class="input-form" th:text="${bcc.CommentContent}" style="min-height:90px;display:none"></textarea>
+							<p class="comment-content" th:utext="${bcc.commentContent.replace('\n','<br>')}" style="white-space: pre-line;"></p>
+							<textarea name="commentContent" class="input-form" th:text="${bcc.commentContent}" style="min-height:90px;display:none"></textarea>
 							<p class="comment-link">
 								<th:block th:if="${session.member != null}">
-									<th:block th:if="${session.member.memberNickname == bcc.CommentWriter || session.member.memberLevel == 1}">
-										<a href="javascript:void(0)" th:onclick="modifyComment(this,[[${bcc.CommentNo}]],[[${b.boardNo}]])">수정</a>
-										<a href="javascript:void(0)" th:onclick="deleteComment(this,[[${bcc.CommentNo}]],[[${b.boardNo}]])">삭제</a>
+									<th:block th:if="${session.member.memberNickname == bcc.commentWriter || session.member.memberLevel == 1}">
+										<a href="javascript:void(0)" th:onclick="modifyComment(this,[[${bcc.commentNo}]],[[${b.boardNo}]])">수정</a>
+										<a href="javascript:void(0)" th:onclick="deleteComment(this,[[${bcc.commentNo}]],[[${b.boardNo}]])">삭제</a>
 									</th:block>
 								</th:block>
 							</p>
 						</li>
 					</ul>
 				</th:block>
-				
+				<!-- 대댓글 입력 -->
 				<div class="inputCommentBox inputRecommentBox" th:if="${session.member != null}">
 					<form action="/board/insertComment" method="post">
 						<ul>
@@ -118,13 +123,13 @@
 								<span class="material-icons">subdirectory_arrow_right</span>
 							</li>
 							<li>
-								<input type="hidden" name="CommentWriter" th:value="${session.member.memberNickname}">
+								<input type="hidden" name="commentWriter" th:value="${session.member.memberNickname}">
 								<input type="hidden" name="boardRef" th:value="${b.boardNo}">
-								<input type="hidden" name="CommentRef" th:value="${bc.CommentNo}">
-								<textarea name="CommentContent" class="input-form"></textarea>
+								<input type="hidden" name="commentRef" th:value="${bc.commentNo}">
+								<textarea name="commentContent" class="input-form"></textarea>
 							</li>
 							<li>
-								<button type="submit" class="btn">등록</button>
+								<button type="submit" class="btn bc1 bs4">등록</button>
 							</li>
 						</ul>
 					</form>
@@ -134,61 +139,60 @@
 	</div>
 	
 	<script>
-		function boardDelete(boardNo) {
-			if(confirm("게시글을 삭제하시겠습니까?")) {
-				location.href="/board/delete?boardNo="+boardNo;
-			}
+	function boardDelete(boardNo) {
+		if(confirm("게시글을 삭제하시겠습니까?")) {
+			location.href="/board/delete?boardNo="+boardNo;
 		}
-		
-		$(".recShow").on("click",function(){
-			const index = $(".recShow").index(this);
-			$(".inputRecommentBox").eq(index).toggle();
-			if($(this).text() == "답글달기") {
-				$(this).text("취소");
-				$(".inputRecommentBox").eq(index).find("textarea").focus();
-			} else {
-				$(this).text("답글달기");
-			}
-			
-		});
-		
-		function modifyComment(obj,commentNo,boardNo) {
-			$(obj).parent().prev().show();
-			$(obj).parent().prev().prev().hide();
-			$(obj).text("수정완료");
-			$(obj).attr("onclick","modifyComplete(this,"+commentNo+","+boardNo+")");
-			$(obj).next().text("수정취소");
-			$(obj).next().attr("onclick","modifyCancel(this,"+commentNo+","+boardNo+")");
-			$(obj).next().next().hide();
-		}
-		function modifyCancel(obj,commentNo,boardNo) {
-			$(obj).parent().prev().hide();
-			$(obj).parent().prev().prev().show();
-			$(obj).prev().text("수정");
-			$(obj).prev().attr("onclick","modifyComment(this,"+commentNo+","+boardNo+")");
-			$(obj).text("삭제");
-			$(obj).attr("onclick","deleteComment(this,"+commentNo+","+boardNo+")");
-			$(obj).next().show();
-		}
-		
-		function modifyComplete(obj,commentNo,boardNo) {
-			const form = $("<form style='display:none;' action='/board/updateComment' method='post'>");
-			const boardCommentNoInput = $("<input type='text' name='commentNo'>");
-			boardCommentNoInput.val(commentNo);
-			const boardNoInput = $("<input type='text' name='boardRef'>");
-			boardNoInput.val(boardNo);
-			const boardCommentContent = $(obj).parent().prev().clone();
-			form.append(boardCommentNoInput).append(boardNoInput).append(boardCommentContent);
-			$("body").append(form);
-			form.submit();
-		}
-		
-		function deleteComment(obj,commentNo,boardNo) {
-			if(confirm("댓글을 삭제하시겠습니까?")) {
-				location.href="/board/deleteComment?boardCommentNo="+commentNo+"&boardNo="+boardNo;
-			}
-		}
+	}
 	
+	$(".recShow").on("click",function(){
+		const index = $(".recShow").index(this);
+		$(".inputRecommentBox").eq(index).toggle();
+		if($(this).text() == "답글달기") {
+			$(this).text("취소");
+			$(".inputRecommentBox").eq(index).find("textarea").focus();
+		} else {
+			$(this).text("답글달기");
+		}
+		
+	});
+	
+	function modifyComment(obj,commentNo,boardNo) {
+		$(obj).parent().prev().show();
+		$(obj).parent().prev().prev().hide();
+		$(obj).text("수정완료");
+		$(obj).attr("onclick","modifyComplete(this,"+commentNo+","+boardNo+")");
+		$(obj).next().text("수정취소");
+		$(obj).next().attr("onclick","modifyCancel(this,"+commentNo+","+boardNo+")");
+		$(obj).next().next().hide();
+	}
+	function modifyCancel(obj,commentNo,boardNo) {
+		$(obj).parent().prev().hide();
+		$(obj).parent().prev().prev().show();
+		$(obj).prev().text("수정");
+		$(obj).prev().attr("onclick","modifyComment(this,"+commentNo+","+boardNo+")");
+		$(obj).text("삭제");
+		$(obj).attr("onclick","deleteComment(this,"+commentNo+","+boardNo+")");
+		$(obj).next().show();
+	}
+	
+	function modifyComplete(obj,commentNo,boardNo) {
+		const form = $("<form style='display:none;' action='/board/updateComment' method='post'>");
+		const commentNoInput = $("<input type='text' name='commentNo'>");
+		commentNoInput.val(commentNo);
+		const boardNoInput = $("<input type='text' name='boardRef'>");
+		boardNoInput.val(boardNo);
+		const commentContent = $(obj).parent().prev().clone();
+		form.append(commentNoInput).append(boardNoInput).append(commentContent);
+		$("body").append(form);
+		form.submit();
+	}
+	
+	function deleteComment(obj,commentNo,boardNo) {
+		if(confirm("댓글을 삭제하시겠습니까?")) {
+			location.href="/board/deleteComment?commentNo="+commentNo+"&boardNo="+boardNo;
+		}
+	}
 	</script>
 	<th:block th:include="common/footer"></th:block>
 </body>
