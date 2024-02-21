@@ -24,7 +24,7 @@ CREATE TABLE STORE_TBL(
     BREAK_START VARCHAR2(5) NULL,
     BREAK_END VARCHAR2(5) NULL,
     STORE_LEVEL NUMBER NOT NULL,    --(1.일반/2.블랙리스트)
-    SUBWAY_NO NUMBER NOT NULL REFERENCES SUBWAY_TBL ON DELETE CASCADE,
+    SUBWAY_NAME VARCHAR2(50) REFERENCES SUBWAY_TBL(SUBWAY_NAME) ON DELETE CASCADE,
     STORE_STATUS NUMBER NOT NULL,   --(1.승인/2.비승인)
     TIME_TO_EAT NUMBER NOT NULL CHECK(TIME_TO_EAT IN(1,2))
 );
@@ -53,7 +53,8 @@ public class StoreRowMapper implements RowMapper<Store>{
 		store.setStoreStatus(rs.getInt("STORE_STATUS"));
 		store.setSubwayName(rs.getString("SUBWAY_NAME"));
 		store.setTimeToEat(rs.getString("TIME_TO_EAT"));
-		
+		store.setStoreAddr(rs.getString("STORE_ADDR"));
+		store.setStoreDescription(rs.getString("STORE_DESCRIPTION"));
 		return store;
 	}
 	
