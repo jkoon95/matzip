@@ -25,15 +25,21 @@
 
       <!--데이트피커-->
       <article style="width:1000px;height:1000px;">
-        <input type="text" class="datepicker">
+        <form action="/reserve/reserveList" method="post">
+          <div id="datepicker"></div>
+          <input type="hidden" name="reserveDate" id="reserveDate">
+          
+          <input type="submit" value="넘기기">
+        </form>
       </article>
       <!--//데이트피커-->
     </div>
   </main>
   
   <script src="/js/jquery-ui-1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/js/jquery-ui-1.13.2/jquery-ui.css"></link>
   <script src="/js/reserveFrm.js"></script>
-
+  
   <!--푸터-->
   <th:block th:include="common/footer"></th:block>
   <!--//푸터-->

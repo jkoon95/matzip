@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>공지사항 작성</title>
+<title>Q&A 작성</title>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -11,15 +11,13 @@
 	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	
 	<div class="page-content">
-		<div class="page-title">공지사항</div>
-		<form action="/notice/write" method="post" enctype="multipart/form-data">
-			<table class="tbl noticeWrite">
+		<div class="page-title">Q&A</div>
+		<form action="/board/write" method="post" enctype="multipart/form-data">
+			<table class="tbl boardWrite">
 				<tr>
 					<th>제목</th>
-					<td><input type="text" name="noticeTitle" class="input-form"></td>
-					<td>
-						<input type="hidden" name="noticeWriter" th:value="${session.member.memberNickname}">
-					</td>
+					<td><input type="text" name="boardTitle" class="input-form"></td>
+					<td><input type="hidden" name="boardWriter" th:value="${session.member.memberNickname}"></td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -27,12 +25,12 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align:left;">
-						<textarea id="noticeContent" name="noticeContent" class="input-form"></textarea>
+						<textarea id="boardContent" name="boardContent" class="input-form"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<button type="submit" class="btn">공지사항 작성</button>
+						<button type="submit" class="btn">게시글 작성</button>
 					</td>
 				</tr>
 			</table>
@@ -40,7 +38,7 @@
 	</div>
 	
 	<script>
-		$("#noticeContent").summernote({
+		$("#boardContent").summernote({
 			height : 500,
 			lang : "ko-KR",
 			callbacks : {
@@ -56,7 +54,7 @@
 			const form = new FormData();
 			form.append("upfile",file);
 			$.ajax({
-				url : "/notice/editor",
+				url : "/board/editor",
 				type : "post",
 				data : form,
 				processData : false,

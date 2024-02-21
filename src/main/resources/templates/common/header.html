@@ -16,7 +16,7 @@
                     <h1>" 무엇을 도와드릴까요? "</h1>
                 </div>                
                 <div class="header-search-box">
-                    <input type="text" id="search" placeholder="먹고싶은 음식을 작성해주세요 ">
+                    <input type="text" id="search" placeholder="먹고싶은 음식을 검색해주세요 ">
                     <span class="material-icons" id="search-icon">search</span>
                 </div>
             </div>
@@ -24,15 +24,15 @@
             	<th:block th:if="${session.member == null}">
                 <ul>
                     <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
-                    <li><a href="/member/joinFrm">회원가입</a></li>
-                    <li><a href="/member/login">login</a></li>
+                    <li><a href="/member/joinFrm">JOIN</a></li>
+                    <li><a href="/member/login">LOGIN</a></li>
                 </ul>
                 </th:block>
                 <th:block th:unless="${session.member == null}">
                 <ul>
                     <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
-                    <li><a href="/member/mypage">MyPage</a></li>
-                    <li><a href="/member/logout">logout</a></li>
+                    <li><a href="/member/mypage">INFO</a></li>
+                    <li><a href="/member/logout">LOGOUT</a></li>
                 </ul>
                 </th:block>
                 <ul>
