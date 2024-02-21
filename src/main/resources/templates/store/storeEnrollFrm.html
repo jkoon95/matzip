@@ -138,12 +138,10 @@
                             <option value="22:30">22:30</option>
                             <option value="23:00">23:00</option>
                             <option value="23:30">23:30</option>
-                            <option value="24:00">24:00</option>
                         </select>
                         시부터
                         <select name="closingHour" required>
                             <option value="">--</option>
-                            <option value="00:00">00:00</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
                             <option value="01:30">01:30</option>
@@ -195,10 +193,10 @@
                         </select>
                         까지
                     </div>
-                    <div class="s-input-wrap">
+                    <div class="s-input-wrap">	<!-- 둘 중 하나만 선택되는건 안되게 해주기 -->
                         <label for="" id="s-selectLable">쉬는시간</label>
                         <select name="breakStart">
-                            <option value="">--</option>
+                            <option value="-1">--</option>
                             <option value="00:00">00:00</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
@@ -247,12 +245,10 @@
                             <option value="22:30">22:30</option>
                             <option value="23:00">23:00</option>
                             <option value="23:30">23:30</option>
-                            <option value="24:00">24:00</option>
                         </select>
                         시부터
                         <select name="breakEnd">
-                            <option value="">--</option>
-                            <option value="00:00">00:00</option>
+                            <option value="-1">--</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
                             <option value="01:30">01:30</option>
@@ -302,7 +298,7 @@
                             <option value="23:30">23:30</option>
                             <option value="24:00">24:00</option>
                         </select>
-                        까지
+                        까지<span class="breakCheckMsg" style="color: red; font-size: 15px;font-weight:500;"></span>
                     </div>
                     <div class="s-input-wrap">
                         <label>휴무일</label>
@@ -479,6 +475,7 @@
                     }
                 }).open();
             }
+            
 
 
             //메뉴 +/-
@@ -501,18 +498,42 @@
                 });
 
                 // 삭제
-                $(".minusMenu").click(function() {
+                //$(".minusMenu").click(function() {
+                    //$(this).parent('.s-menu-div').remove();
+                //});
+                
+                $(document).on('click', '.minusMenu', function () {
                     $(this).closest('.s-menu-div').remove();
                 });
 
+                //제출안되는경우
                 $('#enrollStoreForm').on('submit', function(event) {
                     var menuDivCount = $('.s-menu-div').length;
-                	if (menuDivCount === 0) {
+                    
+                    const breakStart = $('select[name="breakStart"]').val();
+                    const breakEnd = $('select[name="breakEnd"]').val();
+                    
+                    if (menuDivCount === 0) {
                     	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
                     	event.preventDefault();	//폼제출 막음
                 	}
+                    
+                    // 둘 다 -1이거나 둘 다 -1이 아니어야 form을 제출할 수 있음
+                    if ((breakStart !== "-1" && breakEnd !== "-1") || (breakStart === "-1" && breakEnd === "-1")) {
+                        // form 제출
+                    } else {
+                        // form 제출 방지
+                        event.preventDefault();
+                        $(".breakCheckMsg").text("← 쉬는시간을 제대로 입력해주세요.");
+                        if (menuDivCount === 0) {
+                        	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
+                        	event.preventDefault();	//폼제출 막음
+                    	}
+                    }
+                    
+                	
             	});
-
+			
             //이미지 불러오기
             function storeloadImg(obj) {
                 console.log(obj.files);

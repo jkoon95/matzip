@@ -19,14 +19,19 @@ public class WebConfig implements WebMvcConfigurer{
 		 .addResourceLocations("file:///C:/Temp/upload/notice/editor/");
 		registry
 		.addResourceHandler("/store/**")
-		.addResourceLocations("file:///C:/Temp/upload/photo/");
+		.addResourceLocations("file:///C:/Temp/upload/store/");
 		registry
 			.addResourceHandler("/notice/editor/**")
 			.addResourceLocations("file:///C:/Temp/upload/notice/editor/");
 		registry
 			.addResourceHandler("/board/editor/**")
 			.addResourceLocations("file:///C:/Temp/upload/board/editor/");
-		
+		registry
+		.addResourceHandler("/store/menu/**")
+		.addResourceLocations("file:///C:/Temp/upload/store/menu/");
+		registry
+		.addResourceHandler("/store/evidence/**")
+		.addResourceLocations("file:///C:/Temp/upload/store/evidence/");
 
 	}
 

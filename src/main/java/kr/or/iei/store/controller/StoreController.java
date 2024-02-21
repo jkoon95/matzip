@@ -53,7 +53,7 @@ public class StoreController {
 			//사업자증빙자료
 			List<EvidenceFile> evidenceFileList = new ArrayList<EvidenceFile>();
 			if(!edvienceUpFile[0].isEmpty()) { 
-				String evidenceSavepath = root+"/evidence/";	//-> 웹컨피그가서 값설정해줘야함 아직안함
+				String evidenceSavepath = root+"/store/evidence/";	//-> 웹컨피그가서 값설정해줘야함 아직안함
 				for(MultipartFile file : edvienceUpFile) {
 					//업로드한 파일명을 추출
 					String evidenceFilename = file.getOriginalFilename();
@@ -67,13 +67,13 @@ public class StoreController {
 			
 			//휴무일 날짜
 			//휴무일 배열 보냄
-			//휴무일 널체크 해줘야함??????????????하나라도 안들어올시 for length에서 에러
+			//휴무일 널체크 해줘야함-> 하나라도 안들어올시 for length에서 에러
 			//closedDays
 			
 			
 			//메뉴 등록값
 			List<Menu> menuList = new ArrayList<Menu>();
-			String menuSavepath = root+"/menu/";		//->얘도 웹컨피그가서 해줘야댐
+			String menuSavepath = root+"/store/menu/";		//->얘도 웹컨피그가서 해줘야댐
 			for(int i=0; i<name.length; i++) {
 				Menu menu = new Menu();
 				String menuFilepath = fileUtils.upload(menuSavepath, menuImgFile[i]);				
@@ -85,10 +85,9 @@ public class StoreController {
 				menuList.add(menu);
 			}
 			
+			int result = storeService.insertStore(store,evidenceFileList,closedDays,menuList);
 			
-			
-			
-			//성공갯수 구해야댐
+			//성공갯수 구해서 결과 화면 출력	-> 구해야댐..
 			
 			
 			/*데이터 확인용
@@ -107,6 +106,7 @@ public class StoreController {
 				System.out.println(menuPrice);
 			}
 			*/
+			
 			model.addAttribute("title","성공");
 			model.addAttribute("msg","환영합니다");
 			model.addAttribute("icon","success");
