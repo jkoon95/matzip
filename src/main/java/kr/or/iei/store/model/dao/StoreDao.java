@@ -12,6 +12,7 @@ import kr.or.iei.notice.model.dto.Notice;
 import kr.or.iei.store.model.dto.ClosedDayRowMapper;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
+import kr.or.iei.store.model.dto.MenuRowMapper;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
 import kr.or.iei.store.model.dto.StoreRowMapper;
@@ -29,6 +30,8 @@ public class StoreDao {
 	private ClosedDayRowMapper closedDayRowMapper;
 	@Autowired
 	private StorePlusRowMapper storePlusRowMapper;
+	@Autowired
+	private MenuRowMapper menuRowMapper;
 	
 	public List selectAllSubway() {
 		String query = "select * from subway_tbl order by 1";
@@ -158,7 +161,7 @@ public class StoreDao {
 	public List selectStoreMenu(int storeNo) {
 		String query = "SELECT * FROM MENU_TBL where store_no=?";
 		Object[] params = {storeNo};
-		List list = jdbc.query(query, closedDayRowMapper, params);
+		List list = jdbc.query(query, menuRowMapper , params);
 		return list;
 	}
 }
