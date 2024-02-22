@@ -159,7 +159,24 @@ public class StoreController {
 		}
 		
 		
-		
+		@PostMapping(value="/storeUpdate")
+		public String storeUpdate(Store store, String address, String detailAddress, String[] closedDays, MultipartFile storeImgFile, Model model) {
+			if (address != null) {
+				store.setStoreAddr(address+" "+detailAddress);
+			}
+			if (storeImgFile != null && !storeImgFile.isEmpty()) {
+				String storeSavepath = root+"/store/";
+				String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
+				store.setStoreImg(storeFilepath);
+			}
+			int result = storeService.updateStore(store,closedDays);
+			
+			
+			
+			
+			
+			return "";
+		}
 		
 		
 		

@@ -82,6 +82,15 @@ public class StoreService {
 		return list;
 	}
 
+	public int updateStore(Store store, String[] closedDays) {
+		//매장
+		
+		//휴무일(존재한다면 해당매장삭제후 insert하기,없으면 변화 없음)
+		
+		
+		return 0;
+	}
+
 	
 
 	

@@ -30,8 +30,8 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="foodType" id="foodType" class="s-input-form" th:value=${store.foodType} required style="margin-top: 10px">
-                        <select name="foodType" required style="display: none;">
+                        
+                        <select name="foodType" required>
                             <option value="">--</option>
                             <option value="양식">양식</option>
                             <option value="중식">중식</option>
@@ -47,8 +47,8 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="subwayName" id="s-selectLable">주변역<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="subwayName" id="subwayName" class="s-input-form" th:value=${store.subwayName} required style="margin-top: 10px">
-                        <select required name="subwayName" style="display: none;">
+                        
+                        <select required name="subwayName">
                             <!-- subway 목록 출력 -->
                             <option value="">--</option>
                             <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}"
@@ -71,9 +71,8 @@
                             required th:value=${store.storePhone}>
                     </div>
                     <div class="s-input-wrap">
-                        <label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
+                    	<label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
                         <select name="openingHour" required>
-                            <option th:value="${store.openingHour}" selected th:text="${store.openingHour}"></option>
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
                             <option value="00:30">00:30</option>
@@ -127,7 +126,6 @@
                         </select>
                         시부터
                         <select name="closingHour" required>
-                            <option th:value="${store.closingHour}" selected th:text="${store.closingHour}"></option>
                             <option value="">--</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
@@ -183,7 +181,6 @@
                     <div class="s-input-wrap">
                         <label for="" id="s-selectLable">쉬는시간</label>
                         <select name="breakStart">
-                        	<option th:value="${store.breakStart}" selected th:text="${store.breakStart}"></option>
                             <option value="-1">--</option>
                             <option value="00:00">00:00</option>
                             <option value="00:30">00:30</option>
@@ -236,8 +233,6 @@
                         </select>
                         시부터
                         <select name="breakEnd">
-                        	<option th:value="${store.closingHour}" selected th:text="${store.breakEnd}"></option>
-                        	
                             <option value="-1">--</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
@@ -334,7 +329,7 @@
                         	</select>
                         	<select th:case="3" required name="timeToEat">
                             	<option value="">--</option>
-                            	<option value="1" selected>30분</option>
+                            	<option value="1">30분</option>
                             	<option value="2">1시간</option>
                             	<option value="3" selected>1시간 30분</option>
                             	<option value="4">2시간</option>
@@ -369,8 +364,7 @@
                         <img class="s-img-view" width="300px" height="300px" th:src="${store.storeImg}" name="storeImg">
                         <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
                             required>
-                        <input type="hidden" th:value="${store.storeImg}" name="oldName">
-                            
+                        <input type="hidden" th:value="${store.storeImg}" name="oldName">     
                     </div>
                 </div>
                 <div class="s-enrolldiv">
@@ -380,7 +374,7 @@
         </div>
 
 
-        <script   th:inline="javascript">
+        <script th:inline="javascript">
         	$("#foodType").on("click",function(){
         		$(this).css("display","none");
         		$(this).next().css("display","inline-block");
@@ -449,6 +443,25 @@
             	}
             })
             
+            const foodType = [[${store.foodType}]];
+        	$('select[name="foodType"] option[value="' + foodType + '"]').prop("selected", true);
+        	
+        	const subwayName = [[${store.subwayName}]];
+        	$('select[name="subwayName"] option[value="' + subwayName + '"]').prop("selected", true);
+            
+            const closingHour = [[${store.closingHour}]];
+        	$('select[name="closingHour"] option[value="' + closingHour + '"]').prop("selected", true);
+        	
+        	const openingHour = [[${store.openingHour}]];
+        	$('select[name="openingHour"] option[value="' + openingHour + '"]').prop("selected", true);
+        	
+        	const breakStart = [[${store.breakStart}]];
+        	$('select[name="breakStart"] option[value="' + breakStart + '"]').prop("selected", true);
+        	
+        	const breakEnd = [[${store.breakEnd}]];
+        	$('select[name="breakEnd"] option[value="' + breakEnd + '"]').prop("selected", true);
+        	
+        	
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>
