@@ -81,13 +81,23 @@
 				<th style="width:20%;">작성일</th>
 				<th style="width:10%;">조회수</th>
 			</tr>
+			
 			<tr class="tr-1" th:each="board : ${boardList}">
-				<td th:text="${board.boardNo}"></td>
-				<td><a th:href="@{/board/view(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
-				<td th:text="${board.boardWriter}"></td>
-				<td th:text="${board.regDate}"></td>
-				<td th:text="${board.readCount}"></td>
+				 <th:block th:if="${board.boardWriter=='관리자'}">
+                    <td th:text="${board.boardNo}"></td>
+                    <td><a th:href="@{/board/view(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
+                    <td th:text="${board.boardWriter}"></td>
+                    <td th:text="${board.regDate}"></td>
+                    <td th:text="${board.readCount}"></td>
+                </th:block>
 			</tr>
+            <tr class="tr-1" th:each="board : ${boardList}" th:unless="${board.boardWriter == '관리자'}">
+				<td th:text="${board.boardNo}"></td>
+                <td><a th:href="@{/board/view(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
+                <td th:text="${board.boardWriter}"></td>
+                <td th:text="${board.regDate}"></td>
+                <td th:text="${board.readCount}"></td>
+           </tr>
 		</table>
 		
 		<div id="pageNavi" th:utext="${pageNavi}"></div>

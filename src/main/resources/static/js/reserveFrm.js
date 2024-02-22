@@ -1,4 +1,5 @@
 //비활성화할 날짜들 배열(순서때매 이거 먼저 선언해야함)
+//var closedDays = [db에서 closedDay 가져오기. 일(=0) ~ 토(6)];
 var disabledDays = ["2024-02-23", "2024-02-25"];
 
 $('#datepicker').datepicker({
@@ -22,6 +23,10 @@ $('#datepicker').datepicker({
 
 //날짜를 나타내기 전에(beforeShowDay) 실행할 함수
 function disableSomeday(date){
+  //var day = date.getDay();
+  //for(let i=0; i<closedDays.length; i++){
+    //return [day != closedDays.get(i)];
+  //}
   var month = date.getMonth();
   var dates = date.getDate();
   var year = date.getFullYear();
