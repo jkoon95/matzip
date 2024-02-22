@@ -12,7 +12,6 @@
 
   <!--사이드메뉴-->
   <th:block th:include="common/side-menu">
-
   
   </th:block>
   <!--//사이드메뉴-->
@@ -28,39 +27,33 @@
 
       <!--데이트피커-->
       <article style="width:1000px;height:1000px;">
-        <form action="/reserve/reserveList" method="post">
-          <div id="datepicker"></div>
-          <input type="hidden" name="reserveDate" id="reserveDate">
-          
-          <input type="submit" value="넘기기">
-        </form>
+        <div id="datepicker"></div>
+        <input type="hidden" name="reserveDate" id="reserveDate">
       </article>
       <!--//데이트피커-->
 
-      <!--예약정보 입력frm-->
+      <!--예약정보 입력-->
       <article>
-        <form action="#" method="post">
-          <ul>
-            <li class="time-area">
-              <ul class="time-list">
-                <!-- <th:block th:for~~> -->
-                <li class="time-item"></li>
-                <!-- </th:block>-->
-              </ul>
-            </li>
-            <li class="people-area">
+        <ul>
+          <li class="time-area">
+            <ul class="time-list">
+              <!-- <th:block th:for~~> -->
+              <li class="time-item"></li>
+              <!-- </th:block>-->
+            </ul>
+          </li>
+          <li class="people-area">
 
-            </li>
+          </li>
 
-            <li class="menu-area">
+          <li class="menu-area">
 
-            </li>
-            <li class="request-area">
+          </li>
+          <li class="request-area">
 
-            </li>
+          </li>
 
-          </ul>
-        </form>
+        </ul>
       </article>
       <!--//예약정보 입력frm-->
 
@@ -78,10 +71,16 @@
     </div>
   </main>
   
+  <
   <script src="/js/jquery-ui-1.13.2/jquery-ui.js"></script>
   <link rel="stylesheet" href="/js/jquery-ui-1.13.2/jquery-ui.css"></link>
   <script src="/js/reserveFrm.js"></script>
-  
+
+  <!--ajax-->
+  <script>
+
+  </script>
+  <!--//ajax-->
   <!--푸터-->
   <th:block th:include="common/footer"></th:block>
   <!--//푸터-->

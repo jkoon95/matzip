@@ -8,6 +8,12 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<!-- jquery -->
 	<script src="/js/jquery-3.7.1.min.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Stylish&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Stylish&display=swap" rel="stylesheet">
 
 </head>
 <th:block th:include="common/header"></th:block>
@@ -155,11 +161,13 @@
 		<div class="page-content2">
 			<div class="division-bar"></div>
 
-			<div>
-				<form action="" method="get" id="">
+			<div class="content2-title"></div>
 
-				</form>
+			<div class="store-list">
+				<div></div>
 			</div>
+
+			<div></div>
 		</div>
 	</div>
 
@@ -249,93 +257,101 @@
 		function colorChange(element) {
 			const allStations = $(".station-list");
 			const id = element.id;
+			const lineMenu = $(".line-menu");
 
 			//const allMenu = document.querySelectorAll('.subway-line-menu > div');
 			const allMenu = $(".subway-line-menu > div");
 
 			// // 전부 흰색
 			allMenu.css('background', 'white');
+			
 
 			// // 모든 역의 배경색을 흰색으로 설정
 			allStations.css('background', 'white');
+			// allStations.removeClass(background);
+			// $(this).removeClass(background);
+			// lineMenu.removeClass(background);
 
 
+			$(element).css('background', '#436850');
+
+			allStations.each(function (index, item) {
+				//$(this)
+				//$유의
+				$(item).css('background', 'linear-gradient(to right, #436850, #ADBC9F)');
+			});
 
 			
 
-			if (id == 'line1-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
-				allStations.each(function (index, item) {
-					//$(this)
-					//$유의
-					$(item).css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
-				});
-			}
+			// if (id == 'line1-menu') {
+			// 	$(element).css('background', '#436850');
 
-			if (id == 'line2-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #D65DB1, #FF6F91)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #D65DB1, #FF6F91)');
-				});
-			}
-			if (id == 'line3-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FF6F91, #FF9671)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FF6F91, #FF9671)');
-				});
-			}
-			if (id == 'line4-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
-				});
-			}
-			if (id == 'line5-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
-				});
-			}
-			if (id == 'line6-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #F9F871)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #F9F871)');
-				});
-			}
-			if (id == 'line7-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
-				});
-			}
-			if (id == 'line8-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
-				});
-			}
-			if (id == 'line9-menu') {
-				$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FF6F91)');
-				allStations.each(function () {
-					$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FF6F91)');
-				});
-			}
+			// 	allStations.each(function (index, item) {
+			// 		//$(this)
+			// 		//$유의
+			// 		$(item).css('background', 'linear-gradient(to right, #436850, #ADBC9F)');
+			// 	});
+			// }
+
+			// if (id == 'line2-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #D65DB1, #FF6F91)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #D65DB1, #FF6F91)');
+			// 	});
+			// }
+			// if (id == 'line3-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FF6F91, #FF9671)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FF6F91, #FF9671)');
+			// 	});
+			// }
+			// if (id == 'line4-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+			// 	});
+			// }
+			// if (id == 'line5-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+			// 	});
+			// }
+			// if (id == 'line6-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #F9F871)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #F9F871)');
+			// 	});
+			// }
+			// if (id == 'line7-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FFC75F)');
+			// 	});
+			// }
+			// if (id == 'line8-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FFC75F, #FF9671)');
+			// 	});
+			// }
+			// if (id == 'line9-menu') {
+			// 	$(element).css('background', 'linear-gradient(to bottom, #FF9671, #FF6F91)');
+			// 	allStations.each(function () {
+			// 		$(this).css('background', 'linear-gradient(to bottom, #FF9671, #FF6F91)');
+			// 	});
+			// }
 		}
 
-		//const stationName = fullStationName.replace(/역$/, ''); // '역' 문자가 맨 끝에 있을 때만 제거
-		$(".station-list > ul > li").click(function(){
-				
-				const fullStationName = $(this).text(); // '당산역' 같은 전체 역 이름 가져오기
-				const stationName = fullStationName.replace(/역$/, ''); // '역' 문자가 맨 끝에 있을 때만 제거
-				console.log(fullStationName);
-
-				$.ajax({
+		function ajaxStation(stationName){
+			$.ajax({
 					url: "/search/ajaxSelectTop5Store",
 					type: "get",
 					data: { stationName: stationName },
 					success: function (data) {
 						console.log(data);
 						$(".store-top5").remove(); // 기존의 내용을 비웁니다.
+						$(".btn").remove();
 
 						//data 배열을 반복 처리하여 각 상점에 대한 HTML 마크업을 생성합니다.
 						$.each(data, function (index, store) {
@@ -365,14 +381,52 @@
 									'</div>'
 								'</div>';
 							$(".modal-content").append(storeHtml);
-							const moreBtn = 
-							'<div>' + 
-								'<button>버튼</button>' +
-							'</div>';
-
 							
 							}
 						});
+						
+						// const moreBtn = 
+						// 	'<div class="btn">' + 
+						// 		'<a class="more-btn" onclick="btn();">'+
+    					// 	    	'<span></span>'+
+    					// 	    	'<span></span>'+
+    					// 	    	'<span></span>'+
+    					// 	    	'<span></span>'+
+    					// 	    	'더보기'+
+    					// 		'</a>' +
+						// 	'</div>';
+						// $(".modal-content").append(moreBtn);
+
+
+
+							const div = $("<div>").addClass("btn");
+							const a = $("<a>").addClass("more-btn").text("더보기");
+							for (let i = 0; i < 4; i++) {
+								a.append($("<span>"));
+							}
+							
+							a.on("click",function(){
+								console.log(stationName);
+								$(".content2-title").text(stationName+"역 맛집");
+								$("#modal").hide(); // 모달 숨기기
+								$("body").css("overflow", "auto"); // 스크롤 다시 활성화
+								$.ajax({
+									url: "/search/ajaxSelectStore",
+									type: "get",
+									data: { stationName: stationName },
+									success : function(data){
+
+									},
+									error : function(){
+
+									}
+								});
+							});
+							div.append(a);
+
+
+		
+							$(".modal-content").append(div);
 					},
 					error: function (data) {
 
@@ -382,7 +436,20 @@
 				$("#modal").show(); // 모달 보여주기
 				$("#modal .modal-content h2").text(stationName); // 모달에 역 이름 설정
 				$("body").css("overflow", "hidden"); // 스크롤 비활성화
+		}
+
+		//const stationName = fullStationName.replace(/역$/, ''); // '역' 문자가 맨 끝에 있을 때만 제거
+		$(".station-list > ul > li").click(function(){
+				
+				const fullStationName = $(this).text(); // '당산역' 같은 전체 역 이름 가져오기
+				const stationName = fullStationName.replace(/역$/, ''); // '역' 문자가 맨 끝에 있을 때만 제거
+				console.log(fullStationName);
+
+				ajaxStation(stationName);
 		});
+
+		
+
 
 		$(document).ready(function () {
 			
@@ -395,61 +462,7 @@
 				// console.log(clickedSubway);
 				console.log(stationName);
 
-
-				$.ajax({
-					url: "/search/ajaxSelectTop5Store",
-					type: "get",
-					data: { stationName: stationName },
-					success: function (data) {
-						console.log(data);
-						$(".store-top5").remove(); // 기존의 내용을 비웁니다.
-
-						//data 배열을 반복 처리하여 각 상점에 대한 HTML 마크업을 생성합니다.
-						$.each(data, function (index, store) {
-							if (store !== null) {
-								const storeHtml = 
-								'<div class="store-top5">'+
-									'<div class="store-content1">' +
-										//'<div>' + store.storeImg + '</div>' +
-										'<img src="/img/맛zip로고.png" alt="">'+
-										'<span class="material-icons heart-text">favorite_border</span>' +
-									'</div>' +
-									'<div class="store-content2 padding-left80">' +
-										'<div id="reviewScore-text">' + store.reviewScore +'점</div>' +
-										'<div>' +
-										'<span>' + store.storeName + '</span>' +
-										'<span class="padding-left20" id="operationStatus-text">' + store.operationStatus + '</span>' +
-									'</div>' +
-
-									'<div>' + store.subwayName + '역</div>' +
-									'<div>' + store.foodType + '</div>' +
-									'<div>' +
-										'<span class="material-icons message-text">comment</span>' +
-										'<span class="padding-right20 font-size20">' + store.reviewCount + '</span>' +
-										'<span class="material-icons heart-text">favorite</span>' +
-										'<span class="font-size20">' + store.likeCount + '</span>' +
-									'</div>' +
-									'</div>'
-								'</div>';
-							$(".modal-content").append(storeHtml);
-							const moreBtn = 
-							'<div>' + 
-								'<button>버튼</button>' +
-							'</div>';
-
-							
-							}
-						});
-					},
-					error: function (data) {
-
-					}
-				})
-
-				$("#modal").show(); // 모달 보여주기
-				$("#modal .modal-content h2").text(stationName); // 모달에 역 이름 설정
-				$("body").css("overflow", "hidden"); // 스크롤 비활성화
-
+				ajaxStation(stationName);
 			});
 
 			$(".close-button").click(function () {

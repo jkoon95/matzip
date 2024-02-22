@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,8 +33,17 @@ public class StoreController {
 		private FileUtils fileUtils;
 		
 		@GetMapping(value="/bussinessNumberCheck")
-		public String bussinessNumberCheck() {
-			return "store/bussinessNumberCheck";
+		public String bussinessNumberCheck(@SessionAttribute(required = false) Member member, Model model) {
+			int memberLevel=member.getMemberLevel();
+			if(memberLevel==2) {
+				return "store/bussinessNumberCheck";								
+			}else {
+				model.addAttribute("title","실패");
+				model.addAttribute("msg","매장회원으로 등록하세요.");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/");
+				return "common/msg";
+			}
 		}
 		
 		@GetMapping(value="/storeEnrollFrm")
@@ -124,10 +134,34 @@ public class StoreController {
 				StoreInfoData sid = storeService.selectOneStore(memberNo);
 				model.addAttribute("store",sid.getStore());
 				model.addAttribute("closedDayList",sid.getClosedDayList());
-				model.addAttribute("MenuList",sid.getMenuList());
+				model.addAttribute("menuList",sid.getMenuList());
 				return "store/myStore";
 			}
 		}
+		
+		@GetMapping(value="/storeUpdateFrm")
+		public String storeUpdateFrm(int storeNo, Model model) {
+			Store store = storeService.selectGetStore(storeNo);
+			if(store==null) {
+				model.addAttribute("title","수정하기 실패");
+				model.addAttribute("msg","매장이 존재하지 않습니다.");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/");
+				return "common/msg";
+			}else {
+				model.addAttribute("store",store);
+				return "store/storeUpdateFrm";				
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 }

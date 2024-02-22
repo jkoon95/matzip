@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <title>Q&A 작성</title>
+<style>
+	.btn.bc1{
+	    width: 600px;
+	    height: 40px;
+	    font-weight: 600;
+	    background-color: #707070;
+	    transition: background-color 0.8s ease;
+	    border: 2px solid #fff;
+	    margin-bottom: 50px;
+	}
+	.btn.bc1:hover {
+		background-color: #72B37E; /* 마우스를 올렸을 때의 배경색 */
+		color: #fff;
+	}
+	.boardWrite tr:last-child>td{
+		border : 1px solid #fff;
+	}
+</style>
+<link rel="stylesheet" href="/css/notice.css">
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -15,13 +34,15 @@
 		<form action="/board/write" method="post" enctype="multipart/form-data">
 			<table class="tbl boardWrite">
 				<tr>
-					<th>제목</th>
-					<td><input type="text" name="boardTitle" class="input-form"></td>
-					<td><input type="hidden" name="boardWriter" th:value="${session.member.memberNickname}"></td>
+					<th style="width:20%;">제목</th>
+					<td>
+						<input type="text" name="boardTitle" class="input-form">
+						<input type="hidden" name="boardWriter" th:value="${session.member.memberNickname}">
+					</td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
-					<td><input type="file" name="upfile" multiple></td>
+					<td style="text-align: left;"><input type="file" name="upfile" multiple></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align:left;">
@@ -30,7 +51,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<button type="submit" class="btn">게시글 작성</button>
+						<button type="submit" class="btn bc1">게시글 작성</button>
 					</td>
 				</tr>
 			</table>
@@ -68,6 +89,17 @@
 				}
 			});
 		}
+		$(document).ready(function() {
+		    $('form').submit(function() {
+		        var title = $('input[name="boardTitle"]').val();
+		        var content = $('#boardContent').val();
+		        
+		        if (title.trim() === '' || content.trim() === '') {
+		            alert('제목과 내용을 모두 입력해주세요.');
+		            return false;
+		        }
+		    });
+		});
 	</script>
 	<th:block th:include="common/footer"></th:block>
 </body>
