@@ -124,7 +124,7 @@ public class StoreController {
 				StoreInfoData sid = storeService.selectOneStore(memberNo);
 				model.addAttribute("store",sid.getStore());
 				model.addAttribute("closedDayList",sid.getClosedDayList());
-				model.addAttribute("MenuList",sid.getMenuList());
+				model.addAttribute("menuList",sid.getMenuList());
 				return "store/myStore";
 			}
 		}
