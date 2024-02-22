@@ -154,7 +154,10 @@ public class StoreController {
 			}
 		}
 		
-		
+		@GetMapping(value="storeDetail")
+		public String storeDetail() {
+			return "store/storeDetail";
+		}
 		
 		
 		
