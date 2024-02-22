@@ -45,5 +45,20 @@ public class MemberDao {
 		int result = jdbc.update(query, params);
 		return result;
 	}
+	public Member selectOneMember(String memberId) {
+		String query = "select * from member_tbl where member_id=?";
+		Object[] params = {memberId};
+		List list = jdbc.query(query, memberRowMapper,params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Member)list.get(0);
+	}
+	public int deleteMember(int memberNo) {
+		String query = "delete from member_tbl where member_no=?";
+		Object[] params = {memberNo};
+		int result = jdbc.update(query, params);
+		return result;
+	}	
 	
 }

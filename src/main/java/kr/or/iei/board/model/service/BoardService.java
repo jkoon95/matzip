@@ -34,8 +34,15 @@ public class BoardService {
 		}
 		int pageNaviSize = 5;
 		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
-		String pageNavi = "<ul class='pagination'>";
+		String pageNavi = "<ul class='pagination circle-style'>";
 
+		// 맨처음버튼
+		if(pageNo != 1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/board/boardList?reqPage=1'>";
+			pageNavi += "<span class='material-icons'>keyboard_double_arrow_left</span>";
+			pageNavi += "</a></li>";
+		}
 		if(pageNo != 1) {
 			pageNavi += "<li>";
 			pageNavi += "<a class='page-item' href='/board/boardList?reqPage="+(pageNo-1)+"'>";
@@ -51,7 +58,7 @@ public class BoardService {
 				pageNavi += "</a></li>";
 			} else {
 				pageNavi += "<li>";
-				pageNavi += "<a href='/board/boardList?reqPage="+(pageNo)+"'>";
+				pageNavi += "<a class='page-item' href='/board/boardList?reqPage="+(pageNo)+"'>";
 				pageNavi += pageNo;
 				pageNavi += "</a></li>";
 			}
@@ -63,10 +70,17 @@ public class BoardService {
 		
 		if(pageNo <= totalPage) {
 			pageNavi += "<li>";
-			pageNavi += "<a href='/board/boardList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<a class='page-item' href='/board/boardList?reqPage="+(pageNo)+"'>";
 			pageNavi += "<span class='material-icons'>navigate_next</span>";
 			pageNavi += "</a></li>";
 		}
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/board/boardList?reqPage="+totalPage+"'>";
+			pageNavi += "<span class='material-icons'>keyboard_double_arrow_right</span>";
+			pageNavi += "</a></li>";
+		}
+		
 		pageNavi += "</ul>";
 		
 		BoardListData bld = new BoardListData(list, pageNavi);
@@ -196,7 +210,7 @@ public class BoardService {
 		}
 		int pageNaviSize = 5;
 		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
-		String pageNavi = "<ul class='pagination'>";
+		String pageNavi = "<ul class='pagination circle-style'>";
 
 		if(pageNo != 1) {
 			pageNavi += "<li>";
@@ -208,12 +222,12 @@ public class BoardService {
 		for(int i=0;i<pageNaviSize;i++) {
 			if(pageNo == reqPage) {
 				pageNavi += "<li>";
-				pageNavi += "<a class='page-item active-page' href='/board/search?reqPage="+(pageNo-1)+"&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<a class='page-item active-page' href='/board/search?reqPage="+(pageNo)+"&type="+type+"&keyword="+keyword+"'>";
 				pageNavi += pageNo;
 				pageNavi += "</a></li>";
 			} else {
 				pageNavi += "<li>";
-				pageNavi += "<a href='/board/boardList?reqPage="+(pageNo)+"'>";
+				pageNavi += "<a class='page-item' href='/board/boardList?reqPage="+(pageNo)+"&type="+type+"&keyword="+keyword+"'>";
 				pageNavi += pageNo;
 				pageNavi += "</a></li>";
 			}
@@ -225,7 +239,7 @@ public class BoardService {
 		
 		if(pageNo <= totalPage) {
 			pageNavi += "<li>";
-			pageNavi += "<a href='/board/search?reqPage="+(pageNo-1)+"&type="+type+"&keyword="+keyword+"'>";
+			pageNavi += "<a class='page-item' href='/board/search?reqPage="+(pageNo)+"&type="+type+"&keyword="+keyword+"'>";
 			pageNavi += "<span class='material-icons'>navigate_next</span>";
 			pageNavi += "</a></li>";
 		}

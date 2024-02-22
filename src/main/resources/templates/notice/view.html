@@ -8,18 +8,17 @@
 		display: flex;
 	}
 	.btn{
-    height: 40px;
-    line-height: 40px;
-    width: 120px;
-    text-align: center;
-  }
+	    height: 40px;
+	    line-height: 40px;
+	    width: 120px;
+	    text-align: center;
+  	}
 	.btn.bc2,.bc3{
 		float: right;
 	}
 	.noticeView{
 		margin-bottom: 50px;
 	}
-	
 </style>
 <link rel="stylesheet" href="/css/notice.css">
 </head>
@@ -31,7 +30,7 @@
 		<div class="btn-zone">
 			<a th:href="@{/notice/noticeList?reqPage=1}" class="btn bc1">목록으로</a>
 			<th:block th:if="${session.member != null && session.member.memberLevel == 1}">
-        <button class="btn bc3" th:onclick="noticeDelete([[${n.noticeNo}]]);">삭제</button>
+        		<button class="btn bc3" th:onclick="noticeDelete([[${n.noticeNo}]]);">삭제</button>
 				<a th:href="@{/notice/updateFrm(noticeNo=${n.noticeNo})}" class="btn bc2">수정</a>
 			</th:block>
 		</div>
