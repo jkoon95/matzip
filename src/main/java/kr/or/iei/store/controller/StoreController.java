@@ -149,10 +149,15 @@ public class StoreController {
 				model.addAttribute("loc","/");
 				return "common/msg";
 			}else {
+				List subwaylist = storeService.selectAllSubway();
+				List closedDayList = storeService.selectClosedDay(storeNo);
+				model.addAttribute("subway",subwaylist);
 				model.addAttribute("store",store);
+				model.addAttribute("closedDayList",closedDayList);
 				return "store/storeUpdateFrm";				
 			}
 		}
+		
 		
 		
 		

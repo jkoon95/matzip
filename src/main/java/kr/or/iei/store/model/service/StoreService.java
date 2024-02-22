@@ -77,5 +77,10 @@ public class StoreService {
 		return store;
 	}
 
+	public List selectClosedDay(int storeNo) {
+		List list = storeDao.selectStoreClosedDay(storeNo);
+		return list;
+	}
+
 	
 }
