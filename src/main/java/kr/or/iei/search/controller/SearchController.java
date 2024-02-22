@@ -44,4 +44,10 @@ public class SearchController {
 	
 	//@ResponseBody
 	//@GetMapping(value = "")
+	
+	@GetMapping(value="storeDetail")
+	public String storeDetail() {
+		return "search/storeDetail";
+	}
+	
 }
