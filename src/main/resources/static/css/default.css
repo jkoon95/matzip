@@ -320,6 +320,121 @@ header > .header-wrap > .header-right-box{
     display: none;
 }
 
+/*searchId 아이디 찾기*/
+.id-search-title{
+    width: 400px;
+    margin: 165px auto;
+    margin-bottom: 0px;    
+    font-family: ns-eb;
+}
+.id-search-wrap{
+    width: 400px;
+    border: 1px solid #b3b3b3;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    border-radius: 5px;  
+    margin: 0 auto;    
+}
+.id-search-title > span{
+    color: #f04c4c;
+    font-size: 70%;
+    
+}
+.id-search-wrap div:first-child>label{
+    margin-right: 11px;
+}
+.id-search-wrap div:first-child{
+    margin-bottom: 10px;
+}
+.id-search-wrap div:nth-child(2){
+    margin-bottom: 10px;
+}
+
+.id-search-wrap div:first-child input{
+    outline: none;
+    border-width: 0px;
+    border: 1px solid #b3b3b3;    
+    width: 200px;
+    text-align: center;
+
+    
+}
+.id-search-wrap div:nth-child(2) input{
+    outline: none;
+    border-width: 0px;
+    border: 1px solid #b3b3b3;    
+    width: 200px;
+    text-align: center;
+}
+.id-search-wrap div:nth-child(3) input{
+    margin-left: 49px;    
+    width: 200px;
+    border: 1px solid #b3b3b3;
+	text-align: center;
+}
+
+.id-search-wrap button {
+    background-color :#72B37E;
+    border: 1px solid #b3b3b3;
+    color: #fff;
+    width: 110px;    
+}
+
+/*searchId 비밀번호 찾기*/
+.pw-search-title{
+    width: 400px;
+    margin: 165px auto;
+    margin-bottom: 0px;    
+    font-family: ns-eb;
+}
+.pw-search-wrap{
+    width: 400px;
+    border: 1px solid #b3b3b3;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    border-radius: 5px;  
+    margin: 0 auto;    
+}
+.pw-search-title > span{
+    color: #f04c4c;
+    font-size: 70%;
+    
+}
+
+.pw-search-wrap div:first-child{
+    margin-bottom: 10px;
+}
+.pw-search-wrap div:nth-child(2){
+    margin-bottom: 10px;
+}
+
+.pw-search-wrap div:first-child input{
+    outline: none;
+    border-width: 0px;
+    border: 1px solid #b3b3b3;    
+    width: 200px;
+    text-align: center;    
+}
+.pw-search-wrap div:nth-child(2) input{
+    outline: none;
+    border-width: 0px;
+    border: 1px solid #b3b3b3;    
+    width: 200px;
+    text-align: center;
+}
+.pw-search-wrap div:nth-child(3) input{
+    margin-left: 49px;    
+    width: 200px;
+    border: 1px solid #b3b3b3;
+    text-align: center;
+}
+.pw-search-wrap button {
+    background-color :#72B37E;
+    border: 1px solid #b3b3b3;
+    color: #fff;
+    width: 110px;    
+}
+
 /* update 정보수정*/
 
 .info-join-title{
