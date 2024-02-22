@@ -47,12 +47,12 @@
                         <input type="text" name="memberName" id="memberName" class="input-from">
                     </div>
                     <div class="join-wrap">
-                        <label for="memberNickname">닉네임</label>
-                        <input type="text" name="memberNickname" id="memberNickname" class="input-from">
+                        <label for="memberNickname">닉네임<span id="checkNickname"></span></label>
+                        <input type="text" name="memberNickname" id="memberNickname" class="input-from" required>
                     </div>
                     <div class="join-wrap">
                         <label for="memberPhone">휴대전화번호 (ex : 010-1234-5678)</label>
-                        <input type="text" name="memberPhone" id="memberPhone" class="input-from" placeholder="010-0000-0000">
+                        <input type="text" name="memberPhone" id="memberPhone" class="input-from" placeholder="010-0000-0000" required>
                     </div>        
                     </div>
                     <div class="agree-wrap">
@@ -77,7 +77,7 @@
     		$.ajax({
     			url: "/member/checkId",
     			type : "get",
-    			data : {memberId : memberId},
+    			data : {memberId : memberId},    			
     			success : function(data){
     				if(data==0){
     					$("#checkId").text("사용가능한 ID 입니다.");
@@ -89,6 +89,31 @@
     					$("#memberId").css("border-bottom", "2px solid red");
     				}
     			},
+    			error : function(){
+    				console.log("error");
+    			}
+    		});
+    	});
+    	$("#memberNickname").on("change",function(){
+    		const memberNickname = $(this).val();
+    		$.ajax({
+    			url: "/member/checkNickname",
+    			type : "get",
+    			data : {memberNickname : memberNickname},    			
+    			success : function(data){
+    				if(data==0){
+    					$("#checkNickname").text("사용가능한 닉네임 입니다.");
+    					$("#checkNickname").css("color","blue");
+    					$("#memberNickname").css("border-bottom", "2px solid blue");
+    				}else if(data==1){
+    					$("#checkNickname").text("사용이 불가능한 닉네임 입니다.");
+    					$("#checkNickname").css("color","red");
+    					$("#memberNickname").css("border-bottom", "2px solid red");
+    				}
+    			},
+    			error : function(){
+    				console.log("error");
+    			}
     		});
     	});
     </script>

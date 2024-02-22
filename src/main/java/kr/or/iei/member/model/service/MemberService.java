@@ -33,11 +33,15 @@ public class MemberService {
 	}
 	public Member selectOneMember(String memberId) {
 		Member member = memberDao.selectOneMember(memberId);
-		return null;
+		return member;
 	}
 	public int deleteMember(int memberNo) {
 		int result = memberDao.deleteMember(memberNo);
 		return result;
+	}
+	public Member selectNicknameMember(String memberNickname) {
+		Member member = memberDao.selectNicknameMember(memberNickname);
+		return member;
 	}
 	
 	
