@@ -5,10 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.or.iei.search.model.dto.SearchListData;
+import kr.or.iei.search.model.service.SearchService;
+import kr.or.iei.store.model.dao.TwoList;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.service.StoreService;
 
@@ -17,6 +21,8 @@ import kr.or.iei.store.model.service.StoreService;
 public class SearchController {
 	@Autowired
 	private StoreService storeService;
+	@Autowired
+	private SearchService searchService; 
 	
 	
 	@GetMapping(value="/searchStoreBySubway")
@@ -42,6 +48,39 @@ public class SearchController {
 		}
 	}
 	
-	//@ResponseBody
-	//@GetMapping(value = "")
+	@ResponseBody
+	@GetMapping(value = "ajaxStoreList")
+	public List ajaxStoreList(int start,int amount,String stationName) {
+		//List list = storeService.ajaxStoreList(stationName);
+		
+		int totalCount = searchService.storeTotalCount(stationName);
+		System.out.println(totalCount);//성공
+		
+	
+		List searchList = searchService.selectSearchList(start,amount,stationName);
+//		System.out.println(searchList);
+
+		
+		
+		return searchList;	
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "ajaxStoreList2")
+	public TwoList ajaxStoreList2(int start,int amount,String stationName) {
+		//List list = storeService.ajaxStoreList(stationName);
+		
+		int totalCount = searchService.storeTotalCount(stationName);
+		System.out.println(totalCount);//성공
+		
+	
+		List searchList = searchService.selectSearchList(start,amount,stationName);
+		System.out.println(searchList);
+		
+		TwoList twoList = new TwoList();
+		twoList.setTotalCount(totalCount);
+		twoList.setSearchList(searchList);
+		
+		return twoList;	
+	}
 }
