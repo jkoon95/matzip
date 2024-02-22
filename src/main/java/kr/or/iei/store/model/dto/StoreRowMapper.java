@@ -56,7 +56,6 @@ public class StoreRowMapper implements RowMapper<Store>{
 		store.setSubwayName(rs.getString("SUBWAY_NAME"));
 		store.setStoreStatus(rs.getInt("STORE_STATUS"));
 		store.setTimeToEat(rs.getInt("TIME_TO_EAT"));
-		store.setLikeCount(rs.getInt("LIKE_COUNT")); // LIKE_COUNT 매핑 추가
 		return store;
 	}
 	
