@@ -31,5 +31,14 @@ public class MemberService {
 		int result = memberDao.storeUpdate(m);
 		return result;
 	}
+	public Member selectOneMember(String memberId) {
+		Member member = memberDao.selectOneMember(memberId);
+		return null;
+	}
+	public int deleteMember(int memberNo) {
+		int result = memberDao.deleteMember(memberNo);
+		return result;
+	}
+	
 	
 }
