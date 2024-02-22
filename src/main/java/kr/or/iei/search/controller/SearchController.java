@@ -41,4 +41,7 @@ public class SearchController {
 			return list;
 		}
 	}
+	
+	//@ResponseBody
+	//@GetMapping(value = "")
 }
