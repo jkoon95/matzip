@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.or.iei.notice.model.dto.NoticeViewData;
 import kr.or.iei.store.model.dao.StoreDao;
 import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.EvidenceFile;
