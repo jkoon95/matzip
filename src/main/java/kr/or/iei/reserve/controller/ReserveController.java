@@ -1,5 +1,6 @@
 package kr.or.iei.reserve.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,33 +23,35 @@ public class ReserveController {
 	private ReserveService reserveService;
 	
 	@RequestMapping(value="/reserveFrm")
-	private String reserveFrm(@SessionAttribute(required = false) Member member, Store store, Menu menu, Model model) {
+	private String reserveFrm(Model model) {
 		//매개변수 : @SessionAttribute(required = false) Member member, Store store, Menu menu, Model model
 		//받아온 정보 : member, store, menu
-		int memberNo = 25;
-		int storeNo = 2;
-		/*
-		 * 보내줄 정보
-		 * storeName, openingHour, closingHour, breakStart, breakEnd
-		 * 예약불가일 : 정기휴무일, 임시휴무일, 만석인 날짜(아래)
-		 * 만석 아닌 날의 날짜별 남은 table_no
-		 * 
-		 */
-		/*
-		 * 만석인 날짜와 만석인 시각 동시 조회
-		 * 시각별 예약횟수 쿼리 : select reserve_time, count(*) reserve_time_count from reserve_tbl where store_no = 2 and reserve_date = 'yyyy-mm-dd' and reserve_status != 3 group by reserve_time order by reserve_time;
-		 * 식탁수 쿼리 : select count(*) table_count from table_tbl store_no = ? group by store_no; 
-		 * 시각별 예약횟수와 식탁수 비교 (같으면 그 시각 만석)
-		 */
-		/*
-		 * 만석 아닌 시각의 잔여 식탁번호 조회
-		 * select table_no from table_tbl where store_no = 2
-		 * minus
-		 * select table_no from reserve_tbl where store_no = 2 and reserve_date = '2024-02-29' and reserve_time = '12:00' and reserve_status != 3;
-		 */
 		
-		//만석인 날짜 조회
-		List list= reserveService.reserveFrm(member, store);
+		//원래 매개변수인데, 일단 임시로
+		//int memberNo = 25;
+		int storeNo = 2;
+		Store store = reserveService.searchStore(storeNo);
+		List<Menu> menu = reserveService.searchMenu(storeNo);
+		
+		
+		//만석인 날짜
+		List<String> fullDays = reserveService.fullDays(store);
+		
+		//예약 가능한 날짜의 만석인 시각 구하기
+		HashMap<String, List<String>> fullTimes = reserveService.fullTimes(store, fullDays);
+		
+		//정기휴무일 구하기
+		List<Integer> closedDays = reserveService.closedDays(store.getStoreNo());
+		
+		//임시휴무일 구하기
+		List<String> tempClosedDays = reserveService.tempClosedDays(store.getStoreNo());
+		
+		model.addAttribute("store", store);
+		model.addAttribute("menu", menu);
+		model.addAttribute("fullDays", fullDays);
+		model.addAttribute("fullTimes", fullTimes);
+		model.addAttribute("closedDays", closedDays);
+		model.addAttribute("tempClosedDays", tempClosedDays);
 		
 		return "reserve/reserveFrm";
 	}
