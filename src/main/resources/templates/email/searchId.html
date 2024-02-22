@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<th:block th:include="common/header"></th:block>
+	<div class="mid">
+        <div class="id-search-title">
+            <h3>아이디 찾기</h3>
+            <span>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</span>
+        </div>
+        <div class="id-search-wrap">            
+            <form  action="#" method="post">
+                <div>
+                    <label for="id-search-name">이 름</label>
+                    <input type="text" name="id-search-name" id="id-search-name">
+                </div>
+                <div>
+                    <label for="id-search-email">이메일</label>
+                    <input type="text" name="id-search-email" id="id-search-email">
+                    <button type="submit" name="id-search-email-btn">인증번호받기</button>
+
+                </div>
+                <div class="pass-num-box">
+                    <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
+                    <button type="button" name="pass-num-btn">인증하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <th:block th:include="common/footer"></th:block>
+    
+</body>
+</html>
