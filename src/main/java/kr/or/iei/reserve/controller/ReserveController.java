@@ -23,6 +23,7 @@ public class ReserveController {
 	
 	@RequestMapping(value="/reserveFrm")
 	private String reserveFrm(@SessionAttribute(required = false) Member member, Store store, Menu menu, Model model) {
+		//매개변수 : @SessionAttribute(required = false) Member member, Store store, Menu menu, Model model
 		//받아온 정보 : member, store, menu
 		int memberNo = 25;
 		int storeNo = 2;

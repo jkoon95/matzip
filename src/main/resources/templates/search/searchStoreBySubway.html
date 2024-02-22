@@ -17,15 +17,15 @@
 		<div class="page-content1">
 			<div class="menu">
 				<div class="subway-line-menu" id="menu">
-					<div id="line1-menu" onclick="toggleStations('line1'); colorChange(this)">1호선</div>
-					<div id="line2-menu" onclick="toggleStations('line2'); colorChange(this)">2호선</div>
-					<div id="line3-menu" onclick="toggleStations('line3'); colorChange(this)">3호선</div>
-					<div id="line4-menu" onclick="toggleStations('line4'); colorChange(this)">4호선</div>
-					<div id="line5-menu" onclick="toggleStations('line5'); colorChange(this)">5호선</div>
-					<div id="line6-menu" onclick="toggleStations('line6'); colorChange(this)">6호선</div>
-					<div id="line7-menu" onclick="toggleStations('line7'); colorChange(this)">7호선</div>
-					<div id="line8-menu" onclick="toggleStations('line8'); colorChange(this)">8호선</div>
-					<div id="line9-menu" onclick="toggleStations('line9'); colorChange(this)">9호선</div>
+					<div id="line1-menu" class="line-menu" onclick="toggleStations('line1'); colorChange(this); ">1호선</div>
+					<div id="line2-menu" class="line-menu" onclick="toggleStations('line2'); colorChange(this); ">2호선</div>
+					<div id="line3-menu" class="line-menu" onclick="toggleStations('line3'); colorChange(this); ">3호선</div>
+					<div id="line4-menu" class="line-menu" onclick="toggleStations('line4'); colorChange(this); ">4호선</div>
+					<div id="line5-menu" class="line-menu" onclick="toggleStations('line5'); colorChange(this); ">5호선</div>
+					<div id="line6-menu" class="line-menu" onclick="toggleStations('line6'); colorChange(this); ">6호선</div>
+					<div id="line7-menu" class="line-menu" onclick="toggleStations('line7'); colorChange(this); ">7호선</div>
+					<div id="line8-menu" class="line-menu" onclick="toggleStations('line8'); colorChange(this); ">8호선</div>
+					<div id="line9-menu" class="line-menu" onclick="toggleStations('line9'); colorChange(this); ">9호선</div>
 				</div>
 
 				<div id="line1" class="station-list" style="display: none;">
@@ -36,11 +36,11 @@
 				</div>
 				<div id="line2" class="station-list" style="display: none;">
 					<ul>
-						<li>당산역</li>
-						<li>신도림역</li>
-						<li>건대입구역</li>
-						<li>잠실역</li>
-						<li>강남역</li>
+						<li id="dangsan-station">당산역</li>
+						<li id="sindorim-station">신도림역</li>
+						<li id="konkuk-university-entrance-station">건대입구역</li>
+						<li id="jamsil-station">잠실역</li>
+						<li id="gangnam-station">강남역</li>
 						<!-- 나머지 2호선 역들 -->
 					</ul>
 				</div>
@@ -237,6 +237,15 @@
 			window.scrollTo(x, y);
 		}
 
+		// function mouseOverFunc(element){
+		// 	const allStations = $(".station-list");
+		// 	const id = element.id;
+
+		// 	if (id == 'line1-menu'){
+		// 		$(element).addClass('transition-background').css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
+		// 	}
+		// }
+
 		function colorChange(element) {
 			const allStations = $(".station-list");
 			const id = element.id;
@@ -252,6 +261,7 @@
 
 
 
+			
 
 			if (id == 'line1-menu') {
 				$(element).css('background', 'linear-gradient(to bottom, #C34A36, #FF8066)');
@@ -312,8 +322,72 @@
 			}
 		}
 
+		//const stationName = fullStationName.replace(/역$/, ''); // '역' 문자가 맨 끝에 있을 때만 제거
+		$(".station-list > ul > li").click(function(){
+				
+				const fullStationName = $(this).text(); // '당산역' 같은 전체 역 이름 가져오기
+				const stationName = fullStationName.replace(/역$/, ''); // '역' 문자가 맨 끝에 있을 때만 제거
+				console.log(fullStationName);
+
+				$.ajax({
+					url: "/search/ajaxSelectTop5Store",
+					type: "get",
+					data: { stationName: stationName },
+					success: function (data) {
+						console.log(data);
+						$(".store-top5").remove(); // 기존의 내용을 비웁니다.
+
+						//data 배열을 반복 처리하여 각 상점에 대한 HTML 마크업을 생성합니다.
+						$.each(data, function (index, store) {
+							if (store !== null) {
+								const storeHtml = 
+								'<div class="store-top5">'+
+									'<div class="store-content1">' +
+										//'<div>' + store.storeImg + '</div>' +
+										'<img src="/img/맛zip로고.png" alt="">'+
+										'<span class="material-icons heart-text">favorite_border</span>' +
+									'</div>' +
+									'<div class="store-content2 padding-left80">' +
+										'<div id="reviewScore-text">' + store.reviewScore +'점</div>' +
+										'<div>' +
+										'<span>' + store.storeName + '</span>' +
+										'<span class="padding-left20" id="operationStatus-text">' + store.operationStatus + '</span>' +
+									'</div>' +
+
+									'<div>' + store.subwayName + '역</div>' +
+									'<div>' + store.foodType + '</div>' +
+									'<div>' +
+										'<span class="material-icons message-text">comment</span>' +
+										'<span class="padding-right20 font-size20">' + store.reviewCount + '</span>' +
+										'<span class="material-icons heart-text">favorite</span>' +
+										'<span class="font-size20">' + store.likeCount + '</span>' +
+									'</div>' +
+									'</div>'
+								'</div>';
+							$(".modal-content").append(storeHtml);
+							const moreBtn = 
+							'<div>' + 
+								'<button>버튼</button>' +
+							'</div>';
+
+							
+							}
+						});
+					},
+					error: function (data) {
+
+					}
+				})
+
+				$("#modal").show(); // 모달 보여주기
+				$("#modal .modal-content h2").text(stationName); // 모달에 역 이름 설정
+				$("body").css("overflow", "hidden"); // 스크롤 비활성화
+		});
 
 		$(document).ready(function () {
+			
+
+
 			$(".subway-station").click(function () {
 				const stationName = $(this).find(".subway-station-name").text(); // 역 이름 가져오기
 

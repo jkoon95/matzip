@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import kr.or.iei.FileUtils;
-import kr.or.iei.board.model.dto.BoardFile;
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreInfoData;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -35,23 +37,29 @@ public class StoreController {
 		}
 		
 		@GetMapping(value="/storeEnrollFrm")
-		public String storeEnrollFrm(String businessNo, Model model) {
-			List subwaylist = storeService.selectAllSubway();
-			model.addAttribute("businessNo", businessNo);
-			model.addAttribute("subway",subwaylist);
-			return "store/storeEnrollFrm";
+		public String storeEnrollFrm(int memberNo, String businessNo, Model model) {
+			int count = storeService.selectStoreCount(memberNo);
+			if(count==0) {
+				List subwaylist = storeService.selectAllSubway();
+				model.addAttribute("businessNo", businessNo);
+				model.addAttribute("subway",subwaylist);
+				return "store/storeEnrollFrm";
+			}else {
+				model.addAttribute("title","실패");
+				model.addAttribute("msg","등록된 보유하신 매장이 있습니다.");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/");
+				return "common/msg";
+			}
 		}
 		
 		@PostMapping(value="/storeEnroll")
 		public String storeEnroll(Store store, MultipartFile[] edvienceUpFile, String address,String detailAddress, String[] closedDays, MultipartFile storeImgFile, MultipartFile[] menuImgFile, String[] name, int[] price, Model model) {
-			
-			//store 값 설정
+			//매장
 			store.setStoreAddr(address+" "+detailAddress);	//도로명 + 상세주소
-			
-			String storeSavepath = root+"/store/";	//첨부파일이 무조건 있다는 가정하에(검사안함)
+			String storeSavepath = root+"/store/";
 			String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
 			store.setStoreImg(storeFilepath);
-			
 			//사업자증빙자료
 			List<EvidenceFile> evidenceFileList = new ArrayList<EvidenceFile>();
 			if(!edvienceUpFile[0].isEmpty()) { 
@@ -65,9 +73,7 @@ public class StoreController {
 					evidenceFileList.add(evidenceFile);
 				}
 			}
-			
 			//휴무일 
-			
 			//메뉴 등록값
 			List<Menu> menuList = new ArrayList<Menu>();
 			String menuSavepath = root+"/store/menu/";		
@@ -81,12 +87,13 @@ public class StoreController {
 				menu.setMenuPrice(menuPrice);
 				menuList.add(menu);
 			}
-			
 			int result = storeService.insertStore(store,evidenceFileList,closedDays,menuList);
-			
-			//성공갯수 구해서 결과 화면 출력	-> 구해야댐..
-			
-			int count = 1+evidenceFileList.size()+closedDays.length+menuList.size();
+			int count;//성공갯수
+			if (closedDays != null) {
+				count = 1+evidenceFileList.size()+closedDays.length+menuList.size();
+		    } else {
+		    	count = 1+evidenceFileList.size()+menuList.size();
+		    }
 			if(result==count) {
 				model.addAttribute("title","성공");
 				model.addAttribute("msg","매장등록에 성공했습니다.");
@@ -97,26 +104,30 @@ public class StoreController {
 				model.addAttribute("icon","error");
 			}
 				model.addAttribute("loc","/");
-			
-			
-			/*데이터 확인용
-			System.out.println(store);
-			
-			
-			for(String closeDay : closedDays) {
-				System.out.print(closeDay);
-			}
-			System.out.println();
-			
-			for(String menuName : name) {
-				System.out.println(menuName);
-			}
-			for(int menuPrice : price) {
-				System.out.println(menuPrice);
-			}
-			*/
-			
-			
 			return "common/msg";
 		}
+		
+		@GetMapping(value="/myStore")
+		public String mypage(HttpSession session, Model model) {
+			//매장없을시 등록페이지로이동
+			Member member = (Member)session.getAttribute("member");
+			int memberNo = member.getMemberNo();
+			int count = storeService.selectStoreCount(memberNo);
+			if(count==0) {
+				model.addAttribute("title","실패");
+				model.addAttribute("msg","매장을 먼저 등록해주세요.");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/store/bussinessNumberCheck");
+				return "common/msg";
+			}else {
+				//스토어,휴무일,메뉴
+				StoreInfoData sid = storeService.selectOneStore(memberNo);
+				model.addAttribute("store",sid.getStore());
+				model.addAttribute("closedDayList",sid.getClosedDayList());
+				model.addAttribute("MenuList",sid.getMenuList());
+				return "store/myStore";
+			}
+		}
+		
+		
 }

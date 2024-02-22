@@ -272,3 +272,9 @@
 .font-size20{
     font-size: 20px;
 }
+
+
+
+#line1-menu:hover{
+    background: linear-gradient(to bottom, #C34A36, #FF8066);
+}

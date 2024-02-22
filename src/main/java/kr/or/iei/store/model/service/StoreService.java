@@ -1,5 +1,6 @@
 package kr.or.iei.store.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreInfoData;
 
 @Service
 public class StoreService {
@@ -53,4 +55,22 @@ public class StoreService {
 		}
 		return result;
 	}
+
+	public int selectStoreCount(int memberNo) {
+		int count = storeDao.selectStoreCount(memberNo);
+		return count;
+	}
+
+	public StoreInfoData selectOneStore(int memberNo) {
+		//스토어,휴무일리스트,메뉴리스트 가져옴
+		Store store= storeDao.selectOneStore(memberNo);
+		int storeNo = store.getStoreNo();
+		List closedDayList = storeDao.selectStoreClosedDay(storeNo);
+		List MenuList = storeDao.selectStoreMenu(storeNo);
+		StoreInfoData sid = new StoreInfoData(store,closedDayList,MenuList);
+		return sid;
+		
+	}
+
+	
 }
