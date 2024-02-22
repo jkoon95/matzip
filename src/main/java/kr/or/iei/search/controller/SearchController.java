@@ -48,6 +48,7 @@ public class SearchController {
 		}
 	}
 	
+
 	@ResponseBody
 	@GetMapping(value = "ajaxStoreList")
 	public List ajaxStoreList(int start,int amount,String stationName) {
@@ -83,4 +84,14 @@ public class SearchController {
 		
 		return twoList;	
 	}
+
+	//@ResponseBody
+	//@GetMapping(value = "")
+	
+	@GetMapping(value="storeDetail")
+	public String storeDetail() {
+		return "search/storeDetail";
+	}
+	
+
 }

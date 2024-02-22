@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.dto.MemberRowMapper;
+import kr.or.iei.member.model.dto.OriginMemberRowMapper;
 
 @Repository
 public class MemberDao {
@@ -15,6 +16,8 @@ public class MemberDao {
 	private JdbcTemplate jdbc;
 	@Autowired
 	private MemberRowMapper memberRowMapper;
+	@Autowired
+	private OriginMemberRowMapper originMemberRowMapper;
 	
 	public Member selectOneMember(String memberId, String memberPw, int memberLevel) {
 		String query = "select \r\n" + 
@@ -48,17 +51,27 @@ public class MemberDao {
 	public Member selectOneMember(String memberId) {
 		String query = "select * from member_tbl where member_id=?";
 		Object[] params = {memberId};
-		List list = jdbc.query(query, memberRowMapper,params);
+		List list = jdbc.query(query, originMemberRowMapper,params);
 		if(list.isEmpty()) {
 			return null;
 		}
 		return (Member)list.get(0);
 	}
+	
 	public int deleteMember(int memberNo) {
 		String query = "delete from member_tbl where member_no=?";
 		Object[] params = {memberNo};
 		int result = jdbc.update(query, params);
 		return result;
+	}
+	public Member selectNicknameMember(String memberNickname) {
+		String query = "select * from member_tbl where member_Nickname=?";
+		Object[] params = {memberNickname};
+		List list = jdbc.query(query, originMemberRowMapper,params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Member)list.get(0);
 	}	
 	
 }

@@ -72,6 +72,11 @@ public class StoreService {
 		
 	}
 
+	public Store selectGetStore(int storeNo) {
+		Store store= storeDao.selectGetStore(storeNo);
+		return store;
+	}
+
 	
 
 	

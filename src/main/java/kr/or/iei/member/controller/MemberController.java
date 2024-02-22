@@ -119,10 +119,21 @@ public class MemberController {
 		}
 		return "common/msg";
 	}
+	
 	@ResponseBody
 	@GetMapping(value="/checkId")
 	public int checkId(String memberId) {
 		Member member = memberService.selectOneMember(memberId);
+		if(member == null) {
+			return 0;
+		}else {
+			return 1;
+		}
+	}
+	@ResponseBody
+	@GetMapping(value="/checkNickname")
+	public int checkNickname(String memberNickname) {
+		Member member = memberService.selectNicknameMember(memberNickname);
 		if(member == null) {
 			return 0;
 		}else {
@@ -145,5 +156,13 @@ public class MemberController {
 			model.addAttribute("loc", "/member/mypage");
 		}
 		return "common/msg";
+	}
+	@GetMapping(value="idSearch")
+	public String searchId() {
+		return "email/searchId";
+	}
+	@GetMapping(value="pwSearch")
+	public String searchPw() {
+		return "email/searchPw";
 	}
 }

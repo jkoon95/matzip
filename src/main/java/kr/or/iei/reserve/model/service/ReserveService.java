@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.reserve.model.dao.ReserveDao;
+import kr.or.iei.reseve.model.dto.TempClosedDay;
+import kr.or.iei.store.model.dto.ClosedDay;
+import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
 
 @Service
@@ -18,9 +22,21 @@ public class ReserveService {
 
 	@Autowired
 	private ReserveDao reserveDao;
+	
+	//임시
+	public Store searchStore(int storeNo) {
+		Store store = reserveDao.searchStore(storeNo);
+		return store;
+	}
 
-	public List reserveFrm(Member member, Store store) {
-		
+	//임시로
+	public List<Menu> searchMenu(int storeNo) {
+		List<Menu> menu = reserveDao.searchMenu(storeNo);
+		return menu;
+	}
+	
+	public List<String> fullDays(Store store) {
+		//1. dayTotalCount 구하기
 		//한 테이블의, 한 날짜 기준 영업시간 내에서, 30분 단위로 예약 가능한 총 갯수
 		int dayTotalCount = 0;
 		//00:00부터 openingHour까지 30분 단위로 예약 가능한 횟수
@@ -34,8 +50,6 @@ public class ReserveService {
 			breakStartCount = (Integer.parseInt(store.getBreakStart().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakStart().substring(3,5)) / 30);
 			breakEndCount = (Integer.parseInt(store.getBreakEnd().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakEnd().substring(3,5)) / 30);
 		};
-		//timeToEatCount 1당 30분임.
-		int timeToEatCount = store.getTimeToEat();
 		//이하 대소비교시, openingCount가 openingHour를 대체하고(close도 동일), breakStartCount가 breakStart를 대체함(end도 동일)
 		//경우의 수에 따른 dayTotalCount 찾기 시작
 		/*
@@ -65,19 +79,24 @@ public class ReserveService {
 			}
 		};
 		*/
-		//dayTotalCount 찾기 최종 요약
+		//dayTotalCount 구하기 최종 요약
 		if ( (openingCount < closingCount) || (breakStartCount > breakEndCount) ) {
 			dayTotalCount = closingCount - breakEndCount + breakStartCount - openingCount;
 		}else {
 			dayTotalCount = 48 + closingCount - openingCount - breakEndCount + breakStartCount;
 		}
-		//만석인 날짜 구하기
+		
+		//2. 만석인 날짜 구하기
 		int tableAmount = reserveDao.tableAmount(store.getStoreNo());
 		int allCount = tableAmount*dayTotalCount;
-		List<String> reserveFullDays = reserveDao.fullDays(store.getStoreNo(), allCount);//return 1
+		List<String> fullDays = reserveDao.fullDays(store.getStoreNo(), allCount);
 		
-		
-		//오늘부터 14일 후까지의 날짜 배열 리스트 만들기
+		return fullDays;
+	}
+
+	public HashMap<String, List<String>> fullTimes(Store store, List<String> fullDays) {
+		//1. 예약 가능 날짜 구하기
+		//오늘(=0일)부터 14일 후까지의 날짜 배열 리스트 만들기
 		List<String> reserveAbleDays = new ArrayList<String>();
 		Calendar cal = Calendar.getInstance();
 		for(int i=0; i<15; i++) {
@@ -85,18 +104,60 @@ public class ReserveService {
 			cal.add(Calendar.DAY_OF_YEAR, i);//오늘 날짜에서 i일 더하기
 			String dateToStr = String.format("%1$tY-%1$tm-%1$td", cal);//cal를 문자열로 형변환 "yyyy-mm-dd"
 			reserveAbleDays.add(dateToStr);
-			System.out.println(reserveAbleDays.get(i));
 		}
-		//차집합으로 진짜 예약가능날짜만 구하기
-		reserveAbleDays.removeAll(reserveFullDays);
+		//최종 : 차집합으로 진짜 예약가능날짜만 구하기
+		reserveAbleDays.removeAll(fullDays);
 		
+		//2. 예약 가능 날짜의 만석인 시각 구하기
+		//key : reserveAbleDays[i], value : reserveFullTimes[]
+		//reserve_tbl에선 예약횟수가 0인 시각의 time을 select할 수가 없어서, 예약가능시각이 아니라 불가피하게(지금 내 능력의 한계...) 만석인 시각을 먼저 구함 
+		int tableAmount = reserveDao.tableAmount(store.getStoreNo());
+		HashMap<String, List<String>> fullTimes = reserveDao.fullTime(store.getStoreNo(), reserveAbleDays, tableAmount);
 		
-		//예약 가능 날짜의 만석인 시각 구하기
-		
-		
-		
-		return null;
+		return fullTimes;
 	}
-	
+
+	public List<Integer> closedDays(int storeNo) {
+		List<ClosedDay> list = reserveDao.closedDays(storeNo);
+		List<Integer> closedDays = new ArrayList<Integer>();
+		for(ClosedDay item : list) {
+			switch(item.getClosedDay()) {
+			case "일" :
+				closedDays.add(0);
+				break;
+			case "월" :
+				closedDays.add(1);
+				break;
+			case "화" :
+				closedDays.add(2);
+				break;
+			case "수" :
+				closedDays.add(3);
+				break;
+			case "목" :
+				closedDays.add(4);
+				break;
+			case "금" :
+				closedDays.add(5);
+				break;
+			case "토" :
+				closedDays.add(6);
+				break;
+			default:
+				break;
+			}
+		}
+		return closedDays;
+	}
+
+	public List<String> tempClosedDays(int storeNo) {
+		List<TempClosedDay> list = reserveDao.tempClosedDays(storeNo);
+		List<String> tempClosedDays = new ArrayList<String>();
+		for(TempClosedDay item : list) {
+			tempClosedDays.add(item.getTempClosedDay());
+		}
+		return tempClosedDays;
+	}
+
 	
 }

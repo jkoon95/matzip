@@ -164,4 +164,14 @@ public class StoreDao {
 		List list = jdbc.query(query, menuRowMapper , params);
 		return list;
 	}
+
+	public Store selectGetStore(int storeNo) {
+		String query = "select * from store_tbl where store_no=?";
+		Object[] params = {storeNo};
+		List list = jdbc.query(query, storeRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Store)list.get(0);
+	}
 }
