@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<th:block th:include="common/header"></th:block>
+	
+	<!-- 사이드 메뉴바 추가해야함 -->
+	
+		<div class="mid">
+	        <div class="info-join-title">사장님 정보</div>
+	        <div class="info-join-wrap-box">            
+	            <form action="/member/storeupdate" method="post">                
+	                <div class="info-join-box">
+	                    <div class="info-join-wrap">
+		                    <div class="info-join-wrap">
+		                        <label for="memberNo"></label>
+		                        <input type="hidden" name="memberNo" id="memberNo" class="input-from"
+		                        	th:value="${session.member.memberNo}">
+		                    </div>
+	                        <label for="memberId">아이디(수정불가)</label>
+	                        <input type="text" name="memberId" id="memberId" class="input-from" 
+	                        	th:value="${session.member.memberId}" readonly>
+	                    </div>
+	                    <div class="info-join-wrap">
+	                        <label for="memberEmail">이메일</label>
+	                        <input type="text" name="memberEmail" id="memberEmail" class="input-from" 
+	                        	th:value="${session.member.memberEmail}">@
+                        <select name="emailAdress">
+                            <option value="@naver.com">- - - naver.com - - -</option>
+                            <option value="@hanmail.net">- - -hanmail.net- - -</option>
+                        </select>	                        
+	                    </div>
+	                    <div class="info-join-wrap">
+	                        <label for="memberPw">비밀번호</label>
+	                        <input type="password" name="memberPw" id="memberPw" class="input-from"
+	                        	th:value="${session.member.memberPw}">	                 
+	                    </div>
+	                    <div class="info-join-wrap">
+	                        <label for="memberPwRe">비밀번호 확인</label><!-- 비밀번호 일치확인-->
+	                        <input type="password"  id="memberPwRe" class="input-from">
+	                    </div>
+	                    <div class="info-join-wrap">
+	                        <label for="memberName">이름</label>
+	                        <input type="text" name="memberName" id="memberName" class="input-from" 
+	                        	th:value="${session.member.memberName}">
+	                    </div>
+	                    <div class="info-join-wrap">
+	                        <label for="memberNickname">닉네임(수정불가)</label>
+	                        <input type="text" name="memberNickname" id="memberNickname" class="input-from"
+	                        	th:value="${session.member.memberNickname}" disabled>
+	                    </div>
+	                    <div class="info-join-wrap">
+	                        <label for="memberPhone">휴대전화번호 (ex:010-1234-5678)</label>
+	                        <input type="text" name="memberPhone" id="memberPhone" class="input-from" placeholder="010-0000-0000"
+	                        	th:value="${session.member.memberPhone}">
+	                    </div>        
+	                </div>                    
+	                    <div class="info-joinBtn-box">
+	                        <a href="/member/update"><button type="submit" id="update">수 정</button></a>
+	                        <a href="/member/delete"><button type="button" id="out">탈 퇴</button></a>
+	                    </div>  
+	            	</form>
+	        	</div>              
+	    	</div>
+	    <th:block th:include="common/footer"></th:block>	
+</body>
+</html>

@@ -23,8 +23,8 @@
                         </label>
                     </div>
                     <div class="join-wrap">
-                        <label for="memberId">아이디<sup>*</sup></label>
-                        <input type="text" name="memberId" id="memberId" class="input-from">
+                        <label for="memberId">아이디<sup>*</sup><span id="checkId"></span></label>
+                        <input type="text" name="memberId" id="memberId" class="input-from" required>
                     </div>
                     <div class="join-wrap">
                         <label for="memberEmail">이메일</label>
@@ -36,11 +36,11 @@
                     </div>
                     <div class="join-wrap">
                         <label for="memberPw">비밀번호<sup>*</sup></label>
-                        <input type="password" name="memberPw" id="memberPw" class="input-from">
+                        <input type="password" name="memberPw" id="memberPw" class="input-from" required>
                     </div>
                     <div class="join-wrap">
                         <label for="memberPwRe">비밀번호 확인<sup>*</sup></label>
-                        <input type="password" id="memberPwRe" class="input-from">
+                        <input type="password" id="memberPwRe" class="input-from" required>
                     </div>
                     <div class="join-wrap">
                         <label for="memberName">이름</label>
@@ -70,6 +70,28 @@
             </form>
         </div>              
     </div>
+    
+    <script>
+    	$("#memberId").on("change",function(){
+    		const memberId = $(this).val();
+    		$.ajax({
+    			url: "/member/checkId",
+    			type : "get",
+    			data : {memberId : memberId},
+    			success : function(data){
+    				if(data==0){
+    					$("#checkId").text("사용가능한 ID 입니다.");
+    					$("#checkId").css("color","blue");
+    					$("#memberId").css("border-bottom", "2px solid blue");
+    				}else if(data==1){
+    					$("#checkId").text("사용이 불가능한 ID 입니다.");
+    					$("#checkId").css("color","red");
+    					$("#memberId").css("border-bottom", "2px solid red");
+    				}
+    			},
+    		});
+    	});
+    </script>
 	<th:block th:include="common/footer"></th:block>	
 </body>
 </html>

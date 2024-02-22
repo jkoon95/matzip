@@ -17,7 +17,9 @@ public class MemberDao {
 	private MemberRowMapper memberRowMapper;
 	
 	public Member selectOneMember(String memberId, String memberPw, int memberLevel) {
-		String query = "select * from member_tbl where member_id=? and member_pw=? and member_level=?";
+		String query = "select \r\n" + 
+				"    member_no,member_id,substr(member_email,1,instr(member_email,'@',1,1)-1) member_email,substr(member_email,instr(member_email,'@',1,1)) email_Address,member_pw, member_name, member_nickname, member_phone, member_join_date,member_level\r\n" + 
+				"from member_tbl where member_id=? and member_pw=? and member_level=?";
 		Object[] params = {memberId,memberPw,memberLevel};
 		List list = jdbc.query(query, memberRowMapper,params);		
 		if(list.isEmpty()) {
@@ -27,9 +29,36 @@ public class MemberDao {
 	}
 	public int insertMember(Member m) {
 		String query = "insert into member_tbl values(member_seq.nextval,?,?,?,?,?,?,to_char(sysdate,'yyyy-mm-dd'),?)";
-		Object[] params = {m.getMemberId(),m.getMemberEmail(),m.getMemberPw(),m.getMemberName(),m.getMemberNickname(),m.getMemberPhone(),m.getMemberLevel()};
+		Object[] params = {m.getMemberId(),m.getMemberEmail()+m.getEmailAddress(),m.getMemberPw(),m.getMemberName(),m.getMemberNickname(),m.getMemberPhone(),m.getMemberLevel()};
 		int result = jdbc.update(query,params);
 		return result;
 	}
+	public int updateMember(Member m) {
+		String query = "update member_tbl set member_email=?,member_pw=?,member_name=?,member_phone=? where member_no=?";
+		Object[] params = {m.getMemberEmail(),m.getMemberPw(),m.getMemberName(),m.getMemberPhone(),m.getMemberNo()};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+	public int storeUpdate(Member m) {
+		String query = "update member_tbl set member_email=?,member_pw=?,member_name=?,member_phone=? where member_no=?";
+		Object[] params = {m.getMemberEmail(),m.getMemberPw(),m.getMemberName(),m.getMemberPhone(),m.getMemberNo()};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+	public Member selectOneMember(String memberId) {
+		String query = "select * from member_tbl where member_id=?";
+		Object[] params = {memberId};
+		List list = jdbc.query(query, memberRowMapper,params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Member)list.get(0);
+	}
+	public int deleteMember(int memberNo) {
+		String query = "delete from member_tbl where member_no=?";
+		Object[] params = {memberNo};
+		int result = jdbc.update(query, params);
+		return result;
+	}	
 	
 }
