@@ -8,9 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.reserve.model.service.ReserveService;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
@@ -24,15 +23,13 @@ public class ReserveController {
 	
 	@RequestMapping(value="/reserveFrm")
 	private String reserveFrm(Model model) {
-		//매개변수 : @SessionAttribute(required = false) Member member, Store store, Menu menu, Model model
+		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Menu menu, Model model
 		//받아온 정보 : member, store, menu
 		
 		//원래 매개변수인데, 일단 임시로
-		//int memberNo = 25;
 		int storeNo = 2;
 		Store store = reserveService.searchStore(storeNo);
 		List<Menu> menu = reserveService.searchMenu(storeNo);
-		
 		
 		//만석인 날짜
 		List<String> fullDays = reserveService.fullDays(store);
@@ -40,21 +37,32 @@ public class ReserveController {
 		//예약 가능한 날짜의 만석인 시각 구하기
 		HashMap<String, List<String>> fullTimes = reserveService.fullTimes(store, fullDays);
 		
-		//정기휴무일 구하기
-		List<Integer> closedDays = reserveService.closedDays(store.getStoreNo());
-		
-		//임시휴무일 구하기
-		List<String> tempClosedDays = reserveService.tempClosedDays(store.getStoreNo());
-		
 		model.addAttribute("store", store);
 		model.addAttribute("menu", menu);
 		model.addAttribute("fullDays", fullDays);
 		model.addAttribute("fullTimes", fullTimes);
-		model.addAttribute("closedDays", closedDays);
-		model.addAttribute("tempClosedDays", tempClosedDays);
 		
 		return "reserve/reserveFrm";
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/closedDays")
+	private List<Integer> closedDays(int storeNo){
+		//매개변수 : int storeNo
+		//정기휴무일 구하기
+		List<Integer> closedDays = reserveService.closedDays(storeNo);
+		return closedDays;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/tempClosedDays")
+	private List<String> tempClosedDays(int storeNo){
+		//매개변수 : int storeNo
+		//임시휴무일 구하기
+		List<String> tempClosedDays = reserveService.tempClosedDays(storeNo);
+		return tempClosedDays;
+	}
+
 	
 	@PostMapping(value="/reserveList")
 	private String reserveList(String reserveDate, Model model) {
