@@ -169,34 +169,33 @@ public class ReserveService {
 			breakStartCount = (Integer.parseInt(store.getBreakStart().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakStart().substring(3,5)) / 30);
 			breakEndCount = (Integer.parseInt(store.getBreakEnd().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakEnd().substring(3,5)) / 30);
 		};
+		
+		//일단 휴일 무시하고 
 		if(openingCount < closingCount) {//당일 열고 당일 닫는 경우 또는 24시간 운영하는 경우
-			//if(store.getBreakStart() != "-1") {//휴게시간이 있는 경우
-				//dayTotalCount = (closingCount - breakEndCount) + (breakStartCount - openingCount);
-			//}else {//휴게시간이 없는 경우
-				//dayTotalCount = closingCount - openingCount;
-			//}
-			//계산해보니 휴게시간이 없으면 breakCount == 0 이어서, 더하나 빼나 상관 없네? 휴게시간 있는 경우와 없는 경우 모두 하나의 수식으로 합치자 ↓
-			dayTotalCount = closingCount - breakEndCount + breakStartCount - openingCount;
+			if(store.getBreakStart() != "-1") {//휴게시간이 있는 경우
+				//opening ~ breakStart , breakEnd ~ closing
+				
+			}else {//휴게시간이 없는 경우
+				//opening ~ closing
+			}
 		}else {//당일 열고 익일 닫는 경우
 			if(store.getBreakStart() != "-1") {//휴게시간이 있는 경우
 				if(breakStartCount < breakEndCount) { //휴게시간 시작과 종료가 모두 같은 날인 경우
-					//if(openingCount < breakStartCount) { //휴게시간 시작과 종료가 opening날짜와 같은 경우(당일인 경우)
-						//dayTotalCount = (48 - breakEndCount) + (breakStartCount - openingCount) + (closingCount - 0);
-					//}else {//휴게시간 시작과 종료가 closing날짜와 같은 경우(익일인 경우)
-						//dayTotalCount = (48 - openingCount) + (closingCount - breakEndCount) + (breakStartCount - 0);
-					//}
-					//계산해보니 위 두 경우의 수의 수식이 똑같아서, 하나의 수식으로 합치자 ↓
-					dayTotalCount = 48 + closingCount - openingCount - breakEndCount + breakStartCount;
+					if(openingCount < breakStartCount) { //휴게시간 시작과 종료가 opening날짜와 같은 경우(당일인 경우)
+						//0 ~ closing, opening ~ breakStart, breakEnd ~ 48(이어서 익일 closing까지)
+					}else {//휴게시간 시작과 종료가 closing날짜와 같은 경우(익일인 경우)
+						//0 ~ breakStart, breakEnd ~ closing, opening ~ 48(이어서 익일 breakStart까지)
+					};
 				}else { //휴게시간 시작은 당일이고 종료는 익일인 경우(breakStart > breakEnd)
-					dayTotalCount = (breakStartCount - openingCount) + (closingCount - breakEndCount);
+					//breakEnd ~ closing, opening ~ breakStart
 				}
 			}else {//휴게시간이 없는 경우
-				dayTotalCount = 48 + closingCount - openingCount;
+				//0 ~ closing, opening ~ 48
 			}
 		};
 		
 		
-		return remainTimes;
+		return null;
 	}
 
 	
