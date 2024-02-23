@@ -11,16 +11,23 @@
 	<div class="page-content">
 		<div class="store-head">
 			<div class="img-zone" style="width:520px;">
-				<!-- 임시사진 -->
-				<img src="/photo/store/강남_무궁화반점.jpg" style="max-width:100%; max-height:100%;">
+				<!-- 사진 경로 : static > photo > store -->
+				<img th:src="@{'/photo/store/' + ${store.storeImg}}" style="max-width:100%; max-height:100%;">
 			</div>
 			<div class="store-title">
-				<div class="store-name">무궁화반점</div>
+				<div class="store-name">
+					<h2 th:text="${store.storeName}"></h2>
+				</div>
 				<div class="store-like">하트</div>
 				<div class="store-star">별점</div>
 				<div class="store-report">신고</div>
 				<div class="store-info">
-					<div class="store-addr">주소</div>
+					<div class="store-addr">
+						<h3>
+							<span th:text="${store.storeAddr}"></span>
+   							<span th:text="${store.storeAddr1}"></span>
+						</h3>
+					</div>
 					<div class="store-phone">전화번호</div>
 					<div class="store-hours">영업시간(휴무일)</div>
 					<div class="store-intro">매장 소개글</div>
@@ -45,7 +52,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div id="map" style="width:400px;height:400px;"></div>
+						<!-- <div id="map" style="width:400px;height:400px;"></div> -->
 					</td>
 				</tr>
 			</table>

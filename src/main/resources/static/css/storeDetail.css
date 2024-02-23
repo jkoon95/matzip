@@ -30,6 +30,10 @@ a {
   display: inline-block;
   margin-right: 10px;
 }
+.store-title > div:first-child {
+  display: block;
+  margin-bottom: 10px;
+}
 
 /* 매장 정보 */
 .store-info {
