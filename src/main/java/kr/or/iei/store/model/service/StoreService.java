@@ -77,6 +77,28 @@ public class StoreService {
 		return store;
 	}
 
+	public List selectClosedDay(int storeNo) {
+		List list = storeDao.selectStoreClosedDay(storeNo);
+		return list;
+	}
+	
+	@Transactional
+	public int updateStore(Store store, String[] closedDays) {
+		//매장
+		int result = storeDao.updateStore(store);
+		int storeNo=store.getStoreNo();
+		if(result>0) {
+			//휴무일
+			result += storeDao.deleteClosedDay(storeNo);
+			if(closedDays != null) {
+				for(String closedDay : closedDays) {
+					result += storeDao.insertClosedDay(storeNo,closedDay);					
+				}
+			}
+		}
+		return result;
+	}
+
 	
 
 	

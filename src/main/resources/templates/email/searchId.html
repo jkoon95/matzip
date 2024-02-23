@@ -14,12 +14,12 @@
         <div class="id-search-wrap">            
             <form  action="#" method="post">
                 <div>
-                    <label for="id-search-name">이 름</label><span id="checkName"></span>
-                    <input type="text" name="id-search-name" id="id-search-name">
+                    <label for="id-search-name">이 름</label>
+                    <input type="text" name="memberName" id="id-search-name"><span id="checkName"></span>
                 </div>
                 <div>
                     <label for="id-search-email">이메일</label>
-                    <input type="text" name="id-search-email" id="id-search-email">
+                    <input type="text" name="memberEmail" id="id-search-email">
                     <button type="submit" name="id-search-email-btn">인증번호받기</button>
 
                 </div>
@@ -33,7 +33,28 @@
     <th:block th:include="common/footer"></th:block>
     
     <script>
-    	
+    	$("#id-search-name").on("change",function(){
+    		const memberName = $(this).val();
+    		$.ajax({
+    			url: "/mail/checkName",
+    			type:"get",
+    			data:{memberName : memberName},
+    			success : function(data){
+    				if(data==0){
+    					$("#checkName").text(" ---- 확인불가");
+    					$("#checkName").css("color","red");
+    					$("#id-search-name").css("border", "1px solid red");
+    				}else if(data==1){
+    					$("#checkName").text(" ------ 확인");
+    					$("#checkName").css("color","blue");
+    					$("#id-search-name").css("border", "1px solid blue");
+    				}
+    			},
+    			error : function(){
+    				console.log("error");
+    			}
+    		});
+    	});
     </script>
 </body>
 </html>

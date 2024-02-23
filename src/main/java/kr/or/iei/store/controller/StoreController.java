@@ -64,9 +64,8 @@ public class StoreController {
 		}
 		
 		@PostMapping(value="/storeEnroll")
-		public String storeEnroll(Store store, MultipartFile[] edvienceUpFile, String address,String detailAddress, String[] closedDays, MultipartFile storeImgFile, MultipartFile[] menuImgFile, String[] name, int[] price, Model model) {
+		public String storeEnroll(Store store, MultipartFile[] edvienceUpFile, String[] closedDays, MultipartFile storeImgFile, MultipartFile[] menuImgFile, String[] name, int[] price, Model model) {
 			//매장
-			store.setStoreAddr(address+" "+detailAddress);	//도로명 + 상세주소
 			String storeSavepath = root+"/store/";
 			String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
 			store.setStoreImg(storeFilepath);
@@ -84,7 +83,7 @@ public class StoreController {
 				}
 			}
 			//휴무일 
-			//메뉴 등록값
+			//메뉴
 			List<Menu> menuList = new ArrayList<Menu>();
 			String menuSavepath = root+"/store/menu/";		
 			for(int i=0; i<name.length; i++) {
@@ -149,15 +148,44 @@ public class StoreController {
 				model.addAttribute("loc","/");
 				return "common/msg";
 			}else {
+				List subwaylist = storeService.selectAllSubway();
+				List closedDayList = storeService.selectClosedDay(storeNo);
+				model.addAttribute("subway",subwaylist);
 				model.addAttribute("store",store);
+				model.addAttribute("closedDayList",closedDayList);
 				return "store/storeUpdateFrm";				
 			}
 		}
-		
-		
-		
-		
-		
+				
+		@PostMapping(value="/storeUpdate")
+		public String storeUpdate(Store store, String[] closedDays, MultipartFile storeImgFile, String oldImgName, Model model) {
+			if (storeImgFile != null && !storeImgFile.isEmpty()) {
+				String storeSavepath = root+"/store/";
+				fileUtils.deleteFile(storeSavepath, oldImgName);
+				String newImgName = fileUtils.upload(storeSavepath, storeImgFile);
+				store.setStoreImg(newImgName);
+			}else {
+				store.setStoreImg(oldImgName);
+			}
+			int result = storeService.updateStore(store,closedDays);
+			int count=2;//매장 insert+휴무일 삭제
+			if(closedDays !=null) {
+				count = 2 + closedDays.length;
+			}
+			if(result==count) {
+				model.addAttribute("title","수정하기 성공");
+				model.addAttribute("msg","매장정보가 수정되었습니다.");
+				model.addAttribute("icon","success");
+				model.addAttribute("loc","/store/myStore");
+				return "common/msg";
+			}else {
+				model.addAttribute("title","수정하기 실패");
+				model.addAttribute("msg","매장이 존재하지 않습니다.");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/store/myStore");
+				return "common/msg";
+			}
+		}
 		
 		
 		

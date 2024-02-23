@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
 
 @Repository
@@ -80,6 +81,11 @@ public class SearchDao {
 		Object[] params = {stationName,start,end};
 		List list = jdbc.query(query, storePlusRowMapper,params);
 		return list;
+	}
+
+	public Store selectSearchOne(int storeNo) {
+		String query = ";"
+		return null;
 	}
 
 }

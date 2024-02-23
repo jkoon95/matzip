@@ -13,7 +13,7 @@
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장 정보 변경</h1>
-            <form action="/store/storeUpdate" id="enrollStoreForm" method="post" enctype="multipart/form-data">
+            <form action="/store/storeUpdate" id="enrollStoreForm" method="post">
                 <div class="s-smallexplain">
                     <sup>* </sup> 표시된 곳은 필수입력 항목입니다.
                 </div>
@@ -21,19 +21,17 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
-                         <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>                        
-                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value=${businessNo} readonly>
-                    </div>
-                    <div class="s-input-wrap">
-                        <label for="store_sns">증빙서류 첨부<sup class="s-requiredMsg">* </sup></label>
-                        <input type="file" name="edvienceUpFile" multiple required>
+                         <input type="hidden" name="storeNo" th:value="${store.storeNo}">
+                         <input type="hidden" name="memberNo" th:value="${session.member.memberNo}">                        
+                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value="${store.businessNo}" readonly>
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeNo">매장명<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="storeName" id="storeName" class="s-input-form" required>
+                        <input type="text" name="storeName" id="storeName" class="s-input-form" th:value="${store.storeName}" required>
                     </div>
                     <div class="s-input-wrap">
                         <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
+                        
                         <select name="foodType" required>
                             <option value="">--</option>
                             <option value="양식">양식</option>
@@ -50,6 +48,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="subwayName" id="s-selectLable">주변역<sup class="s-requiredMsg">* </sup></label>
+                        
                         <select required name="subwayName">
                             <!-- subway 목록 출력 -->
                             <option value="">--</option>
@@ -59,18 +58,19 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="address" id="address" class="s-input-form" onclick="searchAddr();"
-                            required placeholder="주소찾기">
-                        <input type="text" name="detailAddress" id="detailAddress" class="s-input-form"
+                        <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" onclick="searchAddr();"
+                            required placeholder="주소찾기" th:value="${store.storeAddr}">
+                        <input type="text" name="storeAddr1" id="storeAddr1" class="s-input-form"
                             placeholder="상세주소를 입력하세요(예:동, 층, 호)">
+                        
                     </div>
                     <div class="s-input-wrap">
                         <label for="storePhone">연락처<sup class="s-requiredMsg">* </sup></label>
                         <input type="text" name="storePhone" id="storePhone" class="s-input-form" maxlength="13"
-                            required>
+                            required th:value="${store.storePhone}">
                     </div>
                     <div class="s-input-wrap">
-                        <label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
+                    	<label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
                         <select name="openingHour" required>
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
@@ -121,6 +121,7 @@
                             <option value="22:30">22:30</option>
                             <option value="23:00">23:00</option>
                             <option value="23:30">23:30</option>
+                            
                         </select>
                         시부터
                         <select name="closingHour" required>
@@ -176,7 +177,7 @@
                         </select>
                         까지
                     </div>
-                    <div class="s-input-wrap">	<!-- 둘 중 하나만 선택되는건 안되게 해주기 -->
+                    <div class="s-input-wrap">
                         <label for="" id="s-selectLable">쉬는시간</label>
                         <select name="breakStart">
                             <option value="-1">--</option>
@@ -280,6 +281,7 @@
                             <option value="23:00">23:00</option>
                             <option value="23:30">23:30</option>
                             <option value="24:00">24:00</option>
+                            
                         </select>
                         까지<span class="breakCheckMsg" style="color: red; font-size: 15px;font-weight:500;"></span>
                     </div>
@@ -306,23 +308,48 @@
                         <input type="checkbox" id="sunday" name="closedDays" value="일">
                         <span for="sunday">일</span>
                     </div>
+                    
 					<div class="s-input-wrap">
                         <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
-                        <select required name="timeToEat">
-                            <option value="">--</option>
-                            <option value="1">30분</option>
-                            <option value="2">1시간</option>
-                            <option value="3">1시간 30분</option>
-                            <option value="4">2시간</option>
-                        </select>
+						<th:block th:switch="${store.timeToEat}">
+							<select th:case="1" required name="timeToEat">
+                            	<option value="">--</option>
+                            	<option value="1" selected>30분</option>
+                            	<option value="2">1시간</option>
+                            	<option value="3">1시간 30분</option>
+                            	<option value="4">2시간</option>
+                        	</select>
+                        	<select th:case="2" required name="timeToEat">
+                            	<option value="">--</option>
+                            	<option value="1" >30분</option>
+                            	<option value="2" selected>1시간</option>
+                            	<option value="3">1시간 30분</option>
+                            	<option value="4">2시간</option>
+                        	</select>
+                        	<select th:case="3" required name="timeToEat">
+                            	<option value="">--</option>
+                            	<option value="1">30분</option>
+                            	<option value="2">1시간</option>
+                            	<option value="3" selected>1시간 30분</option>
+                            	<option value="4">2시간</option>
+                        	</select>
+                        	<select th:case="4" required name="timeToEat">
+                            	<option value="">--</option>
+                            	<option value="1">30분</option>
+                            	<option value="2">1시간</option>
+                            	<option value="3">1시간 30분</option>
+                            	<option value="4" selected>2시간</option>
+                        	</select>
+						</th:block>
+                        
                     </div>
                     <div class="s-input-wrap">
                         <label for="homePage">홈페이지</label>
-                        <input type="text" name="homePage" id="homepage" class="s-input-form">
+                        <input type="text" name="homePage" id="homePage" class="s-input-form" th:value="${store.homePage}">
                     </div>
                     <div class="s-input-wrap">
                         <label for="store_sns">SNS</label>
-                        <input type="text" name="storeSns" id="storeSns" class="s-input-form">
+                        <input type="text" name="storeSns" id="storeSns" class="s-input-form" th:value="${store.storeSns}">
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeDescription">매장설명</label>
@@ -333,41 +360,34 @@
                 <div class="s-title3">• 매장 사진<sup class="s-requiredMsg">* </sup></div>
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-enrollStoreImgBox">
-                        <img class="s-img-view" width="300px" height="300px">
-                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
-                            required>
-                    </div>
-                </div>
-                
-					
-                
-                <div class="s-title3">• 메뉴 등록<sup class="s-requiredMsg">* </sup>
-                    <span class="plusMenu">추가</span>
-                    <span class="menuCheckMsg" style="color: red; font-size: 15px;font-weight:500;"></span>
-                </div>
-                <div class="s-enrolldiv">
-                    <div class="s-input-wrap s-input-wrap-menu">
-                        <div class="s-menu-div">
-                            <div class="s-img-viewer">
-                                <img class="s-img-view" width="100px" height="100px">
-                            </div>
-                            <div class="s-img-viewerVal">
-                                <input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);" required>
-                                <input type="text" class="s-menu-input" name="name" placeholder="메뉴명" required>
-                                <input type="text" class="s-menu-input" name="price" width="150px" placeholder="가격" required>
-                                <span class="minusMenu"> 삭제</span>
-                            </div>
-                        </div>
+                        <img class="s-img-view" width="300px" height="300px" th:src="${store.storeImg}" name="storeImg">
+                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);">
+                        <input type="hidden" th:value="${store.storeImg}" name="oldImgName">     
                     </div>
                 </div>
                 <div class="s-enrolldiv">
-                	<input type="submit" value="매장등록" class="s-enrollbutton" style="width: 100%;">   
+                	<input type="submit" value="수정완료" class="s-enrollbutton" style="width: 100%;">   
                 </div>             
             </form>
         </div>
 
 
-        <script>
+        <script th:inline="javascript">
+        	$("#foodType").on("click",function(){
+        		$(this).css("display","none");
+        		$(this).next().css("display","inline-block");
+        	});
+        	$("#subwayName").on("click",function(){
+        		$(this).css("display","none");
+        		$(this).next().css("display","inline-block");
+        	});
+        	
+        /* 주소 ..	
+        	$("#storeAddr").on("click",function(){
+        		$(this).css("display","none");
+        		$(this).next().css("display","inline-block");
+        	});
+       */
             //주소 길찾기
             function searchAddr() {
                 new daum.Postcode({
@@ -380,53 +400,18 @@
                     }
                 }).open();
             }
-            
-
-
-            //메뉴 +/-
-                $('.plusMenu').on('click', function () {
-                	$(".menuCheckMsg").text("");
-                    $('.s-input-wrap-menu').append(
-                        '<div class="s-menu-div">' +
-                        '<div class="s-img-viewer">' +
-                        '<img class="s-img-view" width="100px" height="100px">' +
-                        '</div>' +
-                        '<div class="s-img-viewerVal">' +
-                        '<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);" required>' +
-                        '<input type="text" class="s-menu-input" name="name" placeholder="메뉴명" required>' +
-                        '<input type="text" class="s-menu-input" name="price" width="150px" placeholder="가격" required>' +
-                        '<span class="minusMenu"> 삭제</span>' +
-                        '</div>' +
-                        '</div>'
-                    );
-                });
-
-                $(document).on('click', '.minusMenu', function () {
-                    $(this).closest('.s-menu-div').remove();
-                });
-
                 //제출안되는경우
                 $('#enrollStoreForm').on('submit', function(event) {
                     var menuDivCount = $('.s-menu-div').length;
                     
                     const breakStart = $('select[name="breakStart"]').val();
                     const breakEnd = $('select[name="breakEnd"]').val();
-                    
-                    if (menuDivCount === 0) {
-                    	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
-                    	event.preventDefault();
-                	}
 
                     if ((breakStart !== "-1" && breakEnd !== "-1") || (breakStart === "-1" && breakEnd === "-1")) {
                         
                     } else {
-                        
                         event.preventDefault();
                         $(".breakCheckMsg").text("← 쉬는시간을 제대로 입력해주세요.");
-                        if (menuDivCount === 0) {
-                        	$(".menuCheckMsg").text("← 메뉴를 1개 이상 등록해주세요.");
-                        	event.preventDefault();
-                    	}
                     }
                     
                 	
@@ -445,19 +430,72 @@
                     $(obj).parent().find(".s-img-view").attr("src", "");
                 }
             }
-
-            function menuloadImg(obj) {
-                if (obj.files.length != 0 && obj.files[0] != 0) {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(obj.files[0]);
-                    reader.onload = function (e) {
-                        $(obj).parent().parent().find(".s-img-view").attr("src", e.target.result);
-                    }
-                } else {
-                    $(obj).parent().parent().find(".s-img-view").attr("src", "");
-                }
-            }
             
+            const closedDay = [[${closedDayList}]];
+            console.log(closedDay);
+            const closedDayCheckbox = $("[name=closedDays]");
+            closedDayCheckbox.each(function(index,item){
+            	const value = $(item).val();
+            	for(let i = 0; i<closedDay.length;i++){
+            		if(closedDay[i].closedDay === value){
+            			$(item).prop("checked",true);
+            		}
+            	}
+            })
+            
+            const foodType = [[${store.foodType}]];
+        	$('select[name="foodType"] option[value="' + foodType + '"]').prop("selected", true);
+        	
+        	const subwayName = [[${store.subwayName}]];
+        	$('select[name="subwayName"] option[value="' + subwayName + '"]').prop("selected", true);
+            
+            const closingHour = [[${store.closingHour}]];
+        	$('select[name="closingHour"] option[value="' + closingHour + '"]').prop("selected", true);
+        	
+        	const openingHour = [[${store.openingHour}]];
+        	$('select[name="openingHour"] option[value="' + openingHour + '"]').prop("selected", true);
+        	
+        	const breakStart = [[${store.breakStart}]];
+        	$('select[name="breakStart"] option[value="' + breakStart + '"]').prop("selected", true);
+        	
+        	const breakEnd = [[${store.breakEnd}]];
+        	$('select[name="breakEnd"] option[value="' + breakEnd + '"]').prop("selected", true);
+        	
+        	
+        	$("#storePhone").keyup(function(){
+        		var val = $(this).val().replace(/[^0-9]/g, '');
+        		if(val.length > 3 && val.length < 6){
+        			var tmp = val.substring(0,2)
+        			if(tmp == "02"){
+        				$(this).val(val.substring(0,2) + "-" + val.substring(2));
+        			} else {
+        				$(this).val(val.substring(0,3) + "-" + val.substring(3));
+        			}
+        		}else if (val.length > 6){
+        			var tmp = val.substring(0,2)
+        			var tmp2 = val.substring(0,4)
+        			if(tmp == "02"){
+        				if(val.length == "10"){
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 6) + "-" + val.substring(6));
+        				} else {
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 5) + "-" + val.substring(5));
+        				}
+        			} else if(tmp2 == "0505"){
+        				if(val.length == "12"){
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 8) + "-" + val.substring(8));
+        				} else {
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 7) + "-" + val.substring(7));
+        				}
+        			} else {
+        				if(val.length == "11"){
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 7) + "-" + val.substring(7));
+        				} else {
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 6) + "-" + val.substring(6));
+        				}
+        			}
+        		}
+        	});
+        	
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>

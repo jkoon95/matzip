@@ -32,7 +32,15 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 		.addResourceHandler("/store/evidence/**")
 		.addResourceLocations("file:///C:/Temp/upload/store/evidence/");
+		
+	
+		
+		registry
+		.addResourceHandler("/search/**")
+		.addResourceLocations("file:///C:/Temp/upload/search/");
 
 	}
+	
+	
 
 }
