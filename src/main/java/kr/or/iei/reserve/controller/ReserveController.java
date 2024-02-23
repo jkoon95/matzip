@@ -1,6 +1,5 @@
 package kr.or.iei.reserve.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.iei.reserve.model.service.ReserveService;
-import kr.or.iei.store.model.dto.Menu;
-import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.reseve.model.dto.ReserveFrm;
+import kr.or.iei.reseve.model.dto.TimeSet;
 
 @RequestMapping(value="/reserve")
 @Controller
@@ -27,20 +26,13 @@ public class ReserveController {
 		//받아온 정보 : member, store, menu
 		
 		//원래 매개변수인데, 일단 임시로
-		int storeNo = 2;
-		Store store = reserveService.searchStore(storeNo);
-		List<Menu> menu = reserveService.searchMenu(storeNo);
+		int storeNo = 2;;
 		
-		//만석인 날짜
-		List<String> fullDays = reserveService.fullDays(store);
+		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		
-		//예약 가능한 날짜의 만석인 시각 구하기
-		HashMap<String, List<String>> fullTimes = reserveService.fullTimes(store, fullDays);
-		
-		model.addAttribute("store", store);
-		model.addAttribute("menu", menu);
-		model.addAttribute("fullDays", fullDays);
-		model.addAttribute("fullTimes", fullTimes);
+		model.addAttribute("store", reserveFrm.getStore());
+		model.addAttribute("menu", reserveFrm.getMenu());
+		model.addAttribute("fullDays", reserveFrm.getFullDays());
 		
 		return "reserve/reserveFrm";
 	}
@@ -63,6 +55,13 @@ public class ReserveController {
 		return tempClosedDays;
 	}
 
+	@ResponseBody
+	@PostMapping(value="/timeSet")
+	private TimeSet timeSet(int storeNo, String day){
+		//매개변수 : int storeNo, String Day(datepicker에서 선택한 날짜)
+		TimeSet timeSet = reserveService.timeset(storeNo, day);
+		return timeSet;
+	}
 	
 	@PostMapping(value="/reserveList")
 	private String reserveList(String reserveDate, Model model) {
