@@ -87,14 +87,21 @@ public class StoreService {
 		//매장
 		int result = storeDao.updateStore(store);
 		int storeNo=store.getStoreNo();
-		if(result>0) {
+		if(result>0) {	//result=1
+			List closedDayList = storeDao.selectStoreClosedDay(storeNo);
+			closedDayList.size(); 
+			 
 			//휴무일
-			result += storeDao.deleteClosedDay(storeNo);
+			result += storeDao.deleteClosedDay(storeNo);		//result+closedDayList.size
+			if(result == 1+closedDayList.size()) {
+				result -= closedDayList.size();	//result=1
+			}
+			
 			if(closedDays != null) {
 				for(String closedDay : closedDays) {
 					result += storeDao.insertClosedDay(storeNo,closedDay);					
 				}
-			}
+			}//체크된만큼 result
 		}
 		return result;
 	}

@@ -191,8 +191,8 @@ public class StoreDao {
 				"STORE_DESCRIPTION=?,\r\n" + 
 				"STORE_IMG=?,\r\n" + 
 				"homepage=?,\r\n" + 
-				"homepage=?,\r\n" + 
-				"STORE_ADDR1=?\r\n" + 
+				"store_sns=?,\r\n" + 
+				"store_addr1=?\r\n" + 
 				"where store_no=?";
 		Object[] params= {store.getStoreName(),store.getFoodType(),store.getSubwayName(),store.getStoreAddr(),store.getStorePhone(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getTimeToEat(),store.getStoreDescription(),store.getStoreImg(),store.getHomePage(),store.getStoreSns(),store.getStoreAddr1(),store.getStoreNo()};
 		int result = jdbc.update(query,params);
