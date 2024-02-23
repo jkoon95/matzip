@@ -9,6 +9,13 @@
 <body>
 	<!-- 매장만 들어갈 수 있도록 설정해줘야함-->
 	<th:block th:include="common/header"></th:block>
+
+    <!--사이드메뉴-->
+    <th:block th:include="common/side-menu">
+  
+    </th:block>
+    <!--//사이드메뉴-->
+
     <div class="s-content">
     	<!-- 사업자 조회  -->
         <div id="s-bussniessContent">
@@ -30,6 +37,13 @@
         </div>
      </div>  
 	<script>
+	
+		$("form").on("keypress", function(e) {
+        	if(e.which === 13) {
+            	e.preventDefault();
+        	}
+    	});
+	
 		$("#s-enrollNonbutton").on("click",function(){
 			$("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
             $("#s-enrollCheckMsg").css("color", "red");

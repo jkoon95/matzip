@@ -39,6 +39,7 @@ public class SearchController {
 	@GetMapping(value = "/ajaxSelectTop5Store")
 	public List ajaxSelectTop5Store(String stationName) {
 		int number = 5;
+		//System.out.println(stationName);
 		List list = storeService.selectTopStore(stationName,number);
 		if(list.isEmpty()) {
 			return null;
@@ -54,12 +55,14 @@ public class SearchController {
 	public List ajaxStoreList(int start,int amount,String stationName) {
 		//List list = storeService.ajaxStoreList(stationName);
 		
+		
 		int totalCount = searchService.storeTotalCount(stationName);
-		System.out.println(totalCount);//성공
+		
 		
 	
 		List searchList = searchService.selectSearchList(start,amount,stationName);
-//		System.out.println(searchList);
+		System.out.println(stationName);
+		System.out.println(searchList);
 
 		
 		
@@ -73,7 +76,6 @@ public class SearchController {
 		
 		int totalCount = searchService.storeTotalCount(stationName);
 		System.out.println(totalCount);//성공
-		
 	
 		List searchList = searchService.selectSearchList(start,amount,stationName);
 		System.out.println(searchList);
@@ -90,6 +92,14 @@ public class SearchController {
 	
 	@GetMapping(value="storeDetail")
 	public String storeDetail() {
+		return "search/storeDetail";
+	}
+	
+	@GetMapping(value = "conveyStoreInfoToDetail")
+	public String conveyStoreInfoToDetail(int storeNo,Model model) {
+		Store store = searchService.selectSearchOne(storeNo);
+		
+		
 		return "search/storeDetail";
 	}
 	

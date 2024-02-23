@@ -58,10 +58,10 @@
                         </select>
                     </div>
                     <div class="s-input-wrap">
-                        <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="address" id="address" class="s-input-form" onclick="searchAddr();"
+                        <label for="storeAddr">주소<sup class="s-requiredMsg">* </sup></label>
+                        <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" onclick="searchAddr();"
                             required placeholder="주소찾기">
-                        <input type="text" name="detailAddress" id="detailAddress" class="s-input-form"
+                        <input type="text" name="storeAddr1" id="storeAddr1" class="s-input-form"
                             placeholder="상세주소를 입력하세요(예:동, 층, 호)">
                     </div>
                     <div class="s-input-wrap">
@@ -373,8 +373,8 @@
                 new daum.Postcode({
                     oncomplete: function (data) {
                         console.log(data);
-                        $("#address").val(data.address);
-                        $("#detailAddress").focus();
+                        $("#storeAddr").val(data.address);
+                        $("#storeAddr1").focus();
                         // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
                         // 예제를 참고하여 다양한 활용법을 확인해 보세요.
                     }
@@ -457,6 +457,41 @@
                     $(obj).parent().parent().find(".s-img-view").attr("src", "");
                 }
             }
+            
+            
+            $("#storePhone").keyup(function(){
+        		var val = $(this).val().replace(/[^0-9]/g, '');
+        		if(val.length > 3 && val.length < 6){
+        			var tmp = val.substring(0,2)
+        			if(tmp == "02"){
+        				$(this).val(val.substring(0,2) + "-" + val.substring(2));
+        			} else {
+        				$(this).val(val.substring(0,3) + "-" + val.substring(3));
+        			}
+        		}else if (val.length > 6){
+        			var tmp = val.substring(0,2)
+        			var tmp2 = val.substring(0,4)
+        			if(tmp == "02"){
+        				if(val.length == "10"){
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 6) + "-" + val.substring(6));
+        				} else {
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 5) + "-" + val.substring(5));
+        				}
+        			} else if(tmp2 == "0505"){
+        				if(val.length == "12"){
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 8) + "-" + val.substring(8));
+        				} else {
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 7) + "-" + val.substring(7));
+        				}
+        			} else {
+        				if(val.length == "11"){
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 7) + "-" + val.substring(7));
+        				} else {
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 6) + "-" + val.substring(6));
+        				}
+        			}
+        		}
+        	});
             
         </script>
     </div>
