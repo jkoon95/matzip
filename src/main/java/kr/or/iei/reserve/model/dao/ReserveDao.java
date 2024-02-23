@@ -81,8 +81,7 @@ public class ReserveDao {
 		return fullDays;
 	}
 
-	public HashMap<String, List<String>> fullTime(int storeNo, List<String> reserveAbleDays, int tableAmount) {
-		HashMap<String, List<String>> fullTimes = new HashMap<String, List<String>>();
+	public List<String> fullTime(int storeNo, String day, int tableAmount) {
 		String query = "select reserve_time " + 
 						"from (select reserve_time, count(*) count" + 
 						"        from reserve_tbl " + 
@@ -90,11 +89,8 @@ public class ReserveDao {
 						"        group by reserve_time " + 
 						"        order by reserve_time) r " + 
 						"where r.count = ?";
-		for(int i=0; i<reserveAbleDays.size(); i++) {
-			Object[] params = {storeNo, reserveAbleDays.get(i), tableAmount};
-			List<String> fullTimeList = jdbc.query(query, reserveTimeRowMapper, params);
-			fullTimes.put(reserveAbleDays.get(i), fullTimeList);
-		}
+		Object[] params = {storeNo, day, tableAmount};
+		List<String> fullTimes = jdbc.query(query, reserveTimeRowMapper, params);
 		return fullTimes;
 	}
 
