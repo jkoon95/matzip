@@ -43,7 +43,7 @@ s-bc:hover{
     font-size: 1.1em;
 }
 .s-input-form {
-    width: 100%;
+    width: 500px;
     display: block;
     padding: 0.5rem;
     background-color: #fff;
@@ -192,7 +192,6 @@ s
 
 .s-input-wrap input[type="text"],
 .s-input-wrap input[type="file"] {
-    /*width: 100%;*/
     margin-left: 10px;
 }
 

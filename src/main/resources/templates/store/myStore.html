@@ -245,7 +245,7 @@
                                	<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg">
                                 <input type="text" class="s-menu-input" th:value="${menu.menuName}" required>
                                 <input type="text" class="s-menu-input" th:value="${menu.menuPrice}" required>
-                            <div>
+                            </div>
                             <div>
                             	<a href="javascript:void(0)" class="minusMenu updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">수정</a>
 								<a href="javascript:void(0)" class="minusMenu" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">삭제</a>
@@ -268,12 +268,12 @@
 		});
 		
 		function updateMenu(obj,storeNo,menuNo){
-			$(this).closest(".menuBox").remove();
 			
 		}
 		
 		
 		function deleteMenu(obj,storeNo,menuNo){
+			 if (confirm("정말로 삭제하시겠습니까?")) {
 			$.ajax({
 				url : "/store/deleteMenu",
 				type : "get",
@@ -281,7 +281,7 @@
 				success : function(data){
 					if(data==1){
 						console.log("삭제완료");
-						$(obj).closest(".menuBox").remove();				
+						$(obj).parent().parent().remove();				
 					}else{
 						console.log("실패");						
 					}
@@ -290,6 +290,7 @@
 					console.log("실패");
 				}
 			});
+			 }
 		}
 		
 		
