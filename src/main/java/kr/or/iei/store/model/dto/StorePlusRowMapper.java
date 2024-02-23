@@ -35,6 +35,7 @@ public class StorePlusRowMapper implements RowMapper<Store>{
 		store.setReviewCount(rs.getInt("REVIEW_COUNT")); // LIKE_COUNT 매핑 추가
 		store.setReviewScore(rs.getFloat("REVIEW_SCORE")); // LIKE_COUNT 매핑 추가
 		store.setOperationStatus(rs.getString("OPERATION_STATUS")); // LIKE_COUNT 매핑 추가
+		store.setStoreAddr1(rs.getString(24));
 		return store;
 	}
 	

@@ -60,7 +60,7 @@
                         <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
                         <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" onclick="searchAddr();"
                             required placeholder="주소찾기" th:value="${store.storeAddr}">
-                        <input type="text" name="storeAddr1" id="storeAddr1" class="s-input-form"
+                        <input type="text" name="storeAddr1" id="storeAddr1" class="s-input-form" th:value="${store.storeAddr1}"
                             placeholder="상세주소를 입력하세요(예:동, 층, 호)">
                         
                     </div>
@@ -382,19 +382,13 @@
         		$(this).next().css("display","inline-block");
         	});
         	
-        /* 주소 ..	
-        	$("#storeAddr").on("click",function(){
-        		$(this).css("display","none");
-        		$(this).next().css("display","inline-block");
-        	});
-       */
             //주소 길찾기
             function searchAddr() {
                 new daum.Postcode({
                     oncomplete: function (data) {
                         console.log(data);
-                        $("#address").val(data.address);
-                        $("#detailAddress").focus();
+                        $("#storeAddr").val(data.address);
+                        $("#storeAddr1").focus();
                         // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
                         // 예제를 참고하여 다양한 활용법을 확인해 보세요.
                     }

@@ -30,20 +30,19 @@
 	                <span id="s-enrollCheckMsg"></span>
 	            </div>
 	            <div>
-	                <input class="s-enrollbutton" id="s-enrollNextbutton" type="submit" value="다음">
+	                <input class="s-enrollbutton" id="s-enrollNextbutton" type="submit" value="다음" disabled>
 	                <input class="s-enrollbutton" id="s-enrollNonbutton" type="text" value="다음" disabled>
 	            </div>
             </form>
         </div>
      </div>  
 	<script>
-	
-		$("form").on("keypress", function(e) {
-        	if(e.which === 13) {
-            	e.preventDefault();
-        	}
-    	});
-	
+    // 추가적으로 원하는 조건을 확인하는 함수
+    function satisfiesCondition(value) {
+        // 여기에 원하는 조건을 작성
+        // 예: 숫자로만 이루어져 있는지 확인하는 조건
+        return /^\d+$/.test(value);
+    }
 		$("#s-enrollNonbutton").on("click",function(){
 			$("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
             $("#s-enrollCheckMsg").css("color", "red");
@@ -93,6 +92,7 @@
                         $("#s-enrollCheckMsg").css("color", "green");               
                         $("#s-enrollNextbutton").css("display","inline-block");
                         $("#s-enrollNonbutton").css("display","none");
+                        $("#s-enrollNextbutton").prop('disabled', false);
                     }else {
                         $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
                         $("#s-enrollCheckMsg").css("color", "red");
