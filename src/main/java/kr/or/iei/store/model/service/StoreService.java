@@ -106,6 +106,11 @@ public class StoreService {
 		return result;
 	}
 
+	public int deleteMenu(int storeNo, int menuNo) {
+		int result = storeDao.deleteMenu(storeNo,menuNo);
+		return result;
+	}
+
 	
 
 	
