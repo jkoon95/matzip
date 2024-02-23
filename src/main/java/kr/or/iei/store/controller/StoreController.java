@@ -159,18 +159,18 @@ public class StoreController {
 				
 		@PostMapping(value="/storeUpdate")
 		public String storeUpdate(Store store, String[] closedDays, MultipartFile storeImgFile, String oldImgName, Model model) {
-			if (storeImgFile != null && !storeImgFile.isEmpty()) {
+			if (storeImgFile != null && !storeImgFile.isEmpty()) {//파일이 있으면
 				String storeSavepath = root+"/store/";
 				fileUtils.deleteFile(storeSavepath, oldImgName);
-				String newImgName = fileUtils.upload(storeSavepath, storeImgFile);
-				store.setStoreImg(newImgName);
-			}else {
+				String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
+				store.setStoreImg(storeFilepath);
+			}else {	//없으면
 				store.setStoreImg(oldImgName);
 			}
 			int result = storeService.updateStore(store,closedDays);
-			int count=2;//매장 insert+휴무일 삭제
+			int count=1;//매장 insert
 			if(closedDays !=null) {
-				count = 2 + closedDays.length;
+				count += closedDays.length;
 			}
 			if(result==count) {
 				model.addAttribute("title","수정하기 성공");

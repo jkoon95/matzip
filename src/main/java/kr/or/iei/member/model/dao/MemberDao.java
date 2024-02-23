@@ -81,6 +81,16 @@ public class MemberDao {
 			return null;
 		}
 		return (Member)list.get(0);
-	}	
+	}
+	
+	public Member emailCheckId(String memberId) {
+		String query = "select * from member_tbl where member_Id=?";
+		Object[] params = {memberId};
+		List list = jdbc.query(query, originMemberRowMapper,params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Member)list.get(0);
+	}
 	
 }

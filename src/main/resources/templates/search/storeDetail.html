@@ -4,29 +4,100 @@
 <meta charset="UTF-8">
 <title>맛집 상세 페이지</title>
 <link rel="stylesheet" href="/css/storeDetail.css">
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=tepft4p0ed&submodules=geocoder"></script>
+<script src="/js/storeDetail.js"></script>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
 	<div class="page-content">
-		<div class="img-zone" style="width:520px;">
-			<!-- 임시사진 -->
-			<img src="/photo/store/강남_무궁화반점.jpg" style="max-width:100%; max-height:100%;">
-		</div>
 		<div class="store-head">
-			<div class="store-name">무궁화반점</div>
-			<div class="store-like">하트</div>
-			<div class="store-star">별점</div>
-			<div class="store-report">신고</div>
-			<div class="store-info">
-				<div class="store-addr">주소</div>
-				<div class="store-phone">전화번호</div>
-				<div class="store-hours">영업시간(휴무일)</div>
-				<div class="store-intro">매장 소개글</div>
-				<span class="material-icons" style="font-size: 24px;">home</span>
+			<div class="img-zone" style="width:520px;">
+				<!-- 사진 경로 : static > photo > store -->
+				<img th:src="@{'/photo/store/' + ${store.storeImg}}" style="max-width:100%; max-height:100%;">
+			</div>
+			<div class="store-title">
+				<div class="store-name">
+					<h1 th:text="${store.storeName}"></h1>
+				</div>
+				<div class="store-like">하트</div>
+				<div class="store-star">별점</div>
+				<div class="store-report">신고</div>
+				<div class="store-info">
+					<div class="store-addr">
+						<h3>
+							<span th:text="${store.storeAddr}"></span>
+   							<span th:text="${store.storeAddr1}"></span>
+						</h3>
+					</div>
+					<div class="store-phone">
+						<h3>
+							<span th:text="${store.storePhone}"></span>
+						</h3>
+					</div>
+					<div class="store-hours">
+						<h3>
+							<span th:text="${store.openingHour}"></span>
+							<span>~</span>
+							<span th:text="${store.closingHour}"></span>
+							<span>(휴무일 :</span>
+							<span>)</span>
+						</h3>
+					</div>
+					<div class="store-intro">
+						<span th:text="${store.storeDescription}"></span>
+					</div>
+					<div class="icon-zone">
+						<a th:if="${store.homePage != null}" th:href="${store.homePage}" target="_blank">
+							<img src="/img/home.png" width="24px">
+						</a>
+						<a th:if="${store.storeSns != null}" th:href="${store.storeSns}" target="_blank">
+							<img src="/img/sns.png" width="24px">
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		
+		<div class="store-mid">
+			<table class="tbl store-tbl">
+				<tr>
+					<th style="width:33%;">위치</th>
+					<th style="width:33%;">메뉴</th>
+					<th style="width:33%;">안내</th>
+				</tr>
+				<tr>
+					<td>
+						<div id="map" style="width:400px;height:400px;"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="store-reserve">
+			<a id="reserve-btn" th:if="${session.member != null && session.member.memberLevel == 3}" class="btn" href="#">예약하기</a>
+		</div>
+		
+		<div class="store-review">
+			<h2>리뷰</h2>
+			<div class="store-review-list">
+			
+			</div>
+			<button class="btn" id="more-btn">더보기</button>
+		</div>
+		<!-- 주변 맛집 슬라이드 -->
 	</div>
+	
+	<script>
+	   	//지도를 그려주는 함수 실행
+	   		selectMapList();
+	   	
+		// 페이지 로드 시 실행되는 함수(store.storeAddr 값을 가져와서 searchAddressToCoordinate 전달)
+   		$(document).ready(function() {
+      		searchAddressToCoordinate("[[${store.storeAddr}]]");
+  		});
+		
+	</script>
+	
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>

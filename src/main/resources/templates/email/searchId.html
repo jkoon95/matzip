@@ -19,9 +19,8 @@
                 </div>
                 <div>
                     <label for="id-search-email">이메일</label>
-                    <input type="text" name="memberEmail" id="id-search-email">
-                    <button type="submit" name="id-search-email-btn">인증번호받기</button>
-
+                    <input type="text" name="writerEmail" id="id-search-email">
+                    <button name="id-search-email-btn" id="id-search-email-btn">인증번호받기</button>                    
                 </div>
                 <div class="pass-num-box">
                     <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
@@ -55,6 +54,21 @@
     			}
     		});
     	});
+    	
+    	$("#id-search-email-btn").on("click",function(){
+    			const email = $("#id-search-email").val();
+    			$.ajax({
+    				url : "/mail/sendMail",
+    				type : "post",
+    				data : {email : email},    				
+    				success : function(data){
+    					console.log(data);    					
+    				},
+    				error : function(){
+    					console.log("에러");
+    				}
+    			});    			
+    		});
     </script>
 </body>
 </html>
