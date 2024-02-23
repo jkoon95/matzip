@@ -99,6 +99,8 @@ public class SearchController {
 	public String conveyStoreInfoToDetail(int storeNo,Model model) {
 		Store store = searchService.selectSearchOne(storeNo);
 		
+		model.addAttribute("store",store);
+		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
 		return "search/storeDetail";
 	}

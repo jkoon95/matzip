@@ -214,6 +214,10 @@
     flex-direction: row;
     border-bottom: 2px solid #ADBC9F;
 }
+.store-top5:hover{
+    cursor: pointer;
+}
+
 
 .close-wrap{
     display: flex;
@@ -529,4 +533,8 @@ body{
 .imgScale{
     width: 125px;
     height: 125px;
+}
+
+.store-all:hover{
+    cursor: pointer;
 }
