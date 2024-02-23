@@ -9,7 +9,33 @@ a {
   width: 1200px;
   margin: 30px auto;
   margin-bottom: 10px;
-  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
   overflow: hidden;
+}
+
+/* 이미지 영역 */
+.img-zone {
+  width: 600px;
+  height: 500px;
+}
+
+/* 매장 헤드(우측정렬) */
+.store-head {
+  width: 600px;
+}
+.store-head > div {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* 매장 정보 */
+.store-info {
+  width: 600px;
+  margin-top: 40px;
+}
+.store-info > div {
+  display: block;
+  margin-bottom: 20px;
 }
 
