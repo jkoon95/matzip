@@ -1,9 +1,6 @@
 package kr.or.iei.reserve.model.service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.iei.reserve.model.dao.ReserveDao;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
+import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
 import kr.or.iei.reseve.model.dto.TimeSet;
 import kr.or.iei.store.model.dto.ClosedDay;
@@ -42,7 +40,7 @@ public class ReserveService {
 		//00:00부터 breakStart, breakEnd 까지 30분 단위로 예약 가능한 횟수(휴게시간 없다면 0으로 되도록 세팅)
 		int breakStartCount = 0;
 		int breakEndCount = 0;
-		if(store.getBreakStart() != "-1") { //사장이 breakStart를 선택 안 하면 기본 value가 문자열 "-1"이 되도록 세팅해놨음. 즉 휴게시간이 없을떄 -1임.
+		if(!store.getBreakStart().equals("-1")) { //사장이 breakStart를 선택 안 하면 기본 value가 문자열 "-1"이 되도록 세팅해놨음. 즉 휴게시간이 없을떄 -1임.
 			breakStartCount = (Integer.parseInt(store.getBreakStart().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakStart().substring(3,5)) / 30);
 			breakEndCount = (Integer.parseInt(store.getBreakEnd().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakEnd().substring(3,5)) / 30);
 		};
@@ -136,11 +134,9 @@ public class ReserveService {
 		return tempClosedDays;
 	}
 	
-	public TimeSet timeset(int storeNo, String day) {
-		
+	public TimeSet timeset(int storeNo, String selectedDay) {
 		//<1> allTimes 전체 예약 시각 구하기
 		Store store = reserveDao.searchStore(storeNo);
-		int dayTotalCount = 0;
 		//00:00부터 openingHour까지 30분 단위로 예약 가능한 횟수
 		int openingCount = (Integer.parseInt(store.getOpeningHour().substring(0,2)) * 2) + (Integer.parseInt(store.getOpeningHour().substring(3,5)) / 30);
 		//00:00부터 closingHour까지 30분 단위로 예약 가능한 횟수
@@ -148,11 +144,7 @@ public class ReserveService {
 		//00:00부터 breakStart, breakEnd 까지 30분 단위로 예약 가능한 횟수(휴게시간 없다면 0으로 되도록 세팅)
 		int breakStartCount = 0;
 		int breakEndCount = 0;
-		if(store.getBreakStart() != "-1") { //사장이 breakStart를 선택 안 하면 기본 value가 문자열 "-1"이 되도록 세팅해놨음. 즉 휴게시간이 없을떄 -1임.
-			breakStartCount = (Integer.parseInt(store.getBreakStart().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakStart().substring(3,5)) / 30);
-			breakEndCount = (Integer.parseInt(store.getBreakEnd().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakEnd().substring(3,5)) / 30);
-		};
-		if(store.getBreakStart() != "-1") { //사장이 breakStart를 선택 안 하면 기본 value가 문자열 "-1"이 되도록 세팅해놨음. 즉 휴게시간이 없을떄 -1임.
+		if(!store.getBreakStart().equals("-1")) { //사장이 breakStart를 선택 안 하면 기본 value가 문자열 "-1"이 되도록 세팅해놨음. 즉 휴게시간이 없을떄 -1임.
 			breakStartCount = (Integer.parseInt(store.getBreakStart().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakStart().substring(3,5)) / 30);
 			breakEndCount = (Integer.parseInt(store.getBreakEnd().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakEnd().substring(3,5)) / 30);
 		};
@@ -161,7 +153,7 @@ public class ReserveService {
 		List<String> allTimes = new ArrayList<String>();
 		//!!!! 어려우니까 일단 당일 열고 당일 닫는 경우만 가정하자 !!!!!
 		if(openingCount < closingCount) {//당일 열고 당일 닫는 경우 또는 24시간 운영하는 경우
-			if(store.getBreakStart() != "-1") {//휴게시간이 있는 경우
+			if(!store.getBreakStart().equals("-1")) {//휴게시간이 있는 경우
 				//open ~ breakStart
 				for (int i=0; i<(breakStartCount-openingCount-timeToEat +1); i++) {
 					int count = openingCount + i;
@@ -170,7 +162,7 @@ public class ReserveService {
 					//tt 구하기
 					int tt = count/2;
 					//시각에 tt 추가
-					if(tt<9) {
+					if(tt<10) {
 						sb.append("0"+tt+":");
 					}else {
 						sb.append(tt+":");
@@ -188,7 +180,7 @@ public class ReserveService {
 					int count = breakEndCount + i;
 					StringBuilder sb = new StringBuilder();
 					int tt = count/2;
-					if(tt<9) {
+					if(tt<10) {
 						sb.append("0"+tt+":");
 					}else {
 						sb.append(tt+":");
@@ -206,7 +198,7 @@ public class ReserveService {
 					int count = openingCount + i;
 					StringBuilder sb = new StringBuilder();
 					int tt = count/2;
-					if(tt<9) {
+					if(tt<10) {
 						sb.append("0"+tt+":");
 					}else {
 						sb.append(tt+":");
@@ -223,7 +215,7 @@ public class ReserveService {
 		
 		//<2> fullTimes 구하기 (=예약 가능한 날짜의 예약 가능한 시각)
 		int tableAmount = reserveDao.tableAmount(storeNo);
-		List<String> fullTimes = reserveDao.fullTime(storeNo, day, tableAmount);
+		List<String> fullTimes = reserveDao.fullTime(storeNo, selectedDay, tableAmount);
 		
 		//<3> remainTimes 예약 가능한 날짜의 예약 가능한 시각 구하기
 		//allTimes를 깊은복사
@@ -235,6 +227,12 @@ public class ReserveService {
 		TimeSet timeSet = new TimeSet(allTimes, fullTimes, remainTimes); 
 		
 		return timeSet;
+	}
+
+	public List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
+		
+		List<TableNoAndCapacity> tableNoAndCapacity = reserveDao.tableNoAndCapacity(storeNo, reserveDate, reserveTime);
+		return tableNoAndCapacity;
 	}
 	
 	
