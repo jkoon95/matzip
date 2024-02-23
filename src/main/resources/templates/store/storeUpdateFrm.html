@@ -21,17 +21,18 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
-                         <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>                        
-                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value=${store.businessNo} readonly>
+                         <input type="hidden" name="storeNo" th:value="${store.storeNo}">
+                         <input type="hidden" name="memberNo" th:value="${session.member.memberNo}">                        
+                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value="${store.businessNo}" readonly>
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeNo">매장명<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="storeName" id="storeName" class="s-input-form" th:value=${store.storeName} required>
+                        <input type="text" name="storeName" id="storeName" class="s-input-form" th:value="${store.storeName}" required>
                     </div>
                     <div class="s-input-wrap">
                         <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="foodType" id="foodType" class="s-input-form" th:value=${store.foodType} required style="margin-top: 10px">
-                        <select name="foodType" required style="display: none;">
+                        
+                        <select name="foodType" required>
                             <option value="">--</option>
                             <option value="양식">양식</option>
                             <option value="중식">중식</option>
@@ -47,8 +48,8 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="subwayName" id="s-selectLable">주변역<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="subwayName" id="subwayName" class="s-input-form" th:value=${store.subwayName} required style="margin-top: 10px">
-                        <select required name="subwayName" style="display: none;">
+                        
+                        <select required name="subwayName">
                             <!-- subway 목록 출력 -->
                             <option value="">--</option>
                             <option value="1" th:each="subway : ${subway}" th:value="${subway.subwayName}"
@@ -57,23 +58,20 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" required th:value="${store.storeAddr}" placeholder="주소찾기">
-                        <span class="hideAddr" style="display: none;width: 100%">
-                        	<input type="text" name="address" id="address" class="s-input-form" onclick="searchAddr();"
-                            required placeholder="주소찾기">
-                        	<input type="text" name="detailAddress" id="detailAddress" class="s-input-form"
-                            	placeholder="상세주소를 입력하세요(예:동, 층, 호)">
-                        </span>
+                        <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" onclick="searchAddr();"
+                            required placeholder="주소찾기" th:value="${store.storeAddr}">
+                        <input type="text" name="storeAddr1" id="storeAddr1" class="s-input-form"
+                            placeholder="상세주소를 입력하세요(예:동, 층, 호)">
+                        
                     </div>
                     <div class="s-input-wrap">
                         <label for="storePhone">연락처<sup class="s-requiredMsg">* </sup></label>
                         <input type="text" name="storePhone" id="storePhone" class="s-input-form" maxlength="13"
-                            required th:value=${store.storePhone}>
+                            required th:value="${store.storePhone}">
                     </div>
                     <div class="s-input-wrap">
-                        <label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
+                    	<label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
                         <select name="openingHour" required>
-                            <option th:value="${store.openingHour}" selected th:text="${store.openingHour}"></option>
                             <option value="">--</option>
                             <option value="00:00">00:00</option>
                             <option value="00:30">00:30</option>
@@ -127,7 +125,6 @@
                         </select>
                         시부터
                         <select name="closingHour" required>
-                            <option th:value="${store.closingHour}" selected th:text="${store.closingHour}"></option>
                             <option value="">--</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
@@ -183,7 +180,6 @@
                     <div class="s-input-wrap">
                         <label for="" id="s-selectLable">쉬는시간</label>
                         <select name="breakStart">
-                        	<option th:value="${store.breakStart}" selected th:text="${store.breakStart}"></option>
                             <option value="-1">--</option>
                             <option value="00:00">00:00</option>
                             <option value="00:30">00:30</option>
@@ -236,8 +232,6 @@
                         </select>
                         시부터
                         <select name="breakEnd">
-                        	<option th:value="${store.closingHour}" selected th:text="${store.breakEnd}"></option>
-                        	
                             <option value="-1">--</option>
                             <option value="00:30">00:30</option>
                             <option value="01:00">01:00</option>
@@ -334,7 +328,7 @@
                         	</select>
                         	<select th:case="3" required name="timeToEat">
                             	<option value="">--</option>
-                            	<option value="1" selected>30분</option>
+                            	<option value="1">30분</option>
                             	<option value="2">1시간</option>
                             	<option value="3" selected>1시간 30분</option>
                             	<option value="4">2시간</option>
@@ -351,7 +345,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="homePage">홈페이지</label>
-                        <input type="text" name="homePage" id="homepage" class="s-input-form" th:value="${store.homePage}">
+                        <input type="text" name="homePage" id="homePage" class="s-input-form" th:value="${store.homePage}">
                     </div>
                     <div class="s-input-wrap">
                         <label for="store_sns">SNS</label>
@@ -367,10 +361,8 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-enrollStoreImgBox">
                         <img class="s-img-view" width="300px" height="300px" th:src="${store.storeImg}" name="storeImg">
-                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
-                            required>
-                        <input type="hidden" th:value="${store.storeImg}" name="oldName">
-                            
+                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);">
+                        <input type="hidden" th:value="${store.storeImg}" name="oldImgName">     
                     </div>
                 </div>
                 <div class="s-enrolldiv">
@@ -380,7 +372,7 @@
         </div>
 
 
-        <script   th:inline="javascript">
+        <script th:inline="javascript">
         	$("#foodType").on("click",function(){
         		$(this).css("display","none");
         		$(this).next().css("display","inline-block");
@@ -390,10 +382,12 @@
         		$(this).next().css("display","inline-block");
         	});
         	
+        /* 주소 ..	
         	$("#storeAddr").on("click",function(){
         		$(this).css("display","none");
         		$(this).next().css("display","inline-block");
         	});
+       */
             //주소 길찾기
             function searchAddr() {
                 new daum.Postcode({
@@ -449,6 +443,59 @@
             	}
             })
             
+            const foodType = [[${store.foodType}]];
+        	$('select[name="foodType"] option[value="' + foodType + '"]').prop("selected", true);
+        	
+        	const subwayName = [[${store.subwayName}]];
+        	$('select[name="subwayName"] option[value="' + subwayName + '"]').prop("selected", true);
+            
+            const closingHour = [[${store.closingHour}]];
+        	$('select[name="closingHour"] option[value="' + closingHour + '"]').prop("selected", true);
+        	
+        	const openingHour = [[${store.openingHour}]];
+        	$('select[name="openingHour"] option[value="' + openingHour + '"]').prop("selected", true);
+        	
+        	const breakStart = [[${store.breakStart}]];
+        	$('select[name="breakStart"] option[value="' + breakStart + '"]').prop("selected", true);
+        	
+        	const breakEnd = [[${store.breakEnd}]];
+        	$('select[name="breakEnd"] option[value="' + breakEnd + '"]').prop("selected", true);
+        	
+        	
+        	$("#storePhone").keyup(function(){
+        		var val = $(this).val().replace(/[^0-9]/g, '');
+        		if(val.length > 3 && val.length < 6){
+        			var tmp = val.substring(0,2)
+        			if(tmp == "02"){
+        				$(this).val(val.substring(0,2) + "-" + val.substring(2));
+        			} else {
+        				$(this).val(val.substring(0,3) + "-" + val.substring(3));
+        			}
+        		}else if (val.length > 6){
+        			var tmp = val.substring(0,2)
+        			var tmp2 = val.substring(0,4)
+        			if(tmp == "02"){
+        				if(val.length == "10"){
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 6) + "-" + val.substring(6));
+        				} else {
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 5) + "-" + val.substring(5));
+        				}
+        			} else if(tmp2 == "0505"){
+        				if(val.length == "12"){
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 8) + "-" + val.substring(8));
+        				} else {
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 7) + "-" + val.substring(7));
+        				}
+        			} else {
+        				if(val.length == "11"){
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 7) + "-" + val.substring(7));
+        				} else {
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 6) + "-" + val.substring(6));
+        				}
+        			}
+        		}
+        	});
+        	
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>
