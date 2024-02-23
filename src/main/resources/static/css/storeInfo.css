@@ -127,7 +127,7 @@ s-img-view{
 	background-color: #b5b5b5;
 }
 #s-enrollNextbutton{
-	display:none;
+	/*display:none;*/
 }
 #s-bussinessNum {
     width: 300px;

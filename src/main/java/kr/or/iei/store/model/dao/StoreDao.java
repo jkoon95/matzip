@@ -158,6 +158,29 @@ public class StoreDao {
 		return result;
 	}
 
+	public int selectTableCapacity(int table, int storeNo) {
+		String query = "select count(*) from table_tbl where store_no=? and table_capacity=?";
+		Object[] params = {storeNo,table};
+		int count = jdbc.queryForObject(query, Integer.class, params);
+		return count;
+	}
+
+	public int deleteTableCapacity(int storeNo) {
+		String query = "delete from table_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int selectCountTableCapacity(int storeNo) {
+		String query = "select count(*) from table_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int count = jdbc.queryForObject(query, Integer.class, params);
+		return count;
+	}
+
+
+
 	
 	
 }

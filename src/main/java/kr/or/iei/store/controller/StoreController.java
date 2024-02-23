@@ -202,6 +202,7 @@ public class StoreController {
 				model.addAttribute("store",sid.getStore());
 				model.addAttribute("closedDayList",sid.getClosedDayList());
 				model.addAttribute("menuList",sid.getMenuList());
+				model.addAttribute("tableCapacitys",sid.getTableCapacitys());
 				return "store/myStore";
 			}
 		}
@@ -218,6 +219,8 @@ public class StoreController {
 			}else {
 				List subwaylist = storeService.selectAllSubway();
 				List closedDayList = storeService.selectClosedDay(storeNo);
+				int[] tableCapacitys = storeService.selectTableCapacity(storeNo);
+				model.addAttribute("tableCapacitys",tableCapacitys);
 				model.addAttribute("subway",subwaylist);
 				model.addAttribute("store",store);
 				model.addAttribute("closedDayList",closedDayList);
@@ -226,7 +229,7 @@ public class StoreController {
 		}
 				
 		@PostMapping(value="/storeUpdate")
-		public String storeUpdate(Store store, String[] closedDays, MultipartFile storeImgFile, String oldImgName, Model model) {
+		public String storeUpdate(Store store, String[] closedDays, MultipartFile storeImgFile, String oldImgName, String[] tableCapacitys, Model model) {
 			if (storeImgFile != null && !storeImgFile.isEmpty()) {//파일이 있으면
 				String storeSavepath = root+"/store/";
 				fileUtils.deleteFile(storeSavepath, oldImgName);
@@ -235,8 +238,13 @@ public class StoreController {
 			}else {	//없으면
 				store.setStoreImg(oldImgName);
 			}
-			int result = storeService.updateStore(store,closedDays);
+			int result = storeService.updateStore(store,closedDays,tableCapacitys);
 			int count=1;//매장 insert
+			int tablecount = 0;
+			for(int i=0;i<tableCapacitys.length;i++) {
+				tablecount += Integer.valueOf(tableCapacitys[i]);
+			}
+			count+=tablecount;
 			if(closedDays !=null) {
 				count += closedDays.length;
 			}

@@ -13,4 +13,5 @@ public class StoreInfoData {
 	private Store store;
 	private List closedDayList;
 	private List MenuList;
+	private int[] tableCapacitys;
 }

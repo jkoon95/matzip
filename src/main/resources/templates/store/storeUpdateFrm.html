@@ -5,6 +5,44 @@
 <title>매장 정보 변경</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/css/storeInfo.css">
+<style>
+.s-table{
+	padding: 0.2rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    width: 35px;
+    margin-right: 2px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.s-label{
+    margin-bottom: 10px;
+}
+.s-field{
+	border: 1px solid #ccc;
+	margin-bottom: 10px;
+	width: 510px;
+	padding: 10px;
+	padding-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.s-field>legend{
+	padding: 3px 6px;
+	
+}
+.s-field>div>span{
+	padding-right: 40px;
+}
+.s-field>div{
+	text-align: center;
+}
+.s-input-wrap11{
+	padding: 5px;
+}
+</style>
 </head>
 <body>
 	<!-- 매장만 들어갈 수 있도록 하기-->
@@ -309,6 +347,36 @@
                         <span for="sunday">일</span>
                     </div>
                     
+                    <div class="s-input-wrap11">
+                     	<fieldset class="s-field">
+    					<legend>테이블수</legend>
+    					<div>
+	                        <label for="tableCapacity1" class="s-label">1인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity1" class="s-table" th:value="${tableCapacitys[0]}"><span> 개</span>
+	                        <label for="tableCapacity2">2인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity2" class="s-table" th:value="${tableCapacitys[1]}"><span> 개</span>
+    					</div>
+    					<div>
+	                        <label for="tableCapacity3">3인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity3" class="s-table" th:value="${tableCapacitys[2]}"><span> 개</span>
+    					 	<label for="tableCapacity4">4인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity4" class="s-table" th:value="${tableCapacitys[3]}"><span> 개 </span>
+    					</div>
+    					<div>
+	                        <label for="tableCapacity5">5인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity5" class="s-table" th:value="${tableCapacitys[4]}"><span> 개</span>
+	                        <label for="tableCapacity6">6인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity6" class="s-table" th:value="${tableCapacitys[5]}"><span> 개</span>
+    					</div>
+    					<div>
+	                        <label for="tableCapacity7">7인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity7" class="s-table" th:value="${tableCapacitys[6]}"><span> 개 </span>
+	                        <label for="tableCapacity8">8인용식탁  </label>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity8" class="s-table" th:value="${tableCapacitys[7]}"><span> 개</span>
+    					</div>
+                        </fieldset>
+                    </div>
+                    
 					<div class="s-input-wrap">
                         <label for="timeToEat" id="s-selectLable">식사가능시간<sup class="s-requiredMsg">* </sup></label>
 						<th:block th:switch="${store.timeToEat}">
@@ -490,6 +558,15 @@
         			}
         		}
         	});
+        	
+    		$("[name='tableCapacitys']").on("change",function(){
+    			if($(this).val() == ""){
+    				$(this).val("0");
+    			}
+    			if($(this).val() < 0){
+    				$(this).val("0");
+    			}
+    		});
         	
         </script>
     </div>

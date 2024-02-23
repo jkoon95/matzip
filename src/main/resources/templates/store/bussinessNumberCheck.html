@@ -30,29 +30,15 @@
 	                <span id="s-enrollCheckMsg"></span>
 	            </div>
 	            <div>
-	                <input class="s-enrollbutton" id="s-enrollNextbutton" type="submit" value="다음" disabled>
-	                <input class="s-enrollbutton" id="s-enrollNonbutton" type="text" value="다음" disabled>
+	                <input class="s-enrollbutton" id="s-enrollNonbutton" type="submit" value="다음" disabled>
 	            </div>
             </form>
         </div>
      </div>  
 	<script>
-    // 추가적으로 원하는 조건을 확인하는 함수
-    function satisfiesCondition(value) {
-        // 여기에 원하는 조건을 작성
-        // 예: 숫자로만 이루어져 있는지 확인하는 조건
-        return /^\d+$/.test(value);
-    }
-		$("#s-enrollNonbutton").on("click",function(){
-			$("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
-            $("#s-enrollCheckMsg").css("color", "red");
-		});
-	
         $(".s-bussinessNum").on("input", function() {
-        	//성공 이외의 상태
-        	$("#s-enrollNextbutton").css("display","none");
-        	$("#s-enrollNonbutton").css("display","inline-block");
-            $("#s-enrollCheckMsg").text("");
+            $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
+            $("#s-enrollCheckMsg").css("color", "red");
             
             var input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
             var output = '';
@@ -90,12 +76,12 @@
                     if (valid=='01'){
                         $("#s-enrollCheckMsg").text("정상적인 사업자번호입니다.");
                         $("#s-enrollCheckMsg").css("color", "green");               
-                        $("#s-enrollNextbutton").css("display","inline-block");
-                        $("#s-enrollNonbutton").css("display","none");
+                        $("#s-enrollCheckMsg").css("background-color", "#72B37E");               
                         $("#s-enrollNextbutton").prop('disabled', false);
                     }else {
                         $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
                         $("#s-enrollCheckMsg").css("color", "red");
+                        
                     }
                     },
                     error: function(result) {

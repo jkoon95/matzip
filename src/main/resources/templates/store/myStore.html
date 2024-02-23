@@ -127,6 +127,13 @@
 			font-size: 18px;
 			padding-right: 2px;
 		}
+		.s-storeInfo th {
+			padding-right: 10px;
+		}
+		.s-lastTh{
+			padding-top: 3px;
+			padding-bottom: 3px;
+		}
 </style>
 </head>
 <body>
@@ -148,7 +155,7 @@
 					<div>
 					<table>
 						<tr>
-							<th style="width: 20%;">사업자번호 :</th>
+							<th style="width: 20%;">사업자번호  :</th>
 							<td th:text="${store.businessNo}"></td>
 						</tr>
 						<tr>
@@ -225,7 +232,25 @@
 							<td th:text="${store.storeDescription}"></td>
 						</tr>
 						<tr>
-							<th colspan="2">
+							<th>테이블수 :</th>
+							<td>
+								<span>1인용 식탁 <span th:text="${tableCapacitys[0]}"></span>개, </span><span>2인용 식탁 <span th:text="${tableCapacitys[1]}"></span>개, </span><span>3인용 식탁 <span th:text="${tableCapacitys[2]}"></span>개
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>
+								<span>4인용 식탁 <span th:text="${tableCapacitys[3]}"></span>개, </span> <span>5인용 식탁 <span th:text="${tableCapacitys[4]}"></span>개,</span> <span>6인용 식탁 <span th:text="${tableCapacitys[5]}"></span>개,</span>
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>
+								<span>7인용 식탁 <span th:text="${tableCapacitys[7]}"></span>개</span>, </span> <span>8인용 식탁 <span th:text="${tableCapacitys[7]}"></span>개</span>
+							</td>
+						</tr>				
+						<tr>
+							<th colspan="2" class="s-lastTh">
 								<a href="/store/storedelete" class="goStore" style="background-color: #F15F5F;">삭제하기</a>
 								<a th:href="@{'/store/storeUpdateFrm?storeNo=' + ${store.storeNo}}" class="goStore" style="background-color: #FFA648">수정하기</a>
 								<a th:if="${store.storeStatus==1}" href="#" class="goStore">매장가기</a>	<!-- 매장상세링크 걸어줘야함 -->
