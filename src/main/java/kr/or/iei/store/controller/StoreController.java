@@ -149,15 +149,34 @@ public class StoreController {
 				model.addAttribute("loc","/");
 				return "common/msg";
 			}else {
+				List subwaylist = storeService.selectAllSubway();
+				List closedDayList = storeService.selectClosedDay(storeNo);
+				model.addAttribute("subway",subwaylist);
 				model.addAttribute("store",store);
+				model.addAttribute("closedDayList",closedDayList);
 				return "store/storeUpdateFrm";				
 			}
 		}
 		
 		
-		
-		
-		
+		@PostMapping(value="/storeUpdate")
+		public String storeUpdate(Store store, String address, String detailAddress, String[] closedDays, MultipartFile storeImgFile, Model model) {
+			if (address != null) {
+				store.setStoreAddr(address+" "+detailAddress);
+			}
+			if (storeImgFile != null && !storeImgFile.isEmpty()) {
+				String storeSavepath = root+"/store/";
+				String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
+				store.setStoreImg(storeFilepath);
+			}
+			int result = storeService.updateStore(store,closedDays);
+			
+			
+			
+			
+			
+			return "";
+		}
 		
 		
 		

@@ -41,7 +41,8 @@ header {
 header > .header-wrap{    
     width: 1200px;    
     margin: 0 auto; 
-    overflow: hidden;     
+    overflow: hidden; 
+    padding-left: 250px;     
 }
 header > .header-wrap > a >img {
     height: 150px;
@@ -55,7 +56,7 @@ header > .header-wrap > .header-middle-box{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 150px;
+    height: 150px;    
 }
 .header-middle-box> div > h1{
     font-family: ns-r;
