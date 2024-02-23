@@ -54,4 +54,5 @@ public class Store {
 	private int reviewCount;
 	private float reviewScore;
 	private String operationStatus;
+	private String storeAddr1;
 }
