@@ -24,10 +24,7 @@ public class StoreService {
 		return list;
 	}
 
-	public List selectTopStore(String stationName,int number) {
-		List list = storeDao.selectTopStore(stationName,number);
-		return list;
-	}
+	
 	
 	@Transactional
 	public int insertStore(Store store, List<EvidenceFile> evidenceFileList, String[] closedDays, List<Menu> menuList) {
@@ -103,6 +100,11 @@ public class StoreService {
 				}
 			}//체크된만큼 result
 		}
+		return result;
+	}
+
+	public int deleteMenu(int storeNo, int menuNo) {
+		int result = storeDao.deleteMenu(storeNo,menuNo);
 		return result;
 	}
 

@@ -232,35 +232,31 @@
 					</div>
 				</div>
 				<div id="tab02">
-				<!-- 메뉴2 th:src="${}"
-				<div class="menuInfo">
-					<span><img src="dsfs"></span>
-				</div>				
-				-->	
+				<span class="plusMenu">추가</span>
+					<a href="javascript:void(0)" class="plusMenu menuShow">추가</a>
+					
 					<th:block th:each = "menu : ${menuList}">
-					<form action="#" method="get">
-                        <div>
-                            <img th:src="${menu.menuImg}" class="s-img-view" width="100px" height="100px">
-                         </div>
-                          <div>
-                            	<!-- 메뉴넘버도 히든으로 -->
-                               	<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" required>
+						<div class="menuBox" style="border: 1px solid #ccc">
+							<div>
+                            	<img th:src="'/store/menu/'+${menu.menuImg}" class="s-img-view" width="100px" height="100px">
+                         	</div>
+                         	<div>
+                            	<input type="hidden" th:value="${menu.menuNo}">
+                               	<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg">
                                 <input type="text" class="s-menu-input" th:value="${menu.menuName}" required>
                                 <input type="text" class="s-menu-input" th:value="${menu.menuPrice}" required>
-                                
-                        <a href="javascript:void(0)" th:onclick="modifyMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">수정</a>
-						<a href="javascript:void(0)" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">삭제</a>
-                                
+                            <div>
+                            <div>
+                            	<a href="javascript:void(0)" class="minusMenu updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">수정</a>
+								<a href="javascript:void(0)" class="minusMenu" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">삭제</a>
                             </div>
-                        </div>
-					</form>
+                        </div>  
                     </th:block>	
-				
-				</div>
+			    </div>
 			</div>
 		</div>
 	</div>
-	<script>
+	<script th:inline="javascript">
 		$(function () {
 			$('.tabcontent > div').hide();
 			$('.tabnav a').click(function () {
@@ -270,7 +266,33 @@
 				return false;
 			}).filter(':eq(0)').click();
 		});
-
+		
+		function updateMenu(obj,storeNo,menuNo){
+			$(this).closest(".menuBox").remove();
+			
+		}
+		
+		
+		function deleteMenu(obj,storeNo,menuNo){
+			$.ajax({
+				url : "/store/deleteMenu",
+				type : "get",
+				data : {storeNo : storeNo, menuNo : menuNo},
+				success : function(data){
+					if(data==1){
+						console.log("삭제완료");
+						$(obj).closest(".menuBox").remove();				
+					}else{
+						console.log("실패");						
+					}
+				},
+				error:function(){
+					console.log("실패");
+				}
+			});
+		}
+		
+		
 	</script>
     <th:block th:include="common/footer"></th:block>
 </body>
