@@ -38,10 +38,7 @@ public class StoreDao {
 		List list = jdbc.query(query, subwayRowMapper);
 		return list;
 	}
-
 	
-	
-
 	public int insertStore(Store store) {
 		String query = "INSERT INTO STORE_TBL VALUES (STORE_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,2,?,?)";
 		Object[] params = {store.getMemberNo(),store.getBusinessNo(),store.getStoreName(),store.getStoreAddr(),store.getStorePhone(),store.getHomePage(),store.getStoreSns(),store.getStoreDescription(),store.getFoodType(),store.getStoreImg(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getSubwayName(),store.getTimeToEat(),store.getStoreAddr1()};
@@ -153,4 +150,14 @@ public class StoreDao {
 		int result = jdbc.update(query,params);
 		return result;
 	}
+
+	public int insertTable(int tableCapacity, int storeNo) {
+		String query = "insert into table_tbl values(table_seq.nextval, ?, ?)";
+		Object[] params = {tableCapacity,storeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	
+	
 }

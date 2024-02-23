@@ -23,9 +23,45 @@ public class StoreService {
 		List list = storeDao.selectAllSubway();
 		return list;
 	}
+	
 
 	
-	
+	@Transactional
+	public int insertStore(Store store, List<EvidenceFile> evidenceFileList, String[] closedDays, List<Menu> menuList,
+			String[] tableCapacitys) {
+				//매장등록
+				int result = storeDao.insertStore(store);
+				if(result>0) {
+					//등록매장번호 가져오기
+					int storeNo = storeDao.selectStoreNo();
+					//증빙서류등록
+					for(EvidenceFile evidenceFile : evidenceFileList) {
+						evidenceFile.setStoreNo(storeNo);
+						result += storeDao.insertEvidenceFile(evidenceFile);				
+					}
+					//휴무일등록
+					if(closedDays != null) {
+						for(String closedDay : closedDays) {
+							result += storeDao.insertClosedDay(storeNo,closedDay);					
+						}
+					}
+					//테이블등록
+					for(int i=0; i<tableCapacitys.length; i++) {	//8번[0,0,0,0,0,0,0,0]
+						int tableCapacity = i+1;	//tableCapacity=1
+						for (int j=0; j<Integer.parseInt(tableCapacitys[i]); j++) {//<tableCapacity == i+1인 식탁>의 개수만큼 순회
+							result += storeDao.insertTable(tableCapacity, storeNo);
+						}
+					}
+					//메뉴등록	
+					for(Menu menu : menuList) {
+						menu.setStoreNo(storeNo);
+						result += storeDao.insertMenu(menu);
+					}
+				}
+				return result;
+			}
+
+/*	
 	@Transactional
 	public int insertStore(Store store, List<EvidenceFile> evidenceFileList, String[] closedDays, List<Menu> menuList) {
 		//매장등록
@@ -52,7 +88,7 @@ public class StoreService {
 		}
 		return result;
 	}
-
+*/
 	public int selectStoreCount(int memberNo) {
 		int count = storeDao.selectStoreCount(memberNo);
 		return count;
@@ -108,6 +144,13 @@ public class StoreService {
 		return result;
 	}
 
+
+	
+	
+
+
+
+	
 	
 
 	

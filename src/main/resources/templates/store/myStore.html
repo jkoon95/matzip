@@ -122,7 +122,10 @@
 			margin-bottom: 5px;
 			font-weight: 700;
 			font-size: 15px;
-			padding-right: 5px;
+		}
+		.menuShow{
+			font-size: 18px;
+			padding-right: 2px;
 		}
 </style>
 </head>
@@ -162,7 +165,7 @@
 						</tr>
 						<tr>
 							<th>주소 :</th>
-							<td th:text="${store.storeAddr}+${store.storeAddr1}"></td>
+							<td th:text="${addr}"></td>
 						</tr>
 						<tr>
 							<th>연락처 :</th>
@@ -232,8 +235,9 @@
 					</div>
 				</div>
 				<div id="tab02">
-				<span class="plusMenu">추가</span>
-					<a href="javascript:void(0)" class="plusMenu menuShow">추가</a>
+					<div style="text-align: right;">
+						<a href="javascript:void(0)" class="plusMenu menuShow">추가</a>					
+					</div>
 					
 					<th:block th:each = "menu : ${menuList}">
 						<div class="menuBox" style="border: 1px solid #ccc">
