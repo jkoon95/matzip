@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <title>맛집 상세 페이지</title>
 <link rel="stylesheet" href="/css/storeDetail.css">
-<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zv3vcc8fa7&submodules=geocoder"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=tepft4p0ed&submodules=geocoder"></script>
+<script src="/js/storeDetail.js"></script>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -16,7 +17,7 @@
 			</div>
 			<div class="store-title">
 				<div class="store-name">
-					<h2 th:text="${store.storeName}"></h2>
+					<h1 th:text="${store.storeName}"></h1>
 				</div>
 				<div class="store-like">하트</div>
 				<div class="store-star">별점</div>
@@ -28,14 +29,28 @@
    							<span th:text="${store.storeAddr1}"></span>
 						</h3>
 					</div>
-					<div class="store-phone">전화번호</div>
-					<div class="store-hours">영업시간(휴무일)</div>
-					<div class="store-intro">매장 소개글</div>
+					<div class="store-phone">
+						<h3>
+							<span th:text="${store.storePhone}"></span>
+						</h3>
+					</div>
+					<div class="store-hours">
+						<h3>
+							<span th:text="${store.openingHour}"></span>
+							<span>~</span>
+							<span th:text="${store.closingHour}"></span>
+							<span>(휴무일 :</span>
+							<span>)</span>
+						</h3>
+					</div>
+					<div class="store-intro">
+						<span th:text="${store.storeDescription}"></span>
+					</div>
 					<div class="icon-zone">
-						<a href="http://www.xn--of0bu3xutag46axlr.com/" target="_blank">
+						<a th:if="${store.homePage != null}" th:href="${store.homePage}" target="_blank">
 							<img src="/img/home.png" width="24px">
 						</a>
-						<a href="#" target="_blank">
+						<a th:if="${store.storeSns != null}" th:href="${store.storeSns}" target="_blank">
 							<img src="/img/sns.png" width="24px">
 						</a>
 					</div>
@@ -52,7 +67,7 @@
 				</tr>
 				<tr>
 					<td>
-						<!-- <div id="map" style="width:400px;height:400px;"></div> -->
+						<div id="map" style="width:400px;height:400px;"></div>
 					</td>
 				</tr>
 			</table>
@@ -73,25 +88,14 @@
 	</div>
 	
 	<script>
-		// 위경도 가져와야함	
-	
-		const map = new naver.maps.Map("map",{
-			center : new naver.maps.LatLng(37.533837,126.896836),
-			zoom : 17,
-			zoomControl : true,
-			zoomControlOptions : {
-				position : naver.maps.Position.TOP_RIGHT,
-				style : naver.maps.ZoomControlStyle.SMALL
-			}
-		});
+	   	//지도를 그려주는 함수 실행
+	   		selectMapList();
+	   	
+		// 페이지 로드 시 실행되는 함수(store.storeAddr 값을 가져와서 searchAddressToCoordinate 전달)
+   		$(document).ready(function() {
+      		searchAddressToCoordinate("[[${store.storeAddr}]]");
+  		});
 		
-		const marker = new naver.maps.Marker({
-			position : new naver.maps.LatLng(37.533837,126.896836),
-			map : map
-		});
-		
-
-
 	</script>
 	
 	<th:block th:include="common/footer"></th:block>

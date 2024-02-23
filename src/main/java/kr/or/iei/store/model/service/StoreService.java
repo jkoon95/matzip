@@ -24,10 +24,7 @@ public class StoreService {
 		return list;
 	}
 
-	public List selectTopStore(String stationName,int number) {
-		List list = storeDao.selectTopStore(stationName,number);
-		return list;
-	}
+	
 	
 	@Transactional
 	public int insertStore(Store store, List<EvidenceFile> evidenceFileList, String[] closedDays, List<Menu> menuList) {

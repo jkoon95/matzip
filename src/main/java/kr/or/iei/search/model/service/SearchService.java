@@ -17,10 +17,16 @@ public class SearchService {
 		int totalCount = searchDao.searchTotalCount(stationName);
 		return totalCount;
 	}
+	
+	public List selectTopStore(String stationName,int number,int memberNo) {
+		List list = searchDao.selectTopStore(stationName,number,memberNo);
+		return list;
+	}
 
 	public List selectSearchList(int start, int amount,String stationName) {
 		int end = start+amount-1;
 		List searchList = searchDao.selectSearchList(start,end, stationName);
+//		int isLike = searchDao.selectSearchStoreIsLike
 		return searchList;
 	}
 

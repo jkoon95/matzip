@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.iei.reserve.model.service.ReserveService;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
+import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TimeSet;
 
 @RequestMapping(value="/reserve")
@@ -23,10 +24,9 @@ public class ReserveController {
 	@RequestMapping(value="/reserveFrm")
 	private String reserveFrm(Model model) {
 		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Menu menu, Model model
-		//받아온 정보 : member, store, menu
 		
 		//원래 매개변수인데, 일단 임시로
-		int storeNo = 2;;
+		int storeNo = 1;
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		
@@ -57,11 +57,19 @@ public class ReserveController {
 
 	@ResponseBody
 	@PostMapping(value="/timeSet")
-	private TimeSet timeSet(int storeNo, String day){
+	private TimeSet timeSet(int storeNo, String selectedDay){
 		//매개변수 : int storeNo, String Day(datepicker에서 선택한 날짜)
-		TimeSet timeSet = reserveService.timeset(storeNo, day);
+		TimeSet timeSet = reserveService.timeset(storeNo, selectedDay);
 		return timeSet;
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/tableNoAndCapacity")
+	private List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
+		List<TableNoAndCapacity> tableNoAndCapacity = reserveService.tableNoAndCapacity(storeNo, reserveDate, reserveTime);
+		return tableNoAndCapacity;
+	}
+	
 	
 	@PostMapping(value="/reserveList")
 	private String reserveList(String reserveDate, Model model) {

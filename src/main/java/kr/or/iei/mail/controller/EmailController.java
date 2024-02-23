@@ -1,10 +1,9 @@
 package kr.or.iei.mail.controller;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -37,5 +36,22 @@ public class EmailController {
 		}else {
 			return 1;
 		}
+	}
+	@ResponseBody
+	@GetMapping(value="checkId")
+	public int checkId(String memberId) {
+		Member member = memberService.emailCheckId(memberId);	
+		System.out.println(member);
+		if(member == null) {
+			return 0;
+		}else {
+			return 1;
+		}
+	}
+	@ResponseBody
+	@PostMapping(value="/sendMail")
+	public String mailCode(String email) {
+		String passCode = matzipEmail.mailCode(email);
+		return passCode;
 	}
 }

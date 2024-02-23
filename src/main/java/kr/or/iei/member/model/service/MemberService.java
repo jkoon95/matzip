@@ -47,6 +47,10 @@ public class MemberService {
 		Member member = memberDao.emailCheckName(memberName);
 		return member;
 	}
+	public Member emailCheckId(String memberId) {
+		Member member = memberDao.emailCheckId(memberId);
+		return member;
+	}
 	
 	
 }

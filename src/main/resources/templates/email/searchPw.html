@@ -16,7 +16,7 @@
             <form  action="#" method="post">
                 <div>
                     <label for="pw-search-id ">아이디</label>
-                    <input type="text" name="pw-search-id" id="pw-search-id">
+                    <input type="text" name="pw-search-id" id="pw-search-id"><span id=checkId></span>
                 </div>
                 <div>
                     <label for="pw-search-email">이메일</label>
@@ -30,9 +30,31 @@
                 </div>
             </form>
         </div>
-    </div>
-    
+    </div>    
 	<th:block th:include="common/footer"></th:block>
-	
+	<script>
+	$("#pw-search-id").on("change",function(){
+		const memberId = $(this).val();
+		$.ajax({
+			url: "/mail/checkId",
+			type:"get",
+			data:{memberId : memberId},			
+			success : function(data){
+				if(data==0){
+					$("#checkId").text(" ---- 확인불가");
+					$("#checkId").css("color","red");
+					$("#pw-search-id").css("border", "1px solid red");
+				}else if(data==1){
+					$("#checkId").text(" ------ 확인");
+					$("#checkId").css("color","blue");
+					$("#pw-search-id").css("border", "1px solid blue");
+				}
+			},
+			error : function(){
+				console.log("error");
+			}
+		});
+	});
+	</script>
 </body>
 </html>
