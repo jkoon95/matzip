@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>맛집 상세 페이지</title>
 <link rel="stylesheet" href="/css/storeDetail.css">
-<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zv3vcc8fa7&submodules=geocoder"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1zv3vcc8fa7&submodules=geocoder"></script>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -16,7 +16,7 @@
 			</div>
 			<div class="store-title">
 				<div class="store-name">
-					<h2 th:text="${store.storeName}"></h2>
+					<h1 th:text="${store.storeName}"></h1>
 				</div>
 				<div class="store-like">하트</div>
 				<div class="store-star">별점</div>
@@ -28,9 +28,22 @@
    							<span th:text="${store.storeAddr1}"></span>
 						</h3>
 					</div>
-					<div class="store-phone">전화번호</div>
-					<div class="store-hours">영업시간(휴무일)</div>
-					<div class="store-intro">매장 소개글</div>
+					<div class="store-phone">
+						<h3>
+							<span th:text="${store.storePhone}"></span>
+							<!-- 휴무일? -->
+						</h3>
+					</div>
+					<div class="store-hours">
+						<h3>
+							<span th:text="${store.openingHour}"></span>
+							<span>~</span>
+							<span th:text="${store.closingHour}"></span>
+						</h3>
+					</div>
+					<div class="store-intro">
+						<h3 th:></h3>
+					</div>
 					<div class="icon-zone">
 						<a href="http://www.xn--of0bu3xutag46axlr.com/" target="_blank">
 							<img src="/img/home.png" width="24px">
@@ -52,7 +65,7 @@
 				</tr>
 				<tr>
 					<td>
-						<!-- <div id="map" style="width:400px;height:400px;"></div> -->
+						<div id="map" style="width:400px;height:400px;"></div>
 					</td>
 				</tr>
 			</table>
