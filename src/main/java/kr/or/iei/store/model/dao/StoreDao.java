@@ -60,7 +60,8 @@ public class StoreDao {
 				"        s.STORE_LEVEL,\r\n" + 
 				"        s.SUBWAY_NAME,\r\n" + 
 				"        s.STORE_STATUS,\r\n" + 
-				"        s.TIME_TO_EAT,\r\n" + 
+				"        s.TIME_TO_EAT,\r\n" +
+				"        s.STORE_ADDR1,\r\n" +
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" + 
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" + 
 				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" + 
@@ -91,7 +92,8 @@ public class StoreDao {
 				"OR TO_CHAR(SYSDATE, 'YYYY-MM-DD') IN (SELECT TEMP_CLOSED_DAY FROM TEMP_CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO) \r\n" + 
 				"THEN '휴무' WHEN to_char(SYSDATE,'hh24:mi') BETWEEN s.OPENING_HOUR AND s.CLOSING_HOUR and to_char(SYSDATE,'hh24:mi') \r\n" + 
 				"BETWEEN s.break_start AND s.break_end THEN 'break time' WHEN to_char(SYSDATE,'hh24:mi') \r\n" + 
-				"BETWEEN s.OPENING_HOUR AND s.CLOSING_HOUR THEN '영업중' ELSE '마감' END\r\n" + 
+				"BETWEEN s.OPENING_HOUR AND s.CLOSING_HOUR THEN '영업중' ELSE '마감' END ,s.STORE_ADDR1\r\n" + 
+				
 				"    ORDER BY\r\n" + 
 				"        LIKE_COUNT DESC\r\n" + 
 				") WHERE ROWNUM <= ?";
@@ -190,8 +192,8 @@ public class StoreDao {
 				"STORE_DESCRIPTION=?,\r\n" + 
 				"STORE_IMG=?,\r\n" + 
 				"homepage=?,\r\n" + 
-				"homepage=?,\r\n" + 
-				"STORE_ADDR1=?\r\n" + 
+				"store_sns=?,\r\n" + 
+				"store_addr1=?\r\n" + 
 				"where store_no=?";
 		Object[] params= {store.getStoreName(),store.getFoodType(),store.getSubwayName(),store.getStoreAddr(),store.getStorePhone(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getTimeToEat(),store.getStoreDescription(),store.getStoreImg(),store.getHomePage(),store.getStoreSns(),store.getStoreAddr1(),store.getStoreNo()};
 		int result = jdbc.update(query,params);
