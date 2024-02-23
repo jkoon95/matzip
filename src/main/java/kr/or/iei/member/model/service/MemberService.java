@@ -43,12 +43,12 @@ public class MemberService {
 		Member member = memberDao.selectNicknameMember(memberNickname);
 		return member;
 	}
-	public Member emailCheckName(String memberName) {
-		Member member = memberDao.emailCheckName(memberName);
+	public Member emailCheckName(String memberName, String memberEmail) {
+		Member member = memberDao.emailCheckName(memberName, memberEmail);
 		return member;
 	}
-	public Member emailCheckId(String memberId) {
-		Member member = memberDao.emailCheckId(memberId);
+	public Member emailCheckId(String memberId, String memberEmail) {
+		Member member = memberDao.emailCheckId(memberId, memberEmail);
 		return member;
 	}
 	

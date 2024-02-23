@@ -367,7 +367,7 @@ header > .header-wrap > .header-right-box{
     width: 200px;
     text-align: center;
 }
-.id-search-wrap div:nth-child(3) input{
+.id-search-wrap > .pass-num-box > input{
     margin-left: 49px;    
     width: 200px;
     border: 1px solid #b3b3b3;
@@ -423,7 +423,7 @@ header > .header-wrap > .header-right-box{
     width: 200px;
     text-align: center;
 }
-.pw-search-wrap div:nth-child(3) input{
+.pw-search-wrap > .pass-num-box > input{
     margin-left: 49px;    
     width: 200px;
     border: 1px solid #b3b3b3;
