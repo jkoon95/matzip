@@ -19,19 +19,20 @@
                 </div>
                 <div>
                     <label for="id-search-email">이메일</label>
-                    <input type="text" name="writerEmail" id="id-search-email">
-                    <button name="id-search-email-btn" id="id-search-email-btn">인증번호받기</button>                    
+                    <input type="text" name="memberEmail" id="id-search-email">
+                    <button type="button" name="id-search-email-btn" id="id-search-email-btn">인증번호받기</button>                    
                 </div>
+                </form>
                 <div class="pass-num-box">
                     <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
                     <button type="button" name="pass-num-btn">인증하기</button>
-                </div>
-            </form>
-        </div>
-    </div>    
+                </div>            
+        	</div>
+    	</div>    
     <th:block th:include="common/footer"></th:block>
     
     <script>
+    	/*
     	$("#id-search-name").on("change",function(){
     		const memberName = $(this).val();
     		$.ajax({
@@ -54,21 +55,42 @@
     			}
     		});
     	});
-    	
-    	$("#id-search-email-btn").on("click",function(){
-    			const email = $("#id-search-email").val();
-    			$.ajax({
-    				url : "/mail/sendMail",
-    				type : "post",
-    				data : {email : email},    				
-    				success : function(data){
-    					console.log(data);    					
-    				},
-    				error : function(){
-    					console.log("에러");
-    				}
-    			});    			
-    		});
+    	*/
+    	$("#id-search-email-btn").on("click", function() {
+    	    const memberName = $("#id-search-name").val();
+    	    const memberEmail = $("#id-search-email").val();
+
+    	    $.ajax({
+    	        url: "/mail/checkName",
+    	        type: "get",
+    	        data: { memberName: memberName, memberEmail: memberEmail },
+    	        success: function(data) {
+    	            if (data === "1") {
+    	                $.ajax({
+    	                    url: "/mail/sendMail",
+    	                    type: "post",
+    	                    data: { memberEmail: memberEmail },
+    	                    success: function(data) {
+    	                        $("#checkName").text(" ------ 확인");
+    	                        $("#checkName").css("color", "blue");
+    	                        $("#id-search-name").css("border", "1px solid blue");
+    	                        console.log(data);
+    	                    },
+    	                    error: function() {
+    	                        console.log("이메일 전송 에러");
+    	                    }
+    	                });
+    	            } else if (data === "0") {
+    	                $("#checkName").text(" ---- 확인불가");
+    	                $("#checkName").css("color", "red");
+    	                $("#id-search-name").css("border", "1px solid red");
+    	            }
+    	        },
+    	        error: function() {
+    	            console.log("에러");
+    	        }
+    	    });
+    	});
     </script>
 </body>
 </html>

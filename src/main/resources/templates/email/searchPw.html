@@ -21,18 +21,18 @@
                 <div>
                     <label for="pw-search-email">이메일</label>
                     <input type="text" name="pw-search-email" id="pw-search-email">
-                    <button type="submit" name="pw-search-email-btn">인증번호받기</button>
-
-                </div>
+                    <button type="button" name="pw-search-email-btn" id="pw-search-email-btn">인증번호받기</button>
+				</div>
+                </form>
                 <div class="pass-num-box">
                     <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
                     <button type="button" name="pass-num-btn">인증하기</button>
-                </div>
-            </form>
-        </div>
-    </div>    
+                </div>           
+	        </div>
+	    </div>    
 	<th:block th:include="common/footer"></th:block>
 	<script>
+	/*
 	$("#pw-search-id").on("change",function(){
 		const memberId = $(this).val();
 		$.ajax({
@@ -54,6 +54,41 @@
 				console.log("error");
 			}
 		});
+	});
+	*/
+	$("#pw-search-email-btn").on("click", function() {
+	    const memberId = $("#pw-search-id").val();
+	    const memberEmail = $("#pw-search-email").val();
+	    $.ajax({
+	        url: "/mail/checkId",
+	        type: "get",
+	        data: { memberId: memberId, memberEmail: memberEmail },
+	        success: function(data) {
+	            if (data === "1") {
+	                $.ajax({
+	                    url: "/mail/sendMail",
+	                    type: "post",
+	                    data: { memberEmail: memberEmail },
+	                    success: function(data) {
+	                        $("#checkId").text(" ------ 확인");
+	                        $("#checkId").css("color", "blue");
+	                        $("#pw-search-id").css("border", "1px solid blue");
+	                        console.log(data);
+	                    },
+	                    error: function() {
+	                        console.log("이메일 전송 에러");
+	                    }
+	                });
+	            } else if (data === "0") {
+	                $("#checkId").text(" ---- 확인불가");
+	                $("#checkId").css("color", "red");
+	                $("#pw-search-Id").css("border", "1px solid red");
+	            }
+	        },
+	        error: function() {
+	            console.log("에러");
+	        }
+	    });
 	});
 	</script>
 </body>

@@ -73,20 +73,21 @@ public class MemberDao {
 		}
 		return (Member)list.get(0);
 	}
-	public Member emailCheckName(String memberName) {
-		String query = "select * from member_tbl where member_Name=?";
-		Object[] params = {memberName};
-		List list = jdbc.query(query, originMemberRowMapper,params);
+	public Member emailCheckName(String memberName, String memberEmail) {
+		String query = "select * from member_tbl where member_Name=? and member_Email=?";
+		Object[] params = {memberName,memberEmail};
+		List list = jdbc.query(query, originMemberRowMapper,params);		
 		if(list.isEmpty()) {
 			return null;
 		}
 		return (Member)list.get(0);
 	}
 	
-	public Member emailCheckId(String memberId) {
-		String query = "select * from member_tbl where member_Id=?";
-		Object[] params = {memberId};
+	public Member emailCheckId(String memberId, String memberEmail) {
+		String query = "select * from member_tbl where member_Id=? and member_Email=?";
+		Object[] params = {memberId, memberEmail};
 		List list = jdbc.query(query, originMemberRowMapper,params);
+		System.out.println(list);
 		if(list.isEmpty()) {
 			return null;
 		}
