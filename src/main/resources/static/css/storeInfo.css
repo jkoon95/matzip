@@ -10,8 +10,10 @@
     font-family: ns-b;
     src: url(Noto_Sans_KR/static/NotoSansKR-Bold.ttf)
 }
-
-
+.s-content{
+	width:100%;
+	display:flex;
+}
 .s-content *{
     margin: 0;
     padding: 0;
@@ -91,7 +93,7 @@ s-img-view{
 #s-bussniessContent{
     margin: 0 auto;
     text-align: center;
-    padding: 140px;
+    padding: 150px;
     width: 600px;
 }
 .s-title1{

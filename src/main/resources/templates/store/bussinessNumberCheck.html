@@ -5,15 +5,197 @@
 <title>사업자 인증 확인</title>
 <script src="/js/jquery-3.7.1.js"></script>
 <link rel="stylesheet" href="/css/storeInfo.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+.content{
+	width: 1200px;
+	margin:0 auto;
+	display:flex;
+}
+.navigation {
+  position: relative;
+  width: 300px;
+  background: #fff;
+  box-shadow: 10px 0 0 #72B37E;
+  border-left: 10px solid #fff;
+  overflow-x: hidden;
+  display:flex;
+  background-color: #fafcf6;
+}
+
+
+/* list */
+
+.navigation > ul {
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-left: 5px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 100%;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: #000;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a.active {
+  background: #72B37E;
+}
+
+.navigation ul li a.active::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 #72B37E;
+}
+
+.navigation ul li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 #72B37E;
+}
+
+.navigation ul li a .material-icons {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  flex-grow: 1;
+  display: block;
+  padding-left: 10px;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+}
+
+.navigation ul li a .more {
+  position: relative;
+  display: block;
+  padding-right: 20px;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+}
+
+
+/* sub-list */
+
+.navigation ul li ul {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-left: 80px;
+}
+
+.navigation ul li ul li {
+  display: none;
+}
+
+.navigation ul li ul li.sub-active {
+  display: block;
+}
+
+</style>
 </head>
 <body>
 	<!-- 매장만 들어갈 수 있도록 설정해줘야함-->
 	<th:block th:include="common/header"></th:block>
+	<div class="content">
+	<div class="navigation">
+    <ul>
+      <li class="list">
+        <a class="active" href="#">
+          <span class="material-icons">account_circle</span>
+          <span class="title">내 정보 조회</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="#">
+          <span class="material-icons">add_business</span>
+          <span class="title">매장 등록</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="#">
+          <span class="material-icons">storefront</span>
+          <span class="title">매장 정보/관리</span>
+        </a>
+      </li>
+      <li class="list">
+        <a href="#">
+          <span class="material-icons">calendar_month</span>
+          <span class="title">예약 관리</span>
+        </a>
+        <ul>
+          <li class="sub-list">
+            <a href="#">
+              <span class="title">현재 예약 내역</span>
+            </a>
+          </li>
+          <li class="sub-list">
+            <a href="#">
+              <span class="title">과거 예약 내역</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <script>
+  /*녹색 칠하고, 서브메뉴 있으면 보여주기 - 박성완*/
+  const list = $(".list");
+  list.on("click", function(){
+    list.children("a").removeClass("active");
+    $(this).children("a").addClass("active");
+    $(this).children("ul").children().toggleClass("sub-active");
+  });
 
-    <!--사이드메뉴-->
-    <th:block th:include="common/side-menu">
-  
-    </th:block>
+  /*서브메뉴 있으면 그 상위 a태그 우측 끝에 더보기 아이콘 추가 - 박성완*/
+  const span = $("<span class='material-icons'>");
+  span.attr("class", "material-icons");
+  span.text("expand_more");
+  const subList = $(".sub-list");
+  subList.parent().prev("a").append(span);
+  </script>
+    
     <!--//사이드메뉴-->
 
     <div class="s-content">
@@ -35,10 +217,13 @@
             </form>
         </div>
      </div>  
+     
 	<script>
         $(".s-bussinessNum").on("input", function() {
-            $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
+            $("#s-enrollCheckMsg").text("");
             $("#s-enrollCheckMsg").css("color", "red");
+            $("#s-enrollNonbutton").prop("disabled", true);
+            $("#s-enrollNonbutton").css("background-color", "#b5b5b5");
             
             var input = $(this).val().replace(/\D/g, '').substring(0, 10); // 숫자 이외의 문자는 제거하고 최대 10자로 제한
             var output = '';
@@ -76,8 +261,8 @@
                     if (valid=='01'){
                         $("#s-enrollCheckMsg").text("정상적인 사업자번호입니다.");
                         $("#s-enrollCheckMsg").css("color", "green");               
-                        $("#s-enrollCheckMsg").css("background-color", "#72B37E");               
-                        $("#s-enrollNextbutton").prop('disabled', false);
+                        $("#s-enrollNonbutton").css("background-color", "#72B37E");               
+                        $("#s-enrollNonbutton").prop('disabled', false);
                     }else {
                         $("#s-enrollCheckMsg").text("사업자등록번호 확인 후 다시 입력해주세요.");
                         $("#s-enrollCheckMsg").css("color", "red");
@@ -92,6 +277,9 @@
 
         });
     </script>
+	</div>
+    <!--사이드메뉴-->
+  
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>
