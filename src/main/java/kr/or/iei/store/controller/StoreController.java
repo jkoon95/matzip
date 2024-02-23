@@ -64,9 +64,8 @@ public class StoreController {
 		}
 		
 		@PostMapping(value="/storeEnroll")
-		public String storeEnroll(Store store, MultipartFile[] edvienceUpFile, String address,String detailAddress, String[] closedDays, MultipartFile storeImgFile, MultipartFile[] menuImgFile, String[] name, int[] price, Model model) {
+		public String storeEnroll(Store store, MultipartFile[] edvienceUpFile, String[] closedDays, MultipartFile storeImgFile, MultipartFile[] menuImgFile, String[] name, int[] price, Model model) {
 			//매장
-			store.setStoreAddr(address+" "+detailAddress);	//도로명 + 상세주소
 			String storeSavepath = root+"/store/";
 			String storeFilepath = fileUtils.upload(storeSavepath, storeImgFile);
 			store.setStoreImg(storeFilepath);
@@ -159,7 +158,7 @@ public class StoreController {
 		}
 				
 		@PostMapping(value="/storeUpdate")
-		public String storeUpdate(Store store, String address, String detailAddress, String[] closedDays, MultipartFile storeImgFile, String oldImgName, Model model) {
+		public String storeUpdate(Store store, String[] closedDays, MultipartFile storeImgFile, String oldImgName, Model model) {
 			if (storeImgFile != null && !storeImgFile.isEmpty()) {
 				String storeSavepath = root+"/store/";
 				fileUtils.deleteFile(storeSavepath, oldImgName);

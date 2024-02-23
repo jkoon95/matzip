@@ -101,8 +101,8 @@ public class StoreDao {
 	}
 
 	public int insertStore(Store store) {
-		String query = "INSERT INTO STORE_TBL VALUES (STORE_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,2,?)";
-		Object[] params = {store.getMemberNo(),store.getBusinessNo(),store.getStoreName(),store.getStoreAddr(),store.getStorePhone(),store.getHomePage(),store.getStoreSns(),store.getStoreDescription(),store.getFoodType(),store.getStoreImg(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getSubwayName(),store.getTimeToEat()};
+		String query = "INSERT INTO STORE_TBL VALUES (STORE_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,2,?,?)";
+		Object[] params = {store.getMemberNo(),store.getBusinessNo(),store.getStoreName(),store.getStoreAddr(),store.getStorePhone(),store.getHomePage(),store.getStoreSns(),store.getStoreDescription(),store.getFoodType(),store.getStoreImg(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getSubwayName(),store.getTimeToEat(),store.getStoreAddr1()};
 		int result = jdbc.update(query,params);
 		return result;
 	}
@@ -190,9 +190,10 @@ public class StoreDao {
 				"STORE_DESCRIPTION=?,\r\n" + 
 				"STORE_IMG=?,\r\n" + 
 				"homepage=?,\r\n" + 
-				"store_sns=?\r\n" + 
+				"homepage=?,\r\n" + 
+				"STORE_ADDR1=?\r\n" + 
 				"where store_no=?";
-		Object[] params= {store.getStoreName(),store.getFoodType(),store.getSubwayName(),store.getStoreAddr(),store.getStorePhone(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getTimeToEat(),store.getStoreDescription(),store.getStoreImg(),store.getHomePage(),store.getStoreSns(),store.getStoreNo()};
+		Object[] params= {store.getStoreName(),store.getFoodType(),store.getSubwayName(),store.getStoreAddr(),store.getStorePhone(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getTimeToEat(),store.getStoreDescription(),store.getStoreImg(),store.getHomePage(),store.getStoreSns(),store.getStoreAddr1(),store.getStoreNo()};
 		int result = jdbc.update(query,params);
 		return result;
 	}

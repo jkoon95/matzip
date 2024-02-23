@@ -58,15 +58,10 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" required th:value="${store.storeAddr}" placeholder="주소찾기">
-                        <!-- 
-                        <span class="hideAddr" style="display: none;width: 100%">
-                        	<input type="text" name="address" id="address" class="s-input-form" onclick="searchAddr();"
-                            required placeholder="주소찾기">
-                        	<input type="text" name="detailAddress" id="detailAddress" class="s-input-form"
-                            	placeholder="상세주소를 입력하세요(예:동, 층, 호)">
-                        </span>                        
-                         -->
+                        <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" onclick="searchAddr();"
+                            required placeholder="주소찾기" th:value="${store.storeAddr}">
+                        <input type="text" name="storeAddr1" id="storeAddr1" class="s-input-form"
+                            placeholder="상세주소를 입력하세요(예:동, 층, 호)">
                         
                     </div>
                     <div class="s-input-wrap">
