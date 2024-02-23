@@ -156,13 +156,5 @@ public class MemberController {
 			model.addAttribute("loc", "/member/mypage");
 		}
 		return "common/msg";
-	}
-	@GetMapping(value="idSearch")
-	public String searchId() {
-		return "email/searchId";
-	}
-	@GetMapping(value="pwSearch")
-	public String searchPw() {
-		return "email/searchPw";
-	}
+	}	
 }
