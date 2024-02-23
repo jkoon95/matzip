@@ -13,7 +13,7 @@
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h1 class="s-title2">매장 정보 변경</h1>
-            <form action="/store/storeUpdate" id="enrollStoreForm" method="post">
+            <form action="/store/storeUpdate" id="enrollStoreForm" method="post" enctype="multipart/form-data">
                 <div class="s-smallexplain">
                     <sup>* </sup> 표시된 곳은 필수입력 항목입니다.
                 </div>
@@ -353,7 +353,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeDescription">매장설명</label>
-                        <textarea name="storeDescription" id="storeDescription" class="s-input-form"></textarea>
+                        <textarea name="storeDescription" id="storeDescription" class="s-input-form" th:text="${store.storeDescription}"></textarea>
                     </div>
                 </div>
 
@@ -367,7 +367,8 @@
                 </div>
                 <div class="s-enrolldiv">
                 	<input type="submit" value="수정완료" class="s-enrollbutton" style="width: 100%;">   
-                </div>             
+                </div>        
+                     
             </form>
         </div>
 
