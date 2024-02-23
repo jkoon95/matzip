@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.iei.search.model.dao.SearchDao;
+import kr.or.iei.store.model.dto.Store;
 
 @Service
 public class SearchService {
@@ -21,6 +22,11 @@ public class SearchService {
 		int end = start+amount-1;
 		List searchList = searchDao.selectSearchList(start,end, stationName);
 		return searchList;
+	}
+
+	public Store selectSearchOne(int storeNo) {
+		Store store = searchDao.selectSearchOne(storeNo);
+		return store;
 	}
 	
 

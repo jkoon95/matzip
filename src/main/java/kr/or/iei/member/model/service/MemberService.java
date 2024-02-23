@@ -43,6 +43,10 @@ public class MemberService {
 		Member member = memberDao.selectNicknameMember(memberNickname);
 		return member;
 	}
+	public Member emailCheckName(String memberName) {
+		Member member = memberDao.emailCheckName(memberName);
+		return member;
+	}
 	
 	
 }
