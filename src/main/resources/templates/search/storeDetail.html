@@ -8,24 +8,51 @@
 <body>
 	<th:block th:include="common/header"></th:block>
 	<div class="page-content">
-		<div class="img-zone" style="width:520px;">
-			<!-- 임시사진 -->
-			<img src="/photo/store/강남_무궁화반점.jpg" style="max-width:100%; max-height:100%;">
-		</div>
 		<div class="store-head">
-			<div class="store-name">무궁화반점</div>
-			<div class="store-like">하트</div>
-			<div class="store-star">별점</div>
-			<div class="store-report">신고</div>
-			<div class="store-info">
-				<div class="store-addr">주소</div>
-				<div class="store-phone">전화번호</div>
-				<div class="store-hours">영업시간(휴무일)</div>
-				<div class="store-intro">매장 소개글</div>
-				<span class="material-icons" style="font-size: 24px;">home</span>
+			<div class="img-zone" style="width:520px;">
+				<!-- 임시사진 -->
+				<img src="/photo/store/강남_무궁화반점.jpg" style="max-width:100%; max-height:100%;">
+			</div>
+			<div class="store-title">
+				<div class="store-name">무궁화반점</div>
+				<div class="store-like">하트</div>
+				<div class="store-star">별점</div>
+				<div class="store-report">신고</div>
+				<div class="store-info">
+					<div class="store-addr">주소</div>
+					<div class="store-phone">전화번호</div>
+					<div class="store-hours">영업시간(휴무일)</div>
+					<div class="store-intro">매장 소개글</div>
+					<div class="icon-zone">
+						<a href="http://www.xn--of0bu3xutag46axlr.com/" target="_blank">
+							<img src="/img/home.png" width="24px">
+						</a>
+						<a href="#" target="_blank">
+							<img src="/img/sns.png" width="24px">
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		
+		<div class="store-mid">
+			<div class="store-loc">위치</div>
+			<div class="store-menu">메뉴</div>
+			<div class="store-notice">안내</div>
+		</div>
+		
+		<div class="store-reserve">
+			<a id="reserve-btn" th:if="${session.member != null && session.member.memberLevel == 3}" class="btn" href="#">예약하기</a>
+		</div>
+		
+		<div class="store-review">
+			<h2>리뷰</h2>
+			<div class="store-review-list">
+			dd
+			</div>
+			<button class="btn" id="more-btn">더보기</button>
+		</div>
+		<!-- 주변 맛집 슬라이드 -->
 	</div>
 	<th:block th:include="common/footer"></th:block>
 </body>

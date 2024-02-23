@@ -8,7 +8,9 @@ a {
 .page-content {
   width: 1200px;
   margin: 30px auto;
-  margin-bottom: 10px;
+}
+
+.store-head {
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -17,14 +19,14 @@ a {
 /* 이미지 영역 */
 .img-zone {
   width: 600px;
-  height: 500px;
+  height: 300px;
 }
 
 /* 매장 헤드(우측정렬) */
-.store-head {
+.store-title {
   width: 600px;
 }
-.store-head > div {
+.store-title > div {
   display: inline-block;
   margin-right: 10px;
 }
@@ -39,3 +41,7 @@ a {
   margin-bottom: 20px;
 }
 
+.store-mid {
+  width: 600px;
+  margin-top: 40px; /* 필요에 따라 조정 */
+}
