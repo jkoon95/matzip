@@ -9,7 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.search.model.dto.SearchListData;
 import kr.or.iei.search.model.service.SearchService;
 import kr.or.iei.store.model.dao.TwoList;
@@ -37,10 +39,24 @@ public class SearchController {
 	
 	@ResponseBody
 	@GetMapping(value = "/ajaxSelectTop5Store")
-	public List ajaxSelectTop5Store(String stationName) {
+	public List ajaxSelectTop5Store(String stationName,@SessionAttribute(required = false)Member member) {
 		int number = 5;
-		//System.out.println(stationName);
-		List list = storeService.selectTopStore(stationName,number);
+		int memberNo = 0;
+		
+		if(member != null) {
+			memberNo = member.getMemberNo();
+		}
+		
+		//List list = searchService.memberLike(memberNo,)
+		
+		
+		System.out.println(member);
+		
+		List list = searchService.selectTopStore(stationName,number,memberNo);
+		//System.out.println("탑5:" + list);
+		
+		
+		
 		if(list.isEmpty()) {
 			return null;
 		}else {
@@ -50,24 +66,24 @@ public class SearchController {
 	}
 	
 
-	@ResponseBody
-	@GetMapping(value = "ajaxStoreList")
-	public List ajaxStoreList(int start,int amount,String stationName) {
-		//List list = storeService.ajaxStoreList(stationName);
-		
-		
-		int totalCount = searchService.storeTotalCount(stationName);
-		
-		
-	
-		List searchList = searchService.selectSearchList(start,amount,stationName);
-		System.out.println(stationName);
-		System.out.println(searchList);
-
-		
-		
-		return searchList;	
-	}
+//	@ResponseBody
+//	@GetMapping(value = "ajaxStoreList")
+//	public List ajaxStoreList(int start,int amount,String stationName) {
+//		//List list = storeService.ajaxStoreList(stationName);
+//		
+//		
+//		int totalCount = searchService.storeTotalCount(stationName);
+//		
+//		
+//	
+//		List searchList = searchService.selectSearchList(start,amount,stationName);
+//		System.out.println(stationName);
+//		System.out.println(searchList);
+//
+//		
+//		
+//		return searchList;	
+//	}
 	
 	@ResponseBody
 	@GetMapping(value = "ajaxStoreList2")
@@ -105,5 +121,7 @@ public class SearchController {
 		return "search/storeDetail";
 	}
 	
-
+	//@ResponseBody
+	//@GetMapping(value = "likeView")
+	//public String likeView(int memberNo,@SessionAttribute)
 }
