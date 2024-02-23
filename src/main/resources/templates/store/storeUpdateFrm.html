@@ -21,12 +21,13 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap">
                         <label for="businessNo">사업자번호</label>
-                         <input type="hidden" name="memberNo" th:value=${session.member.memberNo}>                        
-                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value=${store.businessNo} readonly>
+                         <input type="hidden" name="storeNo" th:value="${store.storeNo}">
+                         <input type="hidden" name="memberNo" th:value="${session.member.memberNo}">                        
+                        <input type="text" name="businessNo" id="businessNo" class="s-input-form" th:value="${store.businessNo}" readonly>
                     </div>
                     <div class="s-input-wrap">
                         <label for="storeNo">매장명<sup class="s-requiredMsg">* </sup></label>
-                        <input type="text" name="storeName" id="storeName" class="s-input-form" th:value=${store.storeName} required>
+                        <input type="text" name="storeName" id="storeName" class="s-input-form" th:value="${store.storeName}" required>
                     </div>
                     <div class="s-input-wrap">
                         <label for="foodType" id="s-selectLable">음식타입<sup class="s-requiredMsg">* </sup></label>
@@ -58,17 +59,20 @@
                     <div class="s-input-wrap">
                         <label for="address">주소<sup class="s-requiredMsg">* </sup></label>
                         <input type="text" name="storeAddr" id="storeAddr" class="s-input-form" required th:value="${store.storeAddr}" placeholder="주소찾기">
+                        <!-- 
                         <span class="hideAddr" style="display: none;width: 100%">
                         	<input type="text" name="address" id="address" class="s-input-form" onclick="searchAddr();"
                             required placeholder="주소찾기">
                         	<input type="text" name="detailAddress" id="detailAddress" class="s-input-form"
                             	placeholder="상세주소를 입력하세요(예:동, 층, 호)">
-                        </span>
+                        </span>                        
+                         -->
+                        
                     </div>
                     <div class="s-input-wrap">
                         <label for="storePhone">연락처<sup class="s-requiredMsg">* </sup></label>
                         <input type="text" name="storePhone" id="storePhone" class="s-input-form" maxlength="13"
-                            required th:value=${store.storePhone}>
+                            required th:value="${store.storePhone}">
                     </div>
                     <div class="s-input-wrap">
                     	<label id="s-selectLable" for="">영업시간<sup class="s-requiredMsg">* </sup></label>
@@ -346,7 +350,7 @@
                     </div>
                     <div class="s-input-wrap">
                         <label for="homePage">홈페이지</label>
-                        <input type="text" name="homePage" id="homepage" class="s-input-form" th:value="${store.homePage}">
+                        <input type="text" name="homePage" id="homePage" class="s-input-form" th:value="${store.homePage}">
                     </div>
                     <div class="s-input-wrap">
                         <label for="store_sns">SNS</label>
@@ -362,9 +366,8 @@
                 <div class="s-enrolldiv">
                     <div class="s-input-wrap s-enrollStoreImgBox">
                         <img class="s-img-view" width="300px" height="300px" th:src="${store.storeImg}" name="storeImg">
-                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);"
-                            required>
-                        <input type="hidden" th:value="${store.storeImg}" name="oldName">     
+                        <input type="file" name="storeImgFile" accept=".jpg,.png,.jpeg" onchange="storeloadImg(this);">
+                        <input type="hidden" th:value="${store.storeImg}" name="oldImgName">     
                     </div>
                 </div>
                 <div class="s-enrolldiv">
@@ -384,10 +387,12 @@
         		$(this).next().css("display","inline-block");
         	});
         	
+        /* 주소 ..	
         	$("#storeAddr").on("click",function(){
         		$(this).css("display","none");
         		$(this).next().css("display","inline-block");
         	});
+       */
             //주소 길찾기
             function searchAddr() {
                 new daum.Postcode({
@@ -461,6 +466,40 @@
         	const breakEnd = [[${store.breakEnd}]];
         	$('select[name="breakEnd"] option[value="' + breakEnd + '"]').prop("selected", true);
         	
+        	
+        	$("#storePhone").keyup(function(){
+        		var val = $(this).val().replace(/[^0-9]/g, '');
+        		if(val.length > 3 && val.length < 6){
+        			var tmp = val.substring(0,2)
+        			if(tmp == "02"){
+        				$(this).val(val.substring(0,2) + "-" + val.substring(2));
+        			} else {
+        				$(this).val(val.substring(0,3) + "-" + val.substring(3));
+        			}
+        		}else if (val.length > 6){
+        			var tmp = val.substring(0,2)
+        			var tmp2 = val.substring(0,4)
+        			if(tmp == "02"){
+        				if(val.length == "10"){
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 6) + "-" + val.substring(6));
+        				} else {
+        					$(this).val(val.substring(0,2) + "-" + val.substring(2, 5) + "-" + val.substring(5));
+        				}
+        			} else if(tmp2 == "0505"){
+        				if(val.length == "12"){
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 8) + "-" + val.substring(8));
+        				} else {
+        					$(this).val(val.substring(0,4) + "-" + val.substring(4, 7) + "-" + val.substring(7));
+        				}
+        			} else {
+        				if(val.length == "11"){
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 7) + "-" + val.substring(7));
+        				} else {
+        					$(this).val(val.substring(0,3) + "-" + val.substring(3, 6) + "-" + val.substring(6));
+        				}
+        			}
+        		}
+        	});
         	
         </script>
     </div>

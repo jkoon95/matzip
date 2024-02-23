@@ -174,4 +174,33 @@ public class StoreDao {
 		}
 		return (Store)list.get(0);
 	}
+
+	public int updateStore(Store store) {
+		String query = "update store_tbl set \r\n" + 
+				"STORE_NAME=?, \r\n" + 
+				"FOOD_TYPE=?, \r\n" + 
+				"SUBWAY_NAME=?, \r\n" + 
+				"STORE_ADDR=?, \r\n" + 
+				"STORE_PHONE=?, \r\n" + 
+				"OPENING_HOUR=?, \r\n" + 
+				"CLOSING_HOUR=?,\r\n" + 
+				"BREAK_START=?,\r\n" + 
+				"BREAK_END=?,\r\n" + 
+				"TIME_TO_EAT=?,\r\n" + 
+				"STORE_DESCRIPTION=?,\r\n" + 
+				"STORE_IMG=?,\r\n" + 
+				"homepage=?,\r\n" + 
+				"store_sns=?\r\n" + 
+				"where store_no=?";
+		Object[] params= {store.getStoreName(),store.getFoodType(),store.getSubwayName(),store.getStoreAddr(),store.getStorePhone(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getTimeToEat(),store.getStoreDescription(),store.getStoreImg(),store.getHomePage(),store.getStoreSns(),store.getStoreNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int deleteClosedDay(int storeNo) {
+		String query = "delete from closed_day_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
 }
