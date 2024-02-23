@@ -22,8 +22,6 @@ import kr.or.iei.store.model.service.StoreService;
 @RequestMapping(value = "/search")
 public class SearchController {
 	@Autowired
-	private StoreService storeService;
-	@Autowired
 	private SearchService searchService; 
 	
 	
@@ -39,21 +37,16 @@ public class SearchController {
 	
 	@ResponseBody
 	@GetMapping(value = "/ajaxSelectTop5Store")
-	public List ajaxSelectTop5Store(String stationName,@SessionAttribute(required = false)Member member) {
+	public List ajaxSelectTop5Store(String stationName) {
 		int number = 5;
-		int memberNo = 0;
-		
-		if(member != null) {
-			memberNo = member.getMemberNo();
-		}
 		
 		//List list = searchService.memberLike(memberNo,)
 		
 		
-		System.out.println(member);
+
 		
-		List list = searchService.selectTopStore(stationName,number,memberNo);
-		//System.out.println("탑5:" + list);
+		List list = searchService.selectTopStore(stationName,number);
+		System.out.println("탑5:" + list);
 		
 		
 		

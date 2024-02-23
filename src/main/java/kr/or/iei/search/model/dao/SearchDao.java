@@ -23,7 +23,7 @@ public class SearchDao {
 		return totalCount ;
 	}
 	
-	public List selectTopStore(String stationName,int number,int memberNo) {
+	public List selectTopStore(String stationName,int number) {
 		String query = "SELECT * FROM (\r\n" + 
 				"    SELECT\r\n" + 
 				"        s.STORE_NO,\r\n" + 
@@ -49,7 +49,6 @@ public class SearchDao {
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT, -- 좋아요 수\r\n" + 
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT, -- 리뷰 수\r\n" + 
 				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE, -- 평균 리뷰 점수\r\n" + 
-				"        (SELECT COUNT(*) FROM STORE_LIKE_TBL sl WHERE sl.STORE_NO = s.STORE_NO AND sl.MEMBER_NO = ?) AS IS_LIKE, -- 현재 사용자의 좋아요 여부\r\n" + 
 				"        CASE\r\n" + 
 				"            WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n" + 
 				"                 OR TO_CHAR(SYSDATE, 'YYYY-MM-DD') IN (SELECT TEMP_CLOSED_DAY FROM TEMP_CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO) THEN '휴무'\r\n" + 
@@ -80,7 +79,7 @@ public class SearchDao {
 				"    ORDER BY\r\n" + 
 				"        LIKE_COUNT DESC\r\n" + 
 				") WHERE ROWNUM <= ?";
-		Object[] params = {memberNo,stationName , number};
+		Object[] params = {stationName , number};
 		List list = jdbc.query(query, storePlusRowMapper,params);
 		return list;
 	}

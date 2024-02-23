@@ -18,8 +18,8 @@ public class SearchService {
 		return totalCount;
 	}
 	
-	public List selectTopStore(String stationName,int number,int memberNo) {
-		List list = searchDao.selectTopStore(stationName,number,memberNo);
+	public List selectTopStore(String stationName,int number) {
+		List list = searchDao.selectTopStore(stationName,number);
 		return list;
 	}
 
