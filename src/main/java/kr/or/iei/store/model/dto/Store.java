@@ -55,6 +55,7 @@ public class Store {
 	private float reviewScore;
 	private String operationStatus;
 	private String storeAddr1;
+	private int isLike; 
 	
 	public String getStoreDescriptionBr() {
 		return storeDescription.replaceAll("\r\n", "<br>");
