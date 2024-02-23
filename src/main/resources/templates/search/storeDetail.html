@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>맛집 상세 페이지</title>
 <link rel="stylesheet" href="/css/storeDetail.css">
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zv3vcc8fa7&submodules=geocoder"></script>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -36,9 +37,18 @@
 		</div>
 		
 		<div class="store-mid">
-			<div class="store-loc">위치</div>
-			<div class="store-menu">메뉴</div>
-			<div class="store-notice">안내</div>
+			<table class="tbl store-tbl">
+				<tr>
+					<th style="width:33%;">위치</th>
+					<th style="width:33%;">메뉴</th>
+					<th style="width:33%;">안내</th>
+				</tr>
+				<tr>
+					<td>
+						<div id="map" style="width:400px;height:400px;"></div>
+					</td>
+				</tr>
+			</table>
 		</div>
 		
 		<div class="store-reserve">
@@ -48,12 +58,35 @@
 		<div class="store-review">
 			<h2>리뷰</h2>
 			<div class="store-review-list">
-			dd
+			
 			</div>
 			<button class="btn" id="more-btn">더보기</button>
 		</div>
 		<!-- 주변 맛집 슬라이드 -->
 	</div>
+	
+	<script>
+		// 위경도 가져와야함	
+	
+		const map = new naver.maps.Map("map",{
+			center : new naver.maps.LatLng(37.533837,126.896836),
+			zoom : 17,
+			zoomControl : true,
+			zoomControlOptions : {
+				position : naver.maps.Position.TOP_RIGHT,
+				style : naver.maps.ZoomControlStyle.SMALL
+			}
+		});
+		
+		const marker = new naver.maps.Marker({
+			position : new naver.maps.LatLng(37.533837,126.896836),
+			map : map
+		});
+		
+
+
+	</script>
+	
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>

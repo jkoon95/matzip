@@ -60,7 +60,8 @@ public class StoreDao {
 				"        s.STORE_LEVEL,\r\n" + 
 				"        s.SUBWAY_NAME,\r\n" + 
 				"        s.STORE_STATUS,\r\n" + 
-				"        s.TIME_TO_EAT,\r\n" + 
+				"        s.TIME_TO_EAT,\r\n" +
+				"        s.STORE_ADDR1,\r\n" +
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" + 
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" + 
 				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" + 
@@ -86,7 +87,7 @@ public class StoreDao {
 				"s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR, \r\n" + 
 				"s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE, \r\n" + 
 				"s.STORE_IMG, s.OPENING_HOUR, s.CLOSING_HOUR, s.BREAK_START, s.BREAK_END, \r\n" + 
-				"s.STORE_LEVEL, s.SUBWAY_NAME, s.STORE_STATUS, s.TIME_TO_EAT, \r\n" + 
+				"s.STORE_LEVEL, s.SUBWAY_NAME, s.STORE_STATUS, s.TIME_TO_EAT,s.STORE_ADDR1, \r\n" + 
 				"CASE WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO) \r\n" + 
 				"OR TO_CHAR(SYSDATE, 'YYYY-MM-DD') IN (SELECT TEMP_CLOSED_DAY FROM TEMP_CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO) \r\n" + 
 				"THEN '휴무' WHEN to_char(SYSDATE,'hh24:mi') BETWEEN s.OPENING_HOUR AND s.CLOSING_HOUR and to_char(SYSDATE,'hh24:mi') \r\n" + 
