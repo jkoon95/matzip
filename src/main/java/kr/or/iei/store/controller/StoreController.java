@@ -10,8 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.JsonObject;
 
 import jakarta.servlet.http.HttpSession;
 import kr.or.iei.FileUtils;
@@ -81,8 +84,7 @@ public class StoreController {
 					evidenceFile.setFilepath(evidenceFilepath);
 					evidenceFileList.add(evidenceFile);
 				}
-			}
-			//휴무일 
+			} 
 			//메뉴
 			List<Menu> menuList = new ArrayList<Menu>();
 			String menuSavepath = root+"/store/menu/";		
@@ -187,7 +189,14 @@ public class StoreController {
 			}
 		}
 		
-		
-		
-		
+		@ResponseBody
+		@GetMapping(value="/deleteMenu")
+		public int deleteMenu(int storeNo,int menuNo) {
+			int result= storeService.deleteMenu(storeNo,menuNo);
+			if(result>0) {
+				return 1;
+			}else {
+				return 2;
+			}
+		}
 }

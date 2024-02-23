@@ -146,4 +146,11 @@ public class StoreDao {
 		int result = jdbc.update(query,params);
 		return result;
 	}
+
+	public int deleteMenu(int storeNo, int menuNo) {
+		String query = "delete from menu_tbl where menu_no=?";
+		Object[] params = {menuNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
 }

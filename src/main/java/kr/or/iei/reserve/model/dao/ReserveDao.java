@@ -12,6 +12,8 @@ import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveDateRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveTimeRowMapper;
+import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
+import kr.or.iei.reseve.model.dto.TableNoAndCapacityRowMapper;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
 import kr.or.iei.reseve.model.dto.TempClosedDayRowMapper;
 import kr.or.iei.store.model.dto.ClosedDay;
@@ -36,6 +38,8 @@ public class ReserveDao {
 	private ClosedDayRowMapper closedDayRowMapper;
 	@Autowired
 	private TempClosedDayRowMapper tempClosedDayRowMapper;
+	@Autowired
+	private TableNoAndCapacityRowMapper tableNoAndCapacityRowMapper;
 	
 	//임시로 storeRowMapper, menuRowMapper
 	@Autowired
@@ -77,11 +81,14 @@ public class ReserveDao {
 				+ 		"order by reserve_date";
 		Object[] params = {storeNo, allCount};
 		List<String> fullDays = jdbc.query(query, reserveDateRowMapper, params);
-		
-		return fullDays;
+		if(fullDays != null) {
+			return fullDays;
+		}else {
+			return null;
+		}
 	}
 
-	public List<String> fullTime(int storeNo, String day, int tableAmount) {
+	public List<String> fullTime(int storeNo, String selectedDay, int tableAmount) {
 		String query = "select reserve_time " + 
 						"from (select reserve_time, count(*) count" + 
 						"        from reserve_tbl " + 
@@ -89,9 +96,13 @@ public class ReserveDao {
 						"        group by reserve_time " + 
 						"        order by reserve_time) r " + 
 						"where r.count = ?";
-		Object[] params = {storeNo, day, tableAmount};
+		Object[] params = {storeNo, selectedDay, tableAmount};
 		List<String> fullTimes = jdbc.query(query, reserveTimeRowMapper, params);
-		return fullTimes;
+		if(fullTimes != null) {
+			return fullTimes;
+		}else {
+			return null;
+		}
 	}
 
 	public List<ClosedDay> closedDays(int storeNo) {
@@ -106,6 +117,19 @@ public class ReserveDao {
 		Object[] params = {storeNo};
 		List<TempClosedDay> list = jdbc.query(query, tempClosedDayRowMapper, params);
 		return list;
+	}
+
+	public List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
+		String query = "select table_no, table_capacity from table_tbl where store_no = ? "
+					 + "minus "
+					 + "select table_no, table_capacity "
+					 + "from table_tbl t join reserve_tbl using (table_no) "
+					 + "where t.store_no = ? and reserve_date = ? and reserve_time = ? "
+					 + "order by table_capacity";
+		//"order by table_capacity" 이거 덕분에 식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
+		Object[] params = {storeNo, storeNo, reserveDate, reserveTime};
+		List<TableNoAndCapacity> tableNoCapacity = jdbc.query(query, tableNoAndCapacityRowMapper, params);
+		return tableNoCapacity;
 	}
 
 	

@@ -28,32 +28,32 @@
       <!--데이트피커-->
       <article style="width:1000px;height:1000px;">
         <div id="datepicker"></div>
-        <input type="hidden" name="reserveDate" id="reserveDate">
       </article>
       <!--//데이트피커-->
 
       <!--예약정보 입력-->
       <article>
-        <ul>
-          <li class="time-area">
-            <ul class="time-list">
-              <!-- <th:block th:for~~> -->
-              <li class="time-item"></li>
-              <!-- </th:block>-->
-            </ul>
-          </li>
-          <li class="people-area">
-
-          </li>
-
-          <li class="menu-area">
-
-          </li>
-          <li class="request-area">
-
-          </li>
-
-        </ul>
+        <form action="/reserve/reserveList" method="post">
+          <input type="hidden" name="reserveDate" id="reserveDate">
+          <ul>
+            <li class="time-area">
+              <input type="hidden" name="reserveTime" id="reserveTime">
+              <!--datepicker에서 날짜 클릭시 button(시각)들을 ajax로 추가-->
+            </li>
+            <li class="people-area">
+              <input type="hidden" name="reservePeople" id="reservePeople">
+              
+            </li>
+  
+            <li class="menu-area">
+  
+            </li>
+            <li class="request-area">
+  
+            </li>
+  
+          </ul>
+        </form>
       </article>
       <!--//예약정보 입력frm-->
 
@@ -70,6 +70,11 @@
       <!--//예약버튼-->
     </div>
   </main>
+  
+  <script th:inline="javascript">
+    //reserveFrm.js에 storeNo 넘겨주기 위해 이 스크립트를 만들었음
+    const storeNo = [[${store.storeNo}]];
+  </script>
   
   <script src="/js/jquery-ui-1.13.2/jquery-ui.js"></script>
   <link rel="stylesheet" href="/js/jquery-ui-1.13.2/jquery-ui.css"></link>
