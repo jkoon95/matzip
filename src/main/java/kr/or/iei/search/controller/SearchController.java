@@ -15,7 +15,9 @@ import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.search.model.dto.SearchListData;
 import kr.or.iei.search.model.service.SearchService;
 import kr.or.iei.store.model.dao.TwoList;
+import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreInfo;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -114,8 +116,15 @@ public class SearchController {
 	@GetMapping(value = "conveyStoreInfoToDetail")
 	public String conveyStoreInfoToDetail(int storeNo,Model model) {
 		Store store = searchService.selectSearchOne(storeNo);
+	    // 상점의 공지 정보 조회 (INFO_TBL)
+	    StoreInfo info = searchService.getInfoByStoreNo(storeNo);
+	    // 상점의 메뉴 정보 조회 (MENU_TBL)
+	    Menu menu = searchService.getMenuByStoreNo(storeNo);
 		
 		model.addAttribute("store",store);
+		model.addAttribute("info", info);
+	    model.addAttribute("menu", menu);
+		
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
 		return "search/storeDetail";
@@ -124,4 +133,7 @@ public class SearchController {
 	//@ResponseBody
 	//@GetMapping(value = "likeView")
 	//public String likeView(int memberNo,@SessionAttribute)
+	
+	
+	
 }
