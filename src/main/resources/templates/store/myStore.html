@@ -282,7 +282,7 @@
 						</tr>				
 						<tr>
 							<th colspan="2" class="s-lastTh">
-								<a href="@{'/store/storeDelete?storeNo=' + ${store.storeNo}}" class="goStore" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">삭제하기</a>
+								<a th:href="@{'/store/storeDelete?storeNo=' + ${store.storeNo}}" class="goStore" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">삭제하기</a>
 								<a th:href="@{'/store/storeUpdateFrm?storeNo=' + ${store.storeNo}}" class="goStore" style="background-color: #FFA648">수정하기</a>
 								<a th:if="${store.storeStatus==1}" href="#" class="goStore">매장가기</a>	<!-- 매장상세링크 걸어줘야함 -->
 							</th>

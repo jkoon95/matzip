@@ -212,7 +212,7 @@ public class StoreService {
 	}
 
 
-
+	@Transactional
 	public StoreFileData deleteStore(int storeNo) {
 		List evidenceList = storeDao.selectEvidenceFile(storeNo);
 		List menuList = storeDao.selectStoreMenu(storeNo);
