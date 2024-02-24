@@ -59,8 +59,8 @@ public class ReserveDao {
 	public List<Menu> searchMenu(int storeNo) {
 		String query = "select * from menu_tbl where store_no = ?";
 		Object[] params = {storeNo};
-		List<Menu> menu = jdbc.query(query, menuRowMapper, params);
-		return menu;
+		List<Menu> menus = jdbc.query(query, menuRowMapper, params);
+		return menus;
 	}
 	
 	public int tableAmount(int storeNo) {

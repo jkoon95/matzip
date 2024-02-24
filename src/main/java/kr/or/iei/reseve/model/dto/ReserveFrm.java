@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ReserveFrm {
 
 	private Store store;
-	private List<Menu> menu;
+	private List<Menu> menus;
 	private List<String> fullDays; //만석인 날짜
 	
 }

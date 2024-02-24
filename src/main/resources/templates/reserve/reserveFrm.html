@@ -26,49 +26,65 @@
       <!--//매장정보-->
 
       <!--데이트피커-->
-      <article style="width:1000px;height:1000px;">
+      <article style="width:400px;height:400px;">
         <div id="datepicker"></div>
       </article>
       <!--//데이트피커-->
 
       <!--예약정보 입력-->
       <article>
-        <form action="/reserve/reserveList" method="post">
+        <form action="/reserve/reserve" method="post">
           <input type="hidden" name="reserveDate" id="reserveDate">
           <ul>
+
             <li class="time-area">
               <input type="hidden" name="reserveTime" id="reserveTime">
               <!--datepicker에서 날짜 클릭시 button(시각)들을 ajax로 추가-->
             </li>
+
             <li class="people-area">
               <input type="hidden" name="reservePeople" id="reservePeople">
-              
+              <span>예약 인원 : </span>
+              <span class="material-icons" id="people-minus">remove</span>
+              <span clas="people" id="people"> </span>
+              <span class="material-icons" id="people-plus">add</span>
             </li>
   
             <li class="menu-area">
-  
+              <!--보내는 데이터 형태(배열) 예시 : menuNo = [1, 2, 3], servings = [2, 2, 2]-->
+              <span>메뉴(선택사항)</span>
+              <select class="menu-list" style="width:200px;">
+                <option th:each="menu : ${menus}" th:text="${menu.menuName}" th:value="${menu.menuNo}"></option>
+              </select>
+              <span class="material-icons" id="servings-minus">remove</span>
+              <span clas="people" id="servings">1</span>
+              <span class="people">인분</span>
+              <span class="material-icons" id="servings-plus">add</span>
+              <button type="button" id="menu-order-btn">추가</button>
+              <!--이 위치에 jquery로 추가될 태그는
+                <input type="hidden" name="menuNo" value="?">
+                <input type="hidden" name="servings" value="?">
+                여러개도 가능
+              -->
+              <!--이 위치에 추가된 메뉴 보여주고, 삭제버튼도 생성-->
+              <div class="selected-menu"></div>
             </li>
+
             <li class="request-area">
-  
+              <input type="text" name="reserveRequest">
             </li>
-  
+
+            <li>
+              <button type="submit" id="reserve-btn">예약완료</button>
+            </li>
+
           </ul>
         </form>
       </article>
       <!--//예약정보 입력frm-->
 
-      <!--예약정보 출력-->
-      <article>
-
-      </article>
-      <!--//예약정보 출력-->
-
-      <!--예약버튼-->
-      <article>
-
-      </article>
-      <!--//예약버튼-->
     </div>
+    <!--//컨텐츠-->
   </main>
   
   <script th:inline="javascript">
