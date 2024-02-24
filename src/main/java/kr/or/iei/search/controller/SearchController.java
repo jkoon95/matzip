@@ -116,13 +116,15 @@ public class SearchController {
 	@GetMapping(value = "conveyStoreInfoToDetail")
 	public String conveyStoreInfoToDetail(int storeNo,Model model) {
 		Store store = searchService.selectSearchOne(storeNo);
-		 // 상점의 추가 정보 조회 (INFO_TBL)
-//	    List<StoreInfo> infoList = searchService.getInfoByStoreNo(storeNo);
-	    
+	    // 상점의 공지 정보 조회 (INFO_TBL)
+	    StoreInfo info = searchService.getInfoByStoreNo(storeNo);
 	    // 상점의 메뉴 정보 조회 (MENU_TBL)
-//	    List<Menu> menuList = searchService.getMenuByStoreNo(storeNo);
+	    Menu menu = searchService.getMenuByStoreNo(storeNo);
 		
 		model.addAttribute("store",store);
+		model.addAttribute("info", info);
+	    model.addAttribute("menu", menu);
+		
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
 		return "search/storeDetail";

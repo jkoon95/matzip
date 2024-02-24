@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.iei.search.model.dao.SearchDao;
+import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreInfo;
 
 @Service
 public class SearchService {
@@ -33,6 +35,16 @@ public class SearchService {
 	public Store selectSearchOne(int storeNo) {
 		Store store = searchDao.selectSearchOne(storeNo);
 		return store;
+	}
+
+	public StoreInfo getInfoByStoreNo(int storeNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Menu getMenuByStoreNo(int storeNo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
