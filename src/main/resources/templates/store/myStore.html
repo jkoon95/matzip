@@ -122,7 +122,17 @@
 			margin-bottom: 5px;
 			font-weight: 700;
 			font-size: 15px;
-			padding-right: 5px;
+		}
+		.menuShow{
+			font-size: 18px;
+			padding-right: 2px;
+		}
+		.s-storeInfo th {
+			padding-right: 10px;
+		}
+		.s-lastTh{
+			padding-top: 3px;
+			padding-bottom: 3px;
 		}
 </style>
 </head>
@@ -145,7 +155,7 @@
 					<div>
 					<table>
 						<tr>
-							<th style="width: 20%;">사업자번호 :</th>
+							<th style="width: 20%;">사업자번호  :</th>
 							<td th:text="${store.businessNo}"></td>
 						</tr>
 						<tr>
@@ -162,7 +172,7 @@
 						</tr>
 						<tr>
 							<th>주소 :</th>
-							<td th:text="${store.storeAddr}+${store.storeAddr1}"></td>
+							<td th:text="${addr}"></td>
 						</tr>
 						<tr>
 							<th>연락처 :</th>
@@ -222,7 +232,25 @@
 							<td th:text="${store.storeDescription}"></td>
 						</tr>
 						<tr>
-							<th colspan="2">
+							<th>테이블수 :</th>
+							<td>
+								<span>1인용 식탁 <span th:text="${tableCapacitys[0]}"></span>개, </span><span>2인용 식탁 <span th:text="${tableCapacitys[1]}"></span>개, </span><span>3인용 식탁 <span th:text="${tableCapacitys[2]}"></span>개
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>
+								<span>4인용 식탁 <span th:text="${tableCapacitys[3]}"></span>개, </span> <span>5인용 식탁 <span th:text="${tableCapacitys[4]}"></span>개,</span> <span>6인용 식탁 <span th:text="${tableCapacitys[5]}"></span>개,</span>
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>
+								<span>7인용 식탁 <span th:text="${tableCapacitys[6]}"></span>개</span>, </span> <span>8인용 식탁 <span th:text="${tableCapacitys[7]}"></span>개</span>
+							</td>
+						</tr>				
+						<tr>
+							<th colspan="2" class="s-lastTh">
 								<a href="/store/storedelete" class="goStore" style="background-color: #F15F5F;">삭제하기</a>
 								<a th:href="@{'/store/storeUpdateFrm?storeNo=' + ${store.storeNo}}" class="goStore" style="background-color: #FFA648">수정하기</a>
 								<a th:if="${store.storeStatus==1}" href="#" class="goStore">매장가기</a>	<!-- 매장상세링크 걸어줘야함 -->
@@ -232,8 +260,9 @@
 					</div>
 				</div>
 				<div id="tab02">
-				<span class="plusMenu">추가</span>
-					<a href="javascript:void(0)" class="plusMenu menuShow">추가</a>
+					<div style="text-align: right;">
+						<a href="javascript:void(0)" class="plusMenu menuShow">추가</a>					
+					</div>
 					
 					<th:block th:each = "menu : ${menuList}">
 						<div class="menuBox" style="border: 1px solid #ccc">
@@ -245,7 +274,7 @@
                                	<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg">
                                 <input type="text" class="s-menu-input" th:value="${menu.menuName}" required>
                                 <input type="text" class="s-menu-input" th:value="${menu.menuPrice}" required>
-                            <div>
+                            </div>
                             <div>
                             	<a href="javascript:void(0)" class="minusMenu updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">수정</a>
 								<a href="javascript:void(0)" class="minusMenu" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">삭제</a>
@@ -268,12 +297,12 @@
 		});
 		
 		function updateMenu(obj,storeNo,menuNo){
-			$(this).closest(".menuBox").remove();
 			
 		}
 		
 		
 		function deleteMenu(obj,storeNo,menuNo){
+			 if (confirm("정말로 삭제하시겠습니까?")) {
 			$.ajax({
 				url : "/store/deleteMenu",
 				type : "get",
@@ -281,7 +310,7 @@
 				success : function(data){
 					if(data==1){
 						console.log("삭제완료");
-						$(obj).closest(".menuBox").remove();				
+						$(obj).parent().parent().remove();				
 					}else{
 						console.log("실패");						
 					}
@@ -290,6 +319,7 @@
 					console.log("실패");
 				}
 			});
+			 }
 		}
 		
 		
