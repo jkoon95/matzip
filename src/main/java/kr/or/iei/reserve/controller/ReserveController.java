@@ -26,12 +26,12 @@ public class ReserveController {
 		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Menu menu, Model model
 		
 		//원래 매개변수인데, 일단 임시로
-		int storeNo = 1;
+		int storeNo = 35;
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		
 		model.addAttribute("store", reserveFrm.getStore());
-		model.addAttribute("menu", reserveFrm.getMenu());
+		model.addAttribute("menus", reserveFrm.getMenus());
 		model.addAttribute("fullDays", reserveFrm.getFullDays());
 		
 		return "reserve/reserveFrm";
@@ -66,17 +66,16 @@ public class ReserveController {
 	@ResponseBody
 	@PostMapping(value="/tableNoAndCapacity")
 	private List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
+		//식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
 		List<TableNoAndCapacity> tableNoAndCapacity = reserveService.tableNoAndCapacity(storeNo, reserveDate, reserveTime);
 		return tableNoAndCapacity;
 	}
 	
-	
-	@PostMapping(value="/reserveList")
-	private String reserveList(String reserveDate, Model model) {
-		//넘겨받은 정보 : storNo, memberNo, 
-		//입력받은 정보 : reserveDate(yyyy-mm-dd), reserveTime, reservePeople, menuNo, servings, reserveRequest
-		model.addAttribute("reserveDate", reserveDate);
+	@PostMapping(value="/reserve")
+	private String reserve() {
+		
 		return "reserve/reserveList";
 	}
+	
 	
 }

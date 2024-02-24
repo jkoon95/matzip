@@ -27,7 +27,7 @@ public class ReserveService {
 		Store store = reserveDao.searchStore(storeNo);
 		
 		//<2> menu 구하기
-		List<Menu> menu = reserveDao.searchMenu(storeNo);
+		List<Menu> menus = reserveDao.searchMenu(storeNo);
 		
 		//<3> fullDays 구하기(=만석인 날짜)
 		//<3> - 1. dayTotalCount 구하기
@@ -85,7 +85,7 @@ public class ReserveService {
 		List<String> fullDays = reserveDao.fullDays(storeNo, allCount);
 		
 		
-		ReserveFrm reserveFrm = new ReserveFrm(store, menu, fullDays);
+		ReserveFrm reserveFrm = new ReserveFrm(store, menus, fullDays);
 		
 		return reserveFrm;
 	}
@@ -230,11 +230,9 @@ public class ReserveService {
 	}
 
 	public List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
-		
+		//식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
 		List<TableNoAndCapacity> tableNoAndCapacity = reserveDao.tableNoAndCapacity(storeNo, reserveDate, reserveTime);
 		return tableNoAndCapacity;
 	}
-	
-	
 	
 }
