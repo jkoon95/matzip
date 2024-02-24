@@ -360,27 +360,27 @@
     					<legend>테이블수</legend>
     					<div>
 	                        <label for="tableCapacity1" class="s-label">1인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity1" class="s-table"  placeholder="0"><span> 개</span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity1" class="s-table"><span> 개</span>
 	                        <label for="tableCapacity2">2인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity2" class="s-table"  placeholder="0"><span> 개</span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity2" class="s-table"><span> 개</span>
     					</div>
     					<div>
 	                        <label for="tableCapacity3">3인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity3" class="s-table"  placeholder="0"><span> 개</span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity3" class="s-table"><span> 개</span>
     					 	<label for="tableCapacity4">4인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity4" class="s-table"  placeholder="0"><span> 개 </span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity4" class="s-table" ><span> 개 </span>
     					</div>
     					<div>
 	                        <label for="tableCapacity5">5인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity5" class="s-table"  placeholder="0"><span> 개</span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity5" class="s-table" ><span> 개</span>
 	                        <label for="tableCapacity6">6인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity6" class="s-table"  placeholder="0"><span> 개</span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity6" class="s-table"><span> 개</span>
     					</div>
     					<div>
 	                        <label for="tableCapacity7">7인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity7" class="s-table"  placeholder="0"><span> 개 </span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity7" class="s-table"><span> 개 </span>
 	                        <label for="tableCapacity8">8인용식탁  </label>
-	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity8" class="s-table"  placeholder="0"><span> 개</span>
+	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity8" class="s-table"><span> 개</span>
     					</div>
                         </fieldset>
                     </div>
@@ -569,10 +569,17 @@
             $(".s-table").on("input", function() {
                 $(this).val($(this).val().replace(/[^0-9]/g, ""));
             });
-	        $("[name=price]").on("input", function() {
+            
+	        $("[name='price']").on("input", function() {
 	            $(this).val($(this).val().replace(/[^0-9]/g, ""));
 	        });
 	        
+	        $(document).on("input", "[name='price']", function() {
+	            $(this).val($(this).val().replace(/[^0-9]/g, ""));
+	        });
+	        
+	        
+	        $("[name='tableCapacitys']").val(0);
 	        $("[name='tableCapacitys']").on("change",function(){
     			if($(this).val() == ""){
     				$(this).val("0");
@@ -581,6 +588,7 @@
     				$(this).val("0");
     			}
     		});
+	        
         </script>
     </div>
     <th:block th:include="common/footer"></th:block>
