@@ -45,7 +45,21 @@ a {
   margin-bottom: 20px;
 }
 
-.store-mid {
-  width: 600px;
-  margin-top: 40px; /* 필요에 따라 조정 */
+/* 매장 3요소 */
+.store-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+.store-section > div {
+  width: calc(33.33% - 20px); /* 요소 사이의 간격을 띄우기 위해 33.33%에서 간격을 빼줍니다. */
+}
+.store-section > div:not(:last-child) {
+  margin-right: 20px;
+}
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
 }

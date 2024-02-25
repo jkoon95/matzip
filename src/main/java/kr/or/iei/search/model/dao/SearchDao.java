@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.store.model.dto.ClosedDay;
+import kr.or.iei.store.model.dto.ClosedDayRowMapper;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.MenuRowMapper;
 import kr.or.iei.store.model.dto.Store;
@@ -21,6 +23,8 @@ public class SearchDao {
 	private StoreInfoRowMapper storeInfoRowMapper;
 	@Autowired
 	private MenuRowMapper menuRowMapper;
+	@Autowired
+	private ClosedDayRowMapper closedDayRowMapper;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -235,6 +239,20 @@ public class SearchDao {
 		Object[] params = {storeNo};
 		List<Menu> menuList = jdbc.query(query, menuRowMapper, params);
 		return menuList;
+	}
+
+	public List<ClosedDay> selectClosedDay(int storeNo) {
+		String query = "select * from closed_day_tbl where store_no=?";
+		Object[] params = {storeNo};
+		List<ClosedDay> closedDayList = jdbc.query(query, closedDayRowMapper, params);
+		return closedDayList;
+	}
+
+	public int updateInfo(StoreInfo i) {
+		String query = "update info_tbl set info_content='?' where store_no=?";
+		Object[] params = {i.getInfoContent(), i.getStoreNo()};
+		int result = jdbc.update(query,params);
+		return result;
 	}
 
 
