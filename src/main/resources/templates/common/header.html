@@ -39,7 +39,7 @@
                 </th:block>
                 <ul>
                     <li><button onclick="searchBySubway();">역으로 보기</button></li>
-                    <li><button>맛집 목록</button></li>
+                    <li><button onclick="searchStoreList();">맛집 목록</button></li>
                 </ul>
 
                 <script>
@@ -49,6 +49,10 @@
                     
                     function main(){
                     	location.href="/";
+                    }
+                    
+                    function searchStoreList(){
+                    	location.href="/search/searchStoreList";
                     }
                 </script>
             </div>
