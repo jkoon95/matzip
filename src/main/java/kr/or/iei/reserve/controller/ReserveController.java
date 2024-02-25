@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.or.iei.reserve.model.service.ReserveService;
+import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TimeSet;
@@ -72,8 +74,22 @@ public class ReserveController {
 	}
 	
 	@PostMapping(value="/reserve")
-	private String reserve() {
-		
+	private String reserve(Reserve reserve, int[] menuNo, int[] servings, Model model) {
+		/* 받아온 정보
+		 * @SessionAttribute(required = false) Member member
+		 * int[] menuNo
+		 * int[] servings
+		 * <이하 Reserve객체로 받아온 것들>
+		 * int storeNo
+		 * String reserveDate
+		 * String reserveTime
+		 * int reservePeople
+		 * int tableNo
+		 * String reserveRequest
+		 */
+		reserve.setMemberNo(3); //원래는 reserve.setMemberNo(Member.getMemberNo()) 이렇게 세션에 있는 정보를 넣어야... 일단 임시로 넣었음.
+		reserve.setReserveStatus(1);
+		int insertResult = reserveService.insertReserve(reserve, menuNo, servings);
 		return "reserve/reserveList";
 	}
 	

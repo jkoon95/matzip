@@ -47,7 +47,7 @@ public class ReserveDao {
 	@Autowired
 	private MenuRowMapper menuRowMapper;
 	
-	//임시
+	
 	public Store searchStore(int storeNo) {
 		String query = "select * from store_tbl where store_no = ?";
 		Object[] params = {storeNo};
@@ -55,7 +55,7 @@ public class ReserveDao {
 		return store.get(0);
 	}
 
-	//임시
+	
 	public List<Menu> searchMenu(int storeNo) {
 		String query = "select * from menu_tbl where store_no = ?";
 		Object[] params = {storeNo};
@@ -130,6 +130,52 @@ public class ReserveDao {
 		Object[] params = {storeNo, storeNo, reserveDate, reserveTime};
 		List<TableNoAndCapacity> tableNoCapacity = jdbc.query(query, tableNoAndCapacityRowMapper, params);
 		return tableNoCapacity;
+	}
+
+	//insert reserveStatus = 1
+	public int insertReserve(Reserve reserve) {
+		String query = "insert into reserve_tbl values (reserve_seq.nextval, ?,?,?,?,?,?,?,?)";
+		Object[] params = {reserve.getReserveDate(), reserve.getReserveTime(), reserve.getReservePeople(),
+						   reserve.getReserveRequest(), reserve.getReserveStatus(), reserve.getStoreNo(),
+						   reserve.getMemberNo(), reserve.getTableNo()};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+
+	public String selectDummy(int reserve_ststus, String reserveDate, String reserveDummyTime2) {
+		String query = "select reserve_time from reserve_tbl "
+					 + "where reserve_status = ? and reserve_date = ? and reserve_time = ?";
+		Object[] params = {reserve_ststus, reserveDate, reserveDummyTime2};
+		List<String> deleteTime = jdbc.query(query, reserveTimeRowMapper, params);
+		return deleteTime.get(0);
+	}
+
+
+	public int deleteDummy0(String reserveDate, String reserveDummyTime2) {
+		String query = "delete from reserve_time "
+					 + "where reserve_status = 0 and reserve_date = ? and reserve_time = ?";
+		Object[] params = {reserveDate, reserveDummyTime2};
+		int deleteResult = jdbc.update(query, params);
+		return deleteResult;
+	}
+	
+	
+	public int insertDummy(Reserve reserve) {
+		String query = "insert into reserve_tbl values (reserve_seq.nextval, ?,?,?,?,?,?,?,?)";
+		Object[] params = {reserve.getReserveDate(), reserve.getReserveTime(), reserve.getReservePeople(),
+				   		   reserve.getReserveRequest(), reserve.getReserveStatus(), reserve.getStoreNo(),
+				   		   reserve.getMemberNo(), reserve.getTableNo()};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+
+
+	public int insertReserveMenu(int servings, int reserveNo, int menuNo) {
+		String query = "insert into reserve_menu_tbl values (?, ?, ?)";
+		Object[] params = {servings, reserveNo, menuNo};
+		int result = jdbc.update(query, params);
+		return result;
+		
 	}
 
 	

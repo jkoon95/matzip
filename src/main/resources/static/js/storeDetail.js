@@ -82,3 +82,18 @@ function moveMap(len, lat) {
     });
 }
 
+function submitForm(action) {
+  const form = document.getElementById('infoForm');
+  if (action === 'update') {
+    form.action = '/search/updateInfo';
+  } else if (action === 'insert') {
+    form.action = '/search/insertInfo';
+  }
+  form.submit();
+}
+
+function infoAlert() {
+  alert("최초 작성시에는 작성 버튼을 눌러 작성해주세요.");
+}
+
+

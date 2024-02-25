@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.search.model.dao.SearchDao;
+import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreInfo;
@@ -37,15 +39,31 @@ public class SearchService {
 		return store;
 	}
 
-	public StoreInfo getInfoByStoreNo(int storeNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public StoreInfo getStoreInfoByStoreNo(int storeNo) {
+		StoreInfo storeInfo = searchDao.getStoreInfoByStoreNo(storeNo);
+		return storeInfo;
 	}
 
-	public Menu getMenuByStoreNo(int storeNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Menu> selectAllMenu(int storeNo) {
+		List<Menu> menuList = searchDao.selectAllMenu(storeNo);
+		return menuList;
 	}
-	
+
+	public List<ClosedDay> selectClosedDay(int storeNo) {
+		List<ClosedDay> closedDay = searchDao.selectClosedDay(storeNo);
+		return closedDay;
+	}
+
+	@Transactional
+	public int updateInfo(StoreInfo i) {
+		int result = searchDao.updateInfo(i);
+		return result;
+	}
+
+	@Transactional
+	public int insertInfo(StoreInfo i) {
+		int result = searchDao.insertInfo(i);
+		return result;
+	}
 
 }
