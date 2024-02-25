@@ -145,23 +145,27 @@ public class SearchController {
 		return "search/searchStoreList";
 	}
 	
-	@PostMapping(value = "updateInfo")
+	@PostMapping(value = "/updateInfo")
 	public String updateInfo(StoreInfo i, Model model, HttpSession session) {
-		int result = searchService.updateInfo(i);
-		if(result > 0) {
-			StoreInfo storeInfo = (StoreInfo)session.getAttribute("storeInfo");
-			storeInfo.setInfoContent(i.getInfoContent());
-			// 수정한 정보 추가, 밑 내용 추가
-			model.addAttribute("title", "공지 수정 성공");
-			model.addAttribute("msg", "공지 수정이 완료되었습니다.");
-			model.addAttribute("icon", "success");
-		} else {
-			model.addAttribute("title", "공지 수정 실패");
-			model.addAttribute("msg", "공지 수정을 실패했습니다.");
-			model.addAttribute("icon", "error");
-		}
-		return "common/msg";
+	    int result = searchService.updateInfo(i);
+	    if (result > 0) {
+	    	// 상세 정보 페이지로 리다이렉트
+	    	return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + i.getStoreNo();
+	    } else {
+	    	return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + i.getStoreNo();
+	    }
 	}
 	
+	@PostMapping(value = "/insertInfo")
+	public String insertInfo(StoreInfo i, Model model, HttpSession session) {
+		int result = searchService.insertInfo(i);
+		 if (result > 0) {
+			 // 상세 정보 페이지로 리다이렉트
+			 return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + i.getStoreNo();
+		 } else {
+			 return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + i.getStoreNo();
+		 }
+	}
 	
+
 }

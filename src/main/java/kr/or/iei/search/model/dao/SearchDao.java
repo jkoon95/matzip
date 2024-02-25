@@ -249,7 +249,14 @@ public class SearchDao {
 	}
 
 	public int updateInfo(StoreInfo i) {
-		String query = "update info_tbl set info_content='?' where store_no=?";
+		String query = "update info_tbl set info_content=? where store_no=?";
+		Object[] params = {i.getInfoContent(), i.getStoreNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int insertInfo(StoreInfo i) {
+		String query = "insert into info_tbl values(info_seq.nextval,null,?,?)";
 		Object[] params = {i.getInfoContent(), i.getStoreNo()};
 		int result = jdbc.update(query,params);
 		return result;

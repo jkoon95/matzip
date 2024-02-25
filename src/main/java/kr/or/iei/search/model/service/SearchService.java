@@ -60,4 +60,10 @@ public class SearchService {
 		return result;
 	}
 
+	@Transactional
+	public int insertInfo(StoreInfo i) {
+		int result = searchDao.insertInfo(i);
+		return result;
+	}
+
 }
