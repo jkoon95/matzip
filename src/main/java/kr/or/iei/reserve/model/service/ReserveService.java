@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.iei.reserve.model.dao.ReserveDao;
+import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
@@ -213,7 +214,7 @@ public class ReserveService {
 			};
 		};
 		
-		//<2> fullTimes 구하기 (=예약 가능한 날짜의 예약 가능한 시각)
+		//<2> fullTimes 구하기 (=예약 가능한 날짜의 만석인 시각)
 		int tableAmount = reserveDao.tableAmount(storeNo);
 		List<String> fullTimes = reserveDao.fullTime(storeNo, selectedDay, tableAmount);
 		
@@ -233,6 +234,149 @@ public class ReserveService {
 		//식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
 		List<TableNoAndCapacity> tableNoAndCapacity = reserveDao.tableNoAndCapacity(storeNo, reserveDate, reserveTime);
 		return tableNoAndCapacity;
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	
+	public int insertReserve(Reserve reserve, int[] menuNo, int[] servings) {
+		
+		//<1> timeToEat 등 구하기
+		Store store = reserveDao.searchStore(reserve.getStoreNo());
+		//00:00부터 openingHour까지 30분 단위로 예약 가능한 횟수
+		int openingCount = (Integer.parseInt(store.getOpeningHour().substring(0,2)) * 2) + (Integer.parseInt(store.getOpeningHour().substring(3,5)) / 30);
+		//00:00부터 closingHour까지 30분 단위로 예약 가능한 횟수
+		int closingCount = (Integer.parseInt(store.getClosingHour().substring(0,2)) * 2) + (Integer.parseInt(store.getClosingHour().substring(3,5)) / 30);
+		//00:00부터 breakStart, breakEnd 까지 30분 단위로 예약 가능한 횟수(휴게시간 없다면 0으로 되도록 세팅)
+		int breakStartCount = 0;
+		int breakEndCount = 0;
+		if(!store.getBreakStart().equals("-1")) { //사장이 breakStart를 선택 안 하면 기본 value가 문자열 "-1"이 되도록 세팅해놨음. 즉 휴게시간이 없을떄 -1임.
+			breakStartCount = (Integer.parseInt(store.getBreakStart().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakStart().substring(3,5)) / 30);
+			breakEndCount = (Integer.parseInt(store.getBreakEnd().substring(0,2)) * 2) + (Integer.parseInt(store.getBreakEnd().substring(3,5)) / 30);
+		};
+		int timeToEat = store.getTimeToEat();
+		
+		//<2> 정상 insert하기(reserveStatus=1)
+		int insertResult = reserveDao.insertReserve(reserve);
+		
+		if (insertResult>0) {//insert 성공시
+			
+			//<3> 이후더미 insert하기(reserveStatus=2) : reserve_status = 2(더미)
+			if(timeToEat > 1) {//timeToEat이 1일땐 더미를 insert할 필요가 없으므로, 1 초과일 때에만 더미 insert
+				//객체 먼저 생성해놓기
+				Reserve reserveDummy = new Reserve();
+				//reserveTimeCount 구해놓기
+				int reserveTimeCount = (Integer.parseInt(reserve.getReserveTime().substring(0,2)) * 2) + (Integer.parseInt(reserve.getReserveTime().substring(3,5)) / 30);
+				//List<String> dummyTime2 구하기 (낮은 시각부터 앞쪽 index)
+				List<String> dummyTime2 = new ArrayList<String>();
+				//더미로서 insert할 시각을 생성하기 위한 반복회차 변수의 값 구하기(일단 기본값으로 세팅)
+				int dummy2LastCount = timeToEat - 1;
+				if((!store.getBreakStart().equals("-1")) && (reserveTimeCount < breakStartCount)) {//휴게시간이 있고 예약시각이 휴게시작시간 이전일 때
+					int last = breakStartCount - (timeToEat-1);
+					if((reserveTimeCount < last)&&(last<reserveTimeCount+timeToEat)) {//이 특수한 경우에...
+						dummy2LastCount = breakStartCount - reserveTimeCount - 1;
+					}
+				}else if(reserveTimeCount < closingCount) {//=(휴게시각이 없거나, 또는 있는데 예약시각이 휴게시각 이후인 경우) 이면서 예약시각이 마감시각 이전일 때
+					int last = closingCount - (timeToEat-1);
+					if((reserveTimeCount < last)&&(last<reserveTimeCount+timeToEat)) {//이 특수한 경우에...
+						dummy2LastCount = closingCount - reserveTimeCount - 1;
+					}
+				}
+				//시각 생성해서 dummyTime2에 넣기
+				for(int i=0; i<dummy2LastCount; i++) {
+					int dummyCount = reserveTimeCount +(i+1);
+					StringBuilder sb = new StringBuilder();
+					//tt 구하기
+					int tt = dummyCount/2;
+					//시각에 tt 추가
+					if(tt<10) {
+						sb.append("0"+tt+":");
+					}else {
+						sb.append(tt+":");
+					}
+					//조건에 따라 시각에 mm 추가
+					if(dummyCount%2 == 0){//정각이면
+						sb.append("00");
+					}else{//30분이면
+						sb.append("30");
+					};
+					dummyTime2.add(sb.toString());
+				}
+				//reserve_tbl 행 중에서, dummyTime2와 겹치면서 reserveStatus=0인게 있으면 테이블에서 그것을 delete
+				for(String reserveDummyTime2 : dummyTime2) {
+					String deleteTime = reserveDao.selectDummy(0, reserve.getReserveDate(), reserveDummyTime2);
+					if(deleteTime != null) {
+						reserveDao.deleteDummy0(reserve.getReserveDate(), reserveDummyTime2);
+					}
+				};
+				//이제 dummyTime2 insert
+				reserveDummy.setReserveDate(reserve.getReserveDate());
+				reserveDummy.setReservePeople(-1);//-1로 설정
+				reserveDummy.setReserveRequest("");
+				reserveDummy.setReserveStatus(2);//2 = 더미
+				reserveDummy.setStoreNo(reserve.getStoreNo());
+				reserveDummy.setMemberNo(reserve.getMemberNo());
+				reserveDummy.setTableNo(reserve.getTableNo());
+				for(String reserveDummyTime2 : dummyTime2) {
+					reserveDummy.setReserveTime(reserveDummyTime2);//위에서 구한 reserveDummyTime2 넣기
+					insertResult += reserveDao.insertDummy(reserveDummy);
+				}
+				
+				//<4> 이전더미 insert하기(reserveStatus=0)
+				//List<String> dummyTime0 구하기 (높은 시각부터 앞쪽 index)
+				List<String> dummyTime0 = new ArrayList<String>();
+				//더미로서 insert할 시각을 생성하기 위한 반복회차 변수의 값 구하기(일단 기본값으로 세팅)
+				int dummy0LastCount = timeToEat - 1;
+				if((!store.getBreakStart().equals("-1")) && (reserveTimeCount > breakEndCount)) {///휴게시간이 있고 예약시각이 휴게끝시각 이후일 때
+					if( reserveTimeCount < (breakEndCount+2*timeToEat-1) ) {//이 특수한 경우에...
+						dummy0LastCount = reserveTimeCount-breakEndCount;
+					}
+				}else {//=(휴게시각이 없거나, 또는 있는데 예약시각이 휴게시각 이전인 경우) 이면서 예약시각이 오픈시간 이후일 때
+					if( reserveTimeCount < (openingCount+2*timeToEat-1) ) {//이 특수한 경우에...
+						dummy0LastCount = reserveTimeCount-openingCount;
+					}
+				}
+				//시각 생성해서 dummyTime0에 넣기
+				for(int i=0; i<dummy0LastCount; i++) {
+					int dummyCount = reserveTimeCount -(i+1);//여기선 +가 아니라 -다!!!
+					StringBuilder sb = new StringBuilder();
+					//tt 구하기
+					int tt = dummyCount/2;
+					//시각에 tt 추가
+					if(tt<10) {
+						sb.append("0"+tt+":");
+					}else {
+						sb.append(tt+":");
+					}
+					//조건에 따라 시각에 mm 추가
+					if(dummyCount%2 == 0){//정각이면
+						sb.append("00");
+					}else{//30분이면
+						sb.append("30");
+					};
+					dummyTime0.add(sb.toString());
+				}
+				//reserve_tbl 행 중에서, dummyTime0와 겹치면서 reserveStatus=2인게 있으면, dummyTime0 리스트에서 그것을 제거
+				for(int i=0; i<dummyTime2.size(); i++) {
+					String deleteTime = reserveDao.selectDummy(2, reserve.getReserveDate(), dummyTime2.get(i));
+					if(deleteTime != null) {
+						dummyTime2.remove(i);
+					}
+				}
+				//이제 dummyTime0 insert하기
+				reserveDummy.setReserveStatus(0);//0 = 더미
+				for(String reserveDummyTime0 : dummyTime0) {
+					reserveDummy.setReserveTime(reserveDummyTime0);//위에서 구한 reserveDummyTime0 넣기
+					insertResult += reserveDao.insertDummy(reserveDummy);
+				}
+			}
+		}
+		
+		//reserve_menu_tbl에 insert하기
+		for(int i=0; i<menuNo.length; i++) {
+			int result = reserveDao.insertReserveMenu(servings[i], reserve.getReserveNo(), menuNo[i]);
+		}
+		
+		return insertResult;
 	}
 	
 }

@@ -143,8 +143,16 @@ $.ajax({
                         people.text(peopleNum);
                       }
                     });
-                    //hidden으로 숨긴 input태그에 값 추가
+                    //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
                     $("#reservePeople").val(peopleNum);
+                    for(let i=0; i<100; i++){//100정도면 차고남지...
+                      let arrayIndex = $.inArray(peopleNum+i, tableNoAndCapacity.tableCapacity);
+                      if (arrayIndex != -1){//값이 있다면
+                        const tableNo = tableNoAndCapacity.tableNo[arrayIndex];
+                        $("#tableNo").val(tableNo);
+                      }
+                    }
+
                   },
                   error: function(){
                     console.log("error");
