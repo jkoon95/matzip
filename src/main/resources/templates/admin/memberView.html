@@ -85,56 +85,21 @@
 .s-hideInfo{
 	display: none;
 }
+.s-title22{
+	font-size: 23px; padding-left: 50px;padding-top: 20px;padding-bottom: 20px;
+}
 </style>
 <body>
-	<script src="/js/jquery-3.7.1.js"></script>
-    <link rel="stylesheet" href="/css/storeInfo.css">
-    <link rel="stylesheet" href="/css/admin.css">
-</body>
+	
+
 	<th:block th:include="common/header"></th:block>
     <div class="content">
-        <div class="navigation">
-            <ul>
-                <li class="list">
-                    <a class="active" href="/admin/allMember?reqPage=1">
-                        <span class="material-icons">account_circle</span>
-                        <span class="title">전체회원조회</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="#">
-                        <span class="material-icons">storefront</span>
-                        <span class="title">매장 관리</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="#">
-                        <span class="material-icons">calendar_month</span>
-                        <span class="title">신고 관리</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="#">
-                        <span class="material-icons">calendar_month</span>
-                        <span class="title">블랙리스트관리</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-		<script type="text/javascript">
-		const list = $(".list");
-		  list.on("click", function(){
-		    list.children("a").removeClass("active");
-		    $(this).children("a").addClass("active");
-		    $(this).children("ul").children().toggleClass("sub-active");
-		  });
-		</script>
-
+        <th:block th:include="common/side"></th:block>
         <div class="sss-content">
-	         <div class="s-title2" style="font-size: 23px;"><h3>회원 상세 정보<h3></div>
+	         <div class="s-title22"><h3>회원 상세 정보<h3></div>
             <div class="s-memberInfo-wrap">
 	            <div class="s-title2" style="font-size: 20px;">
-	            	<h3>
+	            	<h3 >
 		            	<span th:text="${member.memberName}" name="memberName"></span><span> 회원정보</span>	            	
 	            	</h3>
 	            </div>
@@ -181,14 +146,16 @@
             			<th>[가입일]</th>
             			<td th:text="${member.memberJoinDate}" name="memberJoinDate"></td>
             		</tr>
+            		<tr th:if="${member.memberLevel == 2 and count == 0}" class="s-showInfo">
+            			<td colspan="2" style="text-align: center;padding-top: 20px;padding-left: 50px;">현재 등록된 매장이 없습니다.</td>
+            		</tr>
             	</table>
             	<div class="s-memberInfolast">
-					<a  th:if="${member.memberLevel}==2" href="#"  class="memberInfoBtn s-showInfo" style="background-color: #72b37e">매장정보</a>	
+					<a th:if="${member.memberLevel == 2 and count == 1}" th:href="@{/admin/storeView(storeNo=${storeNo})}"  class="memberInfoBtn s-showInfo" style="background-color: #72b37e">매장정보</a>	            	            	            		
 					<a class="memberInfoBtn s-showInfo" style="background-color: #FFA648" onclick="showInfo()">수정하기</a>
 					<a href="javascript:void(0)" class="memberInfoBtn s-hideInfo" th:onclick="updateMember()" style="width: 100%; background-color: #FFA648">수정완료</a>
 					<a th:href="@{/admin/deleteMember(memberNo=${member.memberNo})}" class="memberInfoBtn s-showInfo" style="background-color: #F15F5F;" onclick="return confirm('정말로 탈퇴하겠습니까?');">회원탈퇴</a>
-				</div>
-					            
+				</div>            
 	            </form>
             </div>
         </div>
@@ -228,4 +195,5 @@
 		}
     </script>
     <th:block th:include="common/footer"></th:block>
+    </body>
 </html>

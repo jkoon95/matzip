@@ -13,6 +13,7 @@ import kr.or.iei.member.model.dto.OriginMemberRowMapper;
 import kr.or.iei.notice.model.dto.NoticeListData;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreRowMapper;
+import kr.or.iei.subway.model.dto.subwayRowMapper;
 
 @Repository
 public class AdminDao {
@@ -130,16 +131,75 @@ public class AdminDao {
 	}
 
 	public List selectStoreList(int start, int end) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT * FROM store_tbl ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT * FROM store_tbl order by store_status desc,store_no desc)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {start,end};
 		List list = jdbc.query(query,storeRowMapper ,params);
 		return list;
 	}
 
 	public int selectAllStoreCount() {
-		String query="select count(*) from member_tbl";
+		String query="select count(*) from store_tbl";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
+	}
+
+	public List selectSearchStoreAll(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where store_name || subway_name like '%'||?||'%' ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, storeRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchStoreSubway(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where subway_name like '%'||?||'%' ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, storeRowMapper, params);
+		return list;
+	}
+
+	public List selectSearchStoreName(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where store_name like '%'||?||'%' ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, storeRowMapper, params);
+		return list;
+	}
+
+	public int allStoreTotalCount(String keyword) {
+		String query = "SELECT count(*) from store_tbl where store_name || subway_name like '%'||?||'%'";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int subwayTotalCount(String keyword) {
+		String query = "SELECT count(*) from store_tbl where subway_name like '%'||?||'%'";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int storeNameTotalCount(String keyword) {
+		String query = "SELECT count(*) from store_tbl where store_name like '%'||?||'%'";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int updateStoreStatus(int storeNo) {
+		String query="update store_tbl set STORE_status=1 where store_no=?";
+		Object[] params= {storeNo};
+		int result=jdbc.update(query,params);
+		return result;
+	}
+
+	public Store selectStoreNo(int memberNo) {
+		String query="select * from store_tbl where member_no=?";
+		Object[] params= {memberNo};
+		List list = jdbc.query(query, storeRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Store)list.get(0);
 	}
 
 

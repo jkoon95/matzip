@@ -14,24 +14,22 @@
     	 <div class="sss-content">
             <div class="page-title">매장 목록</div>
             <div>
-            	<form action="/admin/search" method="get" id="searchFrm">
+            	<form action="/admin/searchStore" method="get" id="searchFrm">
 					<th:block th:switch="${type}">
-						<select th:case="id" name="type" class="input-form">
-							<option value="all" >-</option>
-							<option value="name" selected>아이디</option>
-							<option value="subway">이름</option>
-						</select>
 						<select th:case="name" name="type" class="input-form">
 							<option value="all" >-</option>
-							<option value="id">아이디</option>
-							<option value="name" selected>이름</option>
-							<option value="email">이메일</option>
+							<option value="name" selected>매장명</option>
+							<option value="subway">주변역</option>
+						</select>
+						<select th:case="subway" name="type" class="input-form">
+							<option value="all" >-</option>
+							<option value="name">매장명</option>
+							<option value="subway" selected>주변역</option>
 						</select>
 						<select th:case="*" name="type" class="input-form">
-							<option value="all" selected>-</option>
-							<option value="id">아이디</option>
-							<option value="name">이름</option>
-							<option value="email">이메일</option>
+							<option value="all"  selected>-</option>
+							<option value="name" >매장명</option>
+							<option value="subway">주변역</option>
 						</select>
 					</th:block>
 					<input type="text" name="keyword" class="input-form" th:value="${keyword}">
@@ -39,9 +37,6 @@
 					<button type="submit" class="btn bc1" onclick="return checkKeyword();">검색</button>
 				</form>
             </div>
-            
-		
-		
             <table class="tbl tbl-hover" style="width: 800px;font-size: 15px;">
                 <tr class="tr-3">
                     <th style="width:15%;">매장번호</th>
@@ -54,17 +49,30 @@
                 <tr th:each="store:${list}" class="tr-1">
                     <td th:text="${store.storeNo}"></td>
                     <td><a th:href="@{/admin/storeView(storeNo=${store.storeNo})}" th:text="${store.storeName}"></a></td>
-                    <td><a th:href="@{/admin/storeView(storeNo=${store.storeNo})}" th:text="${store.storePhone}"></a></td>
-                    <td><a th:href="@{/admin/storeView(storeNo=${store.storeNo})}" th:text="${store.subwayName}"></a></td>
+                    <td th:text="${store.storePhone}"></td>
+                    <td th:text="${store.subwayName}"></td>
                     <td th:if="${store.storeLevel}==1">매장</td>
                     <td th:if="${store.storeLevel}==2">블랙</td>
                    	<td th:if="${store.storeStatus}==1">승인</td>
-                    <td th:if="${store.storeStatus}==2">미승인</td>
+                    <td th:if="${store.storeStatus}==2">
+                    	<a th:href="@{/admin/storeView(storeNo=${store.storeNo})}">
+                    	<button class="s-changeLevelBtn" style="color:#f04c4c;">승인필요</button>                    
+                    	</a>
+                    </td>
                 </tr>
             </table>
             <div id="pageNavi" th:utext="${pageNavi}"></div>
         </div>
     </div>
+    <script type="text/javascript">
+	    function checkKeyword(){
+			const keyword = $("[name=keyword]").val();
+			if(keyword==""){	//키워드가 아무값도 없을때
+				alert("검색어를 입력하세요.")
+				return false;
+			}
+		}
+    </script>
     <th:block th:include="common/footer"></th:block>
 </body>
 </html>

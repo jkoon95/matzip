@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class StoreInfoData {
 	private Store store;
 	private List closedDayList;
-	private List MenuList;
+	private List menuList;
 	private int[] tableCapacitys;
 }

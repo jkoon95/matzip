@@ -11,13 +11,18 @@ import kr.iei.admin.model.dto.AdminListData;
 import kr.or.iei.admin.model.dao.AdminDao;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.dto.Member;
+import kr.or.iei.notice.model.dto.Notice;
 import kr.or.iei.notice.model.dto.NoticeListData;
+import kr.or.iei.store.model.dao.StoreDao;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.service.StoreService;
 
 @Service
 public class AdminService {
 	@Autowired
 	private AdminDao adminDao;
+	@Autowired
+	private StoreDao storeDao;
 	
 	public AdminListData selectAllMember(int reqPage) {
 		//List list = adminDao.selectAllMember();
@@ -290,5 +295,115 @@ public class AdminService {
 						
 		AdminListData ald = new AdminListData(list, pageNavi);
 		return ald;
+	}
+	
+	public AdminListData searchStore(int reqPage, String type, String keyword) {
+		int numPerPage = 10;
+
+		int end = reqPage * numPerPage;
+		int start = end - numPerPage + 1;
+						
+		List list = null;
+		if(type.equals("all")) {
+			list = adminDao.selectSearchStoreAll(start,end,keyword);
+		}else if(type.equals("subway")) {
+			list = adminDao.selectSearchStoreSubway(start,end,keyword);
+		}else if(type.equals("name")) {
+			list = adminDao.selectSearchStoreName(start,end,keyword);
+		}
+		int totalCount =0;
+		if(type.equals("all")) {
+			totalCount = adminDao.allStoreTotalCount(keyword);
+		}else if(type.equals("subway")) {
+			totalCount = adminDao.subwayTotalCount(keyword);
+		}else if(type.equals("name")) {
+			totalCount = adminDao.storeNameTotalCount(keyword);
+		}
+				
+
+		int totalPage = 0;
+		if (totalCount % numPerPage == 0) {
+				totalPage = totalCount / numPerPage;
+		} else {
+				totalPage = totalCount / numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+
+
+		int pageNo = ((reqPage - 1) / pageNaviSize) * pageNaviSize + 1;
+
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if (pageNo != 1) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchStore?reqPage=" + (pageNo - 1) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<span class='material-icons'>chevron_left</span>";
+				pageNavi += "</a></li>";
+		}
+		for (int i = 0; i < pageNaviSize; i++) {
+			if (pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchStore?reqPage=" + (pageNo) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			} else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchStore?reqPage=" + (pageNo) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+							
+			if (pageNo > totalPage) {
+					break;
+				}
+		}
+
+		if (pageNo <= totalPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchStore?reqPage=" + (pageNo - 1) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<span class='material-icons'>chevron_right</span>";
+				pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+	}
+
+
+
+	public Store adminSelectOneStore(int storeNo) {
+		Store store = storeDao.selectGetStore(storeNo);
+		List fileList = storeDao.selectEvidenceFile(storeNo);
+		store.setFileList(fileList);
+		return store;
+	}
+
+
+
+	public Member selectMemberId(int memberNo) {
+		Member member= adminDao.selectOneMember(memberNo);
+		if(member != null) {		
+			return member;
+		}else {
+			return null;
+		}
+	}
+
+
+
+	public int updateStoreStatus(int storeNo) {
+		int result = adminDao.updateStoreStatus(storeNo);
+		return result;
+	}
+
+	public Store selectStoreNo(int memberNo) {
+		Store store= adminDao.selectStoreNo(memberNo);
+		if(store != null) {		
+			return store;
+		}else {
+			return null;
+		}
 	}
 }

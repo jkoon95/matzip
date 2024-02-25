@@ -196,17 +196,6 @@
 				return false;
 			}
 		}
-		
-		/*
-		제목으로 검색한경우 쿼리
-		select * form notice where notice_title like '%'||?||'%';
-		작성자로 검색한경우 쿼리
-		select * form notice where notice_writer like '%'||?||'%';
-		제목+내용으로 검색
-		select * from notice where notice_title like '%'||?||'%' or notice_content like '%'||?||'%';
-		select * from notice where notice_title||notice_content like '%'||?||'%';
-									여러컬럼 검색시 조건절에 연결연산자를 적어서 쓰기도 함
-		*/
 	</script>
 
     <th:block th:include="common/footer"></th:block>
