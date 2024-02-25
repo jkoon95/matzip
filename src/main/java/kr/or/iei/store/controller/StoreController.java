@@ -3,6 +3,7 @@ package kr.or.iei.store.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.angus.mail.handlers.multipart_mixed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,11 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpSession;
 import kr.or.iei.FileUtils;
 import kr.or.iei.member.model.dto.Member;
+import kr.or.iei.notice.model.dto.NoticeFile;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreFileData;
 import kr.or.iei.store.model.dto.StoreInfoData;
 import kr.or.iei.store.model.service.StoreService;
 
@@ -263,14 +266,66 @@ public class StoreController {
 			}
 		}
 		
+		@GetMapping(value="/storeDelete")
+		public String storeDelete(Model model,int storeNo) {
+			StoreFileData sfd = storeService.deleteStore(storeNo);
+			if(sfd != null) {
+				//매장사진삭제
+				String storeSavepath = root+"/store/";
+				fileUtils.deleteFile(storeSavepath, sfd.getStoreImg());
+				//증빙서류삭제
+				String evidenceSavepath = root+"/store/evidence/";	
+				for(Object item : sfd.getEvidenceList()) {
+					EvidenceFile file = (EvidenceFile)item;
+					fileUtils.deleteFile(evidenceSavepath,file.getFilepath());
+				}
+				//메뉴사진삭제
+				String menuSavepath = root+"/store/menu/";		
+				for(Object item : sfd.getMenuList()) {
+					Menu file = (Menu)item;
+					fileUtils.deleteFile(menuSavepath,file.getMenuImg());
+				}
+				model.addAttribute("title","삭제완료");
+				model.addAttribute("msg","해당 매장이 삭제되었습니다");
+				model.addAttribute("icon","success");
+				model.addAttribute("loc","/");
+			}else {
+				model.addAttribute("title","삭제 실패");
+				model.addAttribute("msg","관리자에게 문의하세요");
+				model.addAttribute("icon","error");
+				model.addAttribute("loc","/");				
+			}
+			return "common/msg";
+		}
+		
 		@ResponseBody
 		@GetMapping(value="/deleteMenu")
-		public int deleteMenu(int storeNo,int menuNo) {
+		public int deleteMenu(int storeNo,int menuNo, String menuImg) {
 			int result= storeService.deleteMenu(storeNo,menuNo);
 			if(result>0) {
+				String menuSavepath = root+"/store/menu/";	
+				fileUtils.deleteFile(menuSavepath, menuImg);
 				return 1;
 			}else {
 				return 2;
 			}
 		}
+		
+		@ResponseBody
+		@PostMapping(value="/insertMenu",produces="plain/text;charset=utf-8")
+		public String insertMenu(int storeNo, Menu menu, MultipartFile menuImgFile) {
+			String menuSavepath = root+"/store/menu/";		
+			String menuFilepath = fileUtils.upload(menuSavepath, menuImgFile);	
+			menu.setMenuImg(menuFilepath);
+			int result= storeService.insertMenu(menu,storeNo);
+			if(result>0) {
+				Menu newMenu = storeService.selectOneMenu(storeNo);
+			    System.out.println(newMenu);
+			    return "1";
+			}else {
+				return "12";
+			}
+		}
+		
+		
 }

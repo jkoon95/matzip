@@ -42,13 +42,6 @@ function insertAddress(address, latitude, longitude) {
         map: map,
         position: new naver.maps.LatLng(longitude, latitude),
     });
-    // 마커에 정보창 표시
-    let contentString = [
-    "<div class='iw_inner'>",
-    "	<h3>KH정보교육원</h3>",
-    "	<p>서울시 영등포구 선유2로 57 이레빌딩 19F 강의장</p>",
-    "</div>"
-  ].join("");
   
   let infoWindow = new naver.maps.InfoWindow();
   
@@ -88,3 +81,4 @@ function moveMap(len, lat) {
         map: map
     });
 }
+

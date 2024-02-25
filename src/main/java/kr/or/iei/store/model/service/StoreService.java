@@ -12,6 +12,7 @@ import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreFileData;
 import kr.or.iei.store.model.dto.StoreInfoData;
 
 @Service
@@ -161,7 +162,7 @@ public class StoreService {
 	}
 
 
-
+	@Transactional
 	public int updateStore(Store store, String[] closedDays, String[] tableCapacitys) {
 		//매장
 		int result = storeDao.updateStore(store);
@@ -197,14 +198,32 @@ public class StoreService {
 	}
 
 
+	@Transactional
+	public int insertMenu(Menu menu, int storeNo) {
+		int result = storeDao.insertMenu(menu,storeNo);
+		return result;
+	}
 
-	
-	
 
 
+	public Menu selectOneMenu(int storeNo) {
+		Menu newMenu = storeDao.selectOneMenu(storeNo);
+		return newMenu;
+	}
 
-	
+
+	@Transactional
+	public StoreFileData deleteStore(int storeNo) {
+		List evidenceList = storeDao.selectEvidenceFile(storeNo);
+		List menuList = storeDao.selectStoreMenu(storeNo);
+		Store store = storeDao.selectGetStore(storeNo);
+		int result = storeDao.deleteStore(storeNo);
+		if(result>0) {
+			StoreFileData sfd = new StoreFileData(evidenceList,menuList,store.getStoreImg());
+			return sfd;
+		}
+		return null;
+	}
 	
 
-	
 }

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>전체 회원</title>
+    <script src="/js/jquery-3.7.1.js"></script>
+    <link rel="stylesheet" href="/css/storeInfo.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/notice.css">
+<style>
+.content{
+	margin: 0 auto;
+
+
+}
+
+.sss-content{
+	padding: 50px;
+	padding-bottom: 150px;
+	width: 890px;
+}     
+.input-level{
+	width: 90px;
+	display: block;
+    padding: 0.5rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.s-changeLevelBtn{
+	width: 60px;
+	height: 40px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+
+}
+
+#searchFrm{
+	width : 350px;
+	display :flex;
+	float: right;
+}
+#searchFrm>select{
+	width:80px;
+}
+#searchFrm>input{
+	width:220px;
+}
+#searchFrm>button{
+	width:60px;
+}
+#searchFrm>*{
+	padding : 0.4rem;
+}
+#write-btn{
+	padding : 0.4rem;
+	width : 100px;
+	text-align : center;
+	margin:0;
+}
+</style>
+</head>
+
+<body>
+    <!-- 관리자만 들어갈 수 있도록 설정해줘야함-->
+    <th:block th:include="common/header"></th:block>
+    <div class="content">
+        <div class="navigation">
+            <ul>
+                <li class="list">
+                    <a class="active" href="/admin/allMember?reqPage=1">
+                        <span class="material-icons">account_circle</span>
+                        <span class="title">전체회원조회</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                        <span class="material-icons">storefront</span>
+                        <span class="title">매장 관리</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                        <span class="material-icons">calendar_month</span>
+                        <span class="title">신고 관리</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#">
+                        <span class="material-icons">calendar_month</span>
+                        <span class="title">블랙리스트관리</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+		<script type="text/javascript">
+		const list = $(".list");
+		  list.on("click", function(){
+		    list.children("a").removeClass("active");
+		    $(this).children("a").addClass("active");
+		    $(this).children("ul").children().toggleClass("sub-active");
+		  });
+		</script>
+
+        <div class="sss-content">
+            <div class="page-title">전체 회원 목록</div>
+            <div>
+            	<form action="/admin/search" method="get" id="searchFrm">
+					<th:block th:switch="${type}">
+						<select th:case="id" name="type" class="input-form">
+							<option value="all" >-</option>
+							<option value="id" selected>아이디</option>
+							<option value="name">이름</option>
+							<option value="email">이메일</option>
+						</select>
+						<select th:case="name" name="type" class="input-form">
+							<option value="all" >-</option>
+							<option value="id">아이디</option>
+							<option value="name" selected>이름</option>
+							<option value="email">이메일</option>
+						</select>
+						<select th:case="email" name="type" class="input-form">
+							<option value="all" >-</option>
+							<option value="id">아이디</option>
+							<option value="name">이름</option>
+							<option value="email" selected>이메일</option>
+						</select>
+						<select th:case="*" name="type" class="input-form">
+							<option value="all" selected>-</option>
+							<option value="id">아이디</option>
+							<option value="name">이름</option>
+							<option value="email">이메일</option>
+						</select>
+					</th:block>
+					<input type="text" name="keyword" class="input-form" th:value="${keyword}">
+					<input type="hidden" name="reqPage" value="1">
+					<button type="submit" class="btn bc1" onclick="return checkKeyword();">검색</button>
+				</form>
+            </div>
+            
+		
+		
+            <table class="tbl tbl-hover" style="width: 800px;font-size: 15px;">
+                <tr class="tr-3">
+                    <th style="width:15%;">회원번호</th>
+                    <th style="width:10%;">아이디</th>
+                    <th style="width:10%;">이름</th>
+                    <th style="width:30%;">이메일</th>
+                    <th style="width:15%;">닉네임</th>
+                    <th style="width:10%;">등급</th>
+                    <th style="width:20%;">등급변경</th>
+                </tr>
+                <tr th:each="m:${list}" class="tr-1">
+                    <td th:text="${m.memberNo}"></td>
+                    <td><a th:href="@{/admin/memberView(memberNo=${m.memberNo})}" th:text="${m.memberId}"></a></td>
+                    <td><a th:href="@{/admin/memberView(memberNo=${m.memberNo})}" th:text="${m.memberName}"></a></td>
+                    <td><a th:href="@{/admin/memberView(memberNo=${m.memberNo})}" th:text="${m.memberEmail}"></a></td>
+                    <td><a th:href="@{/admin/memberView(memberNo=${m.memberNo})}" th:text="${m.memberNickname}"></a></td>
+                    <td th:switch="${m.memberLevel}">
+                        <select th:case="1" class="input-level">
+                            <option value="1" selected>관리자</option>
+                            <option value="2">매장</option>
+                            <option value="3">회원</option>
+                            <option value="4">리뷰블랙</option>
+                            <option value="5">예약블랙</option>
+                            <option value="6">전체블랙</option>
+                        </select>
+                        <select th:case="2" class="input-level">
+                            <option value="1">관리자</option>
+                            <option value="2" selected>매장</option>
+                            <option value="3" >회원</option>
+                            <option value="4">리뷰블랙</option>
+                            <option value="5">예약블랙</option>
+                            <option value="6">전체블랙</option>
+                        </select>
+                        <select th:case="3" class="input-level">
+                            <option value="1">관리자</option>
+                            <option value="2">매장</option>
+                            <option value="3" selected>회원</option>
+                            <option value="4">리뷰블랙</option>
+                            <option value="5">예약블랙</option>
+                            <option value="6">전체블랙</option>
+                        </select>
+                        <select th:case="4" class="input-level">
+                            <option value="1">관리자</option>
+                            <option value="2">매장</option>
+                            <option value="3">회원</option>
+                            <option value="4" selected>리뷰블랙</option>
+                            <option value="5">예약블랙</option>
+                            <option value="6">전체블랙</option>
+                        </select>
+                        <select th:case="5" class="input-level">
+                            <option value="1">관리자</option>
+                            <option value="2">매장</option>
+                            <option value="3">회원</option>
+                            <option value="4">리뷰블랙</option>
+                            <option value="5" selected>예약블랙</option>
+                            <option value="6">전체블랙</option>
+                        </select>
+                        <select th:case="6" class="input-level">
+                            <option value="1">관리자</option>
+                            <option value="2">매장</option>
+                            <option value="3">회원</option>
+                            <option value="4">리뷰블랙</option>
+                            <option value="5">예약블랙</option>
+                            <option value="6" selected>전체블랙</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="s-changeLevelBtn changeLevel">변경</button>
+                    </td>
+                </tr>
+            </table>
+            <div id="pageNavi" th:utext="${pageNavi}"></div>
+        </div>
+    </div>
+	<script type="text/javascript">
+		$(".changeLevel").on("click",function(){
+			//클릭한 버튼 기준으로 해당 행의 회원번호를 가지고 옴
+			const memberNo = $(this).parent().parent().children().eq(0).text();
+			//클릭한 버튼 기준으로 해당 행의 선택한 등급
+			const memberLevel = $(this).parent().prev().children().val();
+			$.ajax({
+				url : "/admin/changeLevel",
+				type : "get",
+				data : {memberNo : memberNo, memberLevel : memberLevel},
+				//dataType : "JSON",	//문자열을 배열로 받아옴
+				success : function(result){
+					console.log(result,typeof result);//배열
+					if(result===1){
+						console.log("성공");
+						alert("등급이 변경되었습니다.");
+					}else{
+						console.log("실패");
+					}
+				},
+				error:function(){
+					console.log("에러");
+				}
+			});
+	
+		});
+		
+		function checkKeyword(){
+			const keyword = $("[name=keyword]").val();
+			if(keyword==""){	//키워드가 아무값도 없을때
+				alert("검색어를 입력하세요.")
+				return false;
+			}
+		}
+		
+		/*
+		제목으로 검색한경우 쿼리
+		select * form notice where notice_title like '%'||?||'%';
+		작성자로 검색한경우 쿼리
+		select * form notice where notice_writer like '%'||?||'%';
+		제목+내용으로 검색
+		select * from notice where notice_title like '%'||?||'%' or notice_content like '%'||?||'%';
+		select * from notice where notice_title||notice_content like '%'||?||'%';
+									여러컬럼 검색시 조건절에 연결연산자를 적어서 쓰기도 함
+		*/
+	</script>
+
+    <th:block th:include="common/footer"></th:block>
+</body>
+
+</html>
