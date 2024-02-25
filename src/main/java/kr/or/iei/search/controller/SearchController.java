@@ -117,13 +117,13 @@ public class SearchController {
 	public String conveyStoreInfoToDetail(int storeNo,Model model) {
 		Store store = searchService.selectSearchOne(storeNo);
 	    // 상점의 공지 정보 조회 (INFO_TBL)
-	    StoreInfo info = searchService.getInfoByStoreNo(storeNo);
+	    StoreInfo info = searchService.getStoreInfoByStoreNo(storeNo);
 	    // 상점의 메뉴 정보 조회 (MENU_TBL)
-	    Menu menu = searchService.getMenuByStoreNo(storeNo);
+	    List<Menu> menuList = searchService.selectAllMenu(storeNo);
 		
 		model.addAttribute("store",store);
 		model.addAttribute("info", info);
-	    model.addAttribute("menu", menu);
+	    model.addAttribute("menuList", menuList);
 		
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		

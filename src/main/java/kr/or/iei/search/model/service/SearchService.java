@@ -37,15 +37,14 @@ public class SearchService {
 		return store;
 	}
 
-	public StoreInfo getInfoByStoreNo(int storeNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public StoreInfo getStoreInfoByStoreNo(int storeNo) {
+		StoreInfo storeInfo = searchDao.getStoreInfoByStoreNo(storeNo);
+		return storeInfo;
 	}
 
-	public Menu getMenuByStoreNo(int storeNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Menu> selectAllMenu(int storeNo) {
+		List<Menu> menuList = searchDao.selectAllMenu(storeNo);
+		return menuList;
 	}
-	
 
 }

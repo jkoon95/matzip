@@ -6,13 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.store.model.dto.Menu;
+import kr.or.iei.store.model.dto.MenuRowMapper;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreInfo;
+import kr.or.iei.store.model.dto.StoreInfoRowMapper;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
 
 @Repository
 public class SearchDao {
 	@Autowired
 	private StorePlusRowMapper storePlusRowMapper;
+	@Autowired
+	private StoreInfoRowMapper storeInfoRowMapper;
+	@Autowired
+	private MenuRowMapper menuRowMapper;
+	
 	@Autowired
 	private JdbcTemplate jdbc;
 	
@@ -210,5 +219,23 @@ public class SearchDao {
 		
 		return (Store)list.get(0);
 	}
+
+	public StoreInfo getStoreInfoByStoreNo(int storeNo) {
+		String query = "select * from info_tbl where store_no=?";
+		Object[] params = {storeNo};
+		List list = jdbc.query(query, storeInfoRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (StoreInfo)list.get(0);
+	}
+
+	public List<Menu> selectAllMenu(int storeNo) {
+		String query = "select * from menu_tbl where store_no=?";
+		Object[] params = {storeNo};
+		List<Menu> menuList = jdbc.query(query, menuRowMapper, params);
+		return menuList;
+	}
+
 
 }
