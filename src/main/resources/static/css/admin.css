@@ -6,7 +6,7 @@
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-
+		
         .content {
             /*width: 1200px;*/
             margin: 0 auto;
@@ -99,3 +99,56 @@
         .navigation ul li ul li.sub-active {
             display: block;
         }
+        
+.content{
+	margin: 0 auto;
+
+
+}
+
+.sss-content{
+	padding: 50px;
+	padding-bottom: 150px;
+	width: 890px;
+}     
+.input-level{
+	width: 90px;
+	display: block;
+    padding: 0.5rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.s-changeLevelBtn{
+	width: 60px;
+	height: 40px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+
+}
+
+#searchFrm{
+	width : 350px;
+	display :flex;
+	float: right;
+}
+#searchFrm>select{
+	width:80px;
+}
+#searchFrm>input{
+	width:220px;
+}
+#searchFrm>button{
+	width:60px;
+}
+#searchFrm>*{
+	padding : 0.4rem;
+}
+#write-btn{
+	padding : 0.4rem;
+	width : 100px;
+	text-align : center;
+	margin:0;
+}

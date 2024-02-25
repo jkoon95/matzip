@@ -42,7 +42,7 @@ public class AdminService {
 		//전체 몇개 페이지가 있는지 계산 -> 1. 총 게시물 수 조회
 				
 		//총게시물 수 조회
-		int totalCount = adminDao.selectAllNoticeCount();
+		int totalCount = adminDao.selectAllMemberCount();
 		//전체페이지 계산
 		int totalPage = 0;
 		if(totalCount%numPerPage==0) {
@@ -226,5 +226,69 @@ public class AdminService {
 	public Member selectOneMember(int memberNo) {
 		Member member = adminDao.selectOneMember(memberNo); 
 		return member;
+	}
+
+
+
+	public int memberUpdate(Member member) {
+		int result = adminDao.memberUpdate(member);
+		return result;
+	}
+
+
+
+	public AdminListData selectAllStore(int reqPage) {
+		int numPerPage = 10;
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage + 1;
+		List list = adminDao.selectStoreList(start,end);
+						
+		int totalCount = adminDao.selectAllStoreCount();
+		int totalPage = 0;
+		if(totalCount%numPerPage==0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+				
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize +1;
+				
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/allStore?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/admin/allStore?reqPage="+(pageNo)+"'>";
+					pageNavi += pageNo;
+					pageNavi += "</a></li>";
+			}else {
+					pageNavi += "<li>";
+					pageNavi += "<a class='page-item' href='/admin/allStore?reqPage="+(pageNo)+"'>";
+					pageNavi += pageNo;
+					pageNavi += "</a></li>";
+			}
+			pageNo++;
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+						
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/allStore?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+						
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
 	}
 }

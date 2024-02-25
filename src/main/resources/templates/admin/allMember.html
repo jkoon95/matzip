@@ -8,62 +8,7 @@
     <link rel="stylesheet" href="/css/storeInfo.css">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/notice.css">
-<style>
-.content{
-	margin: 0 auto;
-
-
-}
-
-.sss-content{
-	padding: 50px;
-	padding-bottom: 150px;
-	width: 890px;
-}     
-.input-level{
-	width: 90px;
-	display: block;
-    padding: 0.5rem;
-    background-color: #fff;
-    outline: none;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-.s-changeLevelBtn{
-	width: 60px;
-	height: 40px;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-
-}
-
-#searchFrm{
-	width : 350px;
-	display :flex;
-	float: right;
-}
-#searchFrm>select{
-	width:80px;
-}
-#searchFrm>input{
-	width:220px;
-}
-#searchFrm>button{
-	width:60px;
-}
-#searchFrm>*{
-	padding : 0.4rem;
-}
-#write-btn{
-	padding : 0.4rem;
-	width : 100px;
-	text-align : center;
-	margin:0;
-}
-</style>
 </head>
-
 <body>
     <!-- 관리자만 들어갈 수 있도록 설정해줘야함-->
     <th:block th:include="common/header"></th:block>
@@ -77,7 +22,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#">
+                    <a href="/admin/allStore?reqPage=1">
                         <span class="material-icons">storefront</span>
                         <span class="title">매장 관리</span>
                     </a>
@@ -97,12 +42,12 @@
             </ul>
         </div>
 		<script type="text/javascript">
-		const list = $(".list");
-		  list.on("click", function(){
-		    list.children("a").removeClass("active");
-		    $(this).children("a").addClass("active");
-		    $(this).children("ul").children().toggleClass("sub-active");
-		  });
+			const list = $(".list");
+			  list.on("click", function(){
+			    list.children("a").removeClass("active");
+			    $(this).children("a").addClass("active");
+			    $(this).children("ul").children().toggleClass("sub-active");
+			  });
 		</script>
 
         <div class="sss-content">

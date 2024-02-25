@@ -12,6 +12,7 @@ import kr.or.iei.member.model.dto.MemberRowMapper;
 import kr.or.iei.member.model.dto.OriginMemberRowMapper;
 import kr.or.iei.notice.model.dto.NoticeListData;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreRowMapper;
 
 @Repository
 public class AdminDao {
@@ -19,6 +20,8 @@ public class AdminDao {
 	private JdbcTemplate jdbc;
 	@Autowired
 	private OriginMemberRowMapper originMemberRowMapper;
+	@Autowired
+	private StoreRowMapper storeRowMapper;
 	
 	public List selectAllMember() {
 		String query = "select * from member_tbl order by 1 desc";
@@ -47,7 +50,7 @@ public class AdminDao {
 		return list;
 	}
 
-	public int selectAllNoticeCount() {
+	public int selectAllMemberCount() {
 		String query="select count(*) from member_tbl";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
@@ -117,6 +120,26 @@ public class AdminDao {
 			return null;
 		}
 		return (Member)list.get(0);
+	}
+
+	public int memberUpdate(Member member) {
+		String query="update member_tbl set member_pw=?,member_phone=?,member_name=? where member_no=?";
+		Object[] params = {member.getMemberPw(),member.getMemberPhone(),member.getMemberName(),member.getMemberNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectStoreList(int start, int end) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT * FROM store_tbl ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {start,end};
+		List list = jdbc.query(query,storeRowMapper ,params);
+		return list;
+	}
+
+	public int selectAllStoreCount() {
+		String query="select count(*) from member_tbl";
+		int totalCount = jdbc.queryForObject(query, Integer.class);
+		return totalCount;
 	}
 
 
