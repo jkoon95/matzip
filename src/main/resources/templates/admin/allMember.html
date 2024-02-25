@@ -9,10 +9,16 @@
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/notice.css">
 <style>
+.content{
+	margin: 0 auto;
+
+
+}
+
 .sss-content{
 	padding: 50px;
 	padding-bottom: 150px;
-	
+	width: 890px;
 }     
 .input-level{
 	width: 90px;
@@ -32,34 +38,34 @@
 
 }
 
-	#searchFrm{
-		width : 350px;
-		display :flex;
-		float: right;
-	}
-	#searchFrm>select{
-		width:80px;
-	}
-	#searchFrm>input{
-		width:220px;
-	}
-	#searchFrm>button{
-		width:60px;
-	}
-	#searchFrm>*{
-		padding : 0.4rem;
-	}
-	#write-btn{
-		padding : 0.4rem;
-		width : 100px;
-		text-align : center;
-		margin:0;
-	}
+#searchFrm{
+	width : 350px;
+	display :flex;
+	float: right;
+}
+#searchFrm>select{
+	width:80px;
+}
+#searchFrm>input{
+	width:220px;
+}
+#searchFrm>button{
+	width:60px;
+}
+#searchFrm>*{
+	padding : 0.4rem;
+}
+#write-btn{
+	padding : 0.4rem;
+	width : 100px;
+	text-align : center;
+	margin:0;
+}
 </style>
 </head>
 
 <body>
-    <!-- 매장만 들어갈 수 있도록 설정해줘야함-->
+    <!-- 관리자만 들어갈 수 있도록 설정해줘야함-->
     <th:block th:include="common/header"></th:block>
     <div class="content">
         <div class="navigation">
