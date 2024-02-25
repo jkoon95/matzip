@@ -34,6 +34,7 @@
       <!--예약정보 입력-->
       <article>
         <form action="/reserve/reserve" method="post">
+          <input type="hidden" name="storeNo" th:value="${store.storeNo}">
           <input type="hidden" name="reserveDate" id="reserveDate">
           <ul>
 
@@ -44,6 +45,7 @@
 
             <li class="people-area">
               <input type="hidden" name="reservePeople" id="reservePeople">
+              <input type="hidden" name="tableNo" id="tableNo">
               <span>예약 인원 : </span>
               <span class="material-icons" id="people-minus">remove</span>
               <span clas="people" id="people"> </span>
