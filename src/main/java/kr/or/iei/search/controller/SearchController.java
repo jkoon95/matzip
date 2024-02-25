@@ -134,6 +134,9 @@ public class SearchController {
 	//@GetMapping(value = "likeView")
 	//public String likeView(int memberNo,@SessionAttribute)
 	
-	
+	@GetMapping(value = "searchStoreList")
+	public String searchStoreList() {
+		return "search/searchStoreList";
+	}
 	
 }
