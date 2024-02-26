@@ -23,10 +23,19 @@
                     <button type="button" name="id-search-email-btn" id="id-search-email-btn">인증번호받기</button>                    
                 </div>
                 </form>
-                <div class="pass-num-box">
+                <div class="pass-num-box" style="display:none;">
                     <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
-                    <button type="button" name="pass-num-btn">인증하기</button>
-                </div>            
+                    <button type="button" name="pass-num-btn" id="pass-num-btn">인증하기</button>
+                </div>
+                <div class=idInfo-box style="display:none;">
+                <button id="openModalBtn">내 ID 보기</button>
+       					<div id="myModal" class="modal-hg">
+           					<div class="modal-content-hg">
+                			<span class="close-hg">&times;</span>
+               			 	<p></p>
+            			</div>
+       				 </div>
+                </div>                
         	</div>
     	</div>    
     <th:block th:include="common/footer"></th:block>
@@ -56,10 +65,12 @@
     		});
     	});
     	*/
+    	
+		let mailCode = null;    
     	$("#id-search-email-btn").on("click", function() {
     	    const memberName = $("#id-search-name").val();
     	    const memberEmail = $("#id-search-email").val();
-
+    	   
     	    $.ajax({
     	        url: "/mail/checkName",
     	        type: "get",
@@ -70,11 +81,14 @@
     	                    url: "/mail/sendMail",
     	                    type: "post",
     	                    data: { memberEmail: memberEmail },
-    	                    success: function(data) {
+    	                    success: function(data) {    	                    	
     	                        $("#checkName").text(" ------ 확인");
     	                        $("#checkName").css("color", "blue");
     	                        $("#id-search-name").css("border", "1px solid blue");
+    	                        $("#id-search-email").css("border", "1px solid blue");
     	                        console.log(data);
+    	                        $(".pass-num-box").show();
+    	                        mailCode = data;
     	                    },
     	                    error: function() {
     	                        console.log("이메일 전송 에러");
@@ -84,6 +98,7 @@
     	                $("#checkName").text(" ---- 확인불가");
     	                $("#checkName").css("color", "red");
     	                $("#id-search-name").css("border", "1px solid red");
+    	                $("#id-search-email").css("border", "1px solid red");
     	            }
     	        },
     	        error: function() {
@@ -91,6 +106,57 @@
     	        }
     	    });
     	});
+    	
+    	$("#pass-num-btn").on("click",function(){
+    		const passNum = $("#pass-num").val();
+    		if(passNum == mailCode){
+    			$("#pass").text("인증완료 ");
+				$("#pass").css("color","blue");
+				$("#pass-num").css("border", "1px solid blue");
+                $(".idInfo-box").show();
+    		}else{
+    			$("#pass").text("인증번호를 확인하세요");
+				$("#pass").css("color"," red");
+				$("#pass-num").css("border", "1px solid red");
+    		}
+    	});
+    	   
+    	
+    	document.addEventListener('DOMContentLoaded', function () {
+    	    var modal = document.getElementById('myModal');
+    	    var btn = document.getElementById('openModalBtn');
+    	    var span = document.getElementsByClassName('close-hg')[0];
+
+    	    btn.addEventListener('click', function () {
+    	    	const memberName = $("#id-search-name").val();
+        	    const memberEmail = $("#id-search-email").val();
+        	    
+        	    $.ajax({
+        	    	url: "/mail/getMemberId",
+        	        type: "get",
+        	        data: { memberName: memberName, memberEmail: memberEmail },
+        	        success: function(memberId){
+        	        	if(memberId == null){
+        	        		$("#myModal p").text("정보를 불러오지 못했습니다.");
+        	        	}else{
+        	        		$("#myModal p").text("아이디는 [" + memberId + "] 입니다.");
+                            modal.style.display = 'block';
+        	        	}
+        	        }
+        	    });    	       
+    	    });
+
+    	    span.addEventListener('click', function () {
+    	        modal.style.display = 'none';
+    	    });
+
+    	    window.addEventListener('click', function (event) {
+    	        if (event.target === modal) {
+    	            modal.style.display = 'none';
+    	        }
+    	    });
+    	});
+
     </script>
 </body>
 </html>

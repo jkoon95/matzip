@@ -51,6 +51,8 @@ public class MemberService {
 		Member member = memberDao.emailCheckId(memberId, memberEmail);
 		return member;
 	}
-	
-	
+	public Member getMemberId(String memberName, String memberEmail) {
+		Member member = memberDao.getMemberId(memberName, memberEmail);
+		return member;	
+	}
 }
