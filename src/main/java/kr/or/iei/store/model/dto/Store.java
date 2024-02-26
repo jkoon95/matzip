@@ -59,6 +59,7 @@ public class Store {
 	private String storeAddr1;
 	private int isLike; 
 	
+	private String memberId;
 	private List<EvidenceFile> fileList;
 	
 	public String getStoreDescriptionBr() {
