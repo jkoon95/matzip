@@ -18,7 +18,7 @@ public class MatzipEmail {
 	@Autowired	
 	private JavaMailSender emailSender;
 
-	public String mailCode(String email) {
+	public String mailCode(String memberEmail) {
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		
@@ -32,7 +32,7 @@ public class MatzipEmail {
 		try {
 			helper.setSentDate(new Date());
 			helper.setFrom(new InternetAddress("gudrb5391@gmail.com","맛집입니다."));
-			helper.setTo(email);
+			helper.setTo(memberEmail);
 			helper.setSubject("인증메일입니다");
 			helper.setText(
 					"<h1>안녕하세요. 맛집고객센터입니다.</h1>"

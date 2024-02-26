@@ -11,6 +11,7 @@ import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.notice.model.dto.Notice;
 import kr.or.iei.store.model.dto.ClosedDayRowMapper;
 import kr.or.iei.store.model.dto.EvidenceFile;
+import kr.or.iei.store.model.dto.EvidenceFileRowMapper;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.MenuRowMapper;
 import kr.or.iei.store.model.dto.Store;
@@ -32,16 +33,15 @@ public class StoreDao {
 	private StorePlusRowMapper storePlusRowMapper;
 	@Autowired
 	private MenuRowMapper menuRowMapper;
+	@Autowired
+	private EvidenceFileRowMapper evidenceFileRowMapper;
 	
 	public List selectAllSubway() {
 		String query = "select * from subway_tbl order by 1";
 		List list = jdbc.query(query, subwayRowMapper);
 		return list;
 	}
-
 	
-	
-
 	public int insertStore(Store store) {
 		String query = "INSERT INTO STORE_TBL VALUES (STORE_SEQ.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,2,?,?)";
 		Object[] params = {store.getMemberNo(),store.getBusinessNo(),store.getStoreName(),store.getStoreAddr(),store.getStorePhone(),store.getHomePage(),store.getStoreSns(),store.getStoreDescription(),store.getFoodType(),store.getStoreImg(),store.getOpeningHour(),store.getClosingHour(),store.getBreakStart(),store.getBreakEnd(),store.getSubwayName(),store.getTimeToEat(),store.getStoreAddr1()};
@@ -153,4 +153,65 @@ public class StoreDao {
 		int result = jdbc.update(query,params);
 		return result;
 	}
+
+	public int insertTable(int tableCapacity, int storeNo) {
+		String query = "insert into table_tbl values(table_seq.nextval, ?, ?)";
+		Object[] params = {tableCapacity,storeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int selectTableCapacity(int table, int storeNo) {
+		String query = "select count(*) from table_tbl where store_no=? and table_capacity=?";
+		Object[] params = {storeNo,table};
+		int count = jdbc.queryForObject(query, Integer.class, params);
+		return count;
+	}
+
+	public int deleteTableCapacity(int storeNo) {
+		String query = "delete from table_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int selectCountTableCapacity(int storeNo) {
+		String query = "select count(*) from table_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int count = jdbc.queryForObject(query, Integer.class, params);
+		return count;
+	}
+
+	public int insertMenu(Menu menu, int storeNo) {
+		String query = "insert into menu_tbl values (MENU_SEQ.nextval, ?,?,?,?)";
+		Object[] params = {storeNo,menu.getMenuName(),menu.getMenuPrice(),menu.getMenuImg()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public Menu selectOneMenu(int storeNo) {
+		String query = "select * from menu_tbl where store_no=? order by 1 desc";
+		Object[] params = {storeNo};
+		List list = jdbc.query(query, menuRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Menu)list.get(0);
+	}
+
+	public int deleteStore(int storeNo) {
+		String query="delete from store_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectEvidenceFile(int storeNo) {
+		String query = "SELECT * FROM EVIDENCE_FILE where store_no = ?";
+		Object[] params = {storeNo};
+		List list = jdbc.query(query, evidenceFileRowMapper, params);
+		return list;
+	}
+	
+	
 }

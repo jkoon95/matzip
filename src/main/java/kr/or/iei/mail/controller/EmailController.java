@@ -28,30 +28,31 @@ public class EmailController {
 		return "email/searchPw";
 	}
 	@ResponseBody
-	@GetMapping(value="checkName")
-	public int checkName(String memberName) {
-		Member member = memberService.emailCheckName(memberName);	
+	@GetMapping(value="/checkName")
+	public String checkName(String memberName, String memberEmail) {
+		Member member = memberService.emailCheckName(memberName, memberEmail);		
 		if(member == null) {
-			return 0;
+			return "0";
 		}else {
-			return 1;
+			/*인증번호 비교 (인증하기버튼)*/
+			return "1";
 		}
 	}
 	@ResponseBody
-	@GetMapping(value="checkId")
-	public int checkId(String memberId) {
-		Member member = memberService.emailCheckId(memberId);	
+	@GetMapping(value="/checkId")
+	public String checkId(String memberId, String memberEmail) {
+		Member member = memberService.emailCheckId(memberId,memberEmail);			
 		System.out.println(member);
 		if(member == null) {
-			return 0;
+			return "0";
 		}else {
-			return 1;
+			return "1";
 		}
 	}
 	@ResponseBody
 	@PostMapping(value="/sendMail")
-	public String mailCode(String email) {
-		String passCode = matzipEmail.mailCode(email);
+	public String mailCode(String memberEmail) {
+		String passCode = matzipEmail.mailCode(memberEmail);
 		return passCode;
 	}
 }
