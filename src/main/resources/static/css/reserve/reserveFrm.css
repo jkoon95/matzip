@@ -3,14 +3,152 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 
-body {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-height: 100vh;
-  background: #e3e6e7;
+ul{
+  list-style: none;
 }
+
+main {
+  min-height: 100vh;
+  background: #ecedee;
+}
+
+.main-wrap{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin : 0 auto;
+  width: 1200px;
+}
+
+.page-title{
+  font-size: 40px;
+  height: 60px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.page-content{
+  /*flex-grow: 1;*/
+  width: 900px;
+}
+
+.page-title{
+  width: 100%;
+  text-align: center;
+}
+
+.content-wrap{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding-left: 10px;
+}
+
+.article{
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.article-title{
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.storeName{
+  width : 190px;
+}
+
+.article-content{
+  margin-top: 20px;
+}
+
+.float{
+  overflow: hidden;
+}
+
+.opening-hour{
+  float: left;
+  text-align: center;
+}
+.opening-hour > li{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.opening-hour > li:first-child{
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+.day{
+  width: 70px;
+}
+.hour{
+  width: 120px;
+}
+
+
+.reserveFrm{
+  box-sizing: border-box;
+  width: 350px;
+}
+
+.li-title, .li-content{
+  float: left;
+}
+
+.reserveFrm .li-title{
+  width: 70px;
+  margin-right: 10px;
+}
+
+.reserveFrm .li-content{
+  
+}
+
+.time-area .li-content{
+  width: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.smallBtn{
+  width: 45px;
+  height: 25px;
+  background: #72b37e;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+.people-minus{
+  line-height:5px;
+}
+.people-plus{
+  line-height:5px;
+}
+.servings-minus{
+  line-height:5px;
+}
+.servings-plus{
+  line-height:5px;
+}
+

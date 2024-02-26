@@ -535,5 +535,12 @@ public class AdminService {
 		AdminListData ald = new AdminListData(list, pageNavi);
 		return ald;
 	}
+
+
+
+	public int updatestoreBlackChangeLevel(int storeNo) {
+		int result = adminDao.updatestoreBlackChangeLevel(storeNo);
+		return result;
+	}
 	
 }

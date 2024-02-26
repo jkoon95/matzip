@@ -28,7 +28,7 @@ public class ReserveController {
 		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Menu menu, Model model
 		
 		//원래 매개변수인데, 일단 임시로
-		int storeNo = 35;
+		int storeNo = 1;
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		

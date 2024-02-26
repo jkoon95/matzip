@@ -312,8 +312,8 @@ public class StoreController {
 		}
 		
 		@ResponseBody
-		@PostMapping(value="/insertMenu",produces="plain/text;charset=utf-8")
-		public String insertMenu(int storeNo, Menu menu, MultipartFile menuImgFile) {
+		@PostMapping(value="/insertMenu")
+		public Menu insertMenu(int storeNo, Menu menu, MultipartFile menuImgFile) {
 			String menuSavepath = root+"/store/menu/";		
 			String menuFilepath = fileUtils.upload(menuSavepath, menuImgFile);	
 			menu.setMenuImg(menuFilepath);
@@ -321,11 +321,30 @@ public class StoreController {
 			if(result>0) {
 				Menu newMenu = storeService.selectOneMenu(storeNo);
 			    System.out.println(newMenu);
-			    return "1";
+			    return newMenu;
 			}else {
-				return "12";
+				return null;
 			}
 		}
 		
+		//updateMenu
+		@ResponseBody
+		@PostMapping(value="/updateMenu")
+		public int updateMenu(Menu menu, String oldImgFile, MultipartFile newImgFile) {
+			String menuSavepath = root+"/store/menu/";		
+			if(newImgFile!=null) {
+				String menuFilepath = fileUtils.upload(menuSavepath, newImgFile);
+				menu.setMenuImg(menuFilepath);
+			}else {
+				menu.setMenuImg(oldImgFile);
+			}
+			int result= storeService.updateMenu(menu);
+			if(result>0) {
+				if(newImgFile!=null) {
+					fileUtils.deleteFile(menuSavepath, oldImgFile);					
+				}
+			}
+			return result;
+		}
 		
 }

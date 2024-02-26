@@ -101,7 +101,7 @@ public class StoreDao {
 	}
 
 	public List selectStoreMenu(int storeNo) {
-		String query = "SELECT * FROM MENU_TBL where store_no=?";
+		String query = "SELECT * FROM MENU_TBL where store_no=? order by 1";
 		Object[] params = {storeNo};
 		List list = jdbc.query(query, menuRowMapper , params);
 		return list;
@@ -211,6 +211,13 @@ public class StoreDao {
 		Object[] params = {storeNo};
 		List list = jdbc.query(query, evidenceFileRowMapper, params);
 		return list;
+	}
+
+	public int updateMenu(Menu menu) {
+		String query = "update menu_tbl set menu_name=?,menu_price=?,menu_Img=? where menu_no=?";
+		Object[] params = {menu.getMenuName(),menu.getMenuPrice(),menu.getMenuImg(),menu.getMenuNo()};
+		int result=jdbc.update(query,params);
+		return result;
 	}
 	
 	

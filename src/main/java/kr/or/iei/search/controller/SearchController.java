@@ -121,12 +121,15 @@ public class SearchController {
 	    List<ClosedDay> closedDayList = searchService.selectClosedDay(storeNo);
 	    // 상점의 리뷰 조회 (REVIEW_TBL)
 	    List<StoreReview> reviewList = searchService.selectStoreReview(storeNo);
+	    // 상점의 평균 별점 조회(REVIEW_TBL)
+	    double avgStar = searchService.selectAvgStar(storeNo);
 	    
 		model.addAttribute("store",store);
 		model.addAttribute("info", info);
 	    model.addAttribute("menuList", menuList);
 	    model.addAttribute("closedDayList", closedDayList);
 		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("avgStar", avgStar);
 	    
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
@@ -189,8 +192,47 @@ public class SearchController {
 		model.addAttribute("searchList",sld.getList());
 		model.addAttribute("pageNavi",sld.getPageNavi());
 		System.out.println(sld.getList());
+		System.out.println(sld.getPageNavi());
 		return "search/searchStoreList";
 	}
+	
+	@GetMapping(value = "/viewAllStoreList")
+	public String viewAllStoreList(int reqPage,Model model) {
+		SearchListData sld = searchService.viewAllStoreList(reqPage);
+		
+		model.addAttribute("searchList",sld.getList());
+		model.addAttribute("pageNavi",sld.getPageNavi());
+		
+		
+		return "search/viewAllStoreList";
+	}
+	
+	@GetMapping(value = "/selectByFoodType")
+	public String selectByFoodType(int reqPage,String foodType,Model model) {
+		SearchListData sld = searchService.viewFoodTypeStoreList(reqPage,foodType);
+		
+		
+		model.addAttribute("searchList",sld.getList());
+		model.addAttribute("pageNavi",sld.getPageNavi());
+		model.addAttribute("foodType",foodType);
+		
+		
+		return "search/viewAllStoreList";
+	}
+	
+	@GetMapping(value = "/selectBySearchType")
+	public String selectBySearchType(int reqPage,String searchType,Model model) {
+		SearchListData sld = searchService.viewSearchTypeStoreList(reqPage,searchType);
+		
+		
+		model.addAttribute("searchList",sld.getList());
+		model.addAttribute("pageNavi",sld.getPageNavi());
+		model.addAttribute("searchType",searchType);
+		
+		return "search/viewAllStoreList";
+	}
+	
+	
 
 	@PostMapping(value = "/updateReview")
 	public String updateReview(StoreReview sr, Model model) {

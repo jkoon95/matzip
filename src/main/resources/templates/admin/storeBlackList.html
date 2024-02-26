@@ -7,12 +7,31 @@
 <link rel="stylesheet" href="/css/admin.css">
 <link rel="stylesheet" href="/css/notice.css">
 </head>
+<style>
+.s-storeBlackPlusBtn{
+	    color: #fff;
+    font-size: 15px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* margin-top: 20px; */
+    background-color: #4c4945;
+    font-size: 15px;
+}
+</style>
 <body>
 	<th:block th:include="common/header"></th:block>
     <div class="content">
     	<th:block th:include="common/side"></th:block>
     	 <div class="sss-content">
-            <div class="page-title">블랙리스트 관리</div>
+            <div class="page-title">블랙리스트 관리<a href="#" class="s-storeBlackPlusBtn">추가</a></div>
             <div>
             	<form action="/admin/searchBlackStore" method="get" id="searchFrm">
 					<th:block th:switch="${type}">
@@ -54,7 +73,7 @@
                     <td th:if="${store.storeLevel}==1">매장</td>
                     <td th:if="${store.storeLevel}==2">블랙</td>
                     <td>
-                    	<button class="s-changeLevelBtn">블랙해제</button>                    
+                    	<button class="storeBlackChangeLevel">블랙해제</button>                    
                     </td>
                 </tr>
                 <tr>
@@ -63,7 +82,7 @@
                 	<th></th>
                 	<th></th>
 					<th colspan="2">
-						<button class="checkedChangeLevel">선택매장블랙해제</button>
+						<button class="checkedStoreBlackChangeLevel">선택매장블랙해제</button>
 					</th>
 				</tr>
             </table>
@@ -78,18 +97,36 @@
 				return false;
 			}
 		}
-	    $(".changeLevel").on("click",function(){
+	    $(".storeBlackChangeLevel").on("click",function(){
 			//클릭한 버튼 기준으로 해당 행의 회원번호를 가지고 옴
-			const memberNo = $(this).parent().parent().children().eq(1).text();
+			const storeNo = $(this).parent().parent().children().eq(1).text();
 			//클릭한 버튼 기준으로 해당 행의 선택한 등급
-			const memberLevel = $(this).parent().prev().children().val();
-			
+			//const memberLevel = $(this).parent().prev().children().val();
 			//console.log("memberNo : "+memberNo);
 			//console.log("memberLevel : "+memberLevel);
 			//서버전송에 필요한 데이터는 모두 가져옴(회원번호, 선택한 회원 등급)
 			//서버에 update요청 -> 1. form, 2. a태그
 			//a태그 방식으로
-			location.href = "/admin/changeLevel?memberNo="+memberNo+"&memberLevel="+memberLevel;
+			$.ajax({
+				url : "/admin/storeBlackChangeLevel",
+				type : "get",
+				data : {storeNo : storeNo},
+				//dataType : "JSON",	//문자열을 배열로 받아옴
+				success : function(result){
+					console.log(result,typeof result);
+					if(result===1){
+						console.log("성공");
+						$(this).parent().parent().remove();
+						alert("등급이 변경되었습니다.");
+					}else{
+						console.log("실패");
+					}
+				},
+				error:function(){
+					console.log("에러");
+				}
+			});
+			//location.href = "/admin/changeLevel?memberNo="+memberNo+"&memberLevel="+memberLevel;
 		});
 		
 		$(".checkedChangeLevel").on("click",function(){

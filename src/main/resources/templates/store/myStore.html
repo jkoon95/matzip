@@ -163,6 +163,14 @@
 			width: 400px;
 			padding-top: 30px;
 		}
+		
+.cancelBtn{
+	padding-left: 13px;
+    color: #db5a5a;
+    /* text-align: right; */
+    font-size: 18px;
+    font-weight: 500;
+}
 </style>
 </head>
 <body>
@@ -282,21 +290,18 @@
 							<th colspan="2" class="s-lastTh">
 								<a th:href="@{/store/storeDelete(storeNo=${store.storeNo})}" class="goStore" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">삭제하기</a>
 								<a th:href="@{/store/storeUpdateFrm(storeNo=${store.storeNo})}" class="goStore" style="background-color: #FFA648">수정하기</a>
-								<a th:if="${store.storeStatus==1}" th:href="@{/search/conveyStoreInfoToDetail(storeNo=${store.storeNo})}" class="goStore">매장가기</a>	<!-- 매장상세링크 걸어줘야함 -->
+								<a th:if="${store.storeStatus==1}" th:href="@{/search/conveyStoreInfoToDetail(storeNo=${store.storeNo})}" class="goStore">매장가기</a>
 							</th>
 						</tr>
 					</table>
 					</div>
 				</div>
 				<div id="tab02">
-					<div style="text-align: right;">
-						<a href="javascript:void(0)" class="plusMenu menuShow">추가</a>					
-					</div>
 					
-					<!-- 메뉴 추가 창-->
+					<!-- 메뉴 추가 창
 					<div class="menuBox plusMenuBox" style="border: 1px solid #ccc; display: none;">
 						<div class="menuBoxIn">
-							<img class="s-img-view" style="width: 100px;height: 100px;">
+							<img class="s-img-view" style="width: 100px;height: 100px;" src="/store/img/basic.png">
 							<div class="menuBoxInput">
 								<div>
 									<input type="file" name="plusMenuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);" required>
@@ -305,10 +310,12 @@
 									<input type="text" class="s-menu-input" name="menuName" required placeholder="이름">
                     				<input type="text" class="s-menu-input" name="menuPrice" required placeholder="가격">
 									<a href="javascript:void(0)" class="menuBtn" th:onclick="insertMenu(this,[[${store.storeNo}]])">등록</a>
+									<a href="javascript:void(0)" class="menuBtn" th:onclick="minusMenuBox(this))">X</a>
 								</div>					
 							</div>
-						</div>
+						</div>		
          			</div>
+         			-->
          			
 					<div class="menuBox-wrap">
 					<th:block th:each = "menu : ${menuList}">
@@ -317,21 +324,28 @@
                             	<img th:src="'/store/menu/'+${menu.menuImg}" class="s-img-view" width="100px" height="100px">
                          		<div class="menuBoxInput">
                          			<div>
-	                            		<input type="hidden" th:value="${menu.menuNo}" name="no">
 	                               		<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">                         			
                          			</div>
                          			<div>
-	                                	<input type="text" name="name" class="s-menu-input" th:value="${menu.menuName}" required>
-	                                	<input type="text" name="price" class="s-menu-input" th:value="${menu.menuPrice}" required>
+	                                	<input type="text" name="name" class="s-menu-input" th:value="${menu.menuName}" required placeholder="이름">
+	                                	<input type="text" name="price" class="s-menu-input" th:value="${menu.menuPrice}" required placeholder="가격">
                          			</div>      
                          			<div class="menuBtn">
-                            			<a href="javascript:void(0)" class="menuBtn updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]])">수정</a>
+                            			<a href="javascript:void(0)" class="menuBtn updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]],[[${menu.menuImg}]])">수정</a>
 										<a href="javascript:void(0)" class="menuBtn" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]],[[${menu.menuImg}]])">삭제</a>                         			
                          			</div>                    	
 	                          </div>
 	                      </div>
                         </div>  
+                        
+                        
+		    			
+		    			
                     </th:block>
+					</div>
+					<div class="plusMenuAppend"></div>
+                    <div style="text-align: center;border: 1px solid #ccc; cursor: pointer;" class="menuShow">
+						<a href="javascript:void(0)" class="plusMenu" style="color:#72B37E;">추가</a>					
 					</div>
 			    </div>
 			</div>
@@ -357,9 +371,7 @@
 	            $(obj).parent().parent().prev().attr("src", "");
 	        }
 	    }
-		$(".menuShow").on("click",function(){
-			$(".plusMenuBox").toggle();			
-		});
+		
 		
 		/*
 		 $("[name='menuImgFile']").on("change", function() {
@@ -380,45 +392,7 @@
 		    });
 		*/
 		
-		function insertMenu(obj,storeNo){
-			const menuImgFile = $("[name='plusMenuImg']").get(0).files[0];
-		    const menuName = $("[name='menuName']").val();
-		    const menuPrice = $("[name='menuPrice']").val();
-		    
-		    console.log(menuImgFile);
-		    console.log(menuName);
-		    console.log(menuPrice);
-
-		    if (!menuImgFile || !menuName || !menuPrice || menuName.trim() === "") {
-		        alert("모두입력하세요.");
-		        return; // 메뉴 추가 중단
-		    }
-		    
-		    // FormData 객체를 생성하여 데이터 추가
-		    const form = new FormData();
-		    form.append("menuImgFile", menuImgFile);
-		    form.append("menuName", menuName);
-		    form.append("menuPrice", menuPrice);
-		    form.append("storeNo", storeNo);
-		    console.log(form);
-
-		    $.ajax({
-		        url: "/store/insertMenu",
-		        type : "post",
-				data : form,
-				dataType : "JSON",
-				processData  : false,	//enctype
-				contentType : false,
-				success : function(data){
-					console.log("메뉴 추가 성공");
-		            console.log(data,typeof data);
-		            // 성공 시 수행할 작업 추가
-				},
-				error : function(){
-					console.log("에러");					
-				}
-		    });
-		}
+		
 		
 		
 		$(function () {
@@ -431,11 +405,6 @@
 			}).filter(':eq(0)').click();
 		});
 		
-		function updateMenu(obj,storeNo,menuNo){
-			
-		}
-		
-		
 		function deleteMenu(obj,storeNo,menuNo,menuImg){
 			if (confirm("정말로 삭제하시겠습니까?")) {
 			$.ajax({
@@ -444,7 +413,7 @@
 				data : {storeNo : storeNo, menuNo : menuNo, menuImg : menuImg},
 				success : function(data){
 					if(data==1){
-						console.log("삭제완료");
+						//console.log("삭제완료");
 						$(obj).parent().parent().parent().parent().remove();				
 					}else{
 						console.log("실패");						
@@ -456,29 +425,145 @@
 			});
 			 }
 		}
-		
 		$(".menuShow").on("click",function(){
-			
-			/*
-			$(".menuBox-wrap").append(
-					'<div class="menuBox" style="border: 1px solid #ccc">'+
-					'<div>'+
-                	'<img class="s-img-view" width="100px" height="100px">'+
-             		'</div>'+
-             		'<div>'+
-                	'<input type="hidden" name="no">'+
-                   	'<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg">'+
-                    '<input type="text" class="s-menu-input" name="name" required>'+
-                    '<input type="text" class="s-menu-input" name="price" required>'+
-                	'</div>'+
-                	'<div>'+
-                	'<a href="javascript:void(0)" class="minusMenu updateMenu">추가</a>'+
-                	'</div>'+
-            		'</div>'
+			//$(".plusMenuBox").toggle();	
+			$(".plusMenuAppend").append(
+					'<div class="menuBox plusMenuBox" style="border: 1px solid #ccc;">'+
+						'<div class="menuBoxIn">'+
+							'<img class="s-img-view" style="width: 100px;height: 100px;" src="/store/img/basic.png">'+
+							'<div class="menuBoxInput">'+
+								'<div>'+
+									'<input type="file" name="plusMenuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);" required>'+
+								'</div>'+
+								'<div>'+
+									'<input type="text" class="s-menu-input" name="menuName" required placeholder="이름">'+
+                					'<input type="text" class="s-menu-input" name="menuPrice" required placeholder="가격">'+
+									'<a href="javascript:void(0)" class="menuBtn" onclick="insertMenu(this,[[${store.storeNo}]])" style="color: #72B37E;">등록</a>'+
+									'<a href="javascript:void(0)" class="cancelBtn" onclick="minusMenuBox(this)">X</a>'+
+								'</div>'+				
+							'</div>'+
+						'</div>	'+
+     				'</div>'
            );
-			*/
-		
 		});
+		
+		function minusMenuBox(obj){
+			$(obj).parent().parent().parent().parent().remove();			
+		}
+			
+		function insertMenu(obj,storeNo){	
+			const menuImgFile = $(obj).parent().prev().children().get(0).files[0];
+		    const menuName = $(obj).prev().prev().val();
+		    const menuPrice = $(obj).prev().val();
+		    
+		    //console.log(menuImgFile);
+		    //console.log(menuName);
+		    //console.log(menuPrice);
+		    
+		    if (!menuImgFile || !menuName || !menuPrice || menuName.trim() === "") {
+		        alert("모두입력하세요.");
+		        return; // 메뉴 추가 중단
+		    }
+		    
+		    // FormData 객체를 생성하여 데이터 추가
+		    const form = new FormData();
+		    form.append("menuImgFile", menuImgFile);
+		    form.append("menuName", menuName);
+		    form.append("menuPrice", menuPrice);
+		    form.append("storeNo", storeNo);
+		    //console.log(form);
+		
+		    $.ajax({
+		        url: "/store/insertMenu",
+		        type : "post",
+				data : form,
+				dataType : "JSON",
+				processData  : false,	//enctype
+				contentType : false,
+				success : function(menu){
+		            //console.log(menu,typeof menu);
+		            if(menu!=null){
+		            	//이미지띄운거지우고//파일 선택지워주고//가격없애고//이름지우고//박스 숨기고//추가된거띄워주기
+		            	//$(obj).parent().parent().parent().children().eq(0).attr("src","/store/img/basic.png");
+		    		    //$(obj).prev().val("");
+		            	//$(obj).prev().prev().val("");
+		    		    //$("[name='plusMenuImg']").val(null);
+		    		    //$(".plusMenuBox").toggle();	
+		    		    //해당박스 지우고 새로 만들어서 menuBox-wrap에 넣어줌
+		    		    $(obj).parent().parent().parent().parent().remove();
+		    		    $(".menuBox-wrap").append(
+		    	                '<div class="menuBox" style="border: 1px solid #ccc">' +
+		    	                '<div class="menuBoxIn">' +
+		    	                '<img src="/store/menu/' + menu.menuImg + '" class="s-img-view" width="100px" height="100px">' +
+		    	                '<div class="menuBoxInput">' +
+		    	                '<div>' +
+		    	                '<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">' +
+		    	                '</div>' +
+		    	                '<div>' +
+		    	                '<input type="text" name="name" class="s-menu-input" value="' + menu.menuName + '" required placeholder="이름">' +
+		    	                '<input type="text" name="price" class="s-menu-input" value="' + menu.menuPrice + '" required placeholder="가격">' +
+		    	                '</div>' +
+		    	                '<div class="menuBtn">' +
+		    	                '<a href="javascript:void(0)" class="menuBtn updateMenu" onclick="updateMenu(this,' + menu.storeNo + ',' + menu.menuNo + ',\''+ menu.menuImg +'\')">수정</a>' +
+		    	                '<a href="javascript:void(0)" class="menuBtn" onclick="deleteMenu(this,' + menu.storeNo + ',' + menu.menuNo + ',\''+ menu.menuImg +'\')">삭제</a>' +
+		    	                '</div>' +																									
+		    	                '</div>' +
+		    	                '</div>' +
+		    	                '</div>'
+		    	            );
+		            }
+				},
+				error : function(){
+					console.log("에러");					
+				}
+		    });
+		}
+		
+		function updateMenu(obj,storeNo,menuNo,oldImgFile){
+			const newImgFile = $(obj).parent().prev().prev().children().eq(0).get(0).files[0];
+			const menuName = $(obj).parent().prev().children().eq(0).val();
+			const menuPrice = $(obj).parent().prev().children().eq(1).val();
+		    
+		  	console.log(oldImgFile);
+		  	console.log(newImgFile);
+		    console.log(menuName);
+		    console.log(menuPrice);
+		    //var menuImgFile = oldImgFile;
+		    //if(newImgFile!=null){
+		    //	menuImgFile=newImgFile;
+		    //}	
+		    //console.log(menuImgFile);
+		    
+		    //새 이미지가 있다면 옛날 이미지 지우고 업데이트하고 아니면 그대로
+		 	// FormData 객체를 생성하여 데이터 추가
+		    const form = new FormData();
+		    form.append("oldImgFile", oldImgFile);
+		    form.append("newImgFile", newImgFile);
+		    form.append("menuName", menuName);
+		    form.append("menuPrice", menuPrice);
+		    form.append("menuNo", menuNo);
+		    
+		    $.ajax({
+		        url: "/store/updateMenu",
+		        type : "post",
+				data : form,
+				dataType : "JSON",
+				processData  : false,	//enctype
+				contentType : false,
+				success : function(result){
+		            if(result>0){
+		            	alert("수정되었습니다.");
+		            }else{
+		            	alert("수정 중 문제가 생겼습니다.");
+		            }
+				},
+				error : function(){
+					console.log("에러");					
+				}
+		    });
+		    
+		}
+		
 	</script>
     <th:block th:include="common/footer"></th:block>
 </body>

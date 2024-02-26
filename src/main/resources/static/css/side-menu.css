@@ -1,35 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-height: 100vh;
-  background: #e3e6e7;
-}
-
 .navigation {
-  position: relative;
-  width: 300px;
+  width: 290px; /* 300 -> 290 */
   background: #fff;
   box-shadow: 10px 0 0 #72B37E;
   border-left: 10px solid #fff;
   overflow-x: hidden;
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+
+  /*추가*/
+  margin-right: 10px; 
 }
 
 
 /* list */
 
 .navigation > ul {
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   padding-left: 5px;
   padding-top: 40px;
