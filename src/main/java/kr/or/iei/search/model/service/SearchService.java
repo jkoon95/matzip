@@ -13,6 +13,7 @@ import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreInfo;
+import kr.or.iei.store.model.dto.StoreReview;
 
 @Service
 public class SearchService {
@@ -68,6 +69,29 @@ public class SearchService {
 		return result;
 	}
 
+	public List<StoreReview> selectStoreReview(int storeNo) {
+		List<StoreReview> reviewList = searchDao.selectStoreReview(storeNo);
+		return reviewList;
+	}
+
+	@Transactional
+	public int insertReview(StoreReview sr) {
+		int result = searchDao.insertReview(sr); 
+		return result;
+	}
+
+	@Transactional
+	public int updateReview(StoreReview sr) {
+		int result = searchDao.updateReview(sr);
+		return result;
+	}
+
+	@Transactional
+	public int deleteReview(int reviewNo) {
+		int result = searchDao.deleteReview(reviewNo);
+		return result;
+  }
+  
 	public SearchListData searchStoreInHeader(int reqPage, String search) {
 		//reqPage : 사용자가 요청한 페이지의 번호
 				//한 페이지당 보여줄 게시물 수 지정 -> 10개
@@ -398,6 +422,11 @@ public class SearchService {
 				//-> 두개를 저장하는 객체를 만들어서 리턴
 				SearchListData sld = new SearchListData(list,pageNavi);
 				return sld;
+	}
+
+	public double selectAvgStar(int storeNo) {
+		double avgStar = searchDao.selectAvgStar(storeNo);
+		return avgStar;
 	}
 
 }

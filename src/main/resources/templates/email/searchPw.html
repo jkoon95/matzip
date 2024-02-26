@@ -24,7 +24,7 @@
                     <button type="button" name="pw-search-email-btn" id="pw-search-email-btn">인증번호받기</button>
 				</div>
                 </form>
-                <div class="pass-num-box">
+                <div class="pass-num-box" style="display:none;">
                     <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
                     <button type="button" name="pass-num-btn">인증하기</button>
                 </div>           
@@ -59,6 +59,7 @@
 	$("#pw-search-email-btn").on("click", function() {
 	    const memberId = $("#pw-search-id").val();
 	    const memberEmail = $("#pw-search-email").val();
+	    $(".pass-num-box").show();
 	    $.ajax({
 	        url: "/mail/checkId",
 	        type: "get",
@@ -90,6 +91,8 @@
 	        }
 	    });
 	});
+	
+	
 	</script>
 </body>
 </html>
