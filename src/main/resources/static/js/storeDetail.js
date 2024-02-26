@@ -164,4 +164,11 @@ document.addEventListener("DOMContentLoaded", function () {
       moreBtn.style.display = 'none';
     }
   });
+  // 초기에 리뷰가 없으면 더보기 버튼을 숨김
+  if (reviews.length === 0) {
+    moreBtn.style.display = 'none';
+  }
 });
+
+
+
