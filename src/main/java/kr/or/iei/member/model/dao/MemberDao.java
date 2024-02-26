@@ -93,5 +93,13 @@ public class MemberDao {
 		}
 		return (Member)list.get(0);
 	}
-	
+	public Member getMemberId(String memberName, String memberEmail) {
+		String query = "select * from member_tbl where member_Name=? and member_Email=?";
+		Object[] params = {memberName,memberEmail};
+		List list = jdbc.query(query, originMemberRowMapper,params);		
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Member)list.get(0);
+	}
 }
