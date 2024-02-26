@@ -23,11 +23,14 @@
                     <input type="text" name="pw-search-email" id="pw-search-email">
                     <button type="button" name="pw-search-email-btn" id="pw-search-email-btn">인증번호받기</button>
 				</div>
-                </form>
+                </form>                
                 <div class="pass-num-box" style="display:none;">
-                    <input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
-                    <button type="button" name="pass-num-btn">인증하기</button>
-                </div>           
+                 	<input type="text" name="pass-num" id="pass-num" placeholder="인증번호 6자리입력">
+                    <button type="button" id="pass-num-btn" >인증하기</button>
+                </div>
+                <div class=pwChange style="display:none;" >
+                	<span id="pass"></span><a href="/member/pwChange"><button type="button">비밀번호변경</button></a>
+                </div>                      
 	        </div>
 	    </div>    
 	<th:block th:include="common/footer"></th:block>
@@ -56,10 +59,10 @@
 		});
 	});
 	*/
+	let mailCode = null;
 	$("#pw-search-email-btn").on("click", function() {
 	    const memberId = $("#pw-search-id").val();
-	    const memberEmail = $("#pw-search-email").val();
-	    $(".pass-num-box").show();
+	    const memberEmail = $("#pw-search-email").val();	    
 	    $.ajax({
 	        url: "/mail/checkId",
 	        type: "get",
@@ -74,7 +77,10 @@
 	                        $("#checkId").text(" ------ 확인");
 	                        $("#checkId").css("color", "blue");
 	                        $("#pw-search-id").css("border", "1px solid blue");
+	                        $("#pw-search-email").css("border", "1px solid blue");
 	                        console.log(data);
+	                        $(".pass-num-box").show();
+	                        mailCode = data;
 	                    },
 	                    error: function() {
 	                        console.log("이메일 전송 에러");
@@ -92,6 +98,19 @@
 	    });
 	});
 	
+	$("#pass-num-btn").on("click",function(){
+		const passNum = $("#pass-num").val();
+		if(passNum == mailCode){
+			$("#pass").text("인증완료 ");
+			$("#pass").css("color","blue");
+			$("#pass-num").css("border", "1px solid blue");
+            $(".pwChange").show();
+		}else{
+			$("#pass").text("인증번호를 확인하세요");
+			$("#pass").css("color"," red");
+			$("#pass-num").css("border", "1px solid red");
+		}
+	});
 	
 	</script>
 </body>

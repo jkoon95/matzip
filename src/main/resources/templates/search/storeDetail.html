@@ -26,7 +26,8 @@
           <h1 th:text="${store.storeName}"></h1>
         </div>
         <div class="store-like">하트</div>
-        <div class="store-star" th:text="${avgStar}"></div>
+        <div class="store-star" th:if="${avgStar != null}" th:text="${avgStar}"></div>
+		<div class="store-star" th:if="${avgStar == 0}">등록된 별점이 없습니다.</div>
         <div class="store-report">신고</div>
         <div class="store-info">
           <div class="store-addr">

@@ -45,7 +45,7 @@
                 </th:block>
                 <ul>
                     <li><button onclick="searchBySubway();">역으로 보기</button></li>
-                    <li><button onclick="searchStoreList();">맛집 목록</button></li>
+                    <li><button onclick="viewAllStoreList();">맛집 목록</button></li>
                 </ul>
 
                 <script>
@@ -57,8 +57,8 @@
                     	location.href="/";
                     }
                     
-                    function searchStoreList(){
-                    	location.href="/search/searchStoreList";
+                    function viewAllStoreList(){
+                    	location.href="/search/viewAllStoreList?reqPage=1";
                     }
                     
                     function checkKeyword(){
