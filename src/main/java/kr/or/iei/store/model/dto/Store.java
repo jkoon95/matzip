@@ -57,7 +57,7 @@ public class Store {
 	private float reviewScore;
 	private String operationStatus;
 	private String storeAddr1;
-	private int isLike; 
+	
 	
 	private String memberId;
 	private List<EvidenceFile> fileList;

@@ -55,4 +55,15 @@ public class EmailController {
 		String passCode = matzipEmail.mailCode(memberEmail);
 		return passCode;
 	}
+	@ResponseBody
+	@GetMapping(value="/getMemberId")
+	public String getMembmerId(String memberName, String memberEmail) {
+		Member member = memberService.getMemberId(memberName, memberEmail);		
+		if(member == null) {
+			return null;
+		}else {
+			return member.getMemberId();
+		}
+	}
+	
 }
