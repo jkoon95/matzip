@@ -174,6 +174,7 @@ public class AdminController {
 		}
 		return "common/msg";
 	}
+	
 	@GetMapping(value="/storeBlackList")
 	public String storeBlackList(int reqPage,Model model) {
 		AdminListData ald = adminService.selectAllBlackStore(reqPage);
@@ -191,6 +192,13 @@ public class AdminController {
 		model.addAttribute("type",type);
 		model.addAttribute("keyword",keyword);
 		return "admin/storeBlackList";
+	}
+	//storeBlackChangeLevel
+	@ResponseBody
+	@GetMapping(value="/storeBlackChangeLevel")
+	public int changeLevel(int storeNo) {
+		int result = adminService.updatestoreBlackChangeLevel(storeNo);
+		return result;
 	}
 	
 }
