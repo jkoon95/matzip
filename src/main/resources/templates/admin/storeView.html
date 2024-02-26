@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/storeInfo.css">
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/notice.css">
+<style>
+
+.goStore{
+    background-color: #72B37E;
+	color: #fff;
+	font-size: 15px;
+	border-radius: 5px;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	width: 80px;
+	height: 40px;
+	line-height: 40px;
+	float:right;
+	margin :10px;
+}
+.store-status{
+	text-align: right;
+	margin-bottom: 5px;
+	font-weight: 700;
+	font-size: 15px;
+}
+.s-lastTh{
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.s-adminStoreInfo{
+	margin: 0 auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    padding-bottom: 50px;
+    border-radius: 15px;
+    padding: 70px;
+    width: 700px;
+    box-sizing: border-box;
+    font-size: 18px;
+}   
+}
+.s-img{
+	width: 200px;
+	height: 200px;
+	border-radius: 10px;
+}		
+.s-fileDown a{
+	color: #1232e9;
+}	
+.sss-content{
+	padding: 50px;
+	padding-bottom: 150px;
+	width: 900px;
+}
+.s-smallTitle{
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-size: 17px;
+    color:#f04c4c;
+    padding-right: 60px;
+    text-align: right;
+}
+.s-title33{
+	font-size: 26px; padding-left: 50px;padding-top: 20px;padding-bottom: 20px;
+}
+.storeInfoTbl th{
+	padding-right: 10px;
+	text-align: right;
+	font-size: 18px;
+	font-weight: 300;
+	
+}
+.storeInfoTbl tr{
+	height: 60px;
+	margin-bottom: 10px;
+}
+.storeInfoTbl{
+	margin-left: 50px;
+}
+.s-storeImgBox{
+	margin-bottom: 20px;
+}
+.s-storeId{
+	text-align: center;
+	margin-bottom: 5px;
+    font-weight: 700;
+    font-size: 20px;
+    color:#2e2c2c;
+}
+.storeInfoBox{
+	color: #fff;
+    font-size: 17px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    width: 90px;
+    height: 50px;
+    line-height: 50px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 40px;
+    background-color: #72B37E;
+}
+.s-storeInfolast{
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<th:block th:include="common/header"></th:block>
+    <div class="content">
+    	<th:block th:include="common/side"></th:block>
+    	 <div class="sss-content">
+            <div><h3 class="s-title33">매장 정보<h3></div>
+            	<div class="s-smallTitle" th:if="${store.storeStatus}==2">[매장승인필요]</div>	
+            	<div  class="s-adminStoreInfo">
+          		<div class="s-storeId" ><span th:text="${member.memberId}"></span><span>님의 매장</span></div>
+          		<div class="s-storeImgBox">
+	          		<img th:src="'/store/'+${store.storeImg}" class="s-img" style="width: 250px;height: 250px;border-radius: 10px;margin-left: 150px;">  
+          		</div>
+            	<table class="storeInfoTbl">
+            		<tr>
+            			<th width="25%">[증빙서류]</th>
+            			<td class="s-fileDown" width="65%">
+            				<th:block th:each="file : ${store.fileList}">
+								<a th:href="@{/admin/filedown(filename=${file.filename},filepath=${file.filepath})}" th:text="${file.filename}"></a>
+							</th:block>
+            			</td>
+            		</tr>
+            		<tr>
+						<th>[사업자번호]</th>
+						<td th:text="${store.businessNo}"></td>
+					</tr>
+					<tr>
+						<th>[매장명]</th>
+						<td th:text="${store.storeName}" ></td>
+					</tr>
+					<tr>
+						<th>[음식타입]</th>
+						<td th:text="${store.foodType}" ></td>
+					</tr>	
+					<tr>
+						<th>[주변역]</th>
+						<td th:text="${store.subwayName}" ></td>
+					</tr>
+					<tr>
+						<th>[주소]</th>
+						<td th:text="${addr}"></td>
+					</tr>
+					<tr>
+						<th>[연락처]</th>
+						<td th:text="${store.storePhone}"></td>
+					</tr>
+					<tr>
+						<th>[영업시간]</th>
+						<td>
+							<span th:text="${store.openingHour}"></span>
+							<span>부터</span>
+							<span th:text="${store.closingHour}"></span>
+							<span>까지</span>
+						</td>
+					</tr>
+            	</table>
+            			<div class="s-storeInfolast">
+							<a th:if="${store.storeStatus==1}" th:href="@{/search/conveyStoreInfoToDetail(storeNo=${store.storeNo})}" class="storeInfoBox">매장가기</a>
+							<a th:if="${store.storeStatus==2}" th:href="@{/admin/storeStatus(storeNo=${store.storeNo})}" class="storeInfoBox">승인하기</a>	
+							<a th:href="@{/admin/memberView(memberNo=${member.memberNo})}" class="storeInfoBox" style="background-color: #FFA648">회원정보</a>
+							<a th:href="@{/store/storeDelete(storeNo=${store.storeNo})}" class="storeInfoBox" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">삭제하기</a>
+						</div>						
+            	</div>
+            </div>
+         </div>
+    </div>
+	<th:block th:include="common/footer"></th:block>
+</body>
+</html>

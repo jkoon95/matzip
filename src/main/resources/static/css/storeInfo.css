@@ -10,8 +10,10 @@
     font-family: ns-b;
     src: url(Noto_Sans_KR/static/NotoSansKR-Bold.ttf)
 }
-
-
+.s-content{
+	width:100%;
+	display:flex;
+}
 .s-content *{
     margin: 0;
     padding: 0;
@@ -43,7 +45,7 @@ s-bc:hover{
     font-size: 1.1em;
 }
 .s-input-form {
-    width: 100%;
+    width: 500px;
     display: block;
     padding: 0.5rem;
     background-color: #fff;
@@ -91,7 +93,7 @@ s-img-view{
 #s-bussniessContent{
     margin: 0 auto;
     text-align: center;
-    padding: 140px;
+    padding: 150px;
     width: 600px;
 }
 .s-title1{
@@ -127,7 +129,7 @@ s-img-view{
 	background-color: #b5b5b5;
 }
 #s-enrollNextbutton{
-	display:none;
+	/*display:none;*/
 }
 #s-bussinessNum {
     width: 300px;
@@ -186,13 +188,11 @@ s
 
 
 .s-input-wrap select{
-    width: 50px;
     margin-left: 10px;
 }
 
 .s-input-wrap input[type="text"],
 .s-input-wrap input[type="file"] {
-    /*width: 100%;*/
     margin-left: 10px;
 }
 

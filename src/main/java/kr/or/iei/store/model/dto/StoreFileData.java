@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class StoreInfoData {
-	private Store store;
-	private List closedDayList;
+public class StoreFileData {
+	private List evidenceList;
 	private List menuList;
-	private int[] tableCapacitys;
+	private String storeImg;
 }

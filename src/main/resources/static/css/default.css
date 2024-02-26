@@ -106,7 +106,26 @@ header > .header-wrap > .header-middle-box{
     justify-content: center;
     align-items: center;
 }
-header > .header-wrap > .header-middle-box > .header-search-box >input{
+/* 추가1 */
+.header-search-box form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* 삭제1 */
+/* header > .header-wrap > .header-middle-box > .header-search-box >input{
+    border-width: 0;
+    outline: none;
+    width: 500px;
+    height: 50px;
+    line-height: 50px;    
+    border-bottom: 2px solid #b3b3b3;
+    text-align: center;
+    font-size: 90%;
+    background-color: #fafcf6; 
+} */
+/* 추가2 */
+header > .header-wrap > .header-middle-box > .header-search-box input{
     border-width: 0;
     outline: none;
     width: 500px;
@@ -119,8 +138,15 @@ header > .header-wrap > .header-middle-box > .header-search-box >input{
 }
 #search-icon{
     font-size: 250%;
-    cursor: pointer;    
+    cursor: pointer;
 }
+/* 추가3 */
+#search-button{
+    border: none;
+    border-color: transparent;
+    background-color: transparent;
+}
+
 header > .header-wrap > .header-right-box{
     width: 300px;    
     float: left;        

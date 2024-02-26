@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <title>맛집 상세 페이지</title>
 <link rel="stylesheet" href="/css/storeDetail.css">
-<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=tepft4p0ed&submodules=geocoder"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1tepft4p0ed&submodules=geocoder"></script>
 <script src="/js/storeDetail.js"></script>
+<style>
+
+</style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -39,12 +42,20 @@
 							<span th:text="${store.openingHour}"></span>
 							<span>~</span>
 							<span th:text="${store.closingHour}"></span>
-							<span>(휴무일 :</span>
+							<span>( 휴무일 :</span>
+							<span th:each="closedDayList : ${closedDayList}">
+								<span th:text="${closedDayList.closedDay}"></span>
+				   			</span>
+							<span th:if="${#lists.isEmpty(closedDayList)}">
+				       			<a>X</a>
+				   			</span>
 							<span>)</span>
 						</h3>
 					</div>
 					<div class="store-intro">
+
 						<span th:text="${store.storeDescription}"></span>
+
 					</div>
 					<div class="icon-zone">
 						<a th:if="${store.homePage != null}" th:href="${store.homePage}" target="_blank">
@@ -58,31 +69,103 @@
 			</div>
 		</div>
 		
-		<div class="store-mid">
-			<table class="tbl store-tbl">
-				<tr>
-					<th style="width:33%;">위치</th>
-					<th style="width:33%;">메뉴</th>
-					<th style="width:33%;">안내</th>
-				</tr>
-				<tr>
-					<td>
-						<div id="map" style="width:400px;height:400px;"></div>
-					</td>
-				</tr>
-			</table>
+		<div class="store-section">
+			<div>
+				<div class="section-title">가게 위치</div>
+				<div id="map" style="width:379px;height:360px;"></div>
+			</div>
+			<div>
+				<div class="section-title">메뉴 리스트</div>
+				<div class="menu" style="height:360px; overflow-y: auto;">
+				    <div th:each="menuList : ${menuList}" style="display: flex; align-items: center; margin-bottom: 10px;">
+				        <img th:src="@{'/photo/store/' + ${menuList.menuImg}}" style="max-width:140px; max-height:140px; margin-right: 10px;">
+				        <div style="flex-grow: 1;">
+				            <span th:text="${menuList.menuName}" style="display: block; font-weight: bold;"></span>
+				            <span th:text="'가격: ' + ${menuList.menuPrice}" style="display: block;"></span>
+				        </div>
+				    </div>
+				    <div th:if="${#lists.isEmpty(menuList)}">
+				        <span>등록된 메뉴가 없습니다.</span>
+				    </div>
+				</div>
+			</div>
+			<div>
+				<div class="section-title">가게 안내</div>
+				<button type="button" class="infoBtn infoAlertBtn" th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}" onclick="infoAlert()">도움말</button>
+				<form id="infoForm" method="post">
+				    <button type="submit" class="infoBtn" th:if="${session.member != null and session.member.memberNo == store.memberNo and (info != null or info.infoContent != '')}" onclick="submitForm('update')">수정</button>
+					<button type="submit" class="infoBtn" th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}" onclick="submitForm('insert')">작성</button>
+				    <div class="store-intro" style="height:100%;" th:if="${session.member != null and session.member.memberNo == store.memberNo}">
+				        <textarea name="infoContent" id="infoContent" rows="10" th:text="${info != null} ? ${info.infoContent} : ''"></textarea>
+				        <input type="hidden" name="storeNo" id="storeNo" th:value="${store.storeNo}">
+				    </div>
+				</form>
+				<div class="store-intro" style="height:100%;" th:if="${session.member == null or session.member.memberNo != store.memberNo}">
+					<textarea name="infoContent" id="infoContent" rows="10" readonly th:text="${info != null} ? ${info.infoContent} : ''"></textarea>
+				    <input type="hidden" name="storeNo" id="storeNo" th:value="${store.storeNo}">
+				</div>
+			</div>
 		</div>
 		
 		<div class="store-reserve">
-			<a id="reserve-btn" th:if="${session.member != null && session.member.memberLevel == 3}" class="btn" href="#">예약하기</a>
+			<a id="reserve-btn" class="btn" th:if="${session.member == null || session.member.memberLevel == 3}" href="#">예약하기</a>
 		</div>
 		
 		<div class="store-review">
 			<h2>리뷰</h2>
-			<div class="store-review-list">
-			
+			<!-- 댓글 입력 -->
+			<div class="inputReviewBox" th:if="${session.member != null and (session.member.memberLevel == 3 or session.member.memberLevel == 5)}">
+				<form action="/search/insertReview" method="post">
+					<ul>
+						<li>
+							<span class="material-icons">account_box</span>
+						</li>
+						<li>
+							<select name="reviewStar">
+						        <option value="5">별점 5</option>
+						        <option value="4">별점 4</option>
+						        <option value="3">별점 3</option>
+						        <option value="2">별점 2</option>
+						        <option value="1">별점 1</option>
+						    </select>
+							<input type="hidden" name="reviewWriter" th:value="${session.member.memberNickname}">
+							<input type="hidden" name="storeNo" th:value="${store.storeNo}">
+							<textarea name="reviewContent" class="input-form"></textarea>
+						</li>
+						<li>
+							<button type="submit" class="review-btn">등록</button>
+						</li>
+					</ul>
+				</form>
 			</div>
-			<button class="btn" id="more-btn">더보기</button>
+			<!-- 댓글 출력 -->
+			<div class="reviewBox">
+				<th:block th:each="sr : ${reviewList}">
+					<ul class="posting-comment">
+						<li>
+							<span class="material-icons">account_box</span>
+						</li>
+						<li>
+							<p class="review-info">
+								<span th:text="${sr.reviewWriter}"></span>
+								<span th:text="${sr.reviewStar}"></span>
+								<span th:text="${sr.regDate}"></span>
+							</p>
+							<p class="review-content" th:utext="${sr.reviewContent.replace('\n','<br>')}" style="white-space: pre-line;"></p>
+							<textarea name="reviewContent" class="input-form" th:text="${sr.reviewContent}" style="min-height:90px;display:none"></textarea>
+							<p class="comment-link">
+								<th:block th:if="${session.member != null}">
+									<th:block th:if="${session.member.memberNickname == sr.reviewWriter or session.member.memberLevel == 1}">
+										<a href="javascript:void(0)" th:onclick="modifyReview(this,[[${sr.reviewNo}]],[[${store.storeNo}]])">수정</a>
+										<a href="javascript:void(0)" th:onclick="deleteReview(this,[[${sr.reviewNo}]],[[${store.storeNo}]])">삭제</a>
+									</th:block>
+								</th:block>
+							</p>
+						</li>
+					</ul>
+				</th:block>
+			</div>
+			<button class="review-more-btn" id="more-btn">더보기</button>
 		</div>
 		<!-- 주변 맛집 슬라이드 -->
 	</div>
@@ -90,12 +173,25 @@
 	<script>
 	   	//지도를 그려주는 함수 실행
 	   		selectMapList();
-	   	
 		// 페이지 로드 시 실행되는 함수(store.storeAddr 값을 가져와서 searchAddressToCoordinate 전달)
    		$(document).ready(function() {
       		searchAddressToCoordinate("[[${store.storeAddr}]]");
   		});
-		
+
+   		$(document).ready(function() {
+     		  $("#reserve-btn").click(function(e) {
+     		      /* Thymeleaf를 사용하여 세션의 회원 정보를 확인 */
+     		      const loggedIn = [[${session.member != null}]];
+     		      /* 만약 로그인 되어 있지 않다면 */
+     		      if (!loggedIn) {
+     		          e.preventDefault(); // 기본 이벤트(링크 이동) 방지
+     		          alert("회원 로그인 후 이용해주세요."); // 알림 메시지 출력
+     		      }
+     		  });
+     		});
+   		
+   		
+   		
 	</script>
 	
 	<th:block th:include="common/footer"></th:block>

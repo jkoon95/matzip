@@ -76,6 +76,8 @@ $.ajax({
           $("#reserveDate").val(dateText);
           //시각 버튼들 리셋
           $(".reserveTime").remove();
+          //인원수 리셋
+          $("#people").text("");
           //timeSet 가져오기
           $.ajax({
             url:"/reserve/timeSet",
@@ -86,6 +88,7 @@ $.ajax({
               // timeSet.allTimes = List<String> allTimes
               // timeSet.fullTimes  = List<String> fullTimes
               // timeSet.remainTimes = List<String> remainTimes 이건 안 쓰네??
+              //시간 버튼들 생성
               for(let i=0; i<timeSet.allTimes.length; i++){
                 const time = timeSet.allTimes[i];
                 const button = $("<button>");
@@ -120,8 +123,36 @@ $.ajax({
                   },
                   dataType: "json",
                   success: function(tableNoAndCapacity){
-                    console.log("나 동작함");
-                    console.log(tableNoAndCapacity);
+                    //최대 수용 가능 인원 구하기. 식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
+                    const maxNum = tableNoAndCapacity[tableNoAndCapacity.length - 1].tableCapacity;
+                    //인원수 세팅
+                    const people = $("#people");
+                    people.text("1");
+                    let peopleNum = 1;
+                    //-1
+                    $("#people-minus").on("click",function(){
+                      if(peopleNum>1){
+                        peopleNum -= 1;
+                        people.text(peopleNum);
+                      }
+                    });
+                    //+1
+                    $("#people-plus").on("click",function(){
+                      if(peopleNum < maxNum){
+                        peopleNum += 1;
+                        people.text(peopleNum);
+                      }
+                    });
+                    //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                    $("#reservePeople").val(peopleNum);
+                    for(let i=0; i<100; i++){//100정도면 차고남지...
+                      let arrayIndex = $.inArray(peopleNum+i, tableNoAndCapacity.tableCapacity);
+                      if (arrayIndex != -1){//값이 있다면
+                        const tableNo = tableNoAndCapacity.tableNo[arrayIndex];
+                        $("#tableNo").val(tableNo);
+                      }
+                    }
+
                   },
                   error: function(){
                     console.log("error");
@@ -137,6 +168,7 @@ $.ajax({
           
         };
         
+
 
       },
       error: function(){
@@ -166,3 +198,103 @@ function selectDate() {
 
 
 
+//메뉴와 servings 함수
+//-
+$("#servings-minus").on("click",function(){
+  let servingsNum = Number($(this).next().text());
+  if(servingsNum > 1){
+    servingsNum -= 1;
+    $(this).next().text(servingsNum);
+  }
+});
+//+
+$("#servings-plus").on("click",function(){
+  let servingsNum = Number($(this).prev().prev().text());
+  servingsNum += 1;
+  $(this).prev().prev().text(servingsNum);
+});
+//메뉴 관련 정보 저장해둘 배열 선언
+const menuNoArr = [];
+const servingsArr = [];
+const menuNameArr = [];
+//추가 버튼 클릭시
+$("#menu-order-btn").on("click",function(){
+  //input태그 생성 및 값 추가
+  const inputMenuNo = $("<input>");
+  inputMenuNo.attr("type", "hidden");
+  inputMenuNo.attr("name","menuNo");
+  const menuNo = $(".menu-list > option:selected").val();
+  inputMenuNo.attr("value", menuNo);
+  const inputServings = $("<input>");
+  inputServings.attr("type", "hidden");
+  inputServings.attr("name","servings");
+  const servings = $("#servings").text();
+  inputServings.attr("value", servings);
+  //input태그를 menu-area 아래에 넣기
+  $(".menu-area").append(inputMenuNo);
+  $(".menu-area").append(inputServings);
+  //배열들에 값 저장해놓기
+  menuNoArr.push(menuNo);
+  servingsArr.push(servings);
+  menuNameArr.push($(".menu-list > option:selected").text());
+  //메뉴 리셋해주기
+  $("#servings").text("1");
+
+
+
+
+
+
+// 추가된 메뉴 보여주기
+const span1 = $("<span>");
+span1.attr("name", "showMenuName");
+span1.text(menuNameArr[menuNoArr.length - 1] + " : ");
+const span2 = $("<span>");
+span2.attr("name", "showMenuServings");
+span2.text(servingsArr[menuNoArr.length - 1] + "인분");
+const span3 = $("<span>");
+span3.attr("name", "deleteMenuBtn");
+span3.text("(삭제)  ");
+$(".selected-menu").append(span1).append(span2).append(span3);
+// 삭제버튼 클릭시 함수
+span3.on("click", function(){
+  // 현재 삭제 버튼의 인덱스 찾기
+  const index = $(".selected-menu [name='deleteMenuBtn']").index(this);
+  // 배열에서 해당 인덱스의 값들 삭제
+  $("[name='menuNo']").eq(index).remove();
+  $("[name='servings']").eq(index).remove();
+  $("[name='showMenuName']").eq(index).remove();
+  $("[name='showMenuServings']").eq(index).remove();
+  $("[name='deleteMenuBtn']").eq(index).remove();
+  // 배열에서도 삭제
+  menuNoArr.splice(index, 1);
+  servingsArr.splice(index, 1);
+  menuNameArr.splice(index, 1);
+
+  /*
+  //추가된 메뉴 보여주기
+  const span1 = $("<span>");
+  span1.attr("name", "showMenuName");
+  span1.text(menuNameArr[menuNoArr.length - 1] + " : ");
+  const span2 = $("<span>");
+  span2.attr("name", "showMenuServings");
+  span2.text(servingsArr[menuNoArr.length-1] + "인분");
+  const span3 = $("<span>");
+  span3.attr("name", "deleteMenuBtn");
+  span3.text("(삭제)  ");
+  $(".selected-menu").append(span1).append(span2).append(span3);
+  //삭제버튼 클릭시 함수
+  $("[name='deleteMenuBtn']").on("click",function(){
+    let index = $("[name='deleteMenuBtn']").index(this);
+    $("[name='menuNo']").eq(index).remove();
+    $("[name='servings']").eq(index).remove();
+    $("[name='showMenuName']").eq(index).remove();
+    $("[name='showMenuServings']").eq(index).remove();
+    $("[name='deleteMenuBtn']").eq(index).remove();
+    menuNoArr.splice(index, 1);
+    servingsArr.splice(index, 1);
+    menuNameArr.splice(index, 1);
+    */
+
+  });
+});
