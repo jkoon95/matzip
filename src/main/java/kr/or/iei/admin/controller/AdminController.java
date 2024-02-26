@@ -37,7 +37,7 @@ public class AdminController {
 	@Autowired
 	private FileUtils fileUtils;
 	
-	@GetMapping("/allMember")
+	@GetMapping(value="/allMember")
 	public String allMember(int reqPage,Model model) {
 		AdminListData ald = adminService.selectAllMember(reqPage);
 		model.addAttribute("list",ald.getList());
@@ -47,7 +47,7 @@ public class AdminController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/changeLevel")
+	@GetMapping(value="/changeLevel")
 	public int changeLevel(Member m, Model model) {
 		int result = adminService.changeLevel(m);
 		return result;
@@ -84,7 +84,7 @@ public class AdminController {
 	
 	
 	@ResponseBody
-	@GetMapping("/changeStoreLevel")
+	@GetMapping(value="/changeStoreLevel")
 	public int changeLevel(Store store, Model model) {
 		int result = adminService.changeStoreLevel(store);
 		return result;
@@ -101,7 +101,7 @@ public class AdminController {
 		return result;
 	}
 	
-	@GetMapping("/deleteMember")
+	@GetMapping(value="/deleteMember")
 	public String deleteMember(int memberNo, Model model) {
 		int result = memberService.deleteMember(memberNo);
 		if(result>0) {
@@ -118,7 +118,7 @@ public class AdminController {
 		return "common/msg";
 	}
 	
-	@GetMapping("/allStore")
+	@GetMapping(value="/allStore")
 	public String allStore(int reqPage,Model model) {
 		AdminListData ald = adminService.selectAllStore(reqPage);
 		model.addAttribute("list",ald.getList());
@@ -126,7 +126,7 @@ public class AdminController {
 		return "admin/allStore";
 	}
 	
-	@GetMapping("/searchStore")
+	@GetMapping(value="/searchStore")
 	public String searchStore(int reqPage, String type, String keyword, Model model) {
 		AdminListData ald = adminService.searchStore(reqPage,type,keyword);
 		model.addAttribute("list",ald.getList());
@@ -173,6 +173,24 @@ public class AdminController {
 			model.addAttribute("loc", "/admin/storeView?storeNo="+storeNo);
 		}
 		return "common/msg";
+	}
+	@GetMapping(value="/storeBlackList")
+	public String storeBlackList(int reqPage,Model model) {
+		AdminListData ald = adminService.selectAllBlackStore(reqPage);
+		model.addAttribute("list",ald.getList());
+		model.addAttribute("pageNavi",ald.getPageNavi());
+		return "admin/storeBlackList";
+	}
+	
+	//searchBlackStore
+	@GetMapping(value="/searchBlackStore")
+	public String searchBlackStore(int reqPage, String type, String keyword, Model model) {
+		AdminListData ald = adminService.searchBlackStore(reqPage,type,keyword);
+		model.addAttribute("list",ald.getList());
+		model.addAttribute("pageNavi",ald.getPageNavi());
+		model.addAttribute("type",type);
+		model.addAttribute("keyword",keyword);
+		return "admin/storeBlackList";
 	}
 	
 }

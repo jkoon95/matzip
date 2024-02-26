@@ -12,6 +12,7 @@ import kr.or.iei.member.model.dto.MemberRowMapper;
 import kr.or.iei.member.model.dto.OriginMemberRowMapper;
 import kr.or.iei.notice.model.dto.NoticeListData;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreMemberRowMapper;
 import kr.or.iei.store.model.dto.StoreRowMapper;
 import kr.or.iei.subway.model.dto.subwayRowMapper;
 
@@ -23,6 +24,8 @@ public class AdminDao {
 	private OriginMemberRowMapper originMemberRowMapper;
 	@Autowired
 	private StoreRowMapper storeRowMapper;
+	@Autowired
+	private StoreMemberRowMapper storeMemberRowMapper;
 	
 	public List selectAllMember() {
 		String query = "select * from member_tbl order by 1 desc";
@@ -200,6 +203,61 @@ public class AdminDao {
 			return null;
 		}
 		return (Store)list.get(0);
+	}
+
+	public List selectBlackStoreList(int start, int end) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 order by 1)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {start,end};
+		List list = jdbc.query(query,storeMemberRowMapper ,params);
+		return list;
+	}
+
+	public int selectBlackAllStoreCount() {
+		String query="select count(*) from store_tbl where store_level=2";
+		int totalCount = jdbc.queryForObject(query, Integer.class);
+		return totalCount;
+	}
+
+	public List selectSearchBlackStoreAll(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name || member_id like '%'||?||'%') ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, storeMemberRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchBlackStoreid(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (member_id like '%'||?||'%') ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, storeMemberRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchBlackStoreName(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name like '%'||?||'%') ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, storeMemberRowMapper ,params);
+		return list;
+	}
+
+	public int allBlackStoreTotalCount(String keyword) {
+		String query = "SELECT count(*) from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name || member_id like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int blackStoreIdTotalCount(String keyword) {
+		String query = "SELECT count(*) from store_tbl join member_tbl using(member_no) where store_level=2 and (member_id like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int blackStoreNameTotalCount(String keyword) {
+		String query = "SELECT count(*) from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
 	}
 
 
