@@ -93,11 +93,15 @@
 				<form id="infoForm" method="post">
 				    <button type="submit" class="infoBtn" th:if="${session.member != null and session.member.memberNo == store.memberNo and (info != null or info.infoContent != '')}" onclick="submitForm('update')">수정</button>
 					<button type="submit" class="infoBtn" th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}" onclick="submitForm('insert')">작성</button>
-				    <div class="store-intro" style="height:100%;">
+				    <div class="store-intro" style="height:100%;" th:if="${session.member != null and session.member.memberNo == store.memberNo}">
 				        <textarea name="infoContent" id="infoContent" rows="10" th:text="${info != null} ? ${info.infoContent} : ''"></textarea>
 				        <input type="hidden" name="storeNo" id="storeNo" th:value="${store.storeNo}">
 				    </div>
 				</form>
+				<div class="store-intro" style="height:100%;" th:if="${session.member == null or session.member.memberNo != store.memberNo}">
+					<textarea name="infoContent" id="infoContent" rows="10" readonly th:text="${info != null} ? ${info.infoContent} : ''"></textarea>
+				    <input type="hidden" name="storeNo" id="storeNo" th:value="${store.storeNo}">
+				</div>
 			</div>
 		</div>
 		
@@ -107,10 +111,59 @@
 		
 		<div class="store-review">
 			<h2>리뷰</h2>
-			<div class="store-review-list">
-				
+			<!-- 댓글 입력 -->
+			<div class="inputReviewBox" th:if="${session.member != null and (session.member.memberLevel == 3 or session.member.memberLevel == 5)}">
+				<form action="/search/insertReview" method="post">
+					<ul>
+						<li>
+							<span class="material-icons">account_box</span>
+						</li>
+						<li>
+							<select name="reviewStar">
+						        <option value="5">별점 5</option>
+						        <option value="4">별점 4</option>
+						        <option value="3">별점 3</option>
+						        <option value="2">별점 2</option>
+						        <option value="1">별점 1</option>
+						    </select>
+							<input type="hidden" name="reviewWriter" th:value="${session.member.memberNickname}">
+							<input type="hidden" name="storeNo" th:value="${store.storeNo}">
+							<textarea name="reviewContent" class="input-form"></textarea>
+						</li>
+						<li>
+							<button type="submit" class="review-btn">등록</button>
+						</li>
+					</ul>
+				</form>
 			</div>
-			<button class="btn" id="more-btn">더보기</button>
+			<!-- 댓글 출력 -->
+			<div class="reviewBox">
+				<th:block th:each="sr : ${reviewList}">
+					<ul class="posting-comment">
+						<li>
+							<span class="material-icons">account_box</span>
+						</li>
+						<li>
+							<p class="review-info">
+								<span th:text="${sr.reviewWriter}"></span>
+								<span th:text="${sr.reviewStar}"></span>
+								<span th:text="${sr.regDate}"></span>
+							</p>
+							<p class="review-content" th:utext="${sr.reviewContent.replace('\n','<br>')}" style="white-space: pre-line;"></p>
+							<textarea name="reviewContent" class="input-form" th:text="${sr.reviewContent}" style="min-height:90px;display:none"></textarea>
+							<p class="comment-link">
+								<th:block th:if="${session.member != null}">
+									<th:block th:if="${session.member.memberNickname == sr.reviewWriter or session.member.memberLevel == 1}">
+										<a href="javascript:void(0)" th:onclick="modifyReview(this,[[${sr.reviewNo}]],[[${store.storeNo}]])">수정</a>
+										<a href="javascript:void(0)" th:onclick="deleteReview(this,[[${sr.reviewNo}]],[[${store.storeNo}]])">삭제</a>
+									</th:block>
+								</th:block>
+							</p>
+						</li>
+					</ul>
+				</th:block>
+			</div>
+			<button class="review-more-btn" id="more-btn">더보기</button>
 		</div>
 		<!-- 주변 맛집 슬라이드 -->
 	</div>
@@ -134,6 +187,7 @@
      		      }
      		  });
      		});
+   		
    		
    		
 	</script>

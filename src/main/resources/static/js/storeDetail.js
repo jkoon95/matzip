@@ -96,4 +96,45 @@ function infoAlert() {
   alert("최초 작성시에는 작성 버튼을 눌러 작성해주세요.");
 }
 
+function modifyReview(obj,reviewNo,storeNo) {
+  $(obj).parent().prev().show();
+  $(obj).parent().prev().prev().hide();
+  $(obj).text("수정완료");
+  $(obj).attr("onclick","modifyComplete(this,"+reviewNo+","+storeNo+")");
+  $(obj).next().text("수정취소");
+  $(obj).next().attr("onclick","modifyCancel(this,"+reviewNo+","+storeNo+")");
+  $(obj).next().next().hide();
+}
+function modifyCancel(obj,reviewNo,storeNo) {
+  $(obj).parent().prev().hide();
+  $(obj).parent().prev().prev().show();
+  $(obj).prev().text("수정");
+  $(obj).prev().attr("onclick","modifyReview(this,"+reviewNo+","+storeNo+")");
+  $(obj).text("삭제");
+  $(obj).attr("onclick","deleteReview(this,"+reviewNo+","+storeNo+")");
+  $(obj).next().show();
+}
 
+function modifyComplete(obj,reviewNo,storeNo) {
+  // 1. form태그 생성
+  const form = $("<form style='display:none;' action='/search/updateReview' method='post'>");
+  // 2. 전송할 데이터를 form 내부의 자식으로 추가(reviewNo, storeNo)
+  const reviewNoInput = $("<input type='text' name='reviewNo'>");
+  reviewNoInput.val(reviewNo);
+  const storeNoInput = $("<input type='text' name='storeNo'>");
+  storeNoInput.val(storeNo);
+  // 3. textarea(reviewContent)
+  const reviewContent = $(obj).parent().prev().clone();
+  // 4. form태그에 input태그 2개와, textarea태그를 모두 포함
+  form.append(reviewNoInput).append(storeNoInput).append(reviewContent);
+  // 5. 생성한 폼태그를 현재 문서 내부에 포함
+  $("body").append(form);
+  // 6. form태그 전송
+  form.submit();
+}
+
+function deleteReview(obj,reviewNo,storeNo) {
+  if(confirm("리뷰를 삭제하시겠습니까?")) {
+    location.href="/search/deleteReview?reviewNo="+reviewNo+"&storeNo="+storeNo;
+  }
+}

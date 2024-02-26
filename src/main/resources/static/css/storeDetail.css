@@ -58,12 +58,15 @@ a {
   margin-right: 20px;
 }
 .section-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
 }
 
+.store-section div:nth-child(3) {
+	overflow: hidden;
+}
 .infoAlertBtn {
   float: right;
 }
@@ -82,9 +85,73 @@ a {
 }
 
 #infoContent {
-    width: 100%;
+    width: 90%;
     height: 330px;
     resize: none;
     padding: 10px;
     font-size: 16px;
 }
+
+/* 예약버튼 디자인 */
+.store-reserve{
+  margin: 50px auto;
+  text-align: center;
+}
+#reserve-btn {
+	display: inline-block;
+	width: 99%;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	font-weight: 600;
+  	border: 2px solid #fff;
+  	border-radius: 10px;
+  	transition: background-color 0.8s ease;
+  	background-color: #707070;
+  	color: #fff;
+}
+#reserve-btn:hover {
+	background-color: #72B37E; /* 마우스를 올렸을 때의 배경색 */
+}
+
+/* 리뷰 디자인 */
+.inputReviewBox{
+	margin: 50px;
+}
+.inputReviewBox>form>ul{
+	list-style-type: none;
+	display: flex;
+}
+.inputReviewBox>form>ul>li:first-child{
+	width: 15%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.inputReviewBox>form>ul>li:first-child>span {
+	font-size: 80px;
+	color:#ccc;	
+}
+.inputReviewBox>form>ul>li:nth-child(2) {
+	width:75%;
+}
+.inputReviewBox>form>ul>li:nth-child(2)>textarea{
+	height:96px;
+	min-height: 96px;
+	width: 804px;
+	resize: none;
+	padding: 10px;
+}
+.inputReviewBox>form>ul>li:last-child{
+	width: 10%;
+}
+.review-btn{
+	margin-top: 26px;
+	width: 100%;
+	height: 118px;
+}
+
+.reviewBox{
+	margin:50px;
+}
+

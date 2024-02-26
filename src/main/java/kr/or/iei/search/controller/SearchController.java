@@ -21,6 +21,7 @@ import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreInfo;
+import kr.or.iei.store.model.dto.StoreReview;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -125,12 +126,15 @@ public class SearchController {
 	    List<Menu> menuList = searchService.selectAllMenu(storeNo);
 		// 상점의 정기 휴무일 조회 (CLOSED_DAY_TBL)
 	    List<ClosedDay> closedDayList = searchService.selectClosedDay(storeNo);
+	    // 상점의 리뷰 조회 (REVIEW_TBL)
+	    List<StoreReview> reviewList = searchService.selectStoreReview(storeNo);
 	    
 		model.addAttribute("store",store);
 		model.addAttribute("info", info);
 	    model.addAttribute("menuList", menuList);
 	    model.addAttribute("closedDayList", closedDayList);
-		
+		model.addAttribute("reviewList", reviewList);
+	    
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
 		return "search/storeDetail";
@@ -146,7 +150,7 @@ public class SearchController {
 	}
 	
 	@PostMapping(value = "/updateInfo")
-	public String updateInfo(StoreInfo i, Model model, HttpSession session) {
+	public String updateInfo(StoreInfo i, Model model) {
 	    int result = searchService.updateInfo(i);
 	    if (result > 0) {
 	    	// 상세 정보 페이지로 리다이렉트
@@ -157,7 +161,7 @@ public class SearchController {
 	}
 	
 	@PostMapping(value = "/insertInfo")
-	public String insertInfo(StoreInfo i, Model model, HttpSession session) {
+	public String insertInfo(StoreInfo i, Model model) {
 		int result = searchService.insertInfo(i);
 		 if (result > 0) {
 			 // 상세 정보 페이지로 리다이렉트
@@ -167,5 +171,50 @@ public class SearchController {
 		 }
 	}
 	
+	@PostMapping(value = "/insertReview")
+	public String insertReview(StoreReview sr, Model model) {
+		int result = searchService.insertReview(sr);
+		if(result > 0) {
+			model.addAttribute("title", "리뷰작성 성공");
+			model.addAttribute("msg", "고객님의 리뷰가 작성되었습니다.");
+			model.addAttribute("icon", "success");
+		} else {
+			model.addAttribute("title", "리뷰작성 실패");
+			model.addAttribute("msg", "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+			model.addAttribute("icon", "warning");
+		}
+		model.addAttribute("loc", "/search/conveyStoreInfoToDetail?storeNo="+sr.getStoreNo());
+		return "common/msg";
+	}
 
+	@PostMapping(value = "/updateReview")
+	public String updateReview(StoreReview sr, Model model) {
+		int result = searchService.updateReview(sr);
+		if(result > 0) {
+			model.addAttribute("title", "리뷰수정 성공");
+			model.addAttribute("msg", "고객님의 리뷰가 수정되었습니다.");
+			model.addAttribute("icon", "success");
+		} else {
+			model.addAttribute("title", "리뷰수정 실패");
+			model.addAttribute("msg", "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+			model.addAttribute("icon", "warning");
+		}
+		model.addAttribute("loc", "/search/conveyStoreInfoToDetail?storeNo="+sr.getStoreNo());
+		return "common/msg";
+	}
+	
+	@GetMapping(value="/deleteReview")
+	public String deleteReview(int reviewNo, int storeNo, Model model) {
+		int result = searchService.deleteReview(reviewNo);
+		if(result > 0) {
+			return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + storeNo;
+		} else {
+			model.addAttribute("title", "삭제 실패");
+			model.addAttribute("msg", "리뷰 삭제를 실패했습니다.");
+			model.addAttribute("icon", "warning");
+			model.addAttribute("loc", "/search/conveyStoreInfoToDetail?storeNo="+storeNo);
+			return "common/msg";
+		}
+	}
+	
 }

@@ -14,6 +14,8 @@ import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreInfo;
 import kr.or.iei.store.model.dto.StoreInfoRowMapper;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
+import kr.or.iei.store.model.dto.StoreReview;
+import kr.or.iei.store.model.dto.StoreReviewRowMapper;
 
 @Repository
 public class SearchDao {
@@ -25,6 +27,8 @@ public class SearchDao {
 	private MenuRowMapper menuRowMapper;
 	@Autowired
 	private ClosedDayRowMapper closedDayRowMapper;
+	@Autowired
+	private StoreReviewRowMapper storeReviewRowMapper;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -258,6 +262,35 @@ public class SearchDao {
 	public int insertInfo(StoreInfo i) {
 		String query = "insert into info_tbl values(info_seq.nextval,null,?,?)";
 		Object[] params = {i.getInfoContent(), i.getStoreNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List<StoreReview> selectStoreReview(int storeNo) {
+		String query = "select * from review_tbl where store_no=? order by 1 desc";
+		Object[] params = {storeNo};
+		List<StoreReview> reviewList = jdbc.query(query, storeReviewRowMapper, params);
+		return reviewList;
+	}
+
+	public int insertReview(StoreReview sr) {
+		String query = "insert into review_tbl values(review_seq.nextval,?,null,?,?,to_char(sysdate,'yyyy-mm-dd'),?)";
+//		Object[] params = {sr.getReviewWriter(),sr.getReviewPhoto(),sr.getReviewStar(),sr.getReviewContent(),sr.getStoreNo()};
+		Object[] params = {sr.getReviewWriter(),sr.getReviewStar(),sr.getReviewContent(),sr.getStoreNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int updateReview(StoreReview sr) {
+		String query = "update review_tbl set review_content=? where review_no=?";
+		Object[] params = {sr.getReviewContent(),sr.getReviewNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int deleteReview(int reviewNo) {
+		String query = "delete from review_tbl where review_no=?";
+		Object[] params = {reviewNo};
 		int result = jdbc.update(query,params);
 		return result;
 	}

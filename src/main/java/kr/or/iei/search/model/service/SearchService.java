@@ -11,6 +11,7 @@ import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreInfo;
+import kr.or.iei.store.model.dto.StoreReview;
 
 @Service
 public class SearchService {
@@ -63,6 +64,29 @@ public class SearchService {
 	@Transactional
 	public int insertInfo(StoreInfo i) {
 		int result = searchDao.insertInfo(i);
+		return result;
+	}
+
+	public List<StoreReview> selectStoreReview(int storeNo) {
+		List<StoreReview> reviewList = searchDao.selectStoreReview(storeNo);
+		return reviewList;
+	}
+
+	@Transactional
+	public int insertReview(StoreReview sr) {
+		int result = searchDao.insertReview(sr); 
+		return result;
+	}
+
+	@Transactional
+	public int updateReview(StoreReview sr) {
+		int result = searchDao.updateReview(sr);
+		return result;
+	}
+
+	@Transactional
+	public int deleteReview(int reviewNo) {
+		int result = searchDao.deleteReview(reviewNo);
 		return result;
 	}
 
