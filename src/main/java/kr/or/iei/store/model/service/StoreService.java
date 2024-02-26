@@ -225,4 +225,9 @@ public class StoreService {
 		return null;
 	}
 
+	public int updateMenu(Menu menu) {
+		int result = storeDao.updateMenu(menu);
+		return result;
+	}
+
 }

@@ -260,6 +260,13 @@ public class AdminDao {
 		return totalCount;
 	}
 
+	public int updatestoreBlackChangeLevel(int storeNo) {
+		String query="update store_tbl set STORE_level=1 where store_no=?";
+		Object[] params= {storeNo};
+		int result=jdbc.update(query,params);
+		return result;
+	}
+
 
 	
 }
