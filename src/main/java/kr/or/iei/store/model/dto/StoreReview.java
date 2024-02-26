@@ -17,7 +17,6 @@ public class StoreReview {
 	private String reviewContent;
 	private String regDate;
 	private int storeNo;
-	private int reviewRef;
 	
 	public String getReviewContentBr() {
 		return reviewContent.replaceAll("\r\n", "<br>");

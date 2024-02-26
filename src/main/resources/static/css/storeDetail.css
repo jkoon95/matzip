@@ -26,11 +26,13 @@ a {
 .store-title {
   width: 600px;
 }
-.store-title > div {
+
+.store-title>div {
   display: inline-block;
   margin-right: 10px;
 }
-.store-title > div:first-child {
+
+.store-title>div:first-child {
   display: block;
   margin-bottom: 10px;
 }
@@ -40,7 +42,8 @@ a {
   width: 600px;
   margin-top: 40px;
 }
-.store-info > div {
+
+.store-info>div {
   display: block;
   margin-bottom: 20px;
 }
@@ -51,17 +54,25 @@ a {
   justify-content: space-between;
   margin-top: 40px;
 }
-.store-section > div {
-  width: calc(33.33% - 20px); /* 요소 사이의 간격을 띄우기 위해 33.33%에서 간격을 빼줍니다. */
+
+.store-section>div {
+  width: calc(33.33% - 20px);
+  /* 요소 사이의 간격을 띄우기 위해 33.33%에서 간격을 빼줍니다. */
 }
-.store-section > div:not(:last-child) {
+
+.store-section>div:not(:last-child) {
   margin-right: 20px;
 }
+
 .section-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.store-section div:nth-child(3) {
+  overflow: hidden;
 }
 
 .infoAlertBtn {
@@ -77,14 +88,215 @@ a {
   width: 50px;
 }
 
-.infoBtn:hover{
+.infoBtn:hover {
   cursor: pointer;
 }
 
 #infoContent {
-    width: 100%;
-    height: 330px;
-    resize: none;
-    padding: 10px;
-    font-size: 16px;
+  width: 90%;
+  height: 330px;
+  resize: none;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* 예약버튼 디자인 */
+.store-reserve {
+  margin: 50px auto;
+  text-align: center;
+}
+
+#reserve-btn {
+  display: inline-block;
+  width: 99%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-weight: 600;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  transition: background-color 0.8s ease;
+  background-color: #707070;
+  color: #fff;
+  font-size: 18px;
+}
+
+#reserve-btn:hover {
+  background-color: #F8D64F;
+  /* 마우스를 올렸을 때의 배경색 */
+}
+
+/* 리뷰 입력 */
+.input-form {
+  border-radius: 5px;
+  resize: none;
+}
+
+.input-form:focus {
+  outline: none;
+  /* 포커스 효과 제거 */
+}
+
+.inputReviewBox {
+  margin: 50px;
+}
+
+.inputReviewBox>form>ul {
+  list-style-type: none;
+  display: flex;
+}
+
+.inputReviewBox>form>ul>li:first-child {
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputReviewBox>form>ul>li:first-child>span {
+  font-size: 80px;
+  color: #ccc;
+}
+
+.inputReviewBox>form>ul>li:nth-child(2) {
+  width: 75%;
+}
+
+.inputReviewBox>form>ul>li:nth-child(2)>textarea {
+  height: 96px;
+  min-height: 96px;
+  width: 804px;
+  resize: none;
+  padding: 10px;
+}
+
+.inputReviewBox>form>ul>li:last-child {
+  width: 10%;
+}
+
+.review-btn {
+  margin-top: 26px;
+  margin-left: 10px;
+  width: 100%;
+  height: 118px;
+  background-color: #F8D64F;
+  color: #fff;
+  border: 2px solid #F8D64F;
+  border-radius: 5px;
+  font-size: 22px;
+}
+
+.review-btn:hover {
+  cursor: pointer;
+}
+
+/* 리뷰 출력 */
+.reviewBox {
+  margin: 50px;
+}
+
+.posting-review {
+  display: flex;
+  border-top: 2px solid #ccc;
+  list-style-type: none;
+}
+
+.posting-review>li {
+  box-sizing: border-box;
+}
+
+.posting-review>li:first-child {
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  border-right: 1px solid #ccc;
+}
+
+.posting-review>li:first-child .material-icons {
+  font-size: 80px;
+  color: #72B37E;
+}
+
+.posting-review>li:last-child {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+}
+
+.posting-review>li:last-child>p {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.review-info {
+  overflow: hidden;
+}
+
+.posting-review>li:last-child>.review-info>span {
+  padding: 0px 10px;
+  float: left;
+}
+
+.posting-review>li:last-child>.review-info>span:not(:last-child) {
+  border-right: 2px solid #ccc;
+}
+
+.posting-review>li:last-child>.review-content {
+  padding: 0px 15px;
+}
+
+.posting-review>li:last-child>.review-link {
+  text-align: right;
+}
+
+.posting-review>li:last-child>.review-link>a {
+  margin: 0px 5px;
+}
+
+.posting-review>li:last-child>.review-link>a:hover {
+  text-decoration: underline;
+}
+
+.review-more-btn {
+  display: inline-block;
+  width: 99%;
+  height: 50px;
+  text-align: center;
+  font-weight: 600;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  transition: background-color 0.8s ease;
+  background-color: #707070;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+
+.review-more-btn:hover {
+  background-color: #72B37E;
+  cursor: pointer;
+}
+
+/* 별점 디자인 */
+.star-zone {
+  font-size: 0;
+  /* 아이콘 사이의 공백을 없애기 위해 부모 요소의 폰트 크기를 0으로 설정 */
+}
+
+.star-zone .material-icons {
+  display: inline-block;
+  font-size: 24px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+}
+
+.star1 {
+  color: gold;
+}
+
+.star2 {
+  color: lightgray;
 }
