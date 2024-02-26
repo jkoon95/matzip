@@ -406,4 +406,134 @@ public class AdminService {
 			return null;
 		}
 	}
+
+	public AdminListData selectAllBlackStore(int reqPage) {
+		int numPerPage = 10;
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage + 1;
+		List list = adminDao.selectBlackStoreList(start,end);
+						
+		int totalCount = adminDao.selectBlackAllStoreCount();
+		int totalPage = 0;
+		if(totalCount%numPerPage==0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+				
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize +1;
+				
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/storeBlackList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/admin/storeBlackList?reqPage="+(pageNo)+"'>";
+					pageNavi += pageNo;
+					pageNavi += "</a></li>";
+			}else {
+					pageNavi += "<li>";
+					pageNavi += "<a class='page-item' href='/admin/storeBlackList?reqPage="+(pageNo)+"'>";
+					pageNavi += pageNo;
+					pageNavi += "</a></li>";
+			}
+			pageNo++;
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+						
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/storeBlackList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+						
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+	}
+	
+	public AdminListData searchBlackStore(int reqPage, String type, String keyword) {
+		int numPerPage = 10;
+
+		int end = reqPage * numPerPage;
+		int start = end - numPerPage + 1;
+						
+		List list = null;
+		if(type.equals("all")) {
+			list = adminDao.selectSearchBlackStoreAll(start,end,keyword);
+		}else if(type.equals("id")) {
+			list = adminDao.selectSearchBlackStoreid(start,end,keyword);
+		}else if(type.equals("name")) {
+			list = adminDao.selectSearchBlackStoreName(start,end,keyword);
+		}
+		int totalCount =0;
+		if(type.equals("all")) {
+			totalCount = adminDao.allBlackStoreTotalCount(keyword);
+		}else if(type.equals("id")) {
+			totalCount = adminDao.blackStoreIdTotalCount(keyword);
+		}else if(type.equals("name")) {
+			totalCount = adminDao.blackStoreNameTotalCount(keyword);
+		}
+				
+
+		int totalPage = 0;
+		if (totalCount % numPerPage == 0) {
+				totalPage = totalCount / numPerPage;
+		} else {
+				totalPage = totalCount / numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+
+
+		int pageNo = ((reqPage - 1) / pageNaviSize) * pageNaviSize + 1;
+
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if (pageNo != 1) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackStore?reqPage=" + (pageNo - 1) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<span class='material-icons'>chevron_left</span>";
+				pageNavi += "</a></li>";
+		}
+		for (int i = 0; i < pageNaviSize; i++) {
+			if (pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackStore?reqPage=" + (pageNo) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			} else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackStore?reqPage=" + (pageNo) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+							
+			if (pageNo > totalPage) {
+					break;
+				}
+		}
+
+		if (pageNo <= totalPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackStore?reqPage=" + (pageNo - 1) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<span class='material-icons'>chevron_right</span>";
+				pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+	}
+	
 }
