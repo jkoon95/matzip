@@ -16,15 +16,21 @@
                     <h1>" 무엇을 도와드릴까요? "</h1>
                 </div>                
                 <div class="header-search-box">
-                    <input type="text" id="search" placeholder="먹고싶은 음식을 검색해주세요 ">
-                    <span class="material-icons" id="search-icon">search</span>
+                	<form action="/search/searchStoreInHeader" method="get">
+                		<input type="text" id="search" name="search" class="keyword" placeholder="먹고싶은 음식을 검색해주세요 ">
+                		<button type="submit" id="search-button" onclick="return checkKeyword();">
+	                   		<span class="material-icons" id="search-icon">search</span>                		 
+                		</button>
+                		<input type="hidden" name="reqPage" value="1">
+
+                	</form>
                 </div>
             </div>
             <div class="header-right-box">
             	<th:block th:if="${session.member == null}">
                 <ul>
                     <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
-                    <li><a href="/member/joinFrm">JOIN</a></li>
+                    <li><a href="/member/jo	inFrm">JOIN</a></li>
                     <li><a href="/member/login">LOGIN</a></li>
                 </ul>
                 </th:block>
@@ -53,6 +59,15 @@
                     
                     function searchStoreList(){
                     	location.href="/search/searchStoreList";
+                    }
+                    
+                    function checkKeyword(){
+                
+                    	const keyword = $(".keyword").val();
+                    	if(keyword==""){
+                    		alert("검색어를 입력하세요.");
+                        	return false;	
+                    	}
                     }
                 </script>
             </div>

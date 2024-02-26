@@ -160,5 +160,16 @@ public class SearchController {
 		 }
 	}
 	
+	@GetMapping(value = "/searchStoreInHeader")
+	public String searchStoreInHeader(int reqPage,String search, Model model) {
+//		System.out.println(search);
+		
+		SearchListData sld = searchService.searchStoreInHeader(reqPage,search);
+		
+		model.addAttribute("searchList",sld.getList());
+		model.addAttribute("pageNavi",sld.getPageNavi());
+		System.out.println(sld.getList());
+		return "search/searchStoreList";
+	}
 
 }
