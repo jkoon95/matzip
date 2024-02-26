@@ -292,6 +292,7 @@ public class SearchDao {
 				+ "STORE_NAME LIKE '%'||?||'%'";
 		Object[] params = { search, search };
 		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
 	}
 
 	public List<StoreReview> selectStoreReview(int storeNo) {
