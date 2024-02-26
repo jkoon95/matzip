@@ -95,6 +95,7 @@
                     <div class="li-content">
                       <span class="material-icons" id="people-minus">remove</span>
                       <span clas="people" id="people">1</span>
+                      <span class="people">명</span>
                       <span class="material-icons" id="people-plus">add</span>
                     </div>
                   </li>
@@ -107,29 +108,43 @@
                         <option th:each="menu : ${menus}" th:text="${menu.menuName}" th:value="${menu.menuNo}"></option>
                       </select>
                       <span class="material-icons" id="servings-minus">remove</span>
-                      <span clas="people" id="servings">1</span>
+                      <span class="people" id="servings">1</span>
                       <span class="people">인분</span>
                       <span class="material-icons" id="servings-plus">add</span>
-                      <button type="button" id="menu-order-btn">추가</button>
+                      <button type="button" class="smallBtn" id="menu-order-btn">추가</button>
                     </div>
                     <!--이 위치에 jquery로 추가될 태그는
                       <input type="hidden" name="menuNo" value="?">
                       <input type="hidden" name="servings" value="?">
                       여러개도 가능
                     -->
-                    <!--이 위치에 추가된 메뉴 보여주고, 삭제버튼도 생성-->
-                    <div class="selected-menu"></div>
                   </li>
+
+                  <!--이 위치에 추가된 메뉴 보여주고, 삭제버튼도 생성-->
+                  <div class="selected-menu">
+                    <!--다음과 같은 형식임(예시)-->
+                    <!--<div>
+                          <span name="shwoMenuName">- 메뉴명 : </span>
+                          <span name="showServings">n인분</span>
+                          <span name="deleteMenuBtn">(x) </span>
+                        </div>-->
+                    <!--<div>
+                          <span name="shwoMenuName">- 메뉴명 : </span>
+                          <span name="showServings">n인분</span>
+                          <span name="deleteMenuBtn">(x) </span>
+                        </div>-->
+                  </div>
 
                   <li class="request-area float">
                     <div class="li-title">요청사항</div>
                     <div class="li-content">
-                      <input type="text" name="reserveRequest">
+                      <textarea class="reserveRequest" name="reserveRequest"></textarea>
+                      <span id="requestCount"></span>
                     </div>
                   </li>
 
                   <li>
-                    <button type="submit" id="reserve-btn">예약완료</button>
+                    <button type="submit" class="reserve-btn" id="reserve-btn">예약완료</button>
                   </li>
 
                 </ul>

@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
+  color: #404040;
 }
 
 ul{
@@ -12,7 +13,7 @@ ul{
 
 main {
   min-height: 100vh;
-  background: #ecedee;
+  background: #fff;
 }
 
 .main-wrap{
@@ -33,15 +34,19 @@ main {
 
 .page-content{
   /*flex-grow: 1;*/
-  width: 900px;
+  width: 950px;
+  box-sizing: border-box;
 }
 
 .page-title{
   width: 100%;
   text-align: center;
+  color: #404040;
 }
 
 .content-wrap{
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -49,10 +54,12 @@ main {
   flex-wrap: nowrap;
   gap: 10px;
   padding-left: 10px;
+  padding-right: 9px;
 }
 
 .article{
-  background: #fff;
+  border: #eff1eb;
+  box-shadow: 0 0 0 3px #eff1eb ;
   border-radius: 5px;
   padding: 10px;
 }
@@ -65,7 +72,6 @@ main {
 }
 
 .storeName{
-  width : 190px;
 }
 
 .article-content{
@@ -89,17 +95,22 @@ main {
   margin-bottom: 10px;
 }
 .day{
-  width: 70px;
+  width: 75px;
 }
 .hour{
-  width: 120px;
+  width: 125px;
 }
 
 
 .reserveFrm{
   box-sizing: border-box;
-  width: 350px;
+  width: 390px;
 }
+
+.reserveFrm .time-area,.people-area,.menu-area,.request-area{
+  margin-bottom: 20px;
+}
+
 
 .li-title, .li-content{
   float: left;
@@ -111,44 +122,90 @@ main {
 }
 
 .reserveFrm .li-content{
-  
+  width: 290px;
 }
 
 .time-area .li-content{
-  width: 250px;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 }
 
 .smallBtn{
-  width: 45px;
+  width: 50px;
   height: 25px;
-  background: #72b37e;
+  background: #78c386;
   color: #fff;
   border: none;
   border-radius: 2px;
   cursor: pointer;
+  line-height: 1;
+}
+
+.smallBtn :hover{
+  background: #007fff;
+  width: 54px;
+}
+
+.smallBtn-active{
+  background: #007fff;
+  width: 54px;
+}
+
+
+#people-minus{
+  font-size: small;
+  cursor: pointer;
+}
+#people-plus{
+  font-size: small;
+  cursor: pointer;
+}
+#servings-minus{
+  font-size: small;
+  cursor: pointer;
+}
+#servings-plus{
+  font-size: small;
+  cursor: pointer;
+}
+
+.menu-list{
+  width: 135px;
+}
+
+.selected-menu{
+  padding-left: 80px;
+  margin-bottom: 20px;
+}
+.selected-menu [name='deleteMenuBtn']{
+  cursor: pointer;
+}
+
+
+#menu-order-btn{
+  background: #007fff;
+  margin-left: 10px;
+}
+
+.reserveRequest{
+  width: 220px;
 }
 
 
 
 
-
-
-
-
-
-.people-minus{
-  line-height:5px;
-}
-.people-plus{
-  line-height:5px;
-}
-.servings-minus{
-  line-height:5px;
-}
-.servings-plus{
-  line-height:5px;
+.reserve-btn{
+  width: 140px;
+  height: 40px;
+  background: #8b968c;
+  border: none;
+  border-radius: 5px;
+  font-size: large;
+  margin-left: 115px;
 }
 
+.getReady{
+  background-color: #78c386;
+  cursor: pointer;
+}
