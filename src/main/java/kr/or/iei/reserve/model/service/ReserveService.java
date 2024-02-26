@@ -372,8 +372,10 @@ public class ReserveService {
 		}
 		
 		//reserve_menu_tbl에 insert하기
-		for(int i=0; i<menuNo.length; i++) {
-			int result = reserveDao.insertReserveMenu(servings[i], reserve.getReserveNo(), menuNo[i]);
+		if(menuNo.length > 0) {
+			for(int i=0; i<menuNo.length; i++) {
+				int result = reserveDao.insertReserveMenu(servings[i], reserve.getReserveNo(), menuNo[i]);
+			}
 		}
 		
 		return insertResult;
