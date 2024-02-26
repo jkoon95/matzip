@@ -173,4 +173,9 @@ public class SearchService {
 				return sld;
 	}
 
+	public double selectAvgStar(int storeNo) {
+		double avgStar = searchDao.selectAvgStar(storeNo);
+		return avgStar;
+	}
+
 }

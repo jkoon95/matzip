@@ -121,12 +121,15 @@ public class SearchController {
 	    List<ClosedDay> closedDayList = searchService.selectClosedDay(storeNo);
 	    // 상점의 리뷰 조회 (REVIEW_TBL)
 	    List<StoreReview> reviewList = searchService.selectStoreReview(storeNo);
+	    // 상점의 평균 별점 조회(REVIEW_TBL)
+	    double avgStar = searchService.selectAvgStar(storeNo);
 	    
 		model.addAttribute("store",store);
 		model.addAttribute("info", info);
 	    model.addAttribute("menuList", menuList);
 	    model.addAttribute("closedDayList", closedDayList);
 		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("avgStar", avgStar);
 	    
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		

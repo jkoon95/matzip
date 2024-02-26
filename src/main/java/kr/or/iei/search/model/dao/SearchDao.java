@@ -355,5 +355,12 @@ public class SearchDao {
 		return list;
 	}
 
+	public double selectAvgStar(int storeNo) {
+		String query = "SELECT ROUND(AVG(REVIEW_STAR), 1) AS AVERAGE_STAR FROM REVIEW_TBL WHERE STORE_NO=?";
+		Object[] params = {storeNo};
+		Double avgStar = jdbc.queryForObject(query, Double.class,params);
+		return avgStar ;
+	}
+
 
 }

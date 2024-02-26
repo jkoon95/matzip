@@ -26,7 +26,7 @@
           <h1 th:text="${store.storeName}"></h1>
         </div>
         <div class="store-like">하트</div>
-        <div class="store-star">별점</div>
+        <div class="store-star" th:text="${avgStar}"></div>
         <div class="store-report">신고</div>
         <div class="store-info">
           <div class="store-addr">
@@ -138,15 +138,15 @@
             </li>
             <li>
               <select name="reviewStar">
-                <option value="5">별점 5</option>
-                <option value="4">별점 4</option>
-                <option value="3">별점 3</option>
-                <option value="2">별점 2</option>
-                <option value="1">별점 1</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="1">⭐</option>
               </select>
               <input type="hidden" name="reviewWriter" th:value="${session.member.memberNickname}">
               <input type="hidden" name="storeNo" th:value="${store.storeNo}">
-              <textarea name="reviewContent" class="input-form" placeholder="허위 리뷰 및 악성 리뷰는 삭제될 수 있습니다."></textarea>
+              <textarea name="reviewContent" class="input-form" placeholder="악성 리뷰 및 약관을 위배하는 리뷰는 삭제될 수 있습니다."></textarea>
             </li>
             <li>
               <button type="submit" class="review-btn">등록</button>
@@ -163,9 +163,16 @@
             </li>
             <li>
               <p class="review-info">
-                <span th:text="${sr.reviewStar}"></span>
+                <span class="star-zone" th:switch="${sr.reviewStar}">
+				  <span th:case="1"><span class="material-icons star1">star</span><span class="material-icons star2">star</span><span class="material-icons star2">star</span><span class="material-icons star2">star</span><span class="material-icons star2">star</span></span>
+				  <span th:case="2"><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star2">star</span><span class="material-icons star2">star</span><span class="material-icons star2">star</span></span>
+				  <span th:case="3"><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star2">star</span><span class="material-icons star2">star</span></span>
+				  <span th:case="4"><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star2">star</span></span>
+				  <span th:case="5"><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star1">star</span><span class="material-icons star1">star</span></span>
+				</span>
                 <span th:text="${sr.reviewWriter}"></span>
                 <span th:text="${sr.regDate}"></span>
+                <span>신고</span>
               </p>
               <p class="review-content" th:text="${sr.reviewContent}" style="white-space: pre-line;"></p>
               <textarea name="reviewContent" class="input-form" th:text="${sr.reviewContent}"
