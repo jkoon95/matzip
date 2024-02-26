@@ -1,4 +1,3 @@
-
 $.ajax({
   url: "/reserve/closedDays",
   type: "post",
@@ -53,6 +52,16 @@ $.ajax({
             }
           }
 
+          //잠간 꼽사리) 휴무일일때 영업시간의 시각을 "휴무일"로 대체하고 빨간색
+          for(let i=0; i<closedDays.length; i++){
+            $("[name='openingHour']").eq(closedDays[i]).text("휴무일");
+            $("[name='openingHour']").eq(closedDays[i]).css("color", "red");
+          }
+          //잠간 꼽사리) 휴게시간 없을 때, 휴게시간란을 비움
+          if($("#breakTime").text() == "-1 ~ -1"){
+            $("#breakTime").text("");
+          }
+
           //임시휴무일(날짜)
           //배열(disabledDays)의 값과 일치하는 날짜는 false를 리턴
           for (let i = 0; i < tempClosedDays.length; i++) {
@@ -69,7 +78,10 @@ $.ajax({
           return [true];
         };
 
-        
+        //시작하자마자 오늘날짜로 클릭해놓기
+        //(선생님이 도와주심...아니,,해주심...)
+        $(".ui-datepicker-today").click();
+
         //날짜 선택시 작동할 함수
         function select(dateText){
           //숨겨둔 input태그에 날짜 집어넣기
@@ -93,15 +105,15 @@ $.ajax({
                 const time = timeSet.allTimes[i];
                 const button = $("<button>");
                 button.attr("type", "button");
-                button.attr("class", "reserveTime");
+                button.attr("class", "reserveTime smallBtn");
                 button.text(time);
                 //그 시각이 만석인 시각일 때
                 if(timeSet.fullTimes.indexOf(time) != -1){
                   button.attr("class", "fullTime");//취소선 생기고 배경색 옅어지게
-                  button.attr("css", "text-decoration: line-through;");//일단 임시로 css
+                  button.css("text-decoration", "line-through;");//일단 임시로 css
                   button.prop("disabled", true);//클릭 못하게
                 };
-                $(".time-area").append(button);
+                $(".time-area .li-content").append(button);
               };
 
               //reserveTime버튼 클릭시 함수
@@ -183,35 +195,22 @@ $.ajax({
 });
 
 
-function selectDate() {
-  // 자동으로 선택할 날짜 설정 (여기서는 '2024-02-23'로 예시)
-  var selectedDate = new Date();
-
-  // datepicker에서는 월이 0부터 시작하므로 월에 -1을 해줍니다.
-  var month = selectedDate.getMonth();
-  var day = selectedDate.getDate();
-  var year = selectedDate.getFullYear();
-
-  // 날짜 선택
-  $("#datepicker").datepicker("setDate", new Date(year, month, day));
-};
-
 
 
 //메뉴와 servings 함수
 //-
 $("#servings-minus").on("click",function(){
-  let servingsNum = Number($(this).next().text());
+  let servingsNum = Number($("#servings").text());
   if(servingsNum > 1){
     servingsNum -= 1;
-    $(this).next().text(servingsNum);
+    $("#servings").text(servingsNum);
   }
 });
 //+
 $("#servings-plus").on("click",function(){
-  let servingsNum = Number($(this).prev().prev().text());
+  let servingsNum = Number($("#servings").text());
   servingsNum += 1;
-  $(this).prev().prev().text(servingsNum);
+  $("#servings").text(servingsNum);
 });
 //메뉴 관련 정보 저장해둘 배열 선언
 const menuNoArr = [];
@@ -254,7 +253,7 @@ span2.attr("name", "showMenuServings");
 span2.text(servingsArr[menuNoArr.length - 1] + "인분");
 const span3 = $("<span>");
 span3.attr("name", "deleteMenuBtn");
-span3.text("(삭제)  ");
+span3.text("(x) ");
 $(".selected-menu").append(span1).append(span2).append(span3);
 // 삭제버튼 클릭시 함수
 span3.on("click", function(){
@@ -298,3 +297,4 @@ span3.on("click", function(){
 
   });
 });
+
