@@ -91,6 +91,7 @@
     font-weight: 900;
 }
 
+
 /* 페이징 디자인 */
 .pagination {
   list-style-type: none;
@@ -127,4 +128,19 @@
 }
 #pageNavi{
 	margin: 30px;
+}
+
+.select-area{
+	display: flex;
+	flex-direction: row;
+	
+    gap: 10px; /* 항목 사이의 간격 */
+    margin-bottom: 50px;
+    margin-left : 50px;
+}
+
+
+
+.selectFrom{
+    width: 50%;
 }
