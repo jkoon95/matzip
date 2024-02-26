@@ -156,5 +156,9 @@ public class MemberController {
 			model.addAttribute("loc", "/member/mypage");
 		}
 		return "common/msg";
-	}	
+	}
+	@GetMapping(value="pwChange")
+	public String pwChange() {
+		return "member/pwChangeFrm";
+	}
 }

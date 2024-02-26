@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<th:block th:include="common/header"></th:block>
+		<div class="mid">
+	        <div class="pwchange-title">비밀번호변경</div>
+	        <div class="pwchange-box">
+	            <form action="#" method="post">
+	                <div>
+	                    <label for="memberPw">비밀번호 입력</label>
+	                    <input type="text" name="memberPw" id="memberPw">
+	                </div>
+	                <div>
+	                    <label for="memberPw">비밀번호 확인</label>
+	                    <input type="text" name="memberPw" id="memberPw">
+	                </div>
+	                <button type="submit">변경하기</button>  
+	            </form>          
+	        </div>        
+		</div>
+	<th:block th:include="common/footer"></th:block>	
+</body>
+</html>

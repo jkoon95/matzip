@@ -86,8 +86,7 @@ public class MemberDao {
 	public Member emailCheckId(String memberId, String memberEmail) {
 		String query = "select * from member_tbl where member_Id=? and member_Email=?";
 		Object[] params = {memberId, memberEmail};
-		List list = jdbc.query(query, originMemberRowMapper,params);
-		System.out.println(list);
+		List list = jdbc.query(query, originMemberRowMapper,params);		
 		if(list.isEmpty()) {
 			return null;
 		}
