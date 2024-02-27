@@ -196,9 +196,25 @@ public class AdminController {
 	//storeBlackChangeLevel
 	@ResponseBody
 	@GetMapping(value="/storeBlackChangeLevel")
-	public int changeLevel(int storeNo) {
+	public int storeBlackChangeLevel(int storeNo) {
 		int result = adminService.updatestoreBlackChangeLevel(storeNo);
 		return result;
+	}
+	
+	//blackStoreCheckedChangeLevel
+	@ResponseBody
+	@GetMapping(value="/blackStoreCheckedChangeLevel")
+	public int blackStoreCheckedChangeLevel(int[] no) {
+		int count = no.length;
+		int result=0;
+		for(int storeNo : no) {
+			result += adminService.updatestoreBlackChangeLevel(storeNo);			
+		}
+		if(result==count) {
+			return 1;			
+		}else {
+			return 0;
+		}
 	}
 	
 }

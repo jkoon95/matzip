@@ -31,7 +31,10 @@
     <div class="content">
     	<th:block th:include="common/side"></th:block>
     	 <div class="sss-content">
-            <div class="page-title">블랙리스트 관리<a href="#" class="s-storeBlackPlusBtn">추가</a></div>
+            <div class="page-title">블랙리스트 관리
+            <!-- 
+             <a href="#" class="s-storeBlackPlusBtn">추가</a></div>            
+             -->
             <div>
             	<form action="/admin/searchBlackStore" method="get" id="searchFrm">
 					<th:block th:switch="${type}">
@@ -58,7 +61,7 @@
             </div>
             <table class="tbl tbl-hover" style="width: 800px;font-size: 15px;">
                 <tr class="tr-3">
-                	<th style="width:15%;">선택</th>
+                	<th style="width:15%;"><input type="checkbox" name="storeBlackCheckAll"></th>
                     <th style="width:15%;">매장번호</th>
                     <th style="width:30%;">매장명</th>
                     <th style="width:15%;">아이디</th>                    
@@ -66,7 +69,7 @@
                     <th style="width:15%;">등급변경</th>
                 </tr>
                 <tr th:each="store:${list}" class="tr-1">
-                	<td><input type="checkbox" class="chk"></td>
+                	<td><input type="checkbox" class="chk" name="storeBlackCheck"></td>
                     <td th:text="${store.storeNo}"></td>
                     <td><a th:href="@{/admin/storeView(storeNo=${store.storeNo})}" th:text="${store.storeName}"></a></td>
                     <td th:text="${store.memberId}"></td>
@@ -97,9 +100,18 @@
 				return false;
 			}
 		}
+	    $("[name=storeBlackCheckAll]").on("click",function(){
+	        if($(this).is(":checked")){
+	            $("[name=storeBlackCheck]").prop("checked",true);
+	        }
+	        else{
+	            $("[name=storeBlackCheck]").prop("checked", false);
+	        }
+	    });
 	    $(".storeBlackChangeLevel").on("click",function(){
 			//클릭한 버튼 기준으로 해당 행의 회원번호를 가지고 옴
 			const storeNo = $(this).parent().parent().children().eq(1).text();
+			const self = this;
 			//클릭한 버튼 기준으로 해당 행의 선택한 등급
 			//const memberLevel = $(this).parent().prev().children().val();
 			//console.log("memberNo : "+memberNo);
@@ -116,10 +128,10 @@
 					console.log(result,typeof result);
 					if(result===1){
 						console.log("성공");
-						$(this).parent().parent().remove();
+						$(self).parent().parent().remove();
 						alert("등급이 변경되었습니다.");
 					}else{
-						console.log("실패");
+						alert("잠시후 다시 시도해주세요.");
 					}
 				},
 				error:function(){
@@ -129,7 +141,7 @@
 			//location.href = "/admin/changeLevel?memberNo="+memberNo+"&memberLevel="+memberLevel;
 		});
 		
-		$(".checkedChangeLevel").on("click",function(){
+		$(".checkedStoreBlackChangeLevel").on("click",function(){
 			const check= $(".chk:checked");		
 			if(check.length==0){
 				alert("선택된 회원이 없습니다.");
@@ -138,18 +150,43 @@
 			//체크된 회원 번호를 모두 저장할 배열
 			const no = new Array();
 			//체크된 회원 레벨을 모두 저장할 배열
-			const level = new Array();
+			//const level = new Array();
 			
 			//체크된 체크박스 기준으로 회원번호랑, 선택한 등급 가져옴
 			check.each(function(index,item){
 				const memberNo = $(item).parent().next().text();
 				no.push(memberNo);
-				const memberLevel= $(item).parent().parent().find("select").val();
-				level.push(memberLevel);
+				//const memberLevel= $(item).parent().parent().find("select").val();
+				//level.push(memberLevel);
 			});
-			console.log(no);
-			console.log(level);
-			location.href="/admin/checkedChangeLevel?no="+no.join("/")+"&level="+level.join("/");
+			
+			console.log(no,typeof no);
+			//console.log(level, typeof level);
+			
+			$.ajax({
+		        url: "/admin/blackStoreCheckedChangeLevel",
+		        type: "get",
+		        data: { no : no },
+		        traditional: true,
+		        success: function(result) {
+		        	if(result==1){
+			            alert("등급 변경이 완료되었습니다.");
+			            check.each(function(index,item){
+			            	$(item).parent().parent().remove();
+						});
+		        	}else{
+		        		alert("등급 변경이 실패.");
+		        	}
+		            //location.reload(); // 페이지 새로고침 혹은 적절한 처리 수행
+		        },
+		        error: function(error) {
+		            console.log("에러");
+		            // 에러 발생 시 필요한 작업 수행
+		            // 예: alert("등급 변경 중 오류가 발생했습니다.");
+		        }
+		    });
+			
+			//location.href="/admin/checkedChangeLevel?no="+no.join("/")+"&level="+level.join("/");
 			///admin/checkedChangeLevel?no=5/7/8&level=2/1/3
 		});
     </script>
