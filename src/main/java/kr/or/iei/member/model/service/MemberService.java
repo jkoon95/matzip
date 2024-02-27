@@ -31,14 +31,16 @@ public class MemberService {
 		int result = memberDao.storeUpdate(m);
 		return result;
 	}
+	@Transactional
 	public Member selectOneMember(String memberId) {
 		Member member = memberDao.selectOneMember(memberId);
 		return member;
 	}
+	@Transactional
 	public int deleteMember(int memberNo) {
 		int result = memberDao.deleteMember(memberNo);
 		return result;
-	}
+	}	
 	public Member selectNicknameMember(String memberNickname) {
 		Member member = memberDao.selectNicknameMember(memberNickname);
 		return member;
@@ -54,5 +56,10 @@ public class MemberService {
 	public Member getMemberId(String memberName, String memberEmail) {
 		Member member = memberDao.getMemberId(memberName, memberEmail);
 		return member;	
+	}
+	@Transactional
+	public int updatePw(Member m) {
+		int result = memberDao.updatePw(m);
+		return result;
 	}
 }

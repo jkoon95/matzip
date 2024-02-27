@@ -499,7 +499,8 @@ header > .header-wrap > .header-right-box{
     background-color :#72B37E;
     border: 1px solid #b3b3b3;
     color: #fff;
-    width: 110px;    
+    width: 110px;
+    cursor: pointer;    
 }
 .pwChange{
 	text-align: center;
@@ -616,9 +617,9 @@ header > .header-wrap > .header-right-box{
     word-spacing: 50px;
 }
 
-/* 비밀번호 변경 page*/
+/* 비밀번호 변경 pwChangeFrm*/
 
-	.pwchange-title { 
+.pwchange-title { 
     margin-top: 15px;
     margin-bottom: 15px;     
     text-align: center;  
@@ -639,6 +640,7 @@ header > .header-wrap > .header-right-box{
     text-indent: 10px;
     font-size: 120%;
     margin-bottom: 15px;
+    border-radius: 5px;
 }
 .pwchange-box button{    
         width: 100%;
@@ -650,6 +652,12 @@ header > .header-wrap > .header-right-box{
         border: none;
         border-radius: 5px;
         cursor: pointer;   
+}
+
+.pwchange-box #memberId{
+    background-color: #ebebeb;
+    outline: none;
+    border-radius: 5px;
 }
 /* footer */
 
