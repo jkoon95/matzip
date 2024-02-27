@@ -52,14 +52,14 @@ public class SearchController {
 
 		
 		List list = searchService.selectTopStore(stationName,number);
-		System.out.println("탑5:" + list);
+		//System.out.println("탑5:" + list);
 		
 		
 		
 		if(list.isEmpty()) {
 			return null;
 		}else {
-			System.out.println(list);
+			System.out.println("탑5:" + list);
 			return list;
 		}
 	}
@@ -90,10 +90,10 @@ public class SearchController {
 		//List list = storeService.ajaxStoreList(stationName);
 		
 		int totalCount = searchService.storeTotalCount(stationName);
-		System.out.println(totalCount);//성공
+		//System.out.println(totalCount);//성공
 	
 		List searchList = searchService.selectSearchList(start,amount,stationName);
-		System.out.println(searchList);
+		//System.out.println(searchList);
 		
 		TwoList twoList = new TwoList();
 		twoList.setTotalCount(totalCount);
@@ -131,7 +131,7 @@ public class SearchController {
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("avgStar", avgStar);
 	    
-		System.out.println("클릭!!!!!!!!!!!!"+store);
+		//System.out.println("클릭!!!!!!!!!!!!"+store);
 		
 		return "search/storeDetail";
 	}
@@ -191,8 +191,8 @@ public class SearchController {
 		
 		model.addAttribute("searchList",sld.getList());
 		model.addAttribute("pageNavi",sld.getPageNavi());
-		System.out.println(sld.getList());
-		System.out.println(sld.getPageNavi());
+		//System.out.println(sld.getList());
+		//System.out.println(sld.getPageNavi());
 		return "search/searchStoreList";
 	}
 	

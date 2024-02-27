@@ -348,13 +348,13 @@ public class SearchService {
 				int start = end - numPerPage+1;
 				List list = null;
 				//요청 페이지에 필요한 게시물 목록을 조회
-				System.out.println(searchType);
+				//System.out.println(searchType);
 				if(searchType.equals("리뷰 수")) {
 					list = searchDao.selectReviewCountDESCList(start,end);
 				}else if(searchType.equals("리뷰 점수")) {
 					list = searchDao.selectReviewScoreDESCList(start,end);
 				}
-				System.out.println(list);
+				//System.out.println(list);
 				
 				//페이지 네비게이션 제작
 				//전체 몇개 페이지가 있는지 계산 -> 총 게시물 수
