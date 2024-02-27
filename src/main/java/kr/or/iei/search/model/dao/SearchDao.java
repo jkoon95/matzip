@@ -644,9 +644,9 @@ public class SearchDao {
 		return result;
 	}
 	
-	public int insertReportReview(int memberNo, String reviewWriter, String reason) {
-		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,1)";
-		Object[] params = {memberNo,reason,reviewWriter};
+	public int insertReportReview(int memberNo, String reviewWriter) {
+		String query = "insert into report_tbl values(report_seq.nextval,?,'불량리뷰 신고',?,1)";
+		Object[] params = {memberNo,reviewWriter};
 		int result = jdbc.update(query, params);
 		return result;
 	}

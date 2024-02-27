@@ -207,8 +207,8 @@
                 </span>
                 <span th:text="${sr.reviewWriter}" style="font-weight: 600;"></span>
                 <span th:text="${sr.regDate}"></span>
-                <span>
-                	<button class="btn-review-report" th:if="${session.member == null or session.member != null}">신고</button>
+                <span th:if="${session.member != null and session.member.memberNo == store.memberNo}">
+                	<button class="btn-review-report">신고</button>
                 </span>
               </p>
               <p class="review-content" th:text="${sr.reviewContent}" style="white-space: pre-line;"></p>
@@ -225,6 +225,12 @@
               </p>
             </li>
           </ul>
+          <!-- 리뷰 신고를 위한 정보 -->
+          <form id="report-review-form" th:if="${session.member != null}" style="display: none;" method="post">
+			<input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
+			<input type="hidden" name="storeNo" th:value="${store.storeNo}">
+			<input type="hidden" name="reviewWriter" th:value="${sr.reviewWriter}">
+		  </form>
         </th:block>
       </div>
       <button class="review-more-btn" id="more-btn">리뷰 더보기</button>
@@ -250,25 +256,6 @@
               <textarea name="reason" id="reason" placeholder="신고 사유를 입력하세요" required></textarea>
               <input type="submit" value="신고">
               <input type="button" id="store-close-btn" value="닫기">
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="review-report-wrap" th:if="${session.member != null}">
-      <div class="report-modal">
-        <div class="modal-top">
-          <h2>리뷰 신고하기</h2>
-        </div>
-        <div class="modal-content">
-          <form action="/search/reportReview" method="post">
-            <div class="input-wrap">
-              <input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
-              <input type="hidden" name="storeNo" th:value="${store.storeNo}">
-              <input type="hidden" name="reviewWriter" id="reviewWriter">
-              <textarea name="reason" id="reason" placeholder="신고 사유를 입력하세요" required></textarea>
-              <input type="submit" value="신고">
-              <input type="button" id="review-close-btn" value="닫기">
             </div>
           </form>
         </div>
@@ -315,19 +302,31 @@
       $("#store-close-btn").on("click", function() {
           $(".store-report-wrap").css("display", "none");
       });
+      // 리뷰 신고
+      $(".btn-review-report").click(function() {
+    	  var memberNo = $("input[name='memberNo']").val();
+    	  var storeNo = $("input[name='storeNo']").val();
+    	  var reviewWriter = $("input[name='reviewWriter']").val();
+    	  
+    	  if (confirm("신고하시겠습니까?")) {
+    		  $.ajax({
+    			  type: "POST",
+    			  url: "/search/reportReview",
+    			  data: {
+    		          memberNo: memberNo,
+    		          storeNo: storeNo,
+    		          reviewWriter: reviewWriter
+    		      },
+    			  success: function(response) {
+    				  alert("신고가 접수되었습니다.");
+    			  },
+    			  error: function(xhr, status, error) {
+    				  console.error(xhr.responseText);
+    			  }
+    		  });
+    	  }
+      });
       
-      $(".btn-review-report").on("click", function(e) {
-    	  const loggedIn = [[${ session.member != null }]];
-    	  if (!loggedIn) {
-              e.preventDefault(); // 기본 이벤트(링크 이동) 방지
-              alert("로그인 후 신고해주세요."); // 알림 메시지 출력
-            } else{
-          $(".review-report-wrap").css("display", "flex");
-            }
-      });
-      $("#review-close-btn").on("click", function() {
-          $(".review-report-wrap").css("display", "none");
-      });
       
       /* 슬라이드 */
 /*      $('.slider').slick({
