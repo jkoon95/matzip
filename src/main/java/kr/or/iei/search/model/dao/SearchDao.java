@@ -51,9 +51,9 @@ public class SearchDao {
 				"        s.STORE_ADDR, -- 기존 주소\r\n" +
 				"        s.STORE_ADDR1, -- 추가된 주소 필드\r\n" +
 				"        s.STORE_PHONE,\r\n" +
-				"        s.HOMEPAGE,\r\n" +
-				"        s.STORE_SNS,\r\n" +
-				"        s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"        s.FOOD_TYPE,\r\n" +
 				"        s.STORE_IMG,\r\n" +
 				"        s.OPENING_HOUR,\r\n" +
@@ -66,7 +66,7 @@ public class SearchDao {
 				"        s.TIME_TO_EAT,\r\n" +
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT, -- 좋아요 수\r\n" +
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT, -- 리뷰 수\r\n" +
-				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE, -- 평균 리뷰 점수\r\n" +
+				"        ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE, -- 평균 리뷰 점수\r\n" +
 				"        CASE\r\n" +
 				"            WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -122,9 +122,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -138,7 +138,7 @@ public class SearchDao {
 				"            \r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -192,9 +192,9 @@ public class SearchDao {
 				"        s.STORE_NAME,\r\n" +
 				"        s.STORE_ADDR,\r\n" +
 				"        s.STORE_PHONE,\r\n" +
-				"        s.HOMEPAGE,\r\n" +
-				"        s.STORE_SNS,\r\n" +
-				"        s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"        s.FOOD_TYPE,\r\n" +
 				"        s.STORE_IMG,\r\n" +
 				"        s.OPENING_HOUR,\r\n" +
@@ -208,7 +208,7 @@ public class SearchDao {
 				// " s.STORE_ADDR1,\r\n" +
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"        ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"        CASE\r\n" +
 				"           WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -343,9 +343,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -359,7 +359,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -408,9 +408,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -424,7 +424,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -464,9 +464,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -480,7 +480,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -531,9 +531,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -547,7 +547,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -587,9 +587,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" + 
 				"            s.STORE_ADDR,\r\n" + 
 				"            s.STORE_PHONE,\r\n" + 
-				"            s.HOMEPAGE,\r\n" + 
-				"            s.STORE_SNS,\r\n" + 
-				"            s.STORE_DESCRIPTION,\r\n" + 
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" + 
 				"            s.STORE_IMG,\r\n" + 
 				"            s.OPENING_HOUR,\r\n" + 
@@ -603,7 +603,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" + 
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" + 
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" + 
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" + 
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" + 
 				"            CASE\r\n" + 
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n" + 
 				"                    OR TO_CHAR(SYSDATE, 'YYYY-MM-DD') IN (SELECT TEMP_CLOSED_DAY FROM TEMP_CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO) THEN '휴무'\r\n" + 

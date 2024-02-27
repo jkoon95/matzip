@@ -62,7 +62,18 @@
     		const storeNo = element.getAttribute('data-store-no');
     		 location.href="/search/conveyStoreInfoToDetail?storeNo=" + storeNo;    	    		
     	}
+        // .on("mouseover", function () {
+        //                     $(this).css("background-color", "#D5FFE4");
+        //                   }).on("mouseout", function () {
+        //                     $(this).css("background-color", "white");
+        //                   });
 
+        $(".store-all").on("mouseover",function(){
+            $(this).css("background-color", "#D5FFE4");
+        })
+        $(".store-all").on("mouseout",function(){
+            $(this).css("background-color", "white");
+        })
     </script>
 <th:block th:include="common/footer"></th:block>
 </body>
