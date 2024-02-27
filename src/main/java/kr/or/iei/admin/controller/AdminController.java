@@ -223,4 +223,69 @@ public class AdminController {
 		model.addAttribute("pageNavi",ald.getPageNavi());
 		return "admin/memberBlackList";
 	}
+	
+	///admin/searchBlackMember
+	@GetMapping(value="/searchBlackMember")
+	public String searchBlackMember(int reqPage, String type, String keyword, Model model) {
+		AdminListData ald = adminService.searchBlackMember(reqPage,type,keyword);
+		model.addAttribute("list",ald.getList());
+		model.addAttribute("pageNavi",ald.getPageNavi());
+		model.addAttribute("type",type);
+		model.addAttribute("keyword",keyword);
+		return "admin/memberBlackList";
+	}
+	
+	//memberBlackChangeLevel
+	@ResponseBody
+	@GetMapping(value="/memberBlackChangeLevel")
+	public int memberBlackChangeLevel(int memberNo,int memberLevel) {
+		int result = adminService.updateMemberBlackChangeLevel(memberNo,memberLevel);
+		return result;
+	}
+	//blackMemberCheckedChangeLevel
+	@ResponseBody
+	@GetMapping(value="/blackMemberCheckedChangeLevel")
+	public int blackMemberCheckedChangeLevel(int[] no, int[] level) {
+		int count = no.length;
+		int result=0;
+		for(int i=0;i<count;i++) {
+			result += adminService.updateMemberBlackChangeLevel(no[i],level[i]);			
+		}
+		if(result==count) {
+			return 1;			
+		}else {
+			return 0;
+		}
+	}	
+	//member_level=3
+	@ResponseBody
+	@GetMapping(value="/memberBlackCancelLevel")
+	public int memberBlackCancelLevel(int memberNo) {
+		int result = adminService.updatememberBlackCancelLevel(memberNo);
+		return result;
+	}
+	@ResponseBody
+	@GetMapping(value="/checkedMemberBlackCancelLevel")
+	public int checkedMemberBlackCancelLevel(int[] no) {
+		int count = no.length;
+		int result=0;
+		for(int memberNo : no) {
+			result += adminService.updatememberBlackCancelLevel(memberNo);			
+		}
+		if(result==count) {
+			return 1;			
+		}else {
+			return 0;
+		}
+	}
+	@GetMapping(value="/reportList")
+	public String reportList() {
+		//신고테이블 조회
+		
+		return "admin/reportList";
+	}
+	
+	
+	
+	
 }
