@@ -37,7 +37,7 @@
                 <th:block th:unless="${session.member == null}">
                 <ul>
                     <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
-                    <li><a th:if="${session.member.memberLevel==2}" href="/member/mystorepage">INFO</a>
+                    <li><a th:if="${session.member.memberLevel==2}" href="/member/mystorepage">매장관리</a>
                     	<a th:unless="${session.member.memberLevel==2}" href="/member/mypage">INFO</a>
                     </li>
                     <li><a href="/member/logout">LOGOUT</a></li>
@@ -45,7 +45,7 @@
                 </th:block>
                 <ul>
                     <li><button onclick="searchBySubway();">역으로 보기</button></li>
-                    <li><button onclick="searchStoreList();">맛집 목록</button></li>
+                    <li><button onclick="viewAllStoreList();">맛집 목록</button></li>
                 </ul>
 
                 <script>
@@ -57,8 +57,8 @@
                     	location.href="/";
                     }
                     
-                    function searchStoreList(){
-                    	location.href="/search/searchStoreList";
+                    function viewAllStoreList(){
+                    	location.href="/search/viewAllStoreList?reqPage=1";
                     }
                     
                     function checkKeyword(){

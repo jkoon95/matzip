@@ -447,7 +447,7 @@ header > .header-wrap > .header-right-box{
     text-align: center;
 }
 
-/*searchId 비밀번호 찾기*/
+/*searchPw 비밀번호 찾기*/
 .pw-search-title{
     width: 400px;
     margin: 165px auto;
@@ -499,7 +499,14 @@ header > .header-wrap > .header-right-box{
     background-color :#72B37E;
     border: 1px solid #b3b3b3;
     color: #fff;
-    width: 110px;    
+    width: 110px;
+    cursor: pointer;    
+}
+.pwChange{
+	text-align: center;
+}
+.pwChange button{
+	cursor: pointer;
 }
 
 /* update 정보수정*/
@@ -610,8 +617,48 @@ header > .header-wrap > .header-right-box{
     word-spacing: 50px;
 }
 
+/* 비밀번호 변경 pwChangeFrm*/
 
+.pwchange-title { 
+    margin-top: 15px;
+    margin-bottom: 15px;     
+    text-align: center;  
+    font-family: ns-b; 
+    font-size: 150%;
+}
+.pwchange-box{       
+    width: 250px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+}
+.pwchange-box input{
+    width: 100%;
+    border-width: 0;
+    border-bottom: 2px solid #ebebeb;
+    text-indent: 10px;
+    font-size: 120%;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+.pwchange-box button{    
+        width: 100%;
+        height: 30px;
+        background-color:#f8d64f;
+        color:#fff;
+        font-size: 100%;
+        font-family: ns-eb;    
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;   
+}
 
+.pwchange-box #memberId{
+    background-color: #ebebeb;
+    outline: none;
+    border-radius: 5px;
+}
 /* footer */
 
 footer {

@@ -41,8 +41,7 @@ public class EmailController {
 	@ResponseBody
 	@GetMapping(value="/checkId")
 	public String checkId(String memberId, String memberEmail) {
-		Member member = memberService.emailCheckId(memberId,memberEmail);			
-		System.out.println(member);
+		Member member = memberService.emailCheckId(memberId,memberEmail);
 		if(member == null) {
 			return "0";
 		}else {

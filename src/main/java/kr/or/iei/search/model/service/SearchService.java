@@ -95,7 +95,7 @@ public class SearchService {
 	public SearchListData searchStoreInHeader(int reqPage, String search) {
 		//reqPage : 사용자가 요청한 페이지의 번호
 				//한 페이지당 보여줄 게시물 수 지정 -> 10개
-				int numPerPage = 10;
+				int numPerPage = 5;
 				//reqPage 1페이지 -> rownum 1 ~ 10
 				//reqPage 2페이지 -> rownum 11~ 20
 				//reqPage 3페이지 -> rownum 21~ 30
@@ -104,12 +104,12 @@ public class SearchService {
 				int start = end - numPerPage+1;
 				List list = null;
 				//요청 페이지에 필요한 게시물 목록을 조회
-				list = searchDao.selectSearchListInHeader(search,start,end);
+				list = searchDao.selectListInHeader(search,start,end);
 				//페이지 네비게이션 제작
 				//전체 몇개 페이지가 있는지 계산 -> 총 게시물 수
 				
 				//총 게시물 수 조회
-				int totalCount = searchDao.selectAllSearchCount();
+				int totalCount = searchDao.selectAllSearchCount(search);
 				//전체페이지 계산
 				int totalPage = 0;
 				if(totalCount%numPerPage == 0) {
@@ -133,7 +133,7 @@ public class SearchService {
 				//이전버튼(pageNo가 1페이지면 이전페이지가 없으므로 아닐때만 생성)
 				if(pageNo!=1) {
 					pageNavi += "<li>";
-					pageNavi += "<a class='page-item' href='/search/searchStoreList?reqPage="+(pageNo-1)+"&search="+search+"'>";
+					pageNavi += "<a class='page-item' href='/search/searchStoreInHeader?reqPage="+(pageNo-1)+"&search="+search+"'>";
 					pageNavi += "<span class='material-icons'>chevron_left</span>";
 					pageNavi += "</a></li>";
 				}
@@ -141,12 +141,12 @@ public class SearchService {
 				for(int i=0;i<pageNaviSize;i++) {
 					if(pageNo == reqPage) {
 						pageNavi += "<li>";
-						pageNavi += "<a class='page-item active-page' href='/search/searchStoreList?reqPage="+(pageNo)+"&search="+search+"'>";
+						pageNavi += "<a class='page-item active-page' href='/search/searchStoreInHeader?reqPage="+(pageNo)+"&search="+search+"'>";
 						pageNavi += pageNo;
 						pageNavi += "</a></li>";
 					}else {
 						pageNavi += "<li>";
-						pageNavi += "<a class='page-item' href='/search/searchStoreList?reqPage="+(pageNo)+"&search="+search+"'>";
+						pageNavi += "<a class='page-item' href='/search/searchStoreInHeader?reqPage="+(pageNo)+"&search="+search+"'>";
 						pageNavi += pageNo;
 						pageNavi += "</a></li>";
 					}
@@ -160,7 +160,7 @@ public class SearchService {
 				//다음버튼(출력한 번호+1한 숫자가 최종페이지보다 같거나 같으면(최종페이지를 아직 출력하지 않았으면))
 				if(pageNo <= totalPage) {
 					pageNavi += "<li>";
-					pageNavi += "<a class='page-item' href='/search/searchStoreList?reqPage="+(pageNo)+"&search="+search+"'>";
+					pageNavi += "<a class='page-item' href='/search/searchStoreInHeader?reqPage="+(pageNo)+"&search="+search+"'>";
 					pageNavi += "<span class='material-icons'>chevron_right</span>";
 					pageNavi += "</a></li>";
 				}
@@ -171,6 +171,262 @@ public class SearchService {
 				//-> 두개를 저장하는 객체를 만들어서 리턴
 				SearchListData sld = new SearchListData(list,pageNavi);
 				return sld;
+	}
+
+	public SearchListData viewAllStoreList(int reqPage) {
+		//reqPage : 사용자가 요청한 페이지의 번호
+		//한 페이지당 보여줄 게시물 수 지정 -> 10개
+		int numPerPage = 5;
+		//reqPage 1페이지 -> rownum 1 ~ 10
+		//reqPage 2페이지 -> rownum 11~ 20
+		//reqPage 3페이지 -> rownum 21~ 30
+		//reqPage 4페이지 -> rownum 31~ 40
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage+1;
+		List list = null;
+		//요청 페이지에 필요한 게시물 목록을 조회
+		list = searchDao.selectAllList(start,end);
+		//페이지 네비게이션 제작
+		//전체 몇개 페이지가 있는지 계산 -> 총 게시물 수
+		
+		//총 게시물 수 조회
+		int totalCount = searchDao.selectAllCount();
+		//전체페이지 계산
+		int totalPage = 0;
+		if(totalCount%numPerPage == 0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage+1;
+		}
+		
+		//네비게이션 사이즈
+		int pageNaviSize = 5;
+		
+		//페이지 네비게이션 시작번호
+		//reqPage 1  ~ 5  : 1 2 3 4 5
+		//reqPage 6  ~ 10 : 6 7 8 9 10
+		//reqPage 11 ~ 15 : 11 12 13 14 15
+		//페이지 네비게이션 시작번호
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
+		
+		//페이지 네비게이션 제작 시작(html)
+		String pageNavi = "<ul class ='pagination circle-style'>";
+		//이전버튼(pageNo가 1페이지면 이전페이지가 없으므로 아닐때만 생성)
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		//페이지 숫자 생성
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+			//페이지를 만들다가 최종페이지를 출력했으면 더이상 반복하지 않고 종료
+			if(pageNo>totalPage) {
+				break;
+			}
+		}
+		
+		//다음버튼(출력한 번호+1한 숫자가 최종페이지보다 같거나 같으면(최종페이지를 아직 출력하지 않았으면))
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		
+		pageNavi += "</ul>";
+		
+		//list, pageNavi 두개를 모두 리턴 -> java의 메소드는 리턴타입이 1개 -> 바로리턴불가능
+		//-> 두개를 저장하는 객체를 만들어서 리턴
+		SearchListData sld = new SearchListData(list,pageNavi);
+		return sld;
+	}
+
+	public SearchListData viewFoodTypeStoreList(int reqPage, String foodType) {
+		//reqPage : 사용자가 요청한 페이지의 번호
+		//한 페이지당 보여줄 게시물 수 지정 -> 10개
+		int numPerPage = 5;
+		//reqPage 1페이지 -> rownum 1 ~ 10
+		//reqPage 2페이지 -> rownum 11~ 20
+		//reqPage 3페이지 -> rownum 21~ 30
+		//reqPage 4페이지 -> rownum 31~ 40
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage+1;
+		List list = null;
+		//요청 페이지에 필요한 게시물 목록을 조회
+		list = searchDao.selectFoodTypeList(start,end,foodType);
+		//페이지 네비게이션 제작
+		//전체 몇개 페이지가 있는지 계산 -> 총 게시물 수
+		
+		//총 게시물 수 조회
+		int totalCount = searchDao.selectFoodTypeCount(foodType);
+		//전체페이지 계산
+		int totalPage = 0;
+		if(totalCount%numPerPage == 0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage+1;
+		}
+		
+		//네비게이션 사이즈
+		int pageNaviSize = 5;
+		
+		//페이지 네비게이션 시작번호
+		//reqPage 1  ~ 5  : 1 2 3 4 5
+		//reqPage 6  ~ 10 : 6 7 8 9 10
+		//reqPage 11 ~ 15 : 11 12 13 14 15
+		//페이지 네비게이션 시작번호
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
+		
+		//페이지 네비게이션 제작 시작(html)
+		String pageNavi = "<ul class ='pagination circle-style'>";
+		//이전버튼(pageNo가 1페이지면 이전페이지가 없으므로 아닐때만 생성)
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		//페이지 숫자 생성
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+			//페이지를 만들다가 최종페이지를 출력했으면 더이상 반복하지 않고 종료
+			if(pageNo>totalPage) {
+				break;
+			}
+		}
+		
+		//다음버튼(출력한 번호+1한 숫자가 최종페이지보다 같거나 같으면(최종페이지를 아직 출력하지 않았으면))
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		
+		pageNavi += "</ul>";
+		
+		//list, pageNavi 두개를 모두 리턴 -> java의 메소드는 리턴타입이 1개 -> 바로리턴불가능
+		//-> 두개를 저장하는 객체를 만들어서 리턴
+		SearchListData sld = new SearchListData(list,pageNavi);
+		return sld;
+		
+	}
+
+	public SearchListData viewSearchTypeStoreList(int reqPage, String searchType) {
+		//reqPage : 사용자가 요청한 페이지의 번호
+				//한 페이지당 보여줄 게시물 수 지정 -> 10개
+				int numPerPage = 5;
+				//reqPage 1페이지 -> rownum 1 ~ 10
+				//reqPage 2페이지 -> rownum 11~ 20
+				//reqPage 3페이지 -> rownum 21~ 30
+				//reqPage 4페이지 -> rownum 31~ 40
+				int end = reqPage*numPerPage;
+				int start = end - numPerPage+1;
+				List list = null;
+				//요청 페이지에 필요한 게시물 목록을 조회
+				System.out.println(searchType);
+				if(searchType.equals("리뷰 수")) {
+					list = searchDao.selectReviewCountDESCList(start,end);
+				}else if(searchType.equals("리뷰 점수")) {
+					list = searchDao.selectReviewScoreDESCList(start,end);
+				}
+				System.out.println(list);
+				
+				//페이지 네비게이션 제작
+				//전체 몇개 페이지가 있는지 계산 -> 총 게시물 수
+				
+				//총 게시물 수 조회
+				int totalCount = searchDao.selectAllCount();
+				//전체페이지 계산
+				int totalPage = 0;
+				if(totalCount%numPerPage == 0) {
+					totalPage = totalCount/numPerPage;
+				}else {
+					totalPage = totalCount/numPerPage+1;
+				}
+				
+				//네비게이션 사이즈
+				int pageNaviSize = 5;
+				
+				//페이지 네비게이션 시작번호
+				//reqPage 1  ~ 5  : 1 2 3 4 5
+				//reqPage 6  ~ 10 : 6 7 8 9 10
+				//reqPage 11 ~ 15 : 11 12 13 14 15
+				//페이지 네비게이션 시작번호
+				int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
+				
+				//페이지 네비게이션 제작 시작(html)
+				String pageNavi = "<ul class ='pagination circle-style'>";
+				//이전버튼(pageNo가 1페이지면 이전페이지가 없으므로 아닐때만 생성)
+				if(pageNo!=1) {
+					pageNavi += "<li>";
+					pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo-1)+"'>";
+					pageNavi += "<span class='material-icons'>chevron_left</span>";
+					pageNavi += "</a></li>";
+				}
+				//페이지 숫자 생성
+				for(int i=0;i<pageNaviSize;i++) {
+					if(pageNo == reqPage) {
+						pageNavi += "<li>";
+						pageNavi += "<a class='page-item active-page' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+						pageNavi += pageNo;
+						pageNavi += "</a></li>";
+					}else {
+						pageNavi += "<li>";
+						pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+						pageNavi += pageNo;
+						pageNavi += "</a></li>";
+					}
+					pageNo++;
+					//페이지를 만들다가 최종페이지를 출력했으면 더이상 반복하지 않고 종료
+					if(pageNo>totalPage) {
+						break;
+					}
+				}
+				
+				//다음버튼(출력한 번호+1한 숫자가 최종페이지보다 같거나 같으면(최종페이지를 아직 출력하지 않았으면))
+				if(pageNo <= totalPage) {
+					pageNavi += "<li>";
+					pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+					pageNavi += "<span class='material-icons'>chevron_right</span>";
+					pageNavi += "</a></li>";
+				}
+				
+				pageNavi += "</ul>";
+				
+				//list, pageNavi 두개를 모두 리턴 -> java의 메소드는 리턴타입이 1개 -> 바로리턴불가능
+				//-> 두개를 저장하는 객체를 만들어서 리턴
+				SearchListData sld = new SearchListData(list,pageNavi);
+				return sld;
+	}
+
+	public double selectAvgStar(int storeNo) {
+		double avgStar = searchDao.selectAvgStar(storeNo);
+		return avgStar;
 	}
 
 }

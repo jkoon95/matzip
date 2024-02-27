@@ -1,35 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-* {
+.navigation {
+  width: 245px; /* 300 -> 245 // shadow 5px(margin-right로 자동으로 해놨음) 합해서 총 250 */
+  background: #fff;
+  box-shadow: 5px 0 0 #72B37E;
+  border-left: 10px solid #fff;
+  overflow-x: hidden;
+
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
-}
 
-body {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-height: 100vh;
-  background: #e3e6e7;
-}
-
-.navigation {
-  position: relative;
-  width: 300px;
-  background: #fff;
-  box-shadow: 10px 0 0 #72B37E;
-  border-left: 10px solid #fff;
-  overflow-x: hidden;
+  /*추가*/
+  margin-right: 5px; 
 }
 
 
 /* list */
 
 .navigation > ul {
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   padding-left: 5px;
   padding-top: 40px;
@@ -118,7 +109,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  padding-left: 80px;
+  padding-left: 70px;
 }
 
 .navigation ul li ul li {

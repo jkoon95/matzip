@@ -40,7 +40,7 @@ a {
 /* 매장 정보 */
 .store-info {
   width: 600px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .store-info>div {
@@ -110,7 +110,6 @@ a {
   display: inline-block;
   width: 99%;
   height: 50px;
-  line-height: 50px;
   text-align: center;
   font-weight: 600;
   border: 2px solid #fff;
@@ -123,7 +122,7 @@ a {
 
 #reserve-btn:hover {
   background-color: #F8D64F;
-  /* 마우스를 올렸을 때의 배경색 */
+  cursor: pointer;
 }
 
 /* 리뷰 입력 */
@@ -231,8 +230,13 @@ a {
   box-sizing: border-box;
 }
 
+.review-info {
+  overflow: hidden;
+}
+
 .posting-review>li:last-child>.review-info>span {
   padding: 0px 10px;
+  float: left;
 }
 
 .posting-review>li:last-child>.review-info>span:not(:last-child) {
@@ -269,7 +273,75 @@ a {
   font-size: 16px;
   margin-bottom: 50px;
 }
-.review-more-btn:hover{
+
+.review-more-btn:hover {
   background-color: #72B37E;
   cursor: pointer;
 }
+
+/* 별점 디자인 */
+.star-zone {
+  font-size: 0;
+  /* 아이콘 사이의 공백을 없애기 위해 부모 요소의 폰트 크기를 0으로 설정 */
+}
+
+.star-zone {
+  display: inline-block;
+  font-size: 24px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+}
+
+.star1 {
+  color: gold;
+}
+
+.star2 {
+  color: lightgray;
+}
+
+.star-wrap{
+  overflow: hidden;
+}
+
+.star-wrap>span{
+  float: left;
+  color: lightgray;
+  font-size: 30px;
+}
+.star-on-wrap>span{
+  color: gold;
+}
+.star-on{
+  width: 0px;
+  position: absolute;
+  left: 0px;
+  overflow: hidden;
+}
+.star-on-wrap{
+  width: 150px;
+}
+.star-wrap2{
+  position: relative;
+}
+
+.store-star-wrap{
+  overflow: hidden;
+}
+.store-star{
+  float: right;
+  height: 30px;
+  line-height: 30px;
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 18px;
+}
+.store-report{
+  float: right;
+  height: 30px;
+  line-height: 30px;
+  margin-left: 30px;
+}
+
+/* 슬라이드 디자인 */
+

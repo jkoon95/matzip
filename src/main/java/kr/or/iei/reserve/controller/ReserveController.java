@@ -24,11 +24,11 @@ public class ReserveController {
 	private ReserveService reserveService;
 	
 	@RequestMapping(value="/reserveFrm")
-	private String reserveFrm(Model model) {
-		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Menu menu, Model model
+	public String reserveFrm(Model model) {
+		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Model model
 		
 		//원래 매개변수인데, 일단 임시로
-		int storeNo = 35;
+		int storeNo = 3;
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		
@@ -41,7 +41,7 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/closedDays")
-	private List<Integer> closedDays(int storeNo){
+	public List<Integer> closedDays(int storeNo){
 		//매개변수 : int storeNo
 		//정기휴무일 구하기
 		List<Integer> closedDays = reserveService.closedDays(storeNo);
@@ -50,7 +50,7 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/tempClosedDays")
-	private List<String> tempClosedDays(int storeNo){
+	public List<String> tempClosedDays(int storeNo){
 		//매개변수 : int storeNo
 		//임시휴무일 구하기
 		List<String> tempClosedDays = reserveService.tempClosedDays(storeNo);
@@ -59,7 +59,7 @@ public class ReserveController {
 
 	@ResponseBody
 	@PostMapping(value="/timeSet")
-	private TimeSet timeSet(int storeNo, String selectedDay){
+	public TimeSet timeSet(int storeNo, String selectedDay){
 		//매개변수 : int storeNo, String Day(datepicker에서 선택한 날짜)
 		TimeSet timeSet = reserveService.timeset(storeNo, selectedDay);
 		return timeSet;
@@ -67,14 +67,14 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/tableNoAndCapacity")
-	private List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
+	public List<TableNoAndCapacity> tableNoAndCapacity(int storeNo, String reserveDate, String reserveTime) {
 		//식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
 		List<TableNoAndCapacity> tableNoAndCapacity = reserveService.tableNoAndCapacity(storeNo, reserveDate, reserveTime);
 		return tableNoAndCapacity;
 	}
 	
 	@PostMapping(value="/reserve")
-	private String reserve(Reserve reserve, int[] menuNo, int[] servings, Model model) {
+	public String reserve(Reserve reserve, int[] menuNo, int[] servings, Model model) {
 		/* 받아온 정보
 		 * @SessionAttribute(required = false) Member member
 		 * int[] menuNo
@@ -87,11 +87,17 @@ public class ReserveController {
 		 * int tableNo
 		 * String reserveRequest
 		 */
-		reserve.setMemberNo(3); //원래는 reserve.setMemberNo(Member.getMemberNo()) 이렇게 세션에 있는 정보를 넣어야... 일단 임시로 넣었음.
+		int memberNo = 3;//임시로
+		reserve.setMemberNo(memberNo); //원래는 reserve.setMemberNo(Member.getMemberNo()) 이렇게 세션에 있는 정보를 넣어야... 일단 임시로 넣었음.
 		reserve.setReserveStatus(1);
 		int insertResult = reserveService.insertReserve(reserve, menuNo, servings);
 		return "reserve/reserveList";
 	}
 	
+	@PostMapping(value="/reserveList")
+	public String reserveList() {
+		//@SessionAttribute(required = false) Member member
+		return "reserve/reserveList";
+	}
 	
 }

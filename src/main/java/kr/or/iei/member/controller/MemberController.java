@@ -93,6 +93,22 @@ public class MemberController {
 		}
 		return "common/msg";
 	}
+	@PostMapping(value="updatePw")
+	public String updatePw(Member m, Model model) {
+		int result = memberService.updatePw(m);
+		if(result>0) {			
+			model.addAttribute("title", "변경완료");;
+			model.addAttribute("msg", "새로운 비밀번호로 로그인 하세요");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/");
+		}else {
+			model.addAttribute("title", "다시 확인해주세요.");
+			model.addAttribute("msg", "실패");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/");
+		}
+		return "common/msg";
+	}
 	@GetMapping(value="mystorepage")
 	public String mystorepage() {
 		return "member/mystorepage";
@@ -156,5 +172,9 @@ public class MemberController {
 			model.addAttribute("loc", "/member/mypage");
 		}
 		return "common/msg";
-	}	
+	}
+	@GetMapping(value="pwChange")
+	public String pwChange() {
+		return "member/pwChangeFrm";
+	}
 }

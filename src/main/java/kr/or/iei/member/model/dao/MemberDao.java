@@ -86,8 +86,7 @@ public class MemberDao {
 	public Member emailCheckId(String memberId, String memberEmail) {
 		String query = "select * from member_tbl where member_Id=? and member_Email=?";
 		Object[] params = {memberId, memberEmail};
-		List list = jdbc.query(query, originMemberRowMapper,params);
-		System.out.println(list);
+		List list = jdbc.query(query, originMemberRowMapper,params);		
 		if(list.isEmpty()) {
 			return null;
 		}
@@ -101,5 +100,12 @@ public class MemberDao {
 			return null;
 		}
 		return (Member)list.get(0);
+	}
+	public int updatePw(Member m) {
+		String query = "update member_tbl set member_pw=? where member_Id=?";
+		Object[] params = {m.getMemberPw(),m.getMemberId()};
+		int result = jdbc.update(query, params);
+		System.out.println(result);
+		return result;
 	}
 }
