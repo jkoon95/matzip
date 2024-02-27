@@ -396,7 +396,31 @@ a {
 }
 
 #reason{
+  padding: 5px;
   resize: none;
+  margin-bottom: 40px;
+}
+#reason:focus{
+  outline: none;
+}
+.modal-btn{
+  width: 410px;
+  height: 40px;
+  color: #fff;
+  font-weight: 600;
+}
+.modal-btn:hover{
+  cursor: pointer;
+}
+#store-report-btn{
+  background-color: #F34A4A;
+  border: 2px solid #F34A4A;
+  border-radius: 5px;
+}
+#store-close-btn{
+  background-color: #707070;
+  border: 2px solid #707070;
+  border-radius: 5px;
 }
 
 /* 신고버튼 디자인 */
@@ -413,8 +437,17 @@ a {
 .btn-review-report {
   background-color: transparent;
   border: none;
-  cursor: pointer
+  cursor: pointer;
+  font-size: 16px;
 }
 
 /* 슬라이드 디자인 */
-
+.swiper{
+  width: 1200px;
+  margin: 0 auto;
+  height: 500px;
+}
+.swiper img{
+  width: 100%;
+  height: 500px;
+}
