@@ -39,12 +39,12 @@
                         <input type="password" name="memberPw" id="memberPw" class="input-from" required>
                     </div>
                     <div class="join-wrap">
-                        <label for="memberPwRe">비밀번호 확인<sup>*</sup></label>
+                        <label for="memberPwRe">비밀번호 확인<sup>*</sup></label><span id="pwRe-msg"></span>
                         <input type="password" id="memberPwRe" class="input-from" required>
                     </div>
                     <div class="join-wrap">
                         <label for="memberName">이름</label>
-                        <input type="text" name="memberName" id="memberName" class="input-from">
+                        <input type="text" name="memberName" id="memberName" class="input-from" required>
                     </div>
                     <div class="join-wrap">
                         <label for="memberNickname">닉네임 <span id="checkNickname"></span></label>
@@ -115,6 +115,23 @@
     				console.log("error");
     			}
     		});
+    	});
+    	
+    	$("#memberPwRe").on("change",function(){
+    		
+    		const memberPw = $("#memberPw").val();
+    		const memberPwRe = $("#memberPwRe").val();
+    		
+    		if(memberPw == memberPwRe){
+    			// $("#pwRe-msg").text(" 비밀번호가 확인되었습니다.");
+				$("#pwRe-msg").css("color","blue");
+				$("#memberPw").css("border", "1px solid blue");
+				$("#memberPwRe").css("border", "1px solid blue");               
+    		}else{    			
+				$("#pwRe-msg").css("color"," red");
+				$("#memberPw").css("border", "1px solid red");
+				$("#memberPwRe").css("border", "1px solid red");
+    		}
     	});
     </script>
 	<th:block th:include="common/footer"></th:block>	

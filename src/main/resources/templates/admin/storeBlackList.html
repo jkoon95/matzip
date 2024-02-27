@@ -9,7 +9,7 @@
 </head>
 <style>
 .s-storeBlackPlusBtn{
-	    color: #fff;
+	color: #fff;
     font-size: 15px;
     border-radius: 5px;
     text-align: center;
@@ -25,13 +25,28 @@
     background-color: #4c4945;
     font-size: 15px;
 }
+.BlackBtn{
+	border-radius: 5px;
+	border: none;
+	color: #252323;
+    height: 40px;
+    padding: 5px;
+}
+.BlackBtn:hover{
+	border-radius: 5px;
+    /* width: 70px; */
+    cursor: pointer;
+}
 </style>
 <body>
 	<th:block th:include="common/header"></th:block>
     <div class="content">
     	<th:block th:include="common/side"></th:block>
     	 <div class="sss-content">
-            <div class="page-title">블랙리스트 관리<a href="#" class="s-storeBlackPlusBtn">추가</a></div>
+            <div class="page-title">블랙리스트 관리</div>
+            <!-- 
+             <a href="#" class="s-storeBlackPlusBtn">추가</a></div>            
+             -->
             <div>
             	<form action="/admin/searchBlackStore" method="get" id="searchFrm">
 					<th:block th:switch="${type}">
@@ -58,31 +73,32 @@
             </div>
             <table class="tbl tbl-hover" style="width: 800px;font-size: 15px;">
                 <tr class="tr-3">
-                	<th style="width:15%;">선택</th>
+                	<th style="width:15%;"><input type="checkbox" name="storeBlackCheckAll"></th>
                     <th style="width:15%;">매장번호</th>
                     <th style="width:30%;">매장명</th>
                     <th style="width:15%;">아이디</th>                    
                     <th style="width:10%;">등급</th>
                     <th style="width:15%;">등급변경</th>
                 </tr>
-                <tr th:each="store:${list}" class="tr-1">
-                	<td><input type="checkbox" class="chk"></td>
+                <tr th:each="store:${list}" class="tr-1 blackTr">
+                	<td><input type="checkbox" class="chk" name="storeBlackCheck"></td>
                     <td th:text="${store.storeNo}"></td>
                     <td><a th:href="@{/admin/storeView(storeNo=${store.storeNo})}" th:text="${store.storeName}"></a></td>
                     <td th:text="${store.memberId}"></td>
                     <td th:if="${store.storeLevel}==1">매장</td>
                     <td th:if="${store.storeLevel}==2">블랙</td>
                     <td>
-                    	<button class="storeBlackChangeLevel">블랙해제</button>                    
+                    	<button class="BlackBtn storeBlackChangeLevel">블랙해제</button>                    
                     </td>
                 </tr>
-                <tr>
+                <tr style="border-bottom: none;">
                 	<th></th>
                 	<th></th>
                 	<th></th>
                 	<th></th>
-					<th colspan="2">
-						<button class="checkedStoreBlackChangeLevel">선택매장블랙해제</button>
+                	<th></th>
+					<th colspan="1">
+						<button class="BlackBtn checkedStoreBlackChangeLevel">선택블랙해제</button>
 					</th>
 				</tr>
             </table>
@@ -97,39 +113,44 @@
 				return false;
 			}
 		}
+	    $("[name=storeBlackCheckAll]").on("click",function(){
+	        if($(this).is(":checked")){
+	            $("[name=storeBlackCheck]").prop("checked",true);
+	        }
+	        else{
+	            $("[name=storeBlackCheck]").prop("checked", false);
+	        }
+	    });
 	    $(".storeBlackChangeLevel").on("click",function(){
-			//클릭한 버튼 기준으로 해당 행의 회원번호를 가지고 옴
 			const storeNo = $(this).parent().parent().children().eq(1).text();
-			//클릭한 버튼 기준으로 해당 행의 선택한 등급
-			//const memberLevel = $(this).parent().prev().children().val();
-			//console.log("memberNo : "+memberNo);
-			//console.log("memberLevel : "+memberLevel);
-			//서버전송에 필요한 데이터는 모두 가져옴(회원번호, 선택한 회원 등급)
-			//서버에 update요청 -> 1. form, 2. a태그
-			//a태그 방식으로
+			const self = this;
 			$.ajax({
 				url : "/admin/storeBlackChangeLevel",
 				type : "get",
 				data : {storeNo : storeNo},
-				//dataType : "JSON",	//문자열을 배열로 받아옴
 				success : function(result){
 					console.log(result,typeof result);
 					if(result===1){
 						console.log("성공");
-						$(this).parent().parent().remove();
-						alert("등급이 변경되었습니다.");
+						$(self).parent().parent().remove();
+						//alert("등급이 변경되었습니다.");	
 					}else{
-						console.log("실패");
+						alert("잠시후 다시 시도해주세요.");
 					}
+					const page= $(".active-page").text()-1;      
+		            if($(".blackTr").length==0){
+		            	location.href="/admin/storeBlackList?reqPage="+page;
+		            }else{
+						location.reload();         	
+		            }
 				},
 				error:function(){
 					console.log("에러");
 				}
 			});
-			//location.href = "/admin/changeLevel?memberNo="+memberNo+"&memberLevel="+memberLevel;
 		});
 		
-		$(".checkedChangeLevel").on("click",function(){
+		$(".checkedStoreBlackChangeLevel").on("click",function(){
 			const check= $(".chk:checked");		
 			if(check.length==0){
 				alert("선택된 회원이 없습니다.");
@@ -137,20 +158,40 @@
 			}
 			//체크된 회원 번호를 모두 저장할 배열
 			const no = new Array();
-			//체크된 회원 레벨을 모두 저장할 배열
-			const level = new Array();
 			
-			//체크된 체크박스 기준으로 회원번호랑, 선택한 등급 가져옴
+			//체크된 체크박스 기준으로 회원번호랑,선택한 등급 가져옴
 			check.each(function(index,item){
 				const memberNo = $(item).parent().next().text();
 				no.push(memberNo);
-				const memberLevel= $(item).parent().parent().find("select").val();
-				level.push(memberLevel);
 			});
-			console.log(no);
-			console.log(level);
-			location.href="/admin/checkedChangeLevel?no="+no.join("/")+"&level="+level.join("/");
-			///admin/checkedChangeLevel?no=5/7/8&level=2/1/3
+			
+			console.log(no,typeof no);
+			
+			$.ajax({
+		        url: "/admin/blackStoreCheckedChangeLevel",
+		        type: "get",
+		        data: { no : no },
+		        traditional: true,
+		        success: function(result) {
+		        	if(result==1){
+			            //alert("등급 변경이 완료되었습니다.");
+			            check.each(function(index,item){
+			            	$(item).parent().parent().remove();
+						});
+		        	}else{
+		        		alert("등급 변경 실패");
+		        	}
+		            const page= $(".active-page").text()-1;      
+		            if($(".blackTr").length==0){
+		            	location.href="/admin/storeBlackList?reqPage="+page;
+		            }else{
+						location.reload();         	
+		            }
+		        },
+		        error: function(error) {
+		            console.log("에러");
+		        }
+		    });
 		});
     </script>
     <th:block th:include="common/footer"></th:block>

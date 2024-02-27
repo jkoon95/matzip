@@ -1,12 +1,5 @@
 @charset "UTF-8";
 
-* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-		
         .content {
             /*width: 1200px;*/
             margin: 0 auto;
@@ -109,7 +102,7 @@
 .sss-content{
 	padding: 50px;
 	padding-bottom: 150px;
-	width: 890px;
+	/*width: 890px;*/
 }     
 .input-level{
 	width: 90px;
@@ -151,4 +144,8 @@
 	width : 100px;
 	text-align : center;
 	margin:0;
+}
+.sss-content tr{
+	border-bottom: 1px solid #e9e8e8;
+	
 }

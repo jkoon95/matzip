@@ -257,7 +257,9 @@ public class ReserveService {
 		
 		//<2> 정상 insert하기(reserveStatus=1)
 		int insertResult = reserveDao.insertReserve(reserve);
-		
+		//reserve_menu_tbl에 넣을 reserveNo를 미리 구해놓기
+		int reserveNo = reserveDao.selectReserveNo(reserve.getReserveDate(), reserve.getReserveTime(), reserve.getReserveStatus(), reserve.getTableNo());
+				
 		if (insertResult>0) {//insert 성공시
 			
 			//<3> 이후더미 insert하기(reserveStatus=2) : reserve_status = 2(더미)
@@ -301,10 +303,10 @@ public class ReserveService {
 					};
 					dummyTime2.add(sb.toString());
 				}
-				//reserve_tbl 행 중에서, dummyTime2와 겹치면서 reserveStatus=0인게 있으면 테이블에서 그것을 delete
+				//reserve_tbl의 행 중에서, dummyTime2와 겹치면서 reserveStatus=0인게 있으면, reserve_tbl에서 그것을 delete
 				for(String reserveDummyTime2 : dummyTime2) {
 					String deleteTime = reserveDao.selectDummy(0, reserve.getReserveDate(), reserveDummyTime2);
-					if(deleteTime != null) {
+					if(!deleteTime.equals("-1")) {
 						reserveDao.deleteDummy0(reserve.getReserveDate(), reserveDummyTime2);
 					}
 				};
@@ -356,10 +358,10 @@ public class ReserveService {
 					dummyTime0.add(sb.toString());
 				}
 				//reserve_tbl 행 중에서, dummyTime0와 겹치면서 reserveStatus=2인게 있으면, dummyTime0 리스트에서 그것을 제거
-				for(int i=0; i<dummyTime2.size(); i++) {
-					String deleteTime = reserveDao.selectDummy(2, reserve.getReserveDate(), dummyTime2.get(i));
-					if(deleteTime != null) {
-						dummyTime2.remove(i);
+				for(int i=0; i<dummyTime0.size(); i++) {
+					String deleteTime = reserveDao.selectDummy(2, reserve.getReserveDate(), dummyTime0.get(i));
+					if(!deleteTime.equals("-1")) {
+						dummyTime0.remove(i);
 					}
 				}
 				//이제 dummyTime0 insert하기
@@ -372,9 +374,9 @@ public class ReserveService {
 		}
 		
 		//reserve_menu_tbl에 insert하기
-		if(menuNo.length > 0) {
+		if(menuNo != null) {
 			for(int i=0; i<menuNo.length; i++) {
-				int result = reserveDao.insertReserveMenu(servings[i], reserve.getReserveNo(), menuNo[i]);
+				int menuResult = reserveDao.insertReserveMenu(servings[i], reserveNo, menuNo[i]);
 			}
 		}
 		
