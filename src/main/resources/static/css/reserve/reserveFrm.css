@@ -152,6 +152,15 @@ main {
   width: 54px;
 }
 
+.fullTime{
+  width: 50px;
+  height: 25px;
+  background: #78c386;
+  color: #ee4343;
+  border: none;
+  border-radius: 2px;
+  line-height: 1;
+}
 
 #people-minus{
   font-size: small;

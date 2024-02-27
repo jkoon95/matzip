@@ -93,7 +93,7 @@
 		    text-align: left;
 		}
 		.tabcontent table{
-			padding: 0.5rem;
+			padding: 1rem;
     		background-color: #fff;
     		outline: none;
     		border: 1px solid #ccc;
@@ -122,7 +122,7 @@
 			text-align: right;
 			margin-bottom: 5px;
 			font-weight: 700;
-			font-size: 15px;
+			font-size: 16px;
 		}
 		.menuShow{
 			font-size: 18px;
@@ -171,6 +171,12 @@
     font-size: 18px;
     font-weight: 500;
 }
+.won{
+	 padding-left: 5px;font-size:15px;
+}
+.s-storeInfo th{
+	font-weight: 500;
+}
 </style>
 </head>
 <body>
@@ -192,7 +198,7 @@
 					<div>
 					<table>
 						<tr>
-							<th style="width: 20%;">사업자번호  :</th>
+							<th style="width: 20%;">사업자번호 :</th>
 							<td th:text="${store.businessNo}"></td>
 						</tr>
 						<tr>
@@ -265,27 +271,39 @@
 							<td th:text="${store.storeSns}"></td>
 						</tr>
 						<tr>
-							<th >매장설명 :</th>
+							<th>매장설명 :</th>
 							<td th:text="${store.storeDescription}"></td>
 						</tr>
 						<tr>
-							<th>테이블수 :</th>
-							<td>
-								<span>1인용 식탁 <span th:text="${tableCapacitys[0]}"></span>개, </span><span>2인용 식탁 <span th:text="${tableCapacitys[1]}"></span>개, </span><span>3인용 식탁 <span th:text="${tableCapacitys[2]}"></span>개
-							</td>
-						</tr>
-						<tr>
-							<th></th>
-							<td>
-								<span>4인용 식탁 <span th:text="${tableCapacitys[3]}"></span>개, </span> <span>5인용 식탁 <span th:text="${tableCapacitys[4]}"></span>개,</span> <span>6인용 식탁 <span th:text="${tableCapacitys[5]}"></span>개,</span>
-							</td>
-						</tr>
-						<tr>
-							<th></th>
-							<td>
-								<span>7인용 식탁 <span th:text="${tableCapacitys[6]}"></span>개</span>, <span>8인용 식탁 <span th:text="${tableCapacitys[7]}"></span>개</span>
-							</td>
-						</tr>				
+							<td colspan="2">
+								<fieldset class="s-field" style="margin-top: 10px;">
+			    					<legend>테이블수</legend>
+			    					<div>
+				                        <label for="tableCapacity1" class="s-label">1인용식탁  </label>
+				                        <input th:value="${tableCapacitys[0]}" class="s-table" disabled><span> 개</span>
+				                        <label for="tableCapacity2">2인용식탁  </label>
+				                        <input th:value="${tableCapacitys[1]}" class="s-table" disabled><span> 개</span>
+			    					</div>
+			    					<div>
+				                        <label for="tableCapacity3">3인용식탁  </label>
+				                        <input th:value="${tableCapacitys[2]}" class="s-table" disabled><span> 개</span>
+			    					 	<label for="tableCapacity4">4인용식탁  </label>
+				                        <input th:value="${tableCapacitys[3]}" class="s-table" disabled><span> 개 </span>
+			    					</div>
+			    					<div>
+				                        <label for="tableCapacity5">5인용식탁  </label>
+				                        <input th:value="${tableCapacitys[4]}" class="s-table" disabled><span> 개</span>
+				                        <label for="tableCapacity6">6인용식탁  </label>
+				                        <input th:value="${tableCapacitys[5]}" class="s-table" disabled><span> 개</span>
+			    					</div>
+			    					<div>
+				                        <label for="tableCapacity7">7인용식탁  </label>
+				                        <input th:value="${tableCapacitys[6]}" class="s-table" disabled><span> 개 </span>
+				                        <label for="tableCapacity8">8인용식탁  </label>
+				                        <input th:value="${tableCapacitys[7]}" class="s-table" disabled><span> 개</span>
+			    					</div>
+			                    </fieldset>	
+                        	</td>			
 						<tr>
 							<th colspan="2" class="s-lastTh">
 								<a th:href="@{/store/storeDelete(storeNo=${store.storeNo})}" class="goStore" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">삭제하기</a>
@@ -319,7 +337,7 @@
          			
 					<div class="menuBox-wrap">
 					<th:block th:each = "menu : ${menuList}">
-						<div class="menuBox" style="border: 1px solid #ccc">
+						<div class="menuBox" style="border: 1px solid #ccc;display:none;">
 							<div class="menuBoxIn">
                             	<img th:src="'/store/menu/'+${menu.menuImg}" class="s-img-view" width="100px" height="100px">
                          		<div class="menuBoxInput">
@@ -331,21 +349,32 @@
 	                                	<input type="text" name="price" class="s-menu-input" th:value="${menu.menuPrice}" required placeholder="가격">
                          			</div>      
                          			<div class="menuBtn">
-                            			<a href="javascript:void(0)" class="menuBtn updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]],[[${menu.menuImg}]])">수정</a>
-										<a href="javascript:void(0)" class="menuBtn" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]],[[${menu.menuImg}]])">삭제</a>                         			
+                            			<a href="javascript:void(0)" class="menuBtn updateMenu" th:onclick="updateMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]],[[${menu.menuImg}]])">수정완료</a>                       			
                          			</div>                    	
 	                          </div>
 	                      </div>
                         </div>  
                         
-                        
-		    			
-		    			
+                        <div class="menuBox" style="border: 1px solid #ccc">
+							<div class="menuBoxIn">
+                            	<img th:src="'/store/menu/'+${menu.menuImg}" class="s-img-view" width="100px" height="100px">
+                         		<div class="menuBoxInput">
+                         			<div style="font-weight: 30px;">
+	                                	<input type="text" name="name" class="s-menu-input" th:value="${menu.menuName}" required placeholder="이름" readonly>
+	                                	<input type="text" name="price" class="s-menu-input" th:value="${menu.menuPrice}" required placeholder="가격" readonly><span class="won">원</span>
+                         			</div>      
+                         			<div class="menuBtn">
+                            			<a href="javascript:void(0)" class="menuBtn updateMenu" th:onclick="modifyMenu(this)">수정</a>
+										<a href="javascript:void(0)" class="menuBtn" th:onclick="deleteMenu(this,[[${menu.storeNo}]],[[${menu.menuNo}]],[[${menu.menuImg}]])">삭제</a>                         			
+                         			</div>                    	
+	                          </div>
+	                      </div>
+                        </div>  
                     </th:block>
 					</div>
 					<div class="plusMenuAppend"></div>
                     <div style="text-align: center;border: 1px solid #ccc; cursor: pointer;" class="menuShow">
-						<a href="javascript:void(0)" class="plusMenu" style="color:#72B37E;">추가</a>					
+						<a href="javascript:void(0)" class="plusMenu" style="color:#72B37E;font-size:18px;">추가</a>					
 					</div>
 			    </div>
 			</div>
@@ -360,6 +389,11 @@
        	 	$(this).val($(this).val().replace(/[^0-9]/g, ""));
     	});
 		
+		function modifyMenu(obj){
+			$(obj).parent().parent().parent().parent().prev().toggle();
+			$(obj).parent().parent().parent().parent().toggle();
+		}
+		
 		function menuloadImg(obj) {
 	        if (obj.files.length != 0 && obj.files[0] != 0) {
 	            const reader = new FileReader();
@@ -371,29 +405,6 @@
 	            $(obj).parent().parent().prev().attr("src", "");
 	        }
 	    }
-		
-		
-		/*
-		 $("[name='menuImgFile']").on("change", function() {
-		        // 선택된 파일들의 FileList 객체
-		        var fileList = this.files;
-		        
-		        // 파일이 선택되었는지 확인
-		        if (fileList.length > 0) {
-		            // 첫 번째 파일의 File 객체
-		            var file = fileList[0];
-		            
-		            // 파일 이름 가져오기
-		            var fileName = file.name;
-		            console.log("선택된 파일 이름: " + fileName);
-		        } else {
-		            console.log("파일이 선택되지 않았습니다.");
-		        }
-		    });
-		*/
-		
-		
-		
 		
 		$(function () {
 			$('.tabcontent > div').hide();
@@ -483,7 +494,7 @@
 				success : function(menu){
 		            //console.log(menu,typeof menu);
 		            if(menu!=null){
-		            	//이미지띄운거지우고//파일 선택지워주고//가격없애고//이름지우고//박스 숨기고//추가된거띄워주기
+		            	//이미지띄운거지우고//파일 선택지워주고//가격없애고//이름지우고//박스 숨기고//추가된거띄워주기 -> 방법바꿈
 		            	//$(obj).parent().parent().parent().children().eq(0).attr("src","/store/img/basic.png");
 		    		    //$(obj).prev().val("");
 		            	//$(obj).prev().prev().val("");
@@ -492,7 +503,52 @@
 		    		    //해당박스 지우고 새로 만들어서 menuBox-wrap에 넣어줌
 		    		    $(obj).parent().parent().parent().parent().remove();
 		    		    $(".menuBox-wrap").append(
-		    	                '<div class="menuBox" style="border: 1px solid #ccc">' +
+		    		    		'<div class="menuBox" style="border: 1px solid #ccc;display:none;">' +
+		    		    	    '<div class="menuBoxIn">' +
+		    		    	    '<img src="' + '/store/menu/' + menu.menuImg + '" class="s-img-view" width="100px" height="100px">' +
+		    		    	    '<div class="menuBoxInput">' +
+		    		    	    '<div>' +
+		    		    	    '<input type="file" name="menuImgFile" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);">' +
+		    		    	    '</div>' +
+		    		    	    '<div>' +
+		    		    	    '<input type="text" name="name" class="s-menu-input" value="' + menu.menuName + '" required placeholder="이름">' +
+		    		    	    '<input type="text" name="price" class="s-menu-input" value="' + menu.menuPrice + '" required placeholder="가격">' +
+		    		    	    '</div>' +
+		    		    	    '<div class="menuBtn">' +
+		    		    	    '<a href="javascript:void(0)" class="menuBtn updateMenu" onclick="updateMenu(this,' + menu.storeNo + ',' + menu.menuNo + ',\''+ menu.menuImg +'\')">수정완료</a>' +
+		    		    	    '</div>' +
+		    		    	    '</div>' +
+		    		    	    '</div>' +
+		    		    	    '</div>' +
+
+		    		    	    '<div class="menuBox" style="border: 1px solid #ccc">' +
+		    		    	    '<div class="menuBoxIn">' +
+		    		    	    '<img src="' + '/store/menu/' + menu.menuImg + '" class="s-img-view" width="100px" height="100px">' +
+		    		    	    '<div class="menuBoxInput">' +
+		    		    	    '<div style="font-weight: 30px;">' +
+		    		    	    '<input type="text" name="name" class="s-menu-input" value="' + menu.menuName + '" required placeholder="이름" readonly>' +
+		    		    	    '<input type="text" name="price" class="s-menu-input" value="' + menu.menuPrice + '" required placeholder="가격" readonly><span class="won">원</span>' +
+		    		    	    '</div>' +
+		    		    	    '<div class="menuBtn">' +
+		    		    	    '<a href="javascript:void(0)" class="menuBtn updateMenu" onclick="modifyMenu(this)">수정</a>' +
+		    		    	    '<a href="javascript:void(0)" class="menuBtn" onclick="deleteMenu(this,' + menu.storeNo + ',' + menu.menuNo + ',\''+ menu.menuImg +'\')">삭제</a>' +
+		    		    	    '</div>' +
+		    		    	    '</div>' +
+		    		    	    '</div>' +
+		    		    	    '</div>'
+		    	                
+		    	            );
+		            }
+				},
+				error : function(){
+					console.log("에러");					
+				}
+		    });
+		}
+		
+		
+		/*
+								'<div class="menuBox" style="border: 1px solid #ccc">' +
 		    	                '<div class="menuBoxIn">' +
 		    	                '<img src="/store/menu/' + menu.menuImg + '" class="s-img-view" width="100px" height="100px">' +
 		    	                '<div class="menuBoxInput">' +
@@ -510,14 +566,10 @@
 		    	                '</div>' +
 		    	                '</div>' +
 		    	                '</div>'
-		    	            );
-		            }
-				},
-				error : function(){
-					console.log("에러");					
-				}
-		    });
-		}
+		
+		
+		*/
+		
 		
 		function updateMenu(obj,storeNo,menuNo,oldImgFile){
 			const newImgFile = $(obj).parent().prev().prev().children().eq(0).get(0).files[0];
@@ -528,11 +580,11 @@
 		  	console.log(newImgFile);
 		    console.log(menuName);
 		    console.log(menuPrice);
-		    //var menuImgFile = oldImgFile;
-		    //if(newImgFile!=null){
-		    //	menuImgFile=newImgFile;
-		    //}	
-		    //console.log(menuImgFile);
+		    var menuImgFile = oldImgFile;
+		    if(newImgFile!=null){
+		    	menuImgFile=newImgFile.name;
+		    }	
+		    console.log(menuImgFile);
 		    
 		    //새 이미지가 있다면 옛날 이미지 지우고 업데이트하고 아니면 그대로
 		 	// FormData 객체를 생성하여 데이터 추가
@@ -552,7 +604,15 @@
 				contentType : false,
 				success : function(result){
 		            if(result>0){
-		            	alert("수정되었습니다.");
+		            	//자기 메뉴박스 토글하고 밑에꺼 토클 밑에 보이는 값도 바꿔줌
+						$(obj).parent().parent().parent().parent().toggle();
+		            	$(obj).parent().parent().parent().parent().next().toggle();
+		            	//이미지
+		            	$(obj).parent().parent().parent().parent().next().children().children().eq(0).attr("src","/store/menu/"+menuImgFile);
+		            	//이름
+		            	$(obj).parent().parent().parent().parent().next().children().children().eq(1).children().eq(0).children().eq(0).val(menuName);
+		            	//가격
+		            	$(obj).parent().parent().parent().parent().next().children().children().eq(1).children().eq(0).children().eq(1).val(menuPrice);
 		            }else{
 		            	alert("수정 중 문제가 생겼습니다.");
 		            }

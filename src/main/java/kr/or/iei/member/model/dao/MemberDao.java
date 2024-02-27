@@ -101,4 +101,11 @@ public class MemberDao {
 		}
 		return (Member)list.get(0);
 	}
+	public int updatePw(Member m) {
+		String query = "update member_tbl set member_pw=? where member_Id=?";
+		Object[] params = {m.getMemberPw(),m.getMemberId()};
+		int result = jdbc.update(query, params);
+		System.out.println(result);
+		return result;
+	}
 }
