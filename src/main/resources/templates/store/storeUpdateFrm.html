@@ -479,7 +479,7 @@
 			
             //이미지 불러오기
             function storeloadImg(obj) {
-                console.log(obj.files);
+                //console.log(obj.files);
                 if (obj.files.length != 0 && obj.files[0] != 0) {
                     const reader = new FileReader();
                     reader.readAsDataURL(obj.files[0]);
@@ -492,7 +492,7 @@
             }
             
             const closedDay = [[${closedDayList}]];
-            console.log(closedDay);
+            //console.log(closedDay);
             const closedDayCheckbox = $("[name=closedDays]");
             closedDayCheckbox.each(function(index,item){
             	const value = $(item).val();

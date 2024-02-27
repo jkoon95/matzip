@@ -183,7 +183,7 @@ public class AdminController {
 		return "admin/storeBlackList";
 	}
 	
-	//searchBlackStore
+	
 	@GetMapping(value="/searchBlackStore")
 	public String searchBlackStore(int reqPage, String type, String keyword, Model model) {
 		AdminListData ald = adminService.searchBlackStore(reqPage,type,keyword);
@@ -193,7 +193,7 @@ public class AdminController {
 		model.addAttribute("keyword",keyword);
 		return "admin/storeBlackList";
 	}
-	//storeBlackChangeLevel
+	
 	@ResponseBody
 	@GetMapping(value="/storeBlackChangeLevel")
 	public int storeBlackChangeLevel(int storeNo) {
@@ -201,7 +201,6 @@ public class AdminController {
 		return result;
 	}
 	
-	//blackStoreCheckedChangeLevel
 	@ResponseBody
 	@GetMapping(value="/blackStoreCheckedChangeLevel")
 	public int blackStoreCheckedChangeLevel(int[] no) {
@@ -217,4 +216,11 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping(value="/memberBlackList")
+	public String memberBlackList(int reqPage,Model model) {
+		AdminListData ald = adminService.selectAllMemberStore(reqPage);
+		model.addAttribute("list",ald.getList());
+		model.addAttribute("pageNavi",ald.getPageNavi());
+		return "admin/memberBlackList";
+	}
 }

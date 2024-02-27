@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/storeInfo.css">
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/notice.css">
+</head>
+<style>
+.s-storeBlackPlusBtn{
+	color: #fff;
+    font-size: 15px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* margin-top: 20px; */
+    background-color: #4c4945;
+    font-size: 15px;
+}
+.BlackBtn{
+	border-radius: 5px;
+	border: none;
+	color: #252323;
+    height: 40px;
+    padding: 5px;
+}
+.BlackBtn:hover{
+	border-radius: 5px;
+    /* width: 70px; */
+    cursor: pointer;
+}
+</style>
+<body>
+	<th:block th:include="common/header"></th:block>
+    <div class="content">
+    	<th:block th:include="common/side"></th:block>
+    	 <div class="sss-content">
+            <div class="page-title">블랙리스트 관리</div>
+            <!-- 
+             <a href="#" class="s-storeBlackPlusBtn">추가</a></div>            
+             -->
+            <div>
+            	<form action="/admin/searchBlackMember" method="get" id="searchFrm">
+					<th:block th:switch="${type}">
+						<select th:case="id" name="type" class="input-form">
+							<option value="all" >-</option>
+							<option value="nickname" >닉네임</option>
+							<option value="id" selected>아이디</option>
+						</select>
+						<select th:case="nickname" name="type" class="input-form">
+							<option value="all" >-</option>
+							<option value="nickname" selected>닉네임</option>
+							<option value="id" >아이디</option>
+						</select>
+						<select th:case="*" name="type" class="input-form">
+							<option value="all"  selected>-</option>
+							<option value="nickname" >닉네임</option>
+							<option value="id">아이디</option>
+						</select>
+					</th:block>
+					<input type="text" name="keyword" class="input-form" th:value="${keyword}">
+					<input type="hidden" name="reqPage" value="1">
+					<button type="submit" class="btn bc1" onclick="return checkKeyword();">검색</button>
+				</form>
+            </div>
+            <table class="tbl tbl-hover" style="width: 800px;font-size: 15px;">
+                <tr class="tr-3">
+                	<th style="width:10%;"><input type="checkbox" name="memberBlackCheckAll"></th>
+                    <th style="width:12%;">회원번호</th>
+                    <th style="width:12%;">아이디</th>
+                    <th style="width:15%;">닉네임</th>                    
+                    <th style="width:12%;">등급</th>
+                    <th style="width:30%;">등급변경</th>
+                </tr>
+                <tr th:each="member:${list}" class="tr-1 blackTr">
+                	<td><input type="checkbox" class="chk" name="memberBlackCheck"></td>
+                    <td th:text="${member.memberNo}"></td>
+                    <td><a th:href="@{/admin/memberView(memberNo=${member.memberNo})}" th:text="${member.memberId}"></a></td>
+                    <td th:text="${member.memberNickname}"></td>
+                    <td th:if="${member.memberLevel}==4">리뷰블랙</td>
+                    <td th:if="${member.memberLevel}==5">예약블랙</td>
+                    <td th:if="${member.memberLevel}==6">
+                    	<select class="input-level ">
+                    		<option class="blackSelect" value="6" select>전체블랙</option>
+                    		<option class="blackSelect" value="4">리뷰블랙</option>
+                    		<option class="blackSelect" value="5">예약블랙</option>
+                    	</select>
+                    </td>
+                    <td>
+                    	<button class="BlackBtn memberBlackChangeLevel">블랙해제</button>   
+                    	<button th:if="${member.memberLevel}==6" class="BlackBtn memberBlackChangeLevel">등급변경</button>                     
+                    </td>
+                    <td th:if="${member.memberLevel}!=6"></td>
+                    <td th:if="${member.memberLevel}==6">
+                    	<button class="BlackBtn memberBlackChangeLevel">등급변경</button>                    
+                    </td>
+                </tr>
+                <tr style="border-bottom: none;" class="tr-1">
+                	<th></th>
+                	<th></th>
+                	<th></th>
+                	<th></th>
+                	<th></th>
+					<th colspan="1">
+						<button class="BlackBtn checkedMemberBlackChangeLevel">선택블랙해제</button>
+					</th>
+  					<th colspan="1">
+						<button class="BlackBtn checkedMemberBlackChangeLevel">선택등급변경</button>
+					</th>
+				</tr>
+            </table>
+            <div id="pageNavi" th:utext="${pageNavi}"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    	if($(".blackSelect").val()==6){
+    		//$(".blackCancelBtn").css("display","none");
+    		//$(".blackChangeBtn").prop();
+    		
+    	}
+		//$('select[name="foodType"] option[value="' + foodType + '"]').prop("selected", true);
+    	
+	    function checkKeyword(){
+			const keyword = $("[name=keyword]").val();
+			if(keyword==""){	//키워드가 아무값도 없을때
+				alert("검색어를 입력하세요.")
+				return false;
+			}
+		}
+	    $("[name=memberBlackCheckAll]").on("click",function(){
+	        if($(this).is(":checked")){
+	            $("[name=memberBlackCheck]").prop("checked",true);
+	        }
+	        else{
+	            $("[name=memberBlackCheck]").prop("checked", false);
+	        }
+	    });
+	    $(".memberBlackChangeLevel").on("click",function(){
+			//클릭한 버튼 기준으로 해당 행의 회원번호를 가지고 옴
+			const memberNo = $(this).parent().parent().children().eq(1).text();
+			const self = this;
+			//클릭한 버튼 기준으로 해당 행의 선택한 등급
+			//const memberLevel = $(this).parent().prev().children().val();
+			//console.log("memberNo : "+memberNo);
+			//console.log("memberLevel : "+memberLevel);
+			//서버전송에 필요한 데이터는 모두 가져옴(회원번호, 선택한 회원 등급)
+			//서버에 update요청 -> 1. form, 2. a태그
+			//a태그 방식으로
+			$.ajax({
+				url : "/admin/memberBlackChangeLevel",
+				type : "get",
+				data : {memberNo : memberNo},
+				//dataType : "JSON",	//문자열을 배열로 받아옴
+				success : function(result){
+					console.log(result,typeof result);
+					if(result===1){
+						console.log("성공");
+						$(self).parent().parent().remove();
+						alert("등급이 변경되었습니다.");
+					}else{
+						alert("잠시후 다시 시도해주세요.");
+					}
+				},
+				error:function(){
+					console.log("에러");
+				}
+			});
+		});
+		
+		$(".checkedMemberBlackChangeLevel").on("click",function(){
+			const check= $(".chk:checked");		
+			if(check.length==0){
+				alert("선택된 회원이 없습니다.");
+				return;
+			}
+			//체크된 회원 번호를 모두 저장할 배열
+			const no = new Array();
+			
+			//체크된 체크박스 기준으로 회원번호랑, 선택한 등급 가져옴
+			check.each(function(index,item){
+				const memberNo = $(item).parent().next().text();
+				no.push(memberNo);
+				//const memberLevel= $(item).parent().parent().find("select").val();
+				//level.push(memberLevel);
+			});
+			
+			console.log(no,typeof no);
+
+			$.ajax({
+		        url: "/admin/blackMemberCheckedChangeLevel",
+		        type: "get",
+		        data: { no : no },
+		        traditional: true,
+		        success: function(result) {
+		        	if(result==1){
+			            alert("등급 변경이 완료되었습니다.");
+			            //check.each(function(index,item){
+			            //	$(item).parent().parent().remove();
+						//});
+		        	}else{
+		        		alert("등급 변경 실패");
+		        	}
+		            location.reload();
+		            if($(".blackTr").length==0){
+		            	const page= $(".active-page").text()-1;
+		            	console.log(1)
+		            	location.href="/admin/storeBlackList?reqPage="+page;
+		            }
+		            
+		        },
+		        error: function(error) {
+		            console.log("에러");
+		        }
+		    });
+		});
+    </script>
+    <th:block th:include="common/footer"></th:block>
+</body>
+</html>
