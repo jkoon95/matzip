@@ -153,20 +153,22 @@ $.ajax({
                     const maxNum = tableNoAndCapacity[tableNoAndCapacity.length - 1].tableCapacity;
                     //인원수 세팅
                     let peopleNum = Number($("#people").text());
-                    //tableNoArr과 tableCapacityArr 구하기
                     const tableNoArr = [];
                     const tableCapacityArr = [];
-                    for(let i=0; tableNoAndCapacity.length; i++){
+                    for(let i=0; i<tableNoAndCapacity.length; i++){
                       tableNoArr.push(tableNoAndCapacity[i].tableNo);
                       tableCapacityArr.push(tableNoAndCapacity[i].tableCapacity);
                     }
-                    searchTableNo(peopleNum, tableNoArr, tableCapacityArr);
+                    $("#people").text(peopleNum);
+                    //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                    searchTable(peopleNum, tableNoAndCapacity);
                     //-1
                     $("#people-minus").on("click",function(){
                       if(peopleNum>1){
                         peopleNum -= 1;
                         $("#people").text(peopleNum);
-                        searchTableNo(peopleNum, tableNoArr, tableCapacityArr);
+                        //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                        searchTable(peopleNum, tableNoAndCapacity);
                       }
                     });
                     //+1
@@ -174,22 +176,23 @@ $.ajax({
                       if(peopleNum < maxNum){
                         peopleNum += 1;
                         $("#people").text(peopleNum);
-                        searchTableNo(peopleNum, tableNoArr, tableCapacityArr);
+                        //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                        searchTable(peopleNum, tableNoAndCapacity);
                       }
                     });
-
-                    //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
-                    function searchTableNo(peopleNum, tableNoArr, tableCapacityArr){
-                      for(let i=0; i<tableNoArr.length; i++){//100정도면 차고남지...
-                        if(peopleNum <= tableCapacity[i]){
-                          const tableNo = tableNoArr[i];
-                          $("#tableNo").val(tableNo);
-                          console.log(tableNo);
+                    
+                    function searchTable(peopleNum, tableNoAndCapacity){
+                      for(let i=0; i<tableNoArr.length; i++){
+                        if(peopleNum <= tableCapacityArr[i]){
+                          $("#reservePeople").val(tableCapacityArr[i]);
+                          $("#tableNo").val(tableNoArr[i]);
+                          console.log($("#reservePeople").val())
+                          console.log($("#tableNo").val());
                           break;
                         }
                       }
-                    };
-                    
+                    }
+
 
                     //예약완료버튼 활성화
                     if($("#reserveDate").val() != ""

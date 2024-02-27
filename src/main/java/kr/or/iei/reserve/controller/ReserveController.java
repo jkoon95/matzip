@@ -90,7 +90,6 @@ public class ReserveController {
 		int memberNo = 3;//임시로
 		reserve.setMemberNo(memberNo); //원래는 reserve.setMemberNo(Member.getMemberNo()) 이렇게 세션에 있는 정보를 넣어야... 일단 임시로 넣었음.
 		reserve.setReserveStatus(1);
-		int tableNo = Integer.parseInt(reserve.getTableNo());
 		int insertResult = reserveService.insertReserve(reserve, menuNo, servings);
 		return "reserve/reserveList";
 	}
