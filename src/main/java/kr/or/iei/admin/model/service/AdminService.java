@@ -687,5 +687,15 @@ public class AdminService {
 		return result;
 	}
 
+
+
+	public List selectAllReport() {
+		List list = adminDao.selectAllReport();
+		return list;
+	}
+
+
+
+
 	
 }

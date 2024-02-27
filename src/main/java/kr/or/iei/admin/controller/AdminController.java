@@ -1,5 +1,7 @@
 package kr.or.iei.admin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,15 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.iei.admin.model.dto.AdminListData;
 import kr.or.iei.FileUtils;
-import kr.or.iei.admin.model.dao.AdminDao;
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Store;
-import kr.or.iei.store.model.dto.StoreEvidenceData;
-import kr.or.iei.store.model.dto.StoreFileData;
-import kr.or.iei.store.model.dto.StoreInfoData;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -281,6 +279,7 @@ public class AdminController {
 	@GetMapping(value="/reportList")
 	public String reportList() {
 		//신고테이블 조회
+		List list = adminService.selectAllReport();
 		
 		return "admin/reportList";
 	}

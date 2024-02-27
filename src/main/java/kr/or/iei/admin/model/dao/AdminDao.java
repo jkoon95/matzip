@@ -336,6 +336,10 @@ public class AdminDao {
 		return result;
 	}
 
+	public List selectAllReport() {
+		String query = "select * "
+	}
+
 
 	
 }
