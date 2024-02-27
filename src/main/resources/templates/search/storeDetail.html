@@ -121,7 +121,7 @@
       <div>
         <div class="section-title">가게 안내</div>
         <button type="button" class="infoBtn infoAlertBtn"
-          th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}"
+          th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info != null)}"
           onclick="infoAlert()">도움말</button>
         <form id="infoForm" method="post">
           <button type="submit" class="infoBtn"
