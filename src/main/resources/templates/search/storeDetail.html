@@ -103,7 +103,7 @@
       <div>
         <div class="section-title">메뉴 리스트</div>
         <div class="menu" style="height:360px; overflow-y: auto;">
-          <div th:each="menuList : ${menuList}" style="display: flex; align-items: center; margin-bottom: 10px;">
+          <div th:each="menuList : ${menuList}" style="display: flex; align-items: center; padding: 10px;">
             <!-- <img th:src="@{'/store/menu/' + ${menuList.menuImg}}"
             style="max-width:140px; max-height:140px; margin-right: 10px;"> -->
             <img th:src="@{'/photo/store/' + ${menuList.menuImg}}"
@@ -240,14 +240,16 @@
       </div>
       <button class="review-more-btn" id="more-btn">리뷰 더보기</button>
     </div>
-    <!-- 맛집 슬라이드 -->
     
+    <!-- 맛집 슬라이드 -->
     <div class="swiper">
       <h2>인근 역 맛집</h2>
       <br>
       <div class="swiper-wrapper">
-        <div class="swiper-slide" th:each="imgPath : ${imgList}">
-        	<img th:src="@{/photo/store/{imgPath}(imgPath=${imgPath})}" />
+        <div class="swiper-slide" th:each="store : ${storeList}">
+        	<a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+	            <img th:src="@{/photo/store/{storeImg}(storeImg=${store.storeImg})}" />
+	        </a>
         </div>
       </div>
       <div class="swiper-pagination"></div>
@@ -349,11 +351,12 @@
         },
         loop: true,
         slidesPerView: 2,
-        spaceBetween: 10,
+        spaceBetween: 7,
         centeredSlides: true,
 
         pagination: {
           el: '.swiper-pagination',
+          clickable: true,
         },
 
         navigation: {
