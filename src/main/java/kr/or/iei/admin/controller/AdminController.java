@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletResponse;
-import kr.iei.admin.model.dto.AdminListData;
 import kr.or.iei.FileUtils;
+import kr.or.iei.admin.model.dto.AdminListData;
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
@@ -276,12 +276,15 @@ public class AdminController {
 			return 0;
 		}
 	}
+	//신고 목록
 	@GetMapping(value="/reportList")
-	public String reportList() {
-		//신고테이블 조회
-		List list = adminService.selectAllReport();
-		
+	public String reportList(int reqPage, Model model) {
+		AdminListData ald = adminService.selectAllReport(reqPage);
+		model.addAttribute("list",ald.getList());
+		model.addAttribute("pageNavi",ald.getPageNavi());
 		return "admin/reportList";
+		//List list = adminService.selectAllReport();
+		//model.addAttribute("list", list);	
 	}
 	
 	

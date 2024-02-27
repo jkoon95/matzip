@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import kr.iei.admin.model.dto.AdminListData;
+import jakarta.mail.search.IntegerComparisonTerm;
+import kr.or.iei.admin.model.dto.AdminListData;
+import kr.or.iei.admin.model.dto.Report;
 import kr.or.iei.admin.model.dao.AdminDao;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.dto.Member;
@@ -689,9 +691,86 @@ public class AdminService {
 
 
 
-	public List selectAllReport() {
-		List list = adminDao.selectAllReport();
-		return list;
+	public AdminListData selectAllReport(int reqPage) {
+		/*
+		List<Report> list = adminDao.selectAllReport();
+		for(Report r : list) {
+			if(r.getReportType()==3) {
+				int storeNo = Integer.valueOf(r.getReportTarget());
+				Store store = adminDao.selectReportStore(storeNo);
+				r.setStoreName(store.getStoreName());
+			}else {
+				Member member = adminDao.selectReportMember(r.getReportTarget());
+				r.setMemberNo2(member.getMemberNo());
+				r.setMemberId2(member.getMemberId());
+			}
+		}*/
+		//return list;
+		
+		int numPerPage = 5;
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage + 1;
+		List<Report> list = adminDao.selectAllReport(start,end);
+		for(Report r : list) {
+			if(r.getReportType()==3) {
+				int storeNo = Integer.valueOf(r.getReportTarget());
+				Store store = adminDao.selectReportStore(storeNo);
+				r.setStoreName(store.getStoreName());
+			}else {
+				Member member = adminDao.selectReportMember(r.getReportTarget());
+				r.setMemberNo2(member.getMemberNo());
+				r.setMemberId2(member.getMemberId());
+			}
+		}
+
+		int totalCount = adminDao.selectAllReportCount();
+		int totalPage = 0;
+		if(totalCount%numPerPage==0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+		
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize +1;
+				
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/reportList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/admin/reportList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/reportList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/reportList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+		
 	}
 
 
