@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.ClosedDayRowMapper;
 import kr.or.iei.store.model.dto.Menu;
@@ -635,4 +636,19 @@ public class SearchDao {
 		Double avgStar = jdbc.queryForObject(query, Double.class,params);
 		return avgStar != null ? avgStar : 0.0;
 	}
+
+	public int insertReportStore(int memberNo, int storeNo, String reason) {
+		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,3)";
+		Object[] params = {memberNo,reason,storeNo};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+	
+	public int insertReportReview(int memberNo, String reviewWriter, String reason) {
+		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,1)";
+		Object[] params = {memberNo,reason,reviewWriter};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+	
 }

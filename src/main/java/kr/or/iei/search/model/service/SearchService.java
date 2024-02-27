@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.notice.model.dto.NoticeListData;
 import kr.or.iei.search.model.dao.SearchDao;
 import kr.or.iei.search.model.dto.SearchListData;
@@ -428,5 +429,19 @@ public class SearchService {
 		double avgStar = searchDao.selectAvgStar(storeNo);
 		return avgStar;
 	}
+
+	@Transactional
+	public int insertReportStore(int memberNo, int storeNo, String reason) {
+		int result = searchDao.insertReportStore(memberNo,storeNo,reason); 
+		return result;
+	}
+	
+	@Transactional
+	public int insertReportReview(int memberNo, String reviewWriter, String reason) {
+		int result = searchDao.insertReportReview(memberNo,reviewWriter,reason); 
+		return result;
+	}
+
+
 
 }
