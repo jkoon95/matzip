@@ -92,6 +92,11 @@
         $(document).ready(function() {
           $('select').niceSelect();
         });
+
+		function conveyStoreInfoToDetail(element){
+    		const storeNo = element.getAttribute('data-store-no');
+    		 location.href="/search/conveyStoreInfoToDetail?storeNo=" + storeNo;    	    		
+    	}
 	</script>
 <th:block th:include="common/footer"></th:block>
 </body>
