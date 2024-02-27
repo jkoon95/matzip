@@ -267,7 +267,7 @@ public class AdminDao {
 		return result;
 	}
 
-	public List selectMemberStoreList(int start, int end) {
+	public List selectMemberBlackList(int start, int end) {
 		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) order by 1)m) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {start,end};
 		List list = jdbc.query(query,originMemberRowMapper ,params);
@@ -278,6 +278,62 @@ public class AdminDao {
 		String query="select count(*) from member_tbl where member_level in(4,5,6)";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
+	}
+
+	public List selectSearchBlackMemberAll(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) and (member_nickname || member_id like '%'||?||'%') ORDER BY 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, originMemberRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchBlackMemberid(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) and (member_id like '%'||?||'%') ORDER BY 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, originMemberRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchBlackSMemberNickName(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) and (member_nickname like '%'||?||'%') ORDER BY 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, originMemberRowMapper ,params);
+		return list;
+	}
+
+	public int allBlackMemberTotalCount(String keyword) {
+		String query = "SELECT count(*) from member_tbl where member_level in(4,5,6) and (member_nickname || member_id like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int blackMemberIdTotalCount(String keyword) {
+		String query = "SELECT count(*) from member_tbl where member_level in(4,5,6) and (member_id like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int blackMemberNickNameTotalCount(String keyword) {
+		String query = "SELECT count(*) from member_tbl where member_level in(4,5,6) and (member_nickname like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int updateMemberLevel(int memberNo, int memberLevel) {
+		String query="update member_tbl set member_level=? where member_no=?";
+		Object[] params = {memberLevel,memberNo};
+		int result=jdbc.update(query,params);
+		return result;
+	}
+
+	public int updateMemberBlackCancel(int memberNo) {
+		String query="update member_tbl set member_level=3 where member_no=?";
+		Object[] params = {memberNo};
+		int result=jdbc.update(query,params);
+		return result;
 	}
 
 

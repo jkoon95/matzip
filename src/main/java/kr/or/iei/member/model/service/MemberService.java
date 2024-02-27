@@ -12,8 +12,8 @@ public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
 
-	public Member selectOneMember(String memberId, String memberPw, int memberLevel) {
-		Member member = memberDao.selectOneMember(memberId,memberPw,memberLevel);
+	public Member selectOneMember(String memberId, String memberPw) {
+		Member member = memberDao.selectOneMember(memberId,memberPw);
 		return member;
 	}
 	@Transactional

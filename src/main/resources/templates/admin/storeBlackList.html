@@ -26,16 +26,13 @@
     font-size: 15px;
 }
 .BlackBtn{
-	border-radius: 5px;
+	/*border-radius: 5px;*/
 	border: none;
 	color: #252323;
     height: 40px;
     padding: 5px;
-}
-.BlackBtn:hover{
-	border-radius: 5px;
-    /* width: 70px; */
     cursor: pointer;
+    border: 1px solid #ccc;
 }
 </style>
 <body>
@@ -43,7 +40,7 @@
     <div class="content">
     	<th:block th:include="common/side"></th:block>
     	 <div class="sss-content">
-            <div class="page-title">블랙리스트 관리</div>
+            <a href="/admin/storeBlackList?reqPage=1" class="page-title">매장 블랙리스트</a>
             <!-- 
              <a href="#" class="s-storeBlackPlusBtn">추가</a></div>            
              -->
@@ -121,6 +118,7 @@
 	            $("[name=storeBlackCheck]").prop("checked", false);
 	        }
 	    });
+	    
 	    $(".storeBlackChangeLevel").on("click",function(){
 			const storeNo = $(this).parent().parent().children().eq(1).text();
 			const self = this;
@@ -138,10 +136,12 @@
 						alert("잠시후 다시 시도해주세요.");
 					}
 					const page= $(".active-page").text()-1;      
-		            if($(".blackTr").length==0){
-		            	location.href="/admin/storeBlackList?reqPage="+page;
-		            }else{
-						location.reload();         	
+		            if(page>0){
+			            if($(".blackTr").length==0){
+			            	location.href="/admin/storeBlackList?reqPage="+page;
+			            }else{
+							location.reload();         	
+			            }		            	
 		            }
 				},
 				error:function(){
@@ -165,7 +165,7 @@
 				no.push(memberNo);
 			});
 			
-			console.log(no,typeof no);
+			//console.log(no,typeof no);
 			
 			$.ajax({
 		        url: "/admin/blackStoreCheckedChangeLevel",
@@ -182,10 +182,12 @@
 		        		alert("등급 변경 실패");
 		        	}
 		            const page= $(".active-page").text()-1;      
-		            if($(".blackTr").length==0){
-		            	location.href="/admin/storeBlackList?reqPage="+page;
-		            }else{
-						location.reload();         	
+		            if(page>0){
+			            if($(".blackTr").length==0){
+			            	location.href="/admin/storeBlackList?reqPage="+page;
+			            }else{
+							location.reload();         	
+			            }		            	
 		            }
 		        },
 		        error: function(error) {
