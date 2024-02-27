@@ -113,6 +113,7 @@ public class MemberController {
 	public String mystorepage() {
 		return "member/mystorepage";
 	}
+	
 	@PostMapping(value="storeupdate")
 	public String storeUpdate(Member m, String emailAdress, Model model,@SessionAttribute Member member) {
 		int result = memberService.storeUpdate(m);
@@ -176,5 +177,9 @@ public class MemberController {
 	@GetMapping(value="pwChange")
 	public String pwChange() {
 		return "member/pwChangeFrm";
+	}
+	@GetMapping(value="adminpage")
+	public String adminpage() {
+		return "member/adminPage";
 	}
 }
