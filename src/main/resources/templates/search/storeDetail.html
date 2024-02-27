@@ -143,9 +143,9 @@
     </div>
 
     <div class="store-reserve">
-      <form id="reserve-form" action="/reserve" method="post">
+      <form id="reserve-form" action="/reserve/reserveFrm" method="post">
         <button type="submit" class="btn" id="reserve-btn"
-          th:if="${session.member == null || session.member.memberLevel == 3}">예약하기</button>
+          th:if="${session.member == null || session.member.memberLevel == 3 || session.member.memberLevel == 4}">예약하기</button>
         <input type="hidden" name="storeNo" th:value="${store.storeNo}">
       </form>
     </div>

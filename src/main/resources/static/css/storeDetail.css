@@ -102,6 +102,10 @@ a {
   padding: 10px;
   font-size: 16px;
 }
+#infoContent:focus{
+  outline: none;
+}
+
 
 /* 예약버튼 디자인 */
 .store-reserve {
@@ -181,9 +185,9 @@ a {
   margin-left: 10px;
   width: 100%;
   height: 118px;
-  background-color: #F8D64F;
+  background-color: #72B37E;
   color: #fff;
-  border: 2px solid #F8D64F;
+  border: 2px solid #72B37E;
   border-radius: 5px;
   font-size: 22px;
 }
@@ -343,7 +347,7 @@ a {
   float: right;
   height: 30px;
   line-height: 30px;
-  margin-left: 30px;
+  margin-left: 50px;
 }
 
 /* 신고모달 디자인 */
@@ -393,6 +397,23 @@ a {
 
 #reason{
   resize: none;
+}
+
+/* 신고버튼 디자인 */
+#btn-store-report{
+  width: 80px;
+  height: 28px;
+  background-color: #F34A4A;
+  border: 2px solid #F34A4A;
+  color: #fff;
+}
+#btn-store-report:hover{
+  cursor: pointer;
+}
+.btn-review-report {
+  background-color: transparent;
+  border: none;
+  cursor: pointer
 }
 
 /* 슬라이드 디자인 */
