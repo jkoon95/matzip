@@ -29,6 +29,7 @@
     display: flex;
     flex-direction: row;
     border-bottom: 2px solid #ADBC9F;
+    transition: 0.5s;
 }
 .store-all:hover{
 	cursor: pointer;
@@ -70,8 +71,8 @@
 }
 
 .imgScale{
-    width: 125px;
-    height: 125px;
+    width: 131.25px;
+    height: 131.25px;
 }
 
 .heart-text{
