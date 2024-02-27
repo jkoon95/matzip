@@ -103,14 +103,14 @@
       <div>
         <div class="section-title">메뉴 리스트</div>
         <div class="menu" style="height:360px; overflow-y: auto;">
-          <div th:each="menuList : ${menuList}" style="display: flex; align-items: center; padding: 10px;">
+          <div th:each="menuList : ${menuList}" style="display: flex; align-items: center; padding: 15px;">
             <!-- <img th:src="@{'/store/menu/' + ${menuList.menuImg}}"
             style="max-width:140px; max-height:140px; margin-right: 10px;"> -->
             <img th:src="@{'/photo/store/' + ${menuList.menuImg}}"
-              style="max-width:140px; max-height:140px; margin-right: 10px;">
+              style="max-width:140px; max-height:140px; margin-right: 15px;">
             <div style="flex-grow: 1;">
-              <span th:text="${menuList.menuName}" style="display: block; font-weight: bold;"></span>
-              <span th:text="'가격: ' + ${menuList.menuPrice}" style="display: block; font-weight: bold;"></span>
+              <span th:text="${menuList.menuName}" style="display: block; font-weight: bold; font-size:18px;"></span>
+              <span th:text="'가격: ' + ${menuList.menuPrice}" style="display: block; font-weight: bold; font-size:16px;"></span>
             </div>
           </div>
           <div th:if="${#lists.isEmpty(menuList)}">
@@ -119,7 +119,7 @@
         </div>
       </div>
       <div>
-        <div class="section-title">가게 안내</div>
+        <div class="section-title" style="width:377px;">가게 안내</div>
         <button type="button" class="infoBtn infoAlertBtn"
           th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info != null)}"
           onclick="infoAlert()">도움말</button>
