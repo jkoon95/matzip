@@ -170,5 +170,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/* swiper */
 

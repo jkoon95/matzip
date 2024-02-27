@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <script src="/js/storeDetail.js"></script>
 </head>
+
 <body>
   <th:block th:include="common/header"></th:block>
 
@@ -26,8 +27,8 @@
         </div>
         <div class="store-star-wrap">
           <div class="store-report" th:if="${session.member == null or session.member.memberNo != store.memberNo}">
-			<button id="btn-store-report">신고하기</button>
-		  </div>
+            <button id="btn-store-report">신고하기</button>
+          </div>
           <div class="store-star" th:if="${avgStar != 0}" th:text="${avgStar}"></div>
           <div class="store-star" th:if="${avgStar == 0}">(등록된 별점이 없습니다)</div>
           <div class="star-wrap star-wrap2">
@@ -78,13 +79,13 @@
           <div class="store-intro">
 
             <span th:text="${store.storeDescription}"></span>
-
+			
           </div>
           <div class="icon-zone">
-            <a th:if="${store.homePage != null}" th:href="${store.homePage}" target="_blank">
+            <a th:if="${store.homePage != ''}" th:href="${store.homePage}" target="_blank">
               <img src="/img/home.png" width="24px">
             </a>
-            <a th:if="${store.storeSns != null}" th:href="${store.storeSns}" target="_blank">
+            <a th:if="${store.storeSns != ''}" th:href="${store.storeSns}" target="_blank">
               <img src="/img/sns.png" width="24px">
             </a>
           </div>
@@ -140,7 +141,8 @@
         </div>
       </div>
     </div>
-
+    
+	<!-- 예약하기 -->
     <div class="store-reserve">
       <form id="reserve-form" action="/reserve/reserveFrm" method="post">
         <button type="submit" class="btn" id="reserve-btn"
@@ -207,7 +209,7 @@
                 <span th:text="${sr.reviewWriter}" style="font-weight: 600;"></span>
                 <span th:text="${sr.regDate}"></span>
                 <span th:if="${session.member != null and session.member.memberNo == store.memberNo}">
-                	<button class="btn-review-report">신고</button>
+                  <button class="btn-review-report">신고</button>
                 </span>
               </p>
               <p class="review-content" th:text="${sr.reviewContent}" style="white-space: pre-line;"></p>
@@ -226,28 +228,32 @@
           </ul>
           <!-- 리뷰 신고를 위한 정보 -->
           <form id="report-review-form" th:if="${session.member != null}" style="display: none;" method="post">
-			<input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
-			<input type="hidden" name="storeNo" th:value="${store.storeNo}">
-			<input type="hidden" name="reviewWriter" th:value="${sr.reviewWriter}">
-		  </form>
+            <input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
+            <input type="hidden" name="storeNo" th:value="${store.storeNo}">
+            <input type="hidden" name="reviewWriter" th:value="${sr.reviewWriter}">
+          </form>
         </th:block>
       </div>
       <button class="review-more-btn" id="more-btn">리뷰 더보기</button>
     </div>
-    <!-- 인기 맛집 슬라이드 -->
-    <div class="swiper">
-	    <h2>인기 맛집</h2>
-    	<div class="swiper-wrapper">
-    		<div class="swiper-slide"><img src="/photo/store/강남_무궁화반점.jpg"></div>
-	    	<div class="swiper-slide"><img src="/photo/store/건대_장인닭갈비.jpg"></div>
-	    	<div class="swiper-slide"><img src="/photo/store/당산_허브족발.jpg"></div>
-    	</div>
-    	<div class="swiper-pagination"></div>
-    	<div class="swiper-button-prev"></div>
-    	<div class="swiper-button-next"></div>
-    	<div class="swiper-scrollbar"></div>
-    </div>
+    <!-- 맛집 슬라이드 -->
     
+    <div class="swiper">
+      <h2>인근역 맛집</h2>
+      <br>
+      
+      <div class="swiper-wrapper">
+      
+        <div class="swiper-slide" th:each="imgPath : ${imgList}">
+        	<img th:src="@{/photo/store/{imgPath}(imgPath=${imgPath})}" />
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+
     <div class="store-report-wrap" th:if="${session.member != null}">
       <div class="report-modal">
         <div class="modal-top">
@@ -266,7 +272,10 @@
         </div>
       </div>
     </div>
-    
+    <br><br>
+
+	
+	
   </div>
 
   <th:block th:include="common/footer"></th:block>
@@ -279,10 +288,10 @@
       searchAddressToCoordinate("[[${store.storeAddr}]]");
 
       /* 별점 색칠하기 */
-      const avgStar = [[${avgStar}]];
+      const avgStar = [[${ avgStar }]];
       const percent = (avgStar / 5) * 100;
       $('.star-on').css('width', percent + '%');
-      
+
       /* 예약하기 버튼 이벤트 */
       $("#reserve-btn").click(function (e) {
         /* Thymeleaf를 사용하여 세션의 회원 정보를 확인 */
@@ -293,71 +302,68 @@
           alert("회원 로그인 후 이용해주세요."); // 알림 메시지 출력
         }
       });
-      
+
       /* 신고 모달 */
-      $("#btn-store-report").on("click", function(e) {
-    	  const loggedIn = [[${ session.member != null }]];
-    	  if (!loggedIn) {
-              e.preventDefault(); // 기본 이벤트(링크 이동) 방지
-              alert("로그인 후 신고해주세요."); // 알림 메시지 출력
-            } else{
+      $("#btn-store-report").on("click", function (e) {
+        const loggedIn = [[${ session.member != null }]];
+        if (!loggedIn) {
+          e.preventDefault(); // 기본 이벤트(링크 이동) 방지
+          alert("로그인 후 신고해주세요."); // 알림 메시지 출력
+        } else {
           $(".store-report-wrap").css("display", "flex");
-            }
+        }
       });
-      $("#store-close-btn").on("click", function() {
-          $(".store-report-wrap").css("display", "none");
+      $("#store-close-btn").on("click", function () {
+        $(".store-report-wrap").css("display", "none");
       });
       // 리뷰 신고
-      $(".btn-review-report").click(function() {
-    	  var memberNo = $("input[name='memberNo']").val();
-    	  var storeNo = $("input[name='storeNo']").val();
-    	  var reviewWriter = $("input[name='reviewWriter']").val();
-    	  
-    	  if (confirm("신고하시겠습니까?")) {
-    		  $.ajax({
-    			  type: "POST",
-    			  url: "/search/reportReview",
-    			  data: {
-    		          memberNo: memberNo,
-    		          storeNo: storeNo,
-    		          reviewWriter: reviewWriter
-    		      },
-    			  success: function(response) {
-    				  alert("신고가 접수되었습니다.");
-    			  },
-    			  error: function(xhr, status, error) {
-    				  console.error(xhr.responseText);
-    			  }
-    		  });
-    	  }
+      $(".btn-review-report").click(function () {
+        var memberNo = $("input[name='memberNo']").val();
+        var storeNo = $("input[name='storeNo']").val();
+        var reviewWriter = $("input[name='reviewWriter']").val();
+
+        if (confirm("신고하시겠습니까?")) {
+          $.ajax({
+            type: "POST",
+            url: "/search/reportReview",
+            data: {
+              memberNo: memberNo,
+              storeNo: storeNo,
+              reviewWriter: reviewWriter
+            },
+            success: function (response) {
+              alert("신고가 접수되었습니다.");
+            },
+            error: function (xhr, status, error) {
+              console.error(xhr.responseText);
+            }
+          });
+        }
       });
+      /* 슬라이드swiper */
       const swiper = new Swiper('.swiper', {
-    	  // Optional parameters
-    	  autoplay: {
-    	    delay: 5000,
-    	  },
-    	  loop: true,
+        autoplay: {
+          delay: 5000,
+        },
+        loop: true,
 
-    	  // If we need pagination
-    	  pagination: {
-    	    el: '.swiper-pagination',
-    	  },
+        pagination: {
+          el: '.swiper-pagination',
+        },
 
-    	  // Navigation arrows
-    	  navigation: {
-    	    nextEl: '.swiper-button-next',
-    	    prevEl: '.swiper-button-prev',
-    	  },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
 
-    	  // And if we need scrollbar
-    	  scrollbar: {
-    	    el: '.swiper-scrollbar',
-    	  },
-    	});
+        scrollbar: {
+          el: '.swiper-scrollbar',
+        },
+      });
     });
 
   </script>
-  
+
 </body>
 
 </html>

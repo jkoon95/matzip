@@ -650,5 +650,12 @@ public class SearchDao {
 		int result = jdbc.update(query, params);
 		return result;
 	}
+
+	public List selectStoreImg(String subwayName) {
+		String query = "select store_img from store_tbl where subway_name=?";
+		Object[] params = {subwayName};
+		List list = jdbc.queryForList(query,String.class,params);
+		return list;
+	}
 	
 }
