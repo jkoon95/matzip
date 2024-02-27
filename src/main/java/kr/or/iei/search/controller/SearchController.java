@@ -281,19 +281,13 @@ public class SearchController {
 	}
 	
 	@PostMapping(value="/reportReview")
-	public String insertReportReview(int memberNo, int storeNo, String reviewWriter, String reason, Model model) {
-		int result = searchService.insertReportReview(memberNo, reviewWriter, reason);
+	public String insertReportReview(int memberNo, int storeNo, String reviewWriter, Model model) {
+		int result = searchService.insertReportReview(memberNo, reviewWriter);
 		if(result > 0) {
-			model.addAttribute("title", "신고 성공");
-			model.addAttribute("msg", "리뷰 신고가 접수되었습니다.");
-			model.addAttribute("icon", "success");
+			return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + storeNo;
 		} else {
-			model.addAttribute("title", "신고 실패");
-			model.addAttribute("msg", "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
-			model.addAttribute("icon", "warning");
+			return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + storeNo;
 		}
-		model.addAttribute("loc", "/search/conveyStoreInfoToDetail?storeNo="+storeNo);
-		return "common/msg";
 	}
 	
 }

@@ -437,8 +437,8 @@ public class SearchService {
 	}
 	
 	@Transactional
-	public int insertReportReview(int memberNo, String reviewWriter, String reason) {
-		int result = searchDao.insertReportReview(memberNo,reviewWriter,reason); 
+	public int insertReportReview(int memberNo, String reviewWriter) {
+		int result = searchDao.insertReportReview(memberNo,reviewWriter); 
 		return result;
 	}
 
