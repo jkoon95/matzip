@@ -110,11 +110,11 @@
               style="max-width:140px; max-height:140px; margin-right: 10px;">
             <div style="flex-grow: 1;">
               <span th:text="${menuList.menuName}" style="display: block; font-weight: bold;"></span>
-              <span th:text="'가격: ' + ${menuList.menuPrice}" style="display: block;"></span>
+              <span th:text="'가격: ' + ${menuList.menuPrice}" style="display: block; font-weight: bold;"></span>
             </div>
           </div>
           <div th:if="${#lists.isEmpty(menuList)}">
-            <span>등록된 메뉴가 없습니다.</span>
+            <span style="font-weight: 600; padding: 10px; font-size: 22px;">등록된 메뉴가 없습니다.</span>
           </div>
         </div>
       </div>
