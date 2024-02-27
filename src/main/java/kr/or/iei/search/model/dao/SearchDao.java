@@ -657,5 +657,12 @@ public class SearchDao {
 		List list = jdbc.queryForList(query,String.class,params);
 		return list;
 	}
+
+	public List selectStoreNo(String subwayName) {
+		String query = "select store_no from store_tbl where subway_name=?";
+		Object[] params = {subwayName};
+		List list = jdbc.queryForList(query,Integer.class,params);
+		return list;
+	}
 	
 }

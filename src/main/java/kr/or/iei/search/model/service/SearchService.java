@@ -447,6 +447,11 @@ public class SearchService {
 		return storeImgList;
 	}
 
+	public List selectStoreNo(String subwayName) {
+		List storeNoList = searchDao.selectStoreNo(subwayName);
+		return storeNoList;
+	}
+
 
 
 }
