@@ -18,9 +18,9 @@ public class StorePlusRowMapper implements RowMapper<Store>{
 		store.setStoreName(rs.getString("STORE_NAME"));
 		store.setStoreAddr(rs.getString("STORE_ADDR"));
 		store.setStorePhone(rs.getString("STORE_PHONE"));
-		store.setHomePage(rs.getString("HOMEPAGE"));
-		store.setStoreSns(rs.getString("STORE_SNS"));
-		store.setStoreDescription(rs.getString("STORE_DESCRIPTION"));
+		store.setHomePage(rs.getString("HOMEPAGE") != null ? rs.getString("HOMEPAGE") : "");
+		store.setStoreSns(rs.getString("STORE_SNS") != null ? rs.getString("STORE_SNS") : "");
+		store.setStoreDescription(rs.getString("STORE_DESCRIPTION") != null ? rs.getString("STORE_DESCRIPTION") : "");
 		store.setFoodType(rs.getString("FOOD_TYPE"));
 		store.setStoreImg(rs.getString("STORE_IMG"));
 		store.setOpeningHour(rs.getString("OPENING_HOUR"));

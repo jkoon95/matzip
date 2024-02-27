@@ -113,8 +113,7 @@ $.ajax({
                 button.text(time);
                 //그 시각이 만석인 시각일 때
                 if(timeSet.fullTimes.indexOf(time) != -1){
-                  button.attr("class", "fullTime");//취소선 생기고 배경색 옅어지게
-                  button.css("text-decoration", "line-through;");//일단 임시로 css
+                  button.attr("class", "fullTime");//fulltime 클래스 추가
                   button.prop("disabled", true);//클릭 못하게
                 };
                 $(".time-area .li-content").append(button);
@@ -161,14 +160,14 @@ $.ajax({
                     }
                     $("#people").text(peopleNum);
                     //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
-                    searchTable(peopleNum, tableNoAndCapacity);
+                    searchTable(peopleNum, tableNoArr, tableCapacityArr);
                     //-1
                     $("#people-minus").on("click",function(){
                       if(peopleNum>1){
                         peopleNum -= 1;
                         $("#people").text(peopleNum);
                         //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
-                        searchTable(peopleNum, tableNoAndCapacity);
+                        searchTable(peopleNum, tableNoArr, tableCapacityArr);
                       }
                     });
                     //+1
@@ -177,11 +176,11 @@ $.ajax({
                         peopleNum += 1;
                         $("#people").text(peopleNum);
                         //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
-                        searchTable(peopleNum, tableNoAndCapacity);
+                        searchTable(peopleNum, tableNoArr, tableCapacityArr);
                       }
                     });
                     
-                    function searchTable(peopleNum, tableNoAndCapacity){
+                    function searchTable(peopleNum, tableNoArr, tableCapacityArr){
                       for(let i=0; i<tableNoArr.length; i++){
                         if(peopleNum <= tableCapacityArr[i]){
                           $("#reservePeople").val(tableCapacityArr[i]);

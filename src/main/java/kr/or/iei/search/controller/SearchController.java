@@ -52,14 +52,14 @@ public class SearchController {
 
 		
 		List list = searchService.selectTopStore(stationName,number);
-		System.out.println("탑5:" + list);
+		//System.out.println("탑5:" + list);
 		
 		
 		
 		if(list.isEmpty()) {
 			return null;
 		}else {
-			System.out.println(list);
+			System.out.println("탑5:" + list);
 			return list;
 		}
 	}
@@ -90,10 +90,10 @@ public class SearchController {
 		//List list = storeService.ajaxStoreList(stationName);
 		
 		int totalCount = searchService.storeTotalCount(stationName);
-		System.out.println(totalCount);//성공
+		//System.out.println(totalCount);//성공
 	
 		List searchList = searchService.selectSearchList(start,amount,stationName);
-		System.out.println(searchList);
+		//System.out.println(searchList);
 		
 		TwoList twoList = new TwoList();
 		twoList.setTotalCount(totalCount);
@@ -191,8 +191,8 @@ public class SearchController {
 		
 		model.addAttribute("searchList",sld.getList());
 		model.addAttribute("pageNavi",sld.getPageNavi());
-		System.out.println(sld.getList());
-		System.out.println(sld.getPageNavi());
+		//System.out.println(sld.getList());
+		//System.out.println(sld.getPageNavi());
 		return "search/searchStoreList";
 	}
 	
@@ -261,6 +261,32 @@ public class SearchController {
 			model.addAttribute("icon", "warning");
 			model.addAttribute("loc", "/search/conveyStoreInfoToDetail?storeNo="+storeNo);
 			return "common/msg";
+		}
+	}
+	
+	@PostMapping(value="/reportStore")
+	public String insertReportStore(int memberNo, int storeNo, String reason, Model model) {
+		int result = searchService.insertReportStore(memberNo, storeNo, reason);
+		if(result > 0) {
+			model.addAttribute("title", "신고 성공");
+			model.addAttribute("msg", "고객님의 신고가 접수되었습니다.");
+			model.addAttribute("icon", "success");
+		} else {
+			model.addAttribute("title", "신고 실패");
+			model.addAttribute("msg", "처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+			model.addAttribute("icon", "warning");
+		}
+		model.addAttribute("loc", "/search/conveyStoreInfoToDetail?storeNo="+storeNo);
+		return "common/msg";
+	}
+	
+	@PostMapping(value="/reportReview")
+	public String insertReportReview(int memberNo, int storeNo, String reviewWriter, Model model) {
+		int result = searchService.insertReportReview(memberNo, reviewWriter);
+		if(result > 0) {
+			return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + storeNo;
+		} else {
+			return "redirect:/search/conveyStoreInfoToDetail?storeNo=" + storeNo;
 		}
 	}
 	

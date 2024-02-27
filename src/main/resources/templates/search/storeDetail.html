@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>맛집 상세 페이지</title>
   <link rel="stylesheet" href="/css/storeDetail.css">
-  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1tepft4p0ed&submodules=geocoder"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <script src="/js/storeDetail.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </head>
-
 <body>
   <th:block th:include="common/header"></th:block>
+
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1tepft4p0ed&submodules=geocoder"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
   <div class="page-content">
     <div class="store-head">
       <div class="img-zone" style="width:520px;">
@@ -24,28 +25,28 @@
           <h1 th:text="${store.storeName}"></h1>
         </div>
         <div class="store-star-wrap">
-	        <div class="store-report">
-	        	신고하기
-	        </div>
-	        <div class="store-star" th:if="${avgStar != 0}" th:text="${avgStar}"></div>
-	        <div class="store-star" th:if="${avgStar == 0}">(등록된 별점이 없습니다)</div>
-	        <div class="star-wrap star-wrap2">
-			    <span class="material-icons">star</span>
-			    <span class="material-icons">star</span>
-			    <span class="material-icons">star</span>
-			    <span class="material-icons">star</span>
-			    <span class="material-icons">star</span>
-			    <div class="star-on">
-			      <div class="star-wrap star-on-wrap">
-			        <span class="material-icons">star</span>
-			        <span class="material-icons">star</span>
-			        <span class="material-icons">star</span>
-			        <span class="material-icons">star</span>
-			        <span class="material-icons">star</span>
-			      </div>
-			    </div>
-			</div>
-	        <!-- <div class="store-like">하트</div>  -->
+          <div class="store-report" th:if="${session.member == null or session.member.memberNo != store.memberNo}">
+			<button id="btn-store-report">신고하기</button>
+		  </div>
+          <div class="store-star" th:if="${avgStar != 0}" th:text="${avgStar}"></div>
+          <div class="store-star" th:if="${avgStar == 0}">(등록된 별점이 없습니다)</div>
+          <div class="star-wrap star-wrap2">
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <div class="star-on">
+              <div class="star-wrap star-on-wrap">
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="store-like">하트</div>  -->
         </div>
         <div class="store-info">
           <div class="store-addr">
@@ -141,11 +142,12 @@
     </div>
 
     <div class="store-reserve">
-    	<form id="reserve-form" action="/reserve" method="post">
-        	<button type="submit" class="btn" id="reserve-btn" th:if="${session.member == null || session.member.memberLevel == 3}">예약하기</button>
-        	<input type="hidden" name="storeNo" th:value="${store.storeNo}">
-	    </form>
-	</div>
+      <form id="reserve-form" action="/reserve/reserveFrm" method="post">
+        <button type="submit" class="btn" id="reserve-btn"
+          th:if="${session.member == null || session.member.memberLevel == 3 || session.member.memberLevel == 4}">예약하기</button>
+        <input type="hidden" name="storeNo" th:value="${store.storeNo}">
+      </form>
+    </div>
 
     <div class="store-review">
       <h2>리뷰</h2>
@@ -202,9 +204,11 @@
                       class="material-icons star1">star</span><span class="material-icons star1">star</span><span
                       class="material-icons star1">star</span><span class="material-icons star1">star</span></span>
                 </span>
-                <span th:text="${sr.reviewWriter}"></span>
+                <span th:text="${sr.reviewWriter}" style="font-weight: 600;"></span>
                 <span th:text="${sr.regDate}"></span>
-                <span>신고</span>
+                <span th:if="${session.member != null and session.member.memberNo == store.memberNo}">
+                	<button class="btn-review-report">신고</button>
+                </span>
               </p>
               <p class="review-content" th:text="${sr.reviewContent}" style="white-space: pre-line;"></p>
               <textarea name="reviewContent" class="input-form" th:text="${sr.reviewContent}"
@@ -220,29 +224,66 @@
               </p>
             </li>
           </ul>
+          <!-- 리뷰 신고를 위한 정보 -->
+          <form id="report-review-form" th:if="${session.member != null}" style="display: none;" method="post">
+			<input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
+			<input type="hidden" name="storeNo" th:value="${store.storeNo}">
+			<input type="hidden" name="reviewWriter" th:value="${sr.reviewWriter}">
+		  </form>
         </th:block>
       </div>
       <button class="review-more-btn" id="more-btn">리뷰 더보기</button>
     </div>
-    <!-- 주변 맛집 슬라이드 -->
-	 <div class="slider">
-		<div><img src="/img/home.png" alt="Image 1"></div>
-		<div><img src="/img/home.png" alt="Image 2"></div>
-		<div><img src="/img/home.png" alt="Image 3"></div>
-	  	<!-- 추가 이미지들을 원하는 만큼 추가 -->
-	</div>
-	
+    <!-- 인기 맛집 슬라이드 -->
+    <div class="swiper">
+	    <h2>인기 맛집</h2>
+    	<div class="swiper-wrapper">
+    		<div class="swiper-slide"><img src="/photo/store/강남_무궁화반점.jpg"></div>
+	    	<div class="swiper-slide"><img src="/photo/store/건대_장인닭갈비.jpg"></div>
+	    	<div class="swiper-slide"><img src="/photo/store/당산_허브족발.jpg"></div>
+    	</div>
+    	<div class="swiper-pagination"></div>
+    	<div class="swiper-button-prev"></div>
+    	<div class="swiper-button-next"></div>
+    	<div class="swiper-scrollbar"></div>
+    </div>
+    
+    <div class="store-report-wrap" th:if="${session.member != null}">
+      <div class="report-modal">
+        <div class="modal-top">
+          <h2>매장 신고하기</h2>
+        </div>
+        <div class="modal-content">
+          <form action="/search/reportStore" method="post">
+            <div class="input-wrap">
+              <input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
+              <input type="hidden" name="storeNo" th:value="${store.storeNo}">
+              <textarea name="reason" id="reason" rows="6" placeholder="신고 사유를 입력하세요" required></textarea>
+              <input class="modal-btn" id="store-report-btn" type="submit" value="신고">
+              <button class="modal-btn" id="store-close-btn">닫기</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
   </div>
 
-  <script>
-    //지도를 그려주는 함수 실행
-    selectMapList();
-    // 페이지 로드 시 실행되는 함수(store.storeAddr 값을 가져와서 searchAddressToCoordinate 전달)
-    $(document).ready(function () {
-      searchAddressToCoordinate("[[${store.storeAddr}]]");
-    });
+  <th:block th:include="common/footer"></th:block>
 
+  <script>
+    // 페이지 로드 시 실행되는 함수
     $(document).ready(function () {
+      /* 네이버 지도 */
+      selectMapList();
+      searchAddressToCoordinate("[[${store.storeAddr}]]");
+
+      /* 별점 색칠하기 */
+      const avgStar = [[${avgStar}]];
+      const percent = (avgStar / 5) * 100;
+      $('.star-on').css('width', percent + '%');
+      
+      /* 예약하기 버튼 이벤트 */
       $("#reserve-btn").click(function (e) {
         /* Thymeleaf를 사용하여 세션의 회원 정보를 확인 */
         const loggedIn = [[${ session.member != null }]];
@@ -252,26 +293,71 @@
           alert("회원 로그인 후 이용해주세요."); // 알림 메시지 출력
         }
       });
-      /* 별점 색칠하기 */
-      var avgStar = [[${avgStar}]];
-      var percent = (avgStar / 5) * 100;
-      $('.star-on').css('width', percent + '%');
-      /* 슬라이드 */
-      $('.slider').slick({
-	      // 옵션 설정
-	      autoplay: true,         // 자동 재생 설정 (true or false)
-	      dots: true,             // 페이지 네비게이션 점 보이기 설정 (true or false)
-	      arrows: true,           // 이전/다음 버튼 보이기 설정 (true or false)
-	      infinite: true,         // 무한 롤링 설정 (true or false)
-	      speed: 500,             // 슬라이드 전환 속도 (밀리초 단위)
-	      slidesToShow: 3,        // 한 화면에 보여줄 슬라이드 개수
-	      slidesToScroll: 1       // 한 번에 넘길 슬라이드 개수
-	    });
-    });
-  
-  </script>
+      
+      /* 신고 모달 */
+      $("#btn-store-report").on("click", function(e) {
+    	  const loggedIn = [[${ session.member != null }]];
+    	  if (!loggedIn) {
+              e.preventDefault(); // 기본 이벤트(링크 이동) 방지
+              alert("로그인 후 신고해주세요."); // 알림 메시지 출력
+            } else{
+          $(".store-report-wrap").css("display", "flex");
+            }
+      });
+      $("#store-close-btn").on("click", function() {
+          $(".store-report-wrap").css("display", "none");
+      });
+      // 리뷰 신고
+      $(".btn-review-report").click(function() {
+    	  var memberNo = $("input[name='memberNo']").val();
+    	  var storeNo = $("input[name='storeNo']").val();
+    	  var reviewWriter = $("input[name='reviewWriter']").val();
+    	  
+    	  if (confirm("신고하시겠습니까?")) {
+    		  $.ajax({
+    			  type: "POST",
+    			  url: "/search/reportReview",
+    			  data: {
+    		          memberNo: memberNo,
+    		          storeNo: storeNo,
+    		          reviewWriter: reviewWriter
+    		      },
+    			  success: function(response) {
+    				  alert("신고가 접수되었습니다.");
+    			  },
+    			  error: function(xhr, status, error) {
+    				  console.error(xhr.responseText);
+    			  }
+    		  });
+    	  }
+      });
+      const swiper = new Swiper('.swiper', {
+    	  // Optional parameters
+    	  autoplay: {
+    	    delay: 5000,
+    	  },
+    	  loop: true,
 
-  <th:block th:include="common/footer"></th:block>
+    	  // If we need pagination
+    	  pagination: {
+    	    el: '.swiper-pagination',
+    	  },
+
+    	  // Navigation arrows
+    	  navigation: {
+    	    nextEl: '.swiper-button-next',
+    	    prevEl: '.swiper-button-prev',
+    	  },
+
+    	  // And if we need scrollbar
+    	  scrollbar: {
+    	    el: '.swiper-scrollbar',
+    	  },
+    	});
+    });
+
+  </script>
+  
 </body>
 
 </html>

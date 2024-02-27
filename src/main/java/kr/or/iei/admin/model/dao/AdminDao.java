@@ -206,7 +206,7 @@ public class AdminDao {
 	}
 
 	public List selectBlackStoreList(int start, int end) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 order by 1)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 order by 3)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {start,end};
 		List list = jdbc.query(query,storeMemberRowMapper ,params);
 		return list;
@@ -219,21 +219,21 @@ public class AdminDao {
 	}
 
 	public List selectSearchBlackStoreAll(int start, int end, String keyword) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name || member_id like '%'||?||'%') ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name || member_id like '%'||?||'%') ORDER BY 3 DESC)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {keyword,start,end};
 		List list = jdbc.query(query, storeMemberRowMapper ,params);
 		return list;
 	}
 
 	public List selectSearchBlackStoreid(int start, int end, String keyword) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (member_id like '%'||?||'%') ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (member_id like '%'||?||'%') ORDER BY 3 DESC)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {keyword,start,end};
 		List list = jdbc.query(query, storeMemberRowMapper ,params);
 		return list;
 	}
 
 	public List selectSearchBlackStoreName(int start, int end, String keyword) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name like '%'||?||'%') ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT member_no,member_id,store_no,store_name,store_phone,store_level from store_tbl join member_tbl using(member_no) where store_level=2 and (store_name like '%'||?||'%') ORDER BY 3 DESC)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {keyword,start,end};
 		List list = jdbc.query(query, storeMemberRowMapper ,params);
 		return list;
@@ -263,6 +263,75 @@ public class AdminDao {
 	public int updatestoreBlackChangeLevel(int storeNo) {
 		String query="update store_tbl set STORE_level=1 where store_no=?";
 		Object[] params= {storeNo};
+		int result=jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectMemberBlackList(int start, int end) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) order by 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {start,end};
+		List list = jdbc.query(query,originMemberRowMapper ,params);
+		return list;
+	}
+
+	public int selectBlackAllMemberCount() {
+		String query="select count(*) from member_tbl where member_level in(4,5,6)";
+		int totalCount = jdbc.queryForObject(query, Integer.class);
+		return totalCount;
+	}
+
+	public List selectSearchBlackMemberAll(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) and (member_nickname || member_id like '%'||?||'%') ORDER BY 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, originMemberRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchBlackMemberid(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) and (member_id like '%'||?||'%') ORDER BY 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, originMemberRowMapper ,params);
+		return list;
+	}
+
+	public List selectSearchBlackSMemberNickName(int start, int end, String keyword) {
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, m.* FROM (SELECT * from member_tbl where member_level in(4,5,6) and (member_nickname like '%'||?||'%') ORDER BY 1)m) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params = {keyword,start,end};
+		List list = jdbc.query(query, originMemberRowMapper ,params);
+		return list;
+	}
+
+	public int allBlackMemberTotalCount(String keyword) {
+		String query = "SELECT count(*) from member_tbl where member_level in(4,5,6) and (member_nickname || member_id like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int blackMemberIdTotalCount(String keyword) {
+		String query = "SELECT count(*) from member_tbl where member_level in(4,5,6) and (member_id like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int blackMemberNickNameTotalCount(String keyword) {
+		String query = "SELECT count(*) from member_tbl where member_level in(4,5,6) and (member_nickname like '%'||?||'%')";
+		Object[] params = {keyword};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+
+	public int updateMemberLevel(int memberNo, int memberLevel) {
+		String query="update member_tbl set member_level=? where member_no=?";
+		Object[] params = {memberLevel,memberNo};
+		int result=jdbc.update(query,params);
+		return result;
+	}
+
+	public int updateMemberBlackCancel(int memberNo) {
+		String query="update member_tbl set member_level=3 where member_no=?";
+		Object[] params = {memberNo};
 		int result=jdbc.update(query,params);
 		return result;
 	}

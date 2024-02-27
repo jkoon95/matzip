@@ -390,9 +390,6 @@ public class AdminService {
 			return null;
 		}
 	}
-
-
-
 	public int updateStoreStatus(int storeNo) {
 		int result = adminDao.updateStoreStatus(storeNo);
 		return result;
@@ -542,5 +539,153 @@ public class AdminService {
 		int result = adminDao.updatestoreBlackChangeLevel(storeNo);
 		return result;
 	}
+
+
+
+	public AdminListData selectAllMemberStore(int reqPage) {
+		int numPerPage = 10;
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage + 1;
+		List list = adminDao.selectMemberBlackList(start,end);
+						
+		int totalCount = adminDao.selectBlackAllMemberCount();
+		int totalPage = 0;
+		if(totalCount%numPerPage==0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+				
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize +1;
+				
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/memberBlackList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/admin/memberBlackList?reqPage="+(pageNo)+"'>";
+					pageNavi += pageNo;
+					pageNavi += "</a></li>";
+			}else {
+					pageNavi += "<li>";
+					pageNavi += "<a class='page-item' href='/admin/memberBlackList?reqPage="+(pageNo)+"'>";
+					pageNavi += pageNo;
+					pageNavi += "</a></li>";
+			}
+			pageNo++;
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+						
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/memberBlackList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+						
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+	}
+
+
+
+	public AdminListData searchBlackMember(int reqPage, String type, String keyword) {
+		int numPerPage = 10;
+
+		int end = reqPage * numPerPage;
+		int start = end - numPerPage + 1;
+						
+		List list = null;
+		if(type.equals("all")) {
+			list = adminDao.selectSearchBlackMemberAll(start,end,keyword);
+		}else if(type.equals("id")) {
+			list = adminDao.selectSearchBlackMemberid(start,end,keyword);
+		}else if(type.equals("nickname")) {
+			list = adminDao.selectSearchBlackSMemberNickName(start,end,keyword);
+		}
+		int totalCount =0;
+		if(type.equals("all")) {
+			totalCount = adminDao.allBlackMemberTotalCount(keyword);
+		}else if(type.equals("id")) {
+			totalCount = adminDao.blackMemberIdTotalCount(keyword);
+		}else if(type.equals("nickname")) {
+			totalCount = adminDao.blackMemberNickNameTotalCount(keyword);
+		}
+				
+
+		int totalPage = 0;
+		if (totalCount % numPerPage == 0) {
+				totalPage = totalCount / numPerPage;
+		} else {
+				totalPage = totalCount / numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+
+
+		int pageNo = ((reqPage - 1) / pageNaviSize) * pageNaviSize + 1;
+
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if (pageNo != 1) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackMember?reqPage=" + (pageNo - 1) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<span class='material-icons'>chevron_left</span>";
+				pageNavi += "</a></li>";
+		}
+		for (int i = 0; i < pageNaviSize; i++) {
+			if (pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackMember?reqPage=" + (pageNo) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			} else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackMember?reqPage=" + (pageNo) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+							
+			if (pageNo > totalPage) {
+					break;
+				}
+		}
+
+		if (pageNo <= totalPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/searchBlackMember?reqPage=" + (pageNo - 1) + "&type="+type+"&keyword="+keyword+"'>";
+				pageNavi += "<span class='material-icons'>chevron_right</span>";
+				pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+	}
+
+
+
+	public int updateMemberBlackChangeLevel(int memberNo, int memberLevel) {
+		int result = adminDao.updateMemberLevel(memberNo,memberLevel);
+		return result;
+	}
+
+
+
+	public int updatememberBlackCancelLevel(int memberNo) {
+		int result = adminDao.updateMemberBlackCancel(memberNo);
+		return result;
+	}
+
 	
 }
