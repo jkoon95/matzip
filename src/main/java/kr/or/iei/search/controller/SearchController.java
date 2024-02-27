@@ -131,7 +131,7 @@ public class SearchController {
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("avgStar", avgStar);
 	    
-		//System.out.println("클릭!!!!!!!!!!!!"+store);
+		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
 		return "search/storeDetail";
 	}
