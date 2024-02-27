@@ -123,6 +123,11 @@ public class SearchController {
 	    List<StoreReview> reviewList = searchService.selectStoreReview(storeNo);
 	    // 상점의 평균 별점 조회(REVIEW_TBL)
 	    double avgStar = searchService.selectAvgStar(storeNo);
+	    // 같은 역 전경사진 조회(STORE_TBL)
+	    List imgList = searchService.selectStoreImg(store.getSubwayName());
+	    // 같은 역 매장번호 조회(STORE_TBL)
+	    List storeNoList = searchService.selectStoreNo(store.getSubwayName());
+	    
 	    
 		model.addAttribute("store",store);
 		model.addAttribute("info", info);
@@ -130,6 +135,9 @@ public class SearchController {
 	    model.addAttribute("closedDayList", closedDayList);
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("avgStar", avgStar);
+		model.addAttribute("imgList", imgList);
+		model.addAttribute("storeNoList", storeNoList);
+		
 	    
 		System.out.println("클릭!!!!!!!!!!!!"+store);
 		
