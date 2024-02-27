@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+ul{
+  list-style: none;
+}
+
+.content-wrap{
+  width: 100%;
+  /*box-sizing: border-box;*/
+  /*
+  padding-left: 10px;
+  padding-right: 9px;
+  */
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 0px;
+}
+
+.article{
+  width: 780px;
+}
+
+.article-title{
+  float:left;
+  text-align: left;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 20px;
+  width: 200px;
+}
+
+.article-title2{
+  float:left;
+  text-align: left;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.article-content{
+  width: 100%; /* =720px */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+  .store-img{
+    flex-grow: 1; /*width: 120px;*/
+    height: 150px;
+  }
+
+  .reserve-info{
+    flex-grow: 2; /*width: 360px;*/
+    height: 150px;
+  }
+
+  .reserve-info .info-area,.people-area,.request-area{
+    margin-bottom: 10px;
+  }
+    .li-title{
+      float: left;
+      width: 70px;
+      margin-right: 10px;
+    }
+    .li-content{
+      float: left;
+    }
+  
+  .reserve-menu{
+    flex-grow: 1; /*width: 120px;*/
+  }
+
+  .btns{
+    flex-grow: 1;
+  }

@@ -1,6 +1,5 @@
 package kr.or.iei.reseve.model.dto;
 
-import java.util.HashMap;
 import java.util.List;
 
 import kr.or.iei.store.model.dto.Menu;

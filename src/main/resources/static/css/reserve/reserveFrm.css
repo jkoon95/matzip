@@ -30,18 +30,15 @@ main {
   font-weight: bold;
   margin-top: 30px;
   margin-bottom: 30px;
+  width: 100%;
+  text-align: center;
+  color: #404040;
 }
 
 .page-content{
   /*flex-grow: 1;*/
   width: 950px;
   box-sizing: border-box;
-}
-
-.page-title{
-  width: 100%;
-  text-align: center;
-  color: #404040;
 }
 
 .content-wrap{

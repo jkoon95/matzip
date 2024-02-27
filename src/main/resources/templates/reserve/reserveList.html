@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <link rel="stylesheet" href="/css/reserve/reserveCssDefault.css">
+  <link rel="stylesheet" href="/css/reserve/reserveList.css">
 </head>
 <body>
 
@@ -10,28 +12,93 @@
   <th:block th:include="common/header"></th:block>
   <!--//헤더-->
 
-  <!--사이드메뉴-->
-  <th:block th:include="common/side-menu">
-  
-  </th:block>
-  <!--//사이드메뉴-->
-
   <main>
-    <!--컨텐츠-->
-	<h3>안녕</h3>
-  
-  <!--//컨텐츠-->
+
+    <div class="main-wrap">
+
+      <!--사이드메뉴-->
+      <th:block th:include="common/side-menu"></th:block>
+      <!--//사이드메뉴-->
+
+      <!--컨텐츠-->
+      <div class="page-content">
+        <!--컨텐츠title-->
+        <div class="page-title">현재 예약 내역</div>
+        <!--//컨텐츠title-->
+
+        <!--컨텐츠wrap-->
+        <div class="content-wrap">
+          
+          <!--각 예약건들 중 1개-->
+          <article class="article float" th:each="rvm : ${afterRvmList}">
+            <div class="article-title" th:text="${rvm.reserveDate}"></div>
+            <div class="article-title2" th:text="${rvm.storeName}"></div>
+            <div class="article-content">
+              <img class="store-img" th:src="${rvm.storeImg}"></img>
+              <div class="reserve-info">
+                <ul>
+                  <li class="info-area float">
+                    <div class="li-title">예약시각</div>
+                    <div class="li-content" th:text="${rvm.reserveTime}"></div>
+                  </li>
+                  <li class="people-area float">
+                    <div class="li-title">예약인원</div>
+                    <div class="li-content" th:text="${rvm.reservePeople}"></div>
+                  </li>
+                  <li class="request-area float">
+                    <div class="li-title">요청사항</div>
+                    <div class="li-content" th:text="${rvm.reserveRequest}"></div>
+                  </li>
+                </ul>
+              </div>
+              <div class="reserve-menu">
+                <ul th:each="${menu : menuServings}">
+                  <li class="menu-name" th:if="${rvm.reserveNo == menu.reserveNo}" th:text="${menu.menuName}"></li>
+                  <li class="servings" th:if="${rvm.reserveNo == menu.reserveNo}" th:text="${menu.servings}"></li>
+                </ul>
+              </div>
+              <div class="btns"></div>
+
+            </div>
+
+          </article>
+          <!--//각 예약건들 중 1개-->
+
+        </div>
+        <!--//컨텐츠wrap-->
+
+        <!--컨텐츠title-->
+        <div class="page-title">과거 예약 내역</div>
+        <!--//컨텐츠title-->
+
+        <!--컨텐츠wrap-->
+        <div class="content-wrap">
+
+          <!--각 예약건들 중 1개-->
+          <article class="article">
+
+          </article>
+          <!--//각 예약건들 중 1개-->
+
+        </div>
+        <!--//컨텐츠wrap-->
+
+      </div>
+      <!--//컨텐츠-->
+
+    </div>
+
   </main>
 
 
+  <script th:inline="javascript">
+    //reserveFrm.js에 storeNo 넘겨주기 위해 이 스크립트를 만들었음
+    const afterRvmList = [[${afterRvmList}]];
+    const beforeRvmList = [[${beforeRvmList}]];
+    const menuServings = [[${menuServings}]];
+  </script>
 
   <script src="/js/reserveList.js"></script>
-
-  <!--ajax-->
-  <script>
-
-  </script>
-  <!--//ajax-->
   
   <!--푸터-->
   <th:block th:include="common/footer"></th:block>
