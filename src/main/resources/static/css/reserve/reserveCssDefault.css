@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  color: #404040;
+  color: #5b5555;
 }
 
 main {
@@ -55,6 +55,7 @@ main {
   text-align: center;
   font-size: large;
   font-weight: bold;
+  color: #404040;
   margin-bottom: 30px;
 }
 
@@ -86,4 +87,45 @@ main {
 .smallBtn-active{
   background: #007fff;
   width: 54px;
+}
+
+.middle-btn{
+  width: 120px;
+  height: 50px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.large-btn{
+  width: 120px;
+  height: 100px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+
+/* 배경 색 */
+
+.bg-green{
+  background-color: #78c386;
+  color: #fff;
+}
+.bg-green-thick{
+  background-color: #407d4b;
+  color:#fff;
+}
+.bg-blue{
+  background-color: #007fff;
+  color: #fff;
+}
+.bg-red{
+  background-color: #e53e3e;
+  color: #fff;
+}
+.bg-gray{
+  background-color: #707070;
+  color: #eff1eb
 }

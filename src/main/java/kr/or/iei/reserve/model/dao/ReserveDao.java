@@ -244,5 +244,21 @@ public class ReserveDao {
 		return menuServings;
 	}
 
+	public Reserve selectReserve(int reserveNo) {
+		String query = "select * from reserve_tbl where reserve_no = ?";
+		Object[] params = {reserveNo};
+		List<Reserve> reserve = jdbc.query(query, reserveRowMapper, params);
+		return reserve.get(0);
+	}
+
+	public int cancelReserve(int reserveNo) {
+		String query = "delete from reserve_tbl where reserve_no = ?";
+		Object[] params = {reserveNo};
+		int result= jdbc.update(query, params);
+		return result;
+	}
+
+
+
 	
 }

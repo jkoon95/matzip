@@ -1,9 +1,6 @@
 @charset "UTF-8";
 
 * {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
   color: #404040;
 }
 
@@ -111,6 +108,7 @@ main {
 
 .li-title, .li-content{
   float: left;
+  color: #404040;
 }
 
 .reserveFrm .li-title{
@@ -137,6 +135,7 @@ main {
   border-radius: 2px;
   cursor: pointer;
   line-height: 1;
+  color: #404040;
 }
 
 .smallBtn :hover{
@@ -192,6 +191,7 @@ main {
 #menu-order-btn{
   background: #007fff;
   margin-left: 10px;
+  color: #404040;
 }
 
 .reserveRequest{

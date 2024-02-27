@@ -403,6 +403,29 @@ public class ReserveService {
 		rvmList.put("menuServings", menuServings);
 		return rvmList;
 	}
+
+	public int cancelReserve(int reserveNo) {
+		Reserve reserve = reserveDao.selectReserve(reserveNo);
+		int result = reserveDao.cancelReserve(reserveNo);
+		if(result>0) {
+			//insert 순서 : status 1 -> status2 -> status0
+			//select reserve_no, reserve_time from reserve_tbl where reserve_no >= ?(위 코드로 이미 삭제한 reserveNo) and reserve_date=? and reserve_status !=1 and reserve_status !=3 and member_no=? and table_no=? order by reserve_no;
+			/*
+			 * 	int[] reserveNoArr = new array();
+			 * 	if(!reserve.isEmpty(){
+			 * 		for (int i=0; i<reserve.size(); i++){
+			 *			//일단 reserve.get(0).getReserveNo = status 1인 그거임
+			 * 			if (i+1 <= reserve.size() && reserve.get(i+1).getReserveNo - reserve.get(i).getReserveNo == 1){
+			 * 				reserveNoArr.push(reserve.get(i+1).getReserveNo;
+			 * 			}else{
+			 * 				break;
+			 * 		}
+			 * 		reserveNoArr 배열 속 reserveNo들을 전부 delete
+			 * 	}
+			 */
+		}
+		return result;
+	}
 	
 	
 }

@@ -1,28 +1,14 @@
-/*
-HashMap<String, List<ReserveViewMember>> rvmList
-key : after , value : afterRvmList  ( = List<ReserveViewMember> )
-key : before, value : beforeRvmList ( = List<ReserveViewMember> )
-*/
+$("#reserve-fluid").on("click",function(){
+	$.ajax({
+		url: "/reserve/cancelReserve",
+		type: "post",
+		data: {reserveNo : afterRvmList.reserveNo},
+		dataType : "json",
+		success: function (data){
 
-/*
-afterRvmList = {
-  <key>           :   <value>
-  reserveNo       :
-	reserveDate     :
-	reserveTime     :
-	reservePeople   :
-	reserveRequest  :
-	storeNo         :
-	tableNo         :
-	
-	
-  storeName       :
-	storeImg        :
-	
-	servings        :
-	
-	menuName        :
-}
+		},
+		error: function(){
 
-beforeRvmList도 마찬가지
-*/
+		}
+	})
+})
