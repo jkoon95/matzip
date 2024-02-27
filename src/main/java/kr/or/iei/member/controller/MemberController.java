@@ -28,8 +28,8 @@ public class MemberController {
 		return "/member/login";
 	}
 	@PostMapping(value="/signin")
-	public String signin(String memberId, String memberPw, int memberLevel, HttpSession session, Model model) {
-		Member member = memberService.selectOneMember(memberId, memberPw, memberLevel);
+	public String signin(String memberId, String memberPw, HttpSession session, Model model) {
+		Member member = memberService.selectOneMember(memberId, memberPw);
 		if(member ==null) {
 			model.addAttribute("title", "로그인");
 			model.addAttribute("msg", "아이디 또는 비밀번호를 확인하세요");
@@ -37,7 +37,7 @@ public class MemberController {
 			model.addAttribute("loc", "/");
 		}else {
 			session.setAttribute("member", member);
-			
+			System.out.println(member);
 			model.addAttribute("title", "환영합니다.");
 			model.addAttribute("msg", "맛집 입니다");
 			model.addAttribute("icon", "success");
@@ -113,6 +113,7 @@ public class MemberController {
 	public String mystorepage() {
 		return "member/mystorepage";
 	}
+	
 	@PostMapping(value="storeupdate")
 	public String storeUpdate(Member m, String emailAdress, Model model,@SessionAttribute Member member) {
 		int result = memberService.storeUpdate(m);
@@ -176,5 +177,9 @@ public class MemberController {
 	@GetMapping(value="pwChange")
 	public String pwChange() {
 		return "member/pwChangeFrm";
+	}
+	@GetMapping(value="adminpage")
+	public String adminpage() {
+		return "member/adminPage";
 	}
 }

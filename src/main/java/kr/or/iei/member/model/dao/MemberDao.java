@@ -19,12 +19,13 @@ public class MemberDao {
 	@Autowired
 	private OriginMemberRowMapper originMemberRowMapper;
 	
-	public Member selectOneMember(String memberId, String memberPw, int memberLevel) {
+	public Member selectOneMember(String memberId, String memberPw) {
 		String query = "select \r\n" + 
 				"    member_no,member_id,substr(member_email,1,instr(member_email,'@',1,1)-1) member_email,substr(member_email,instr(member_email,'@',1,1)) email_Address,member_pw, member_name, member_nickname, member_phone, member_join_date,member_level\r\n" + 
-				"from member_tbl where member_id=? and member_pw=? and member_level=?";
-		Object[] params = {memberId,memberPw,memberLevel};
-		List list = jdbc.query(query, memberRowMapper,params);		
+				"from member_tbl where member_id=? and member_pw=?";
+		Object[] params = {memberId,memberPw};
+		List list = jdbc.query(query, memberRowMapper,params);
+		System.out.println(list);
 		if(list.isEmpty()) {
 			return null;
 		}
