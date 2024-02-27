@@ -185,8 +185,6 @@ $.ajax({
                         if(peopleNum <= tableCapacityArr[i]){
                           $("#reservePeople").val(tableCapacityArr[i]);
                           $("#tableNo").val(tableNoArr[i]);
-                          console.log($("#reservePeople").val())
-                          console.log($("#tableNo").val());
                           break;
                         }
                       }

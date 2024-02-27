@@ -1,18 +1,22 @@
 package kr.or.iei.reserve.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.or.iei.reserve.model.service.ReserveService;
+import kr.or.iei.reseve.model.dto.MenuServings;
 import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
+import kr.or.iei.reseve.model.dto.ReserveViewMember;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TimeSet;
 
@@ -73,13 +77,14 @@ public class ReserveController {
 		return tableNoAndCapacity;
 	}
 	
-	@PostMapping(value="/reserve")
+	@PostMapping(value="/reserveInsert")
 	public String reserve(Reserve reserve, int[] menuNo, int[] servings, Model model) {
 		/* 받아온 정보
 		 * @SessionAttribute(required = false) Member member
+		 * Reserve reserve
 		 * int[] menuNo
 		 * int[] servings
-		 * <이하 Reserve객체로 받아온 것들>
+		 * <이하 Reserve객체 내에서 받아온 것들>
 		 * int storeNo
 		 * String reserveDate
 		 * String reserveTime
@@ -94,10 +99,30 @@ public class ReserveController {
 		return "reserve/reserveList";
 	}
 	
-	@PostMapping(value="/reserveList")
-	public String reserveList() {
+	//나중에 post로 바꿔
+	@RequestMapping(value="/reserveList")
+	public String reserveList(Model model) {
 		//@SessionAttribute(required = false) Member member
+		int memberNo = 3;//임시로
+		
+		HashMap<String, List> rvmList = reserveService.reserveViewMemberList(memberNo);
+		
+		
+		List<ReserveViewMember> afterRvmList = rvmList.get("after");
+		List<ReserveViewMember> beforeRvmList = rvmList.get("before");
+		List<MenuServings> menuServings = rvmList.get("menuServings");
+		model.addAttribute("afterRvmList", afterRvmList);
+		model.addAttribute("beforeRvmList", beforeRvmList);
+		model.addAttribute("menuServings", menuServings);
+		
 		return "reserve/reserveList";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/cancelReserve")
+	public int deleteReserve(int reserveNo) {
+		int result = reserveService.cancelReserve(reserveNo);
+		return result;
 	}
 	
 }

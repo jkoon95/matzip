@@ -17,6 +17,7 @@ import kr.or.iei.store.model.dto.StoreInfoRowMapper;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
 import kr.or.iei.store.model.dto.StoreReview;
 import kr.or.iei.store.model.dto.StoreReviewRowMapper;
+import kr.or.iei.store.model.dto.StoreRowMapper;
 
 @Repository
 public class SearchDao {
@@ -30,6 +31,8 @@ public class SearchDao {
 	private ClosedDayRowMapper closedDayRowMapper;
 	@Autowired
 	private StoreReviewRowMapper storeReviewRowMapper;
+	@Autowired
+	private StoreRowMapper storeRowMapper;
 
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -658,11 +661,12 @@ public class SearchDao {
 		return list;
 	}
 
-	public List selectStoreNo(String subwayName) {
-		String query = "select store_no from store_tbl where subway_name=?";
+	public List<Store> selectAllStore(String subwayName) {
+		String query = "select * from store_tbl where subway_name=?";
 		Object[] params = {subwayName};
-		List list = jdbc.queryForList(query,Integer.class,params);
+		List list = jdbc.query(query, storeRowMapper, params);
 		return list;
 	}
+
 	
 }
