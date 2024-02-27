@@ -12,3 +12,4 @@ span.attr("class", "material-icons");
 span.text("expand_more");
 const subList = $(".sub-list");
 subList.parent().prev("a").append(span);
+

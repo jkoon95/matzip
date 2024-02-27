@@ -1,3 +1,6 @@
+$("#reserve-btn").prop("disabled", true);//클릭 못하게
+
+
 $.ajax({
   url: "/reserve/closedDays",
   type: "post",
@@ -86,10 +89,11 @@ $.ajax({
         function select(dateText){
           //숨겨둔 input태그에 날짜 집어넣기
           $("#reserveDate").val(dateText);
-          //시각 버튼들 리셋
+          //시각 버튼들 리셋 + reserveDate input태그 리셋
           $(".reserveTime").remove();
+          $("#reserveTime").val("");
           //인원수 리셋
-          $("#people").text("");
+          $("#people").text(1);
           //timeSet 가져오기
           $.ajax({
             url:"/reserve/timeSet",
@@ -116,12 +120,22 @@ $.ajax({
                 $(".time-area .li-content").append(button);
               };
 
+              //예약완료버튼 활성화(뒤에 또 있음)
+              if($("#reserveDate").val() != ""
+              && $("#reserveTime").val() != ""){
+                $("#reserve-btn").prop("disabled", false);//클릭 가능하게
+                $("#reserve-btn").addClass("getReady");
+              }else{
+                $("#reserve-btn").prop("disabled", true);//클릭 못하게
+                $("#reserve-btn").removeClass("getReady");
+              }
+
               //reserveTime버튼 클릭시 함수
               $(".reserveTime").on("click",function(){
                 //1. class 리셋
-                $(".reserveTime").removeClass("reserveTime-click");
+                $(".reserveTime").removeClass("smallBtn-active");
                 //2. 클릭한 버튼에만 class 추가
-                $(this).addClass("reserveTime-click");
+                $(this).addClass("smallBtn-active");
                 //3. hidden으로 숨긴 input태그에 값 추가
                 $("#reserveTime").val($(this).text());
                 //4. 예약 가능 인원수 구하기
@@ -138,31 +152,56 @@ $.ajax({
                     //최대 수용 가능 인원 구하기. 식탁 수용가능 인원수가 적은 것 부터 index 0 번에 배치됨
                     const maxNum = tableNoAndCapacity[tableNoAndCapacity.length - 1].tableCapacity;
                     //인원수 세팅
-                    const people = $("#people");
-                    people.text("1");
-                    let peopleNum = 1;
+                    let peopleNum = Number($("#people").text());
+                    const tableNoArr = [];
+                    const tableCapacityArr = [];
+                    for(let i=0; i<tableNoAndCapacity.length; i++){
+                      tableNoArr.push(tableNoAndCapacity[i].tableNo);
+                      tableCapacityArr.push(tableNoAndCapacity[i].tableCapacity);
+                    }
+                    $("#people").text(peopleNum);
+                    //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                    searchTable(peopleNum, tableNoAndCapacity);
                     //-1
                     $("#people-minus").on("click",function(){
                       if(peopleNum>1){
                         peopleNum -= 1;
-                        people.text(peopleNum);
+                        $("#people").text(peopleNum);
+                        //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                        searchTable(peopleNum, tableNoAndCapacity);
                       }
                     });
                     //+1
                     $("#people-plus").on("click",function(){
                       if(peopleNum < maxNum){
                         peopleNum += 1;
-                        people.text(peopleNum);
+                        $("#people").text(peopleNum);
+                        //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
+                        searchTable(peopleNum, tableNoAndCapacity);
                       }
                     });
-                    //hidden으로 숨긴 input태그에 값 추가(reservePeople 그리고 tableNo)
-                    $("#reservePeople").val(peopleNum);
-                    for(let i=0; i<100; i++){//100정도면 차고남지...
-                      let arrayIndex = $.inArray(peopleNum+i, tableNoAndCapacity.tableCapacity);
-                      if (arrayIndex != -1){//값이 있다면
-                        const tableNo = tableNoAndCapacity.tableNo[arrayIndex];
-                        $("#tableNo").val(tableNo);
+                    
+                    function searchTable(peopleNum, tableNoAndCapacity){
+                      for(let i=0; i<tableNoArr.length; i++){
+                        if(peopleNum <= tableCapacityArr[i]){
+                          $("#reservePeople").val(tableCapacityArr[i]);
+                          $("#tableNo").val(tableNoArr[i]);
+                          console.log($("#reservePeople").val())
+                          console.log($("#tableNo").val());
+                          break;
+                        }
                       }
+                    }
+
+
+                    //예약완료버튼 활성화
+                    if($("#reserveDate").val() != ""
+                    && $("#reserveTime").val() != ""){
+                      $("#reserve-btn").prop("disabled", false);//클릭 가능하게
+                      $("#reserve-btn").addClass("getReady");
+                    }else{
+                      $("#reserve-btn").prop("disabled", true);//클릭 못하게
+                      $("#reserve-btn").removeClass("getReady");
                     }
 
                   },
@@ -245,16 +284,18 @@ $("#menu-order-btn").on("click",function(){
 
 
 // 추가된 메뉴 보여주기
+const div = $("<div>");
 const span1 = $("<span>");
 span1.attr("name", "showMenuName");
-span1.text(menuNameArr[menuNoArr.length - 1] + " : ");
+span1.text("- " + menuNameArr[menuNoArr.length - 1] + " : ");
 const span2 = $("<span>");
-span2.attr("name", "showMenuServings");
+span2.attr("name", "showServings");
 span2.text(servingsArr[menuNoArr.length - 1] + "인분");
 const span3 = $("<span>");
 span3.attr("name", "deleteMenuBtn");
 span3.text("(x) ");
-$(".selected-menu").append(span1).append(span2).append(span3);
+div.append(span1).append(span2).append(span3);
+$(".selected-menu").append(div);
 // 삭제버튼 클릭시 함수
 span3.on("click", function(){
   // 현재 삭제 버튼의 인덱스 찾기
@@ -263,7 +304,7 @@ span3.on("click", function(){
   $("[name='menuNo']").eq(index).remove();
   $("[name='servings']").eq(index).remove();
   $("[name='showMenuName']").eq(index).remove();
-  $("[name='showMenuServings']").eq(index).remove();
+  $("[name='showServings']").eq(index).remove();
   $("[name='deleteMenuBtn']").eq(index).remove();
   // 배열에서도 삭제
   menuNoArr.splice(index, 1);
@@ -297,4 +338,17 @@ span3.on("click", function(){
 
   });
 });
+
+$('.reserveRequest').on('keyup', function() {
+  $('#requestCount').text("("+$(this).val().length+" / 66)");
+
+  if($(this).val().length > 66) {
+      $(this).val($(this).val().substring(0, 66));
+      $('#requestCount').text("(66 / 66)");
+  }
+});
+
+
+
+
 

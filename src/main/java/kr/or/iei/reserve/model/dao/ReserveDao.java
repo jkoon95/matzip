@@ -142,12 +142,25 @@ public class ReserveDao {
 		return result;
 	}
 
+	public int selectReserveNo(String reserveDate, String reserveTime, int reserveStatus, int tableNo) {
+		String query = "select * from reserve_tbl "
+				 	 + "where reserve_date = ? and reserve_time = ? and reserve_status = ? and table_no = ?";
+		Object[] params = {reserveDate, reserveTime, reserveStatus, tableNo};
+		List<Reserve> selectReserve = jdbc.query(query, reserveRowMapper, params);
+		int reserveNo = selectReserve.get(0).getReserveNo();
+		return reserveNo;
+	}
+	
 	public String selectDummy(int reserve_ststus, String reserveDate, String reserveDummyTime2) {
 		String query = "select reserve_time from reserve_tbl "
 					 + "where reserve_status = ? and reserve_date = ? and reserve_time = ?";
 		Object[] params = {reserve_ststus, reserveDate, reserveDummyTime2};
 		List<String> deleteTime = jdbc.query(query, reserveTimeRowMapper, params);
-		return deleteTime.get(0);
+		if(!deleteTime.isEmpty()) {
+			return deleteTime.get(0);
+		}else {
+			return "-1";
+		}
 	}
 
 
