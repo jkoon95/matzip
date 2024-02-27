@@ -36,10 +36,12 @@
                 </th:block>
                 <th:block th:unless="${session.member == null}">
                 <ul>
-                    <li><a href="/board/boardList?reqPage=1">Q&A</a></li>
-                    <li><a th:if="${session.member.memberLevel==2}" href="/member/mystorepage">매장관리</a>
-                    	<a th:unless="${session.member.memberLevel==2}" href="/member/mypage">INFO</a>
-                    </li>
+                    <li><a href="/board/boardList?reqPage=1">Q&A</a></li>                    
+                    <li>
+			            <a th:if="${session.member.memberLevel == 1}" href="/member/adminpage">관리자</a>
+			            <a th:if="${session.member.memberLevel == 2}" href="/member/mystorepage">매장관리</a>
+			            <a th:unless="${session.member.memberLevel == 1 or session.member.memberLevel == 2}" href="/member/mypage">INFO</a>
+        			</li>
                     <li><a href="/member/logout">LOGOUT</a></li>
                 </ul>
                 </th:block>

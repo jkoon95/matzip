@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.notice.model.dto.NoticeListData;
 import kr.or.iei.search.model.dao.SearchDao;
 import kr.or.iei.search.model.dto.SearchListData;
@@ -348,13 +349,13 @@ public class SearchService {
 				int start = end - numPerPage+1;
 				List list = null;
 				//요청 페이지에 필요한 게시물 목록을 조회
-				System.out.println(searchType);
+				//System.out.println(searchType);
 				if(searchType.equals("리뷰 수")) {
 					list = searchDao.selectReviewCountDESCList(start,end);
 				}else if(searchType.equals("리뷰 점수")) {
 					list = searchDao.selectReviewScoreDESCList(start,end);
 				}
-				System.out.println(list);
+				//System.out.println(list);
 				
 				//페이지 네비게이션 제작
 				//전체 몇개 페이지가 있는지 계산 -> 총 게시물 수
@@ -428,5 +429,25 @@ public class SearchService {
 		double avgStar = searchDao.selectAvgStar(storeNo);
 		return avgStar;
 	}
+
+	@Transactional
+	public int insertReportStore(int memberNo, int storeNo, String reason) {
+		int result = searchDao.insertReportStore(memberNo,storeNo,reason); 
+		return result;
+	}
+	
+	@Transactional
+	public int insertReportReview(int memberNo, String reviewWriter) {
+		int result = searchDao.insertReportReview(memberNo,reviewWriter); 
+		return result;
+	}
+
+	public List<Store> selectAllStore(String subwayName) {
+		List<Store> storeList = searchDao.selectAllStore(subwayName);
+		return storeList;
+	}
+
+
+
 
 }

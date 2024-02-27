@@ -12,7 +12,7 @@
     <div class="content">
     	<th:block th:include="common/side"></th:block>
     	 <div class="sss-content">
-            <div class="page-title">매장 목록</div>
+            <a href="/admin/allStore?reqPage=1" class="page-title">매장 목록</a>
             <div>
             	<form action="/admin/searchStore" method="get" id="searchFrm">
 					<th:block th:switch="${type}">

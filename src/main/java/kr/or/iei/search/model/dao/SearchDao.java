@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.store.model.dto.ClosedDay;
 import kr.or.iei.store.model.dto.ClosedDayRowMapper;
 import kr.or.iei.store.model.dto.Menu;
@@ -16,6 +17,7 @@ import kr.or.iei.store.model.dto.StoreInfoRowMapper;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
 import kr.or.iei.store.model.dto.StoreReview;
 import kr.or.iei.store.model.dto.StoreReviewRowMapper;
+import kr.or.iei.store.model.dto.StoreRowMapper;
 
 @Repository
 public class SearchDao {
@@ -29,6 +31,8 @@ public class SearchDao {
 	private ClosedDayRowMapper closedDayRowMapper;
 	@Autowired
 	private StoreReviewRowMapper storeReviewRowMapper;
+	@Autowired
+	private StoreRowMapper storeRowMapper;
 
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -50,9 +54,9 @@ public class SearchDao {
 				"        s.STORE_ADDR, -- 기존 주소\r\n" +
 				"        s.STORE_ADDR1, -- 추가된 주소 필드\r\n" +
 				"        s.STORE_PHONE,\r\n" +
-				"        s.HOMEPAGE,\r\n" +
-				"        s.STORE_SNS,\r\n" +
-				"        s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"        s.FOOD_TYPE,\r\n" +
 				"        s.STORE_IMG,\r\n" +
 				"        s.OPENING_HOUR,\r\n" +
@@ -65,7 +69,7 @@ public class SearchDao {
 				"        s.TIME_TO_EAT,\r\n" +
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT, -- 좋아요 수\r\n" +
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT, -- 리뷰 수\r\n" +
-				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE, -- 평균 리뷰 점수\r\n" +
+				"        ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE, -- 평균 리뷰 점수\r\n" +
 				"        CASE\r\n" +
 				"            WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -121,9 +125,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -137,7 +141,7 @@ public class SearchDao {
 				"            \r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -191,9 +195,9 @@ public class SearchDao {
 				"        s.STORE_NAME,\r\n" +
 				"        s.STORE_ADDR,\r\n" +
 				"        s.STORE_PHONE,\r\n" +
-				"        s.HOMEPAGE,\r\n" +
-				"        s.STORE_SNS,\r\n" +
-				"        s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"        s.FOOD_TYPE,\r\n" +
 				"        s.STORE_IMG,\r\n" +
 				"        s.OPENING_HOUR,\r\n" +
@@ -207,7 +211,7 @@ public class SearchDao {
 				// " s.STORE_ADDR1,\r\n" +
 				"        COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"        COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"        AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"        ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"        CASE\r\n" +
 				"           WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -342,9 +346,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -358,7 +362,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -407,9 +411,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -423,7 +427,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -463,9 +467,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -479,7 +483,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -530,9 +534,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" +
 				"            s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE,\r\n" +
-				"            s.HOMEPAGE,\r\n" +
-				"            s.STORE_SNS,\r\n" +
-				"            s.STORE_DESCRIPTION,\r\n" +
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" +
 				"            s.STORE_IMG,\r\n" +
 				"            s.OPENING_HOUR,\r\n" +
@@ -546,7 +550,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" +
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" +
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" +
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" +
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" +
 				"            CASE\r\n" +
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n"
 				+
@@ -586,9 +590,9 @@ public class SearchDao {
 				"            s.STORE_NAME,\r\n" + 
 				"            s.STORE_ADDR,\r\n" + 
 				"            s.STORE_PHONE,\r\n" + 
-				"            s.HOMEPAGE,\r\n" + 
-				"            s.STORE_SNS,\r\n" + 
-				"            s.STORE_DESCRIPTION,\r\n" + 
+				"        NVL(s.HOMEPAGE, '') AS HOMEPAGE," +
+				"        NVL(s.STORE_SNS, '') AS STORE_SNS,\r\n" +
+				"        NVL(s.STORE_DESCRIPTION, '') AS STORE_DESCRIPTION,\r\n" +
 				"            s.FOOD_TYPE,\r\n" + 
 				"            s.STORE_IMG,\r\n" + 
 				"            s.OPENING_HOUR,\r\n" + 
@@ -602,7 +606,7 @@ public class SearchDao {
 				"            s.STORE_ADDR1,\r\n" + 
 				"            COUNT(DISTINCT l.LIKE_NO) AS LIKE_COUNT,\r\n" + 
 				"            COUNT(DISTINCT r.REVIEW_NO) AS REVIEW_COUNT,\r\n" + 
-				"            AVG(r.REVIEW_STAR) AS REVIEW_SCORE,\r\n" + 
+				"            ROUND(AVG(r.REVIEW_STAR), 1) AS REVIEW_SCORE,\r\n" + 
 				"            CASE\r\n" + 
 				"                WHEN TO_CHAR(SYSDATE, 'DY') IN (SELECT CLOSED_DAY FROM CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO)\r\n" + 
 				"                    OR TO_CHAR(SYSDATE, 'YYYY-MM-DD') IN (SELECT TEMP_CLOSED_DAY FROM TEMP_CLOSED_DAY_TBL WHERE STORE_NO = s.STORE_NO) THEN '휴무'\r\n" + 
@@ -635,4 +639,34 @@ public class SearchDao {
 		Double avgStar = jdbc.queryForObject(query, Double.class,params);
 		return avgStar != null ? avgStar : 0.0;
 	}
+
+	public int insertReportStore(int memberNo, int storeNo, String reason) {
+		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,3)";
+		Object[] params = {memberNo,reason,storeNo};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+	
+	public int insertReportReview(int memberNo, String reviewWriter) {
+		String query = "insert into report_tbl values(report_seq.nextval,?,'불량리뷰 신고',?,1)";
+		Object[] params = {memberNo,reviewWriter};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+
+	public List selectStoreImg(String subwayName) {
+		String query = "select store_img from store_tbl where subway_name=?";
+		Object[] params = {subwayName};
+		List list = jdbc.queryForList(query,String.class,params);
+		return list;
+	}
+
+	public List<Store> selectAllStore(String subwayName) {
+		String query = "select * from store_tbl where subway_name=?";
+		Object[] params = {subwayName};
+		List list = jdbc.query(query, storeRowMapper, params);
+		return list;
+	}
+
+	
 }
