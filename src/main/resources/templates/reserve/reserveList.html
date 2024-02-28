@@ -65,10 +65,12 @@
 
               <div class="btns">
                 <th:block th:if="${rvm.reserveDate == #calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
-                  <button class="large-btn bg-blue" id="reserve-fixed" disabled><div>예약확정</div><div>(취소불가)</div></button>
+                  <button class="middle-btn bg-blue" id="reserve-fixed" disabled>예약확정</button>
+                  <button class="middle-btn bg-gray" id="no-cancel" disabled>취소불가</button>
                 </th:block>
                 <th:block th:if="${rvm.reserveDate != #calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
-                  <button class="large-btn bg-green" id="reserve-fluid"><div>예약완료</div><div>(취소가능)</div></button>
+                  <button class="middle-btn bg-green" id="reserve-fluid">예약완료</button>
+                  <button class="middle-btn bg-red" name="yes-cancel" th:value="${rvm.reserveNo}">예약취소</button>
                 </th:block>
               </div>
 
@@ -102,7 +104,7 @@
                   </li>
                   <li class="people-area float">
                     <div class="li-title">예약인원</div>
-                    <div class="li-content" th:text="${rvm.reservePeople}"></div>
+                    <div class="li-content" th:text="|${rvm.reservePeople}명|"></div>
                   </li>
                   <li class="request-area float">
                     <div class="li-title">요청사항</div>
@@ -115,14 +117,15 @@
                 <div class="float" th:each="menu : ${menuServings}">
                   <th:block th:if="${rvm.reserveNo == menu.reserveNo}">
                     <div class="menu-name" th:text="${menu.menuName}"></div>
-                    <span> </span>
                     <div class="servings" th:text="|${menu.servings}인분|"></div>
                   </th:block>
                 </div>
               </div>
 
               <div class="btns">
-                <button class="large-btn bg-green-thick" id="goReview"><div>리뷰/별점</div><div>남기기</div></button>
+                <a href="#">
+                  <button class="large-btn bg-green-thick" id="goReview"><div>리뷰/별점</div><div>남기기</div></button>
+                </a>
               </div>
 
             </div>
@@ -139,15 +142,37 @@
 
   </main>
 
+  <script>
+    $("[name='yes-cancel']").on("click",function(){
+      const cancelBtn = $(this);
+      $.ajax({
+        url: "/reserve/cancelReserve",
+        type: "post",
+        data: {reserveNo : $(this).val()},
+        dataType : "json",
+        success: function (result){
+          if(result>0){
+            cancelBtn.parent().parent().parent().addClass("article-cancel");
+            setTimeout(function(){
+              location.replace("/reserve/reserveList");
+            }, 1000);
+          }else{
+            const div = $("<div>");
+            div.text("취소 실패")
+            cancelBtn.parent().append(div);
+          }
+        },
+        error: function(result){
+          const div = $("<div>");
+          div.text("취소 실패")
+          cancelBtn.parent().append(div);
 
-  <script th:inline="javascript">
-    //reserveFrm.js에 storeNo 넘겨주기 위해 이 스크립트를 만들었음
-    const afterRvmList = [[${afterRvmList}]];
-    const beforeRvmList = [[${beforeRvmList}]];
-    const menuServings = [[${menuServings}]];
+        }
+      })
+    })
+    
+
   </script>
-
-  <script src="/js/reserveList.js"></script>
   
   <!--푸터-->
   <th:block th:include="common/footer"></th:block>

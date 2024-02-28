@@ -96,7 +96,7 @@ public class ReserveController {
 		reserve.setMemberNo(memberNo); //원래는 reserve.setMemberNo(Member.getMemberNo()) 이렇게 세션에 있는 정보를 넣어야... 일단 임시로 넣었음.
 		reserve.setReserveStatus(1);
 		int insertResult = reserveService.insertReserve(reserve, menuNo, servings);
-		return "reserve/reserveList";
+		return "redirect:/reserve/reserveList";
 	}
 	
 	//나중에 post로 바꿔
@@ -120,7 +120,7 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/cancelReserve")
-	public int deleteReserve(int reserveNo) {
+	public int deleteReserve(Integer reserveNo) {
 		int result = reserveService.cancelReserve(reserveNo);
 		return result;
 	}
