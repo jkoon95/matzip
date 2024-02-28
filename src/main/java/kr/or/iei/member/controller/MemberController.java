@@ -37,7 +37,7 @@ public class MemberController {
 			model.addAttribute("loc", "/");
 		}else {
 			session.setAttribute("member", member);
-			System.out.println(member);
+			
 			model.addAttribute("title", "환영합니다.");
 			model.addAttribute("msg", "맛집 입니다");
 			model.addAttribute("icon", "success");
@@ -72,7 +72,7 @@ public class MemberController {
 		return "member/mypage";
 	}
 	@PostMapping(value="/update")
-	public String update(Member m, Model model, String emailAdress, HttpSession session) {
+	public String update(Member m, Model model, HttpSession session) {
 		int result = memberService.updateMember(m);
 		if(result>0) {
 			Member member = (Member)session.getAttribute("member");
