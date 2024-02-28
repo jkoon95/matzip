@@ -716,6 +716,7 @@ public class AdminService {
 				int storeNo = Integer.valueOf(r.getReportTarget());
 				Store store = adminDao.selectReportStore(storeNo);
 				r.setStoreName(store.getStoreName());
+				r.setStoreNo(storeNo);
 			}else {
 				Member member = adminDao.selectReportMember(r.getReportTarget());
 				r.setMemberNo2(member.getMemberNo());
@@ -771,6 +772,51 @@ public class AdminService {
 		AdminListData ald = new AdminListData(list, pageNavi);
 		return ald;
 		
+	}
+
+	public int deleteReport(int reportNo) {
+		int result = adminDao.deleteReport(reportNo);
+		return result;
+	}
+
+
+/*
+	public int updateReport(int reportNo, int reportType, String reportTarget) {
+		//신고승인	-> 회원/매장 MEMBER_LEVEL/STORE_LEVEL UPDATE BLACKLIST(회원조회 시 이미 다른 블랙리스트종류일시 6.전체블랙)으로
+	    //												-> report_tbl의 report_status 2(승인)으로 update
+		//store_tbl -> store_level=2로 update
+		if(reportType==3) {
+			int result = adminDao.updateStoreBlackReport(reportTarget);
+		}else {
+			int result = adminDao
+		}
+		return 0;
+	}
+*/
+	//회원/매장 MEMBER_LEVEL/STORE_LEVEL UPDATE BLACKLIST(회원조회 시 이미 다른 블랙리스트종류일시 6.전체블랙)-> report_tbl의 report_status 2(승인)으로 update
+	public int updateReport(int[] no, int[] type, String[] target) {
+		int result = 0;
+		for(int i=0;i<no.length;i++) {//report_status=2
+			result+=adminDao.updateReportStatus(no[i]);
+			if(type[i]==3) {//store_level=2로
+				result += adminDao.updateStoreBlackReport(target[i]);				
+			}else if(type[i]==2){//member_Tbl=5로(원래 member의 level이 4라면 6으로)
+				int count = adminDao.originMemberLevel4(target[i]);
+				if(count>0) {//원래 레벨 4
+					result+=adminDao.updateMemberBlackReport6(target[i]);
+				}else {
+					result += adminDao.updateMemberBlackReport5(target[i]);					
+				}
+			}else {//member_Tbl=4로(원래 member의 level이 5라면 6으로)
+				int count = adminDao.originMemberLevel5(target[i]);
+				if(count>0) {
+					result+=adminDao.updateMemberBlackReport6(target[i]);
+				}else {
+					result += adminDao.updateMemberBlackReport4(target[i]);								
+				}
+			}
+		}
+		return result;
 	}
 
 

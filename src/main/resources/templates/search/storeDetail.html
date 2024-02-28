@@ -131,7 +131,7 @@
           onclick="infoAlert()">도움말</button>
         <form id="infoForm" method="post">
           <button type="submit" class="infoBtn"
-            th:if="${session.member != null and session.member.memberNo == store.memberNo and (info != null or info.infoContent != '')}"
+            th:if="${session.member != null and session.member.memberNo == store.memberNo and (info != null and info.infoContent != null and info.infoContent != '')}"
             onclick="submitForm('update')">수정</button>
           <button type="submit" class="infoBtn"
             th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}"
