@@ -34,7 +34,7 @@
         <div class="page-content">
             <div class="store-all" th:each="store : ${searchList}" onclick="conveyStoreInfoToDetail(this);" th:data-store-no="${store.storeNo}">
                 <div class="store-content1">
-                    <img th:src="@{/search/{storeImg}(storeImg=${store.storeImg})}" alt="" class="imgScale">
+                    <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" alt="" class="imgScale">
                 </div>
                 <div class="store-content2 padding-left80">
                     <div id="reviewScore-text" th:text="${store.reviewScore}+'점'"></div>
