@@ -452,6 +452,16 @@ public class SearchService {
 		return reviewCount;
 	}
 
+	public List<Store> selectTopStar() {
+		List<Store> topList = searchDao.selectTopStar();
+		return topList;
+	}
+
+	public List<Store> selectTopSubway() {
+		List<Store> subwayList = searchDao.selectTopSubway();
+		return subwayList;
+	}
+
 
 
 
