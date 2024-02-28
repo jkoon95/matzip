@@ -773,6 +773,11 @@ public class AdminService {
 		
 	}
 
+	public int deleteReport(int reportNo) {
+		int result = adminDao.deleteReport(reportNo);
+		return result;
+	}
+
 
 
 

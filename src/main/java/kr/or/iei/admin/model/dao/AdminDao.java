@@ -338,7 +338,7 @@ public class AdminDao {
 
 	public List selectAllReport(int start, int end) {
 		//select member_no, member_id, report_no, report_reason, report_target , report_type from report_tbl join member_tbl using(member_no) order by 3
-		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, r.* FROM (select member_no, member_id, report_no, report_reason, report_target , report_type from report_tbl join member_tbl using(member_no) order by 3)r) WHERE RNUM BETWEEN ? AND ?";
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, r.* FROM (select member_no, member_id, report_no, report_reason, report_target , report_type,report_status from report_tbl join member_tbl using(member_no) order by 3)r) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params= {start,end};
 		List list = jdbc.query(query, reportRowMapper,params);
 		return list;
@@ -368,6 +368,13 @@ public class AdminDao {
 		String query="select count(*) from report_tbl";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
+	}
+
+	public int deleteReport(int reportNo) {
+		String query = "delete from report_tbl where report_no=?";
+		Object[] params= {reportNo};
+		int result = jdbc.update(query,params);
+		return result;
 	}
 
 

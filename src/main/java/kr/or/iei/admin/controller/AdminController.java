@@ -286,6 +286,21 @@ public class AdminController {
 		//List list = adminService.selectAllReport();
 		//model.addAttribute("list", list);	
 	}
+	//reportDel
+	@ResponseBody
+	@GetMapping(value="/reportDel")
+	public int reportDel(int[] no) {
+		int count = no.length;
+		int result=0;
+		for(int reportNo : no) {
+			result += adminService.deleteReport(reportNo);			
+		}
+		if(result==count) {
+			return 1;			
+		}else {
+			return 0;
+		}
+	}
 	
 	
 	
