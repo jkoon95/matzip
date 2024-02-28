@@ -665,7 +665,7 @@ public class SearchDao {
 	}
 
 	public List<Store> selectAllStore(String subwayName) {
-		String query = "select * from store_tbl where subway_name=?";
+		String query = "SELECT * FROM (SELECT * FROM store_tbl WHERE subway_name = ? ORDER BY DBMS_RANDOM.RANDOM()) WHERE ROWNUM <= 5";
 		Object[] params = {subwayName};
 		List list = jdbc.query(query, storeRowMapper, params);
 		return list;
