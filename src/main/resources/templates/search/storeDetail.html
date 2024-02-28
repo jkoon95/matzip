@@ -130,9 +130,7 @@
           th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info != null)}"
           onclick="infoAlert()">도움말</button>
         <form id="infoForm" method="post">
-          <button type="submit" class="infoBtn"
-            th:if="${session.member != null and session.member.memberNo == store.memberNo and (info != null and info.infoContent != null and info.infoContent != '')}"
-            onclick="submitForm('update')">수정</button>
+          <button type="submit" class="infoBtn" onclick="submitForm('update')">수정</button>
           <button type="submit" class="infoBtn"
             th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}"
             onclick="submitForm('insert')">작성</button>
@@ -254,7 +252,7 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${storeList}">
         	<a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
-	            <img th:src="@{/photo/store/{storeImg}(storeImg=${store.storeImg})}" />
+	            <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" />
 	        </a>
         </div>
       </div>
