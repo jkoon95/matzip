@@ -140,7 +140,9 @@ $.ajax({
                 $(this).addClass("smallBtn-active");
                 //3. hidden으로 숨긴 input태그에 값 추가
                 $("#reserveTime").val($(this).text());
-                //4. 예약 가능 인원수 구하기
+                //4. 인원수 리셋
+                $("#people").text(1);
+                //5. 예약 가능 인원수 구하기
                 $.ajax({
                   url: "/reserve/tableNoAndCapacity",
                   type: "post",

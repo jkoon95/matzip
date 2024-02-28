@@ -36,35 +36,25 @@
             <article class="article datepicker">
               <div class="article-title">날짜 선택</div>
               <div class="article-content">
+                
                 <div id="datepicker"></div>
-                <div class="close">
-                  <ul class="float">
-                    <li class="tempSelect li-title">
-                      <!--
-                      <div>임시휴무일 지정</div>
-                      <div>날짜를 선택하고</div>
-                      <div>우측의 버튼을 클릭하세요</div>
-                    </li>
-                    <li class="li-content">
-                      <button type="button" id="InsertTempClosedDay">
-                        임시휴무일 지정
-                      </button>
-                    </li>
-                    <div class="tempDelete">
-                      <div>임시휴무일 지정 해제</div>
-                      <div>날짜를 선택하고</div>
-                      <div>우측의 버튼을 클릭하세요</div>
-                    </div>
-                    <div class="li-content">
-                      <button type="button" id="InsertTempClosedDay">
-                        임시휴무일 지정 해제
-                      </button>
-                    </div>
-                  -->
-                  <div>
+
+                <div class="temp">
+                  <div class="temp-btns">
+                    <button type="button" class="middle-btn bg-green" id="InsertTempBtn">
+                      임시휴무일 지정
+                    </button>
+                    <button type="button" class="middle-btn bg-blue" id="deleteTempBtn">
+                      임시휴무일 해제
+                    </button>
+                  </div>
+                  <div class="temp-explain">
+                    (날짜를 선택하고 위의 버튼을 누르십시오)
+                  </div>
                 </div>
+
                 <input type="hidden" id="reserveDate">
-              </ul>
+              </div>
             </article>
             <!--//데이트피커 article-->
           </div>
@@ -87,6 +77,7 @@
               <div class="article-content">
 
                 <!--예약내역 건들이 위치할 자리-->
+                <!--예시
                 <article class="small-article">
                   <div class="name">
                     <div class="small-title">예약자 </div>
@@ -99,26 +90,27 @@
                   <div class="menu">
                     <div class="small-title">메뉴 </div>
                     <div class="small-content">
-                      <div class="menu">메뉴1(1인분)</div>
-                      <div class="menu">메뉴2(2인분)</div>
+                      <div>메뉴1(1인분)</div>
+                      <div>메뉴2(2인분)</div>
                     </div>
                   </div>
                   <div class="request">
                     <div class="small-title">요청사항 </div>
-                    <div class="small-content"></div>
-                      <div class="request">요오처엉사아하아아아ㅁㄴㅇㄹㅁㄴㅇㄹ아아아아아아앙</div>
+                    <div class="small-content">
+                      <div>요오처엉사아하아아아ㅁㄴㅇㄹㅁㄴㅇㄹ아아아아아아앙</div>
                   </div>
-                  <button type="button" class="middle-btn bg-red" id="cancel-btn">
-
+                  <button type="button" class="middle-btn bg-red" value= reserveNo>예약 취소</button>
                 </article>
+                -->
+                <!--//예약내역 건들이 위치할 자리-->
+
               </div>
-              <input type="hidden" id="reserveNo">
             </article>
 
           </div>
           <!--//wrap2-->
 
-        </div>
+        </article>
         <!--//컨텐츠wrap-->
 
       </div>
