@@ -31,8 +31,14 @@
           <div class="store-report" th:if="${session.member == null or session.member.memberNo != store.memberNo}">
             <button id="btn-store-report">신고하기</button>
           </div>
-          <div class="store-star" th:if="${avgStar != 0}" th:text="${avgStar}"></div>
+          <div class="store-star" th:if="${avgStar != 0}">
+          	<span th:text="${avgStar}" style="margin-right: 4px; color:#FFD700;"></span>
+          	<span style="margin-left: 8px;">
+          		(<span th:text="${reviewCount}"></span>)
+          	</span>
+          </div>
           <div class="store-star" th:if="${avgStar == 0}">(등록된 별점이 없습니다)</div>
+          
           <div class="star-wrap star-wrap2">
             <span class="material-icons">star</span>
             <span class="material-icons">star</span>
