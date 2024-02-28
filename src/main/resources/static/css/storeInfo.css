@@ -10,8 +10,13 @@
     font-family: ns-b;
     src: url(Noto_Sans_KR/static/NotoSansKR-Bold.ttf)
 }
+.content{
+	width: 1200px;
+	margin:0 auto;
+	display:flex;
+}
 .s-content{
-	width:100%;
+	padding: 60px;
 	display:flex;
 }
 .s-content *{
@@ -93,7 +98,8 @@ s-img-view{
 #s-bussniessContent{
     margin: 0 auto;
     text-align: center;
-    padding: 150px;
+    padding: 100px;
+    padding-left: 150px;
     width: 600px;
 }
 .s-title1{
@@ -146,7 +152,8 @@ s-img-view{
 }
 
 #s-enrollStoreContent{
-    padding: 80px;
+    padding: 30px;
+    padding-left: 50px;
     width: 800px;
     box-sizing: border-box;
     margin: 0 auto;
@@ -218,7 +225,7 @@ s
 
 .s-menu-div{
     border: 1px solid #ccc;
-    padding: 10px;
+    padding-top: 5px;
     border-radius: 5px;
     margin-bottom: 10px;
     display: flex;
@@ -271,19 +278,182 @@ s
 }
 
 
-/*매장정보*/
-.s-storeInfo{
-    padding: 80px;
-    width: 800px;
-    box-sizing: border-box;
-    margin: 0 auto;
+/*myStore*/
+		.tabnav {
+			font-size: 0;
+			border: 1px solid #ddd;
+		}
+
+		.tabnav li {
+			display: inline-block;
+			height: 46px;
+			text-align: center;
+			border-right: 1px solid #ddd;
+		}
+
+		.tabnav li a:before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0px;
+			width: 100%;
+			height: 3px;
+		}
+
+		.tabnav li a.active:before {
+			background: #72B37E;
+		}
+
+		.tabnav li a.active {
+			border-bottom: 1px solid #fff;
+		}
+
+		.tabnav li a {
+			position: relative;
+			display: block;
+			background: #f8f8f8;
+			color: #000;
+			padding: 0 30px;
+			line-height: 46px;
+			text-decoration: none;
+			font-size: 16px;
+		}
+
+		.tabnav li a:hover,
+		.tabnav li a.active {
+			background: #fff;
+			color: #72B37E;
+		}
+
+		.tabcontent {
+			padding: 40px;
+			border: 1px solid #ddd;
+			border-top: none;
+		}
+		.tabcontent>#tab01 img{
+			width: 35%;
+			padding-bottom: 10px;
+		}
+		.s-storeInfo{
+    		padding-left: 60px ;
+    		width: 750px;
+    		box-sizing: border-box;
+    		margin: 0 auto;
+    		padding-bottom: 50px;
+		}
+		.s-info-wrap{
+    		padding: 15px;
+		}
+		.s-info-wrap>div:first-child{
+		    margin-bottom: 10px;
+		}
+		.s-info {
+		    width: 100%;
+		    padding: 0.5rem;
+		    background-color: #fff;
+		    outline: none;
+		    border: 1px solid #ccc;
+		    box-sizing: border-box;
+		    height: 35px;
+		    font-size: 14px;
+		}
+		.s-storeInfo th{
+		    height: 40px;
+		    text-align: right;
+		    font-weight: 500;
+		    padding-right: 10px;
+		}
+		.s-storeInfo td{
+		    padding-left: 10px;
+		    text-align: left;
+		}
+		.tabcontent table{
+			padding: 1rem;
+    		background-color: #fff;
+    		outline: none;
+    		border: 1px solid #ccc;
+    		box-sizing: border-box;
+    		width: 100%;
+		}
+		.menuInfo{
+			border: 1px solid #ccc;
+			height: 80px;
+		}
+		.goStore{
+    		background-color: #72B37E;
+		    color: #fff;
+		    font-size: 15px;
+		    border-radius: 5px;
+		    text-align: center;
+		    border: none;
+		    cursor: pointer;
+		    width: 80px;
+		    height: 40px;
+		    line-height: 40px;
+		    float:right;
+		    margin :10px;
+		}
+		.store-status{
+			text-align: right;
+			margin-bottom: 5px;
+			font-weight: 700;
+			font-size: 16px;
+		}
+		.menuShow{
+			font-size: 18px;
+			padding-right: 2px;
+		}
+		.s-lastTh{
+			padding-top: 3px;
+			padding-bottom: 3px;
+		}
+		.menuBtn{
+    		color: rgb(248, 114, 37);
+    		background-color: #ffffff;
+    		border-radius: 3px;
+    		cursor: pointer;
+    		text-align: right;
+    		/*padding-top: 5px;*/
+    		font-size: 15px;
+    		padding-left: 7px;
+		}
+		.menuBox input{
+    		margin-left: 10px;
+		}
+		.menuBox{
+			border-radius: 7px;
+			margin-bottom: 10px;
+			overflow: hidden;
+			height: 150px;
+			padding: 15px;
+		}
+		.s-img-view{
+			margin: 10px;
+			
+		}
+		.menuBoxIn{
+			display: flex;
+		}
+		.menuBoxInput{
+			/*width: 400px;*/
+			width: 430px;
+			padding-top: 30px;
+		}
+		
+.cancelBtn{
+	padding-left: 13px;
+    color: #db5a5a;
+    /* text-align: right; */
+    font-size: 18px;
+    font-weight: 500;
 }
-.s-info-wrap{
-    padding: 15px;
+.won{
+	 padding-left: 5px;font-size:15px;
 }
-.s-info-wrap>div:first-child{
-    margin-bottom: 10px;
+.s-storeInfo th{
+	font-weight: 500;
 }
+/*mystore*/
 .s-info {
     width: 100%;
     padding: 0.5rem;
