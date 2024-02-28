@@ -95,7 +95,7 @@ public class ReserveController {
 	}
 	
 	//나중에 post로 바꿔
-	@PostMapping(value="/reserveList")
+	@RequestMapping(value="/reserveList")
 	public String reserveList(@SessionAttribute(required = false) Member member, Model model) {
 		//int memberNo = 3;//임시로
 		
