@@ -447,6 +447,11 @@ public class SearchService {
 		return storeList;
 	}
 
+	public int checkCountReview(int storeNo) {
+		int reviewCount = searchDao.checkCountReview(storeNo);
+		return reviewCount;
+	}
+
 
 
 

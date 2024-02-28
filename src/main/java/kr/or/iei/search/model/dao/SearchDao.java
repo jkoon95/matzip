@@ -668,5 +668,12 @@ public class SearchDao {
 		return list;
 	}
 
+	public int checkCountReview(int storeNo) {
+		String query = "select count(*) from review_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int reviewCount = jdbc.queryForObject(query, Integer.class, params);
+		return reviewCount;
+	}
+
 	
 }
