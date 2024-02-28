@@ -732,13 +732,12 @@ footer > .footer-content-box > .last {
 .hg-page-wrap{
     width: 1200px;
     margin: 0 auto;    
+    display: flex;
 }
 
-.hg-left{ 
-    float: left;   
-}
 .hg-right{
     float: left;   
     margin-left: 80px;  
+    padding: 40px;
 }
 
