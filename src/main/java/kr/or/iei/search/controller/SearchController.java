@@ -125,6 +125,8 @@ public class SearchController {
 	    double avgStar = searchService.selectAvgStar(storeNo);
 	    // 같은 역 매장들 전부 조회(STORE_TBL)
 	    List<Store> storeList = searchService.selectAllStore(store.getSubwayName());
+	    // 상점 리뷰 총 갯수 조회(REVIEW_TBL)
+	    int reviewCount = searchService.checkCountReview(storeNo);
 	    
 	    
 		model.addAttribute("store",store);
@@ -134,6 +136,7 @@ public class SearchController {
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("avgStar", avgStar);
 		model.addAttribute("storeList", storeList);
+		model.addAttribute("reviewCount", reviewCount);
 		
 	    
 		System.out.println("클릭!!!!!!!!!!!!"+store);
