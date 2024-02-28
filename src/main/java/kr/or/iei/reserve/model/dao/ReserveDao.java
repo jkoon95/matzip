@@ -12,6 +12,8 @@ import kr.or.iei.reseve.model.dto.MenuServings;
 import kr.or.iei.reseve.model.dto.MenuServingsRowMapper;
 import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveDateRowMapper;
+import kr.or.iei.reseve.model.dto.ReserveNo;
+import kr.or.iei.reseve.model.dto.ReserveNoRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveTimeRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveViewMember;
@@ -53,6 +55,8 @@ public class ReserveDao {
 	private MenuRowMapper menuRowMapper;
 	@Autowired
 	private MenuServingsRowMapper menuServingsRowMapper;
+	@Autowired
+	private ReserveNoRowMapper reserveNoRowMapper;
 	
 	
 	public Store searchStore(int storeNo) {
@@ -244,16 +248,28 @@ public class ReserveDao {
 		return menuServings;
 	}
 
-	public Reserve selectReserve(int reserveNo) {
+	public Reserve selectCancelReserve(int reserveNo) {
 		String query = "select * from reserve_tbl where reserve_no = ?";
 		Object[] params = {reserveNo};
 		List<Reserve> reserve = jdbc.query(query, reserveRowMapper, params);
 		return reserve.get(0);
 	}
 
-	public int cancelReserve(int reserveNo) {
-		String query = "delete from reserve_tbl where reserve_no = ?";
-		Object[] params = {reserveNo};
+	public List<ReserveNo> selectCancelDummy(Reserve reserve) {
+		String query = "select reserve_no "
+					 + "from reserve_tbl "
+					 + "where reserve_no >= ? and reserve_date= ? "
+					 + 		"and reserve_people = -1 and reserve_status != 1 and reserve_status != 3 "
+					 + 		"and member_no= ? and table_no= ? "
+					 + "order by reserve_no";
+		Object[] params = {reserve.getReserveNo(), reserve.getReserveDate(), reserve.getMemberNo(), reserve.getTableNo()};
+		List<ReserveNo> dummy = jdbc.query(query, reserveNoRowMapper, params);
+		return dummy;
+	}
+
+	public int deleteCancelReserve(int reserveNo, int dummyLastNo) {
+		String query = "delete from reserve_tbl where reserve_no between ? and ?";
+		Object[] params = {reserveNo, dummyLastNo};
 		int result= jdbc.update(query, params);
 		return result;
 	}

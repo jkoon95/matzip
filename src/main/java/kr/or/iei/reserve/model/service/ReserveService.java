@@ -11,6 +11,7 @@ import kr.or.iei.reserve.model.dao.ReserveDao;
 import kr.or.iei.reseve.model.dto.MenuServings;
 import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
+import kr.or.iei.reseve.model.dto.ReserveNo;
 import kr.or.iei.reseve.model.dto.ReserveViewMember;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
@@ -405,25 +406,34 @@ public class ReserveService {
 	}
 
 	public int cancelReserve(int reserveNo) {
-		Reserve reserve = reserveDao.selectReserve(reserveNo);
-		int result = reserveDao.cancelReserve(reserveNo);
-		if(result>0) {
-			//insert 순서 : status 1 -> status2 -> status0
-			//select reserve_no, reserve_time from reserve_tbl where reserve_no >= ?(위 코드로 이미 삭제한 reserveNo) and reserve_date=? and reserve_status !=1 and reserve_status !=3 and member_no=? and table_no=? order by reserve_no;
-			/*
-			 * 	int[] reserveNoArr = new array();
-			 * 	if(!reserve.isEmpty(){
-			 * 		for (int i=0; i<reserve.size(); i++){
-			 *			//일단 reserve.get(0).getReserveNo = status 1인 그거임
-			 * 			if (i+1 <= reserve.size() && reserve.get(i+1).getReserveNo - reserve.get(i).getReserveNo == 1){
-			 * 				reserveNoArr.push(reserve.get(i+1).getReserveNo;
-			 * 			}else{
-			 * 				break;
-			 * 		}
-			 * 		reserveNoArr 배열 속 reserveNo들을 전부 delete
-			 * 	}
-			 */
+		int result = 0;
+		Reserve reserve = reserveDao.selectCancelReserve(reserveNo);
+		List<ReserveNo> dummy = reserveDao.selectCancelDummy(reserve);
+		int dummyLastNo = reserve.getReserveNo();
+		if(dummy.get(0) != null) {//dummy 첫 시작은 status=2인 것임. 만약 이게 null이면 timetoeat=1이거나 status가 2또는0인게 없는거임.
+			for (int i=0; i<dummy.size(); i++){
+				if(i == 0) {
+					int num1 = dummy.get(i).getReserveNo();
+					int num2 = reserve.getReserveNo();
+					if (num1 - num2 == 1 || num1 - num2 > 100000){//시퀀스 초기화 고려
+						dummyLastNo = num1;
+					}else {
+						break;
+					}
+				}else {
+					int num1 = dummy.get(i).getReserveNo();
+					int num2 = dummy.get(i-1).getReserveNo();
+					if (num1 - num2 == 1 || num1 - num2 > 100000){//시퀀스 초기화 고려
+						dummyLastNo = num1;
+					}else {
+						break;
+					}
+				}
+			}
 		}
+
+		result += reserveDao.deleteCancelReserve(reserve.getReserveNo(), dummyLastNo);
+		
 		return result;
 	}
 	
