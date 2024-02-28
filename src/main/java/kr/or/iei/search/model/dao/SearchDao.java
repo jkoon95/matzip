@@ -18,6 +18,7 @@ import kr.or.iei.store.model.dto.StorePlusRowMapper;
 import kr.or.iei.store.model.dto.StoreReview;
 import kr.or.iei.store.model.dto.StoreReviewRowMapper;
 import kr.or.iei.store.model.dto.StoreRowMapper;
+import kr.or.iei.store.model.dto.StoreTopRowMapper;
 
 @Repository
 public class SearchDao {
@@ -33,6 +34,8 @@ public class SearchDao {
 	private StoreReviewRowMapper storeReviewRowMapper;
 	@Autowired
 	private StoreRowMapper storeRowMapper;
+	@Autowired
+	private StoreTopRowMapper storeTopRowMapper;
 
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -662,7 +665,7 @@ public class SearchDao {
 	}
 
 	public List<Store> selectAllStore(String subwayName) {
-		String query = "select * from store_tbl where subway_name=?";
+		String query = "SELECT * FROM (SELECT * FROM store_tbl WHERE subway_name = ? ORDER BY DBMS_RANDOM.RANDOM()) WHERE ROWNUM <= 5";
 		Object[] params = {subwayName};
 		List list = jdbc.query(query, storeRowMapper, params);
 		return list;
@@ -673,6 +676,46 @@ public class SearchDao {
 		Object[] params = {storeNo};
 		int reviewCount = jdbc.queryForObject(query, Integer.class, params);
 		return reviewCount;
+	}
+
+	public List<Store> selectTopStar() {
+		String query = "SELECT * FROM (\r\n" + 
+				"    SELECT s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME, AVG(r.REVIEW_STAR) AS AVG_STAR \r\n" + 
+				"    FROM STORE_TBL s \r\n" + 
+				"    LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO \r\n" + 
+				"    WHERE s.STORE_STATUS = 1 \r\n" + 
+				"    GROUP BY s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME \r\n" + 
+				"    ORDER BY AVG_STAR DESC NULLS LAST\r\n" + 
+				")\r\n" + 
+				"WHERE ROWNUM <= 5";
+		List list = jdbc.query(query, storeTopRowMapper);
+		return list;
+	}
+
+	public List<Store> selectTopSubway() {
+		String query = "SELECT STORE_NO,\r\n" + 
+				"       STORE_NAME,\r\n" + 
+				"       STORE_ADDR,\r\n" + 
+				"       STORE_PHONE,\r\n" + 
+				"       STORE_IMG,\r\n" + 
+				"       SUBWAY_NAME,\r\n" + 
+				"       AVG_STAR\r\n" + 
+				"FROM (\r\n" + 
+				"    SELECT s.STORE_NO,\r\n" + 
+				"           s.STORE_NAME,\r\n" + 
+				"           s.STORE_ADDR,\r\n" + 
+				"           s.STORE_PHONE,\r\n" + 
+				"           s.STORE_IMG,\r\n" + 
+				"           s.SUBWAY_NAME,\r\n" + 
+				"           AVG(r.REVIEW_STAR) AS AVG_STAR,\r\n" + 
+				"           ROW_NUMBER() OVER (PARTITION BY s.SUBWAY_NAME ORDER BY AVG(r.REVIEW_STAR) DESC) AS rn\r\n" + 
+				"    FROM STORE_TBL s\r\n" + 
+				"    JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" + 
+				"    GROUP BY s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME\r\n" + 
+				")\r\n" + 
+				"WHERE rn = 1";
+		List list = jdbc.query(query, storeTopRowMapper);
+		return list;
 	}
 
 	
