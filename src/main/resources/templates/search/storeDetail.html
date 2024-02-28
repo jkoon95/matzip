@@ -130,7 +130,9 @@
           th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info != null)}"
           onclick="infoAlert()">도움말</button>
         <form id="infoForm" method="post">
-          <button type="submit" class="infoBtn" onclick="submitForm('update')">수정</button>
+          <button type="submit" class="infoBtn"
+            th:if="${session.member != null and session.member.memberNo == store.memberNo}"
+            onclick="submitForm('update')">수정</button>
           <button type="submit" class="infoBtn"
             th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}"
             onclick="submitForm('insert')">작성</button>
