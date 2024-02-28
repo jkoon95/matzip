@@ -442,6 +442,17 @@ public class SearchService {
 		return result;
 	}
 
+	public List<Store> selectAllStore(String subwayName) {
+		List<Store> storeList = searchDao.selectAllStore(subwayName);
+		return storeList;
+	}
+
+	public int checkCountReview(int storeNo) {
+		int reviewCount = searchDao.checkCountReview(storeNo);
+		return reviewCount;
+	}
+
+
 
 
 }

@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import kr.iei.admin.model.dto.AdminListData;
+import kr.or.iei.admin.model.dto.Report;
+import kr.or.iei.admin.model.dto.ReportRowMapper;
 import kr.or.iei.member.model.dto.Member;
-import kr.or.iei.member.model.dto.MemberRowMapper;
 import kr.or.iei.member.model.dto.OriginMemberRowMapper;
-import kr.or.iei.notice.model.dto.NoticeListData;
 import kr.or.iei.store.model.dto.Store;
 import kr.or.iei.store.model.dto.StoreMemberRowMapper;
 import kr.or.iei.store.model.dto.StoreRowMapper;
-import kr.or.iei.subway.model.dto.subwayRowMapper;
 
 @Repository
 public class AdminDao {
@@ -26,6 +24,8 @@ public class AdminDao {
 	private StoreRowMapper storeRowMapper;
 	@Autowired
 	private StoreMemberRowMapper storeMemberRowMapper;
+	@Autowired
+	private ReportRowMapper reportRowMapper;
 	
 	public List selectAllMember() {
 		String query = "select * from member_tbl order by 1 desc";
@@ -333,6 +333,47 @@ public class AdminDao {
 		String query="update member_tbl set member_level=3 where member_no=?";
 		Object[] params = {memberNo};
 		int result=jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectAllReport(int start, int end) {
+		//select member_no, member_id, report_no, report_reason, report_target , report_type from report_tbl join member_tbl using(member_no) order by 3
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, r.* FROM (select member_no, member_id, report_no, report_reason, report_target , report_type,report_status from report_tbl join member_tbl using(member_no) order by 3)r) WHERE RNUM BETWEEN ? AND ?";
+		Object[] params= {start,end};
+		List list = jdbc.query(query, reportRowMapper,params);
+		return list;
+	}
+
+	public Store selectReportStore(int storeNo) {
+		String query ="select * from store_tbl where store_no=?";
+		Object[] params= {storeNo};
+		List list = jdbc.query(query, storeRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Store)list.get(0);
+	}
+
+	public Member selectReportMember(String report_target) {
+		String query ="select * from member_tbl where member_nickname=?";
+		Object[] params= {report_target};
+		List list = jdbc.query(query, originMemberRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return (Member)list.get(0);
+	}
+
+	public int selectAllReportCount() {
+		String query="select count(*) from report_tbl";
+		int totalCount = jdbc.queryForObject(query, Integer.class);
+		return totalCount;
+	}
+
+	public int deleteReport(int reportNo) {
+		String query = "delete from report_tbl where report_no=?";
+		Object[] params= {reportNo};
+		int result = jdbc.update(query,params);
 		return result;
 	}
 

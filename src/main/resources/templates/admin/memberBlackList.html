@@ -215,6 +215,10 @@
 		$(".memberBlackCancelLevel").on("click",function(){
 			const memberNo = $(this).parent().parent().children().eq(1).text();
 			const self = this;
+			const origin = location.origin;
+			const url = location.href;
+			let uri = url.replace(origin,"");
+			uri = uri.substring(0,uri.lastIndexOf("=")+1);
 			$.ajax({
 				url : "/admin/memberBlackCancelLevel",
 				type : "get",
@@ -226,12 +230,12 @@
 						alert("잠시후 다시 시도해주세요.");
 					}
 					const page= $(".active-page").text()-1;
-					if(page!=0){
+					if(page>0){
 			            if($(".blackTr").length==0){
-			            	location.href="/admin/memberBlackList?reqPage="+page;
+			            	location.href=uri+page;
 			            }					
 					}else{
-						location.reload();         	
+						location.reload();
 		            }
 				},
 				error:function(){
@@ -253,6 +257,12 @@
 				no.push(memberNo);
 			});
 			
+			const origin = location.origin;
+			const url = location.href;
+			let uri = url.replace(origin,"");
+			uri = uri.substring(0,uri.lastIndexOf("=")+1);
+			//console.log(uri)
+			
 			$.ajax({
 		        url: "/admin/checkedMemberBlackCancelLevel",
 		        type: "get",
@@ -268,18 +278,19 @@
 		        		alert("실패");
 		        	}
 		            const page= $(".active-page").text()-1;      
-		            if(page!=0){
+		            if(page>0){
 			            if($(".blackTr").length==0){
-			            	location.href="/admin/memberBlackList?reqPage="+page;
+			            	location.href=uri+page;
 			            }					
 					}else{
-						location.reload();         	
+						location.reload();
 		            }
 		        },
 		        error: function(error) {
 		            console.log("에러");
 		        }
 		    });
+			
 		});
     </script>
     <th:block th:include="common/footer"></th:block>

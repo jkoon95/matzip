@@ -3,8 +3,343 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/storeInfo.css">
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/notice.css">
 </head>
+<style>
+.s-storeBlackPlusBtn{
+	color: #fff;
+    font-size: 15px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+    /* margin-top: 20px; */
+    background-color: #4c4945;
+    font-size: 15px;
+}
+.BlackBtn{
+	border: none;
+	color: #252323;
+    height: 40px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+.BlackBtn:hover{
+	background-color: #cdd2ce;
+}
+.memberBlackBtn{
+	float: right;
+    border: none;
+    color: #252323;
+    height: 40px;
+    padding: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+}
+.reportBtn:hover{
+	background-color: #cdd2ce;
+}
+.input-level2{
+    width: 90px;
+    /* display: block; */
+    padding: 0.5rem;
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.reportBtnBox{
+	overflow: hidden;
+}
+.reportBtn{
+	width: 80px;
+    float: right;
+    border: none;
+    color: #252323;
+    height: 40px;
+    padding: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+}
+#pageNavi2{
+	margin-top:30px;
+}
+</style>
 <body>
-	<h1>신고</h1>
+	<th:block th:include="common/header"></th:block>
+    <div class="content">
+    	<th:block th:include="common/side"></th:block>
+    	 <div class="sss-content">
+            <a href="/admin/reportList?reqPage=1" class="page-title">신고 관리</a>
+            <table class="tbl tbl-hover" style="width: 800px;font-size: 15px;margin-top:25px;">
+                <tr class="tr-3">
+                	<th style="width:7%;"><input type="checkbox" name="reportCheckAll"></th>
+                    <th style="width:8%;">번호</th>
+                    <th style="width:13%;">신고자</th>
+                    <th style="width:30%;">신고사유</th>                    
+                    <th style="width:18%;">신고대상</th>
+                    <th style="width:13%;">유형</th>
+                    <th style="width:15%;">승인여부</th>
+                </tr>
+                <tr th:each="r:${list}" class="tr-1 blackTr">
+                	<td><input type="checkbox" class="chk" name="reportCheck"></td>
+                    <td th:text="${r.reportNo}"></td>
+                    <td th:text="${r.memberId}"></td>
+                    <td th:text="${r.reportReason}"></td>
+                    <td th:if="${r.reportType!=3}" th:text="${r.reportTarget}"></td>
+                    <td th:if="${r.reportType==3}" th:text="${r.storeName}"></td>
+                    <td th:if="${r.reportType==1}">리뷰</td>                    
+                    <td th:if="${r.reportType==2}">예약</td>                    
+                    <td th:if="${r.reportType==3}">매장</td>      
+                    <td th:if="${r.reportStatus==1}" style="color:#f34343;">미승인</td>
+                    <td th:if="${r.reportStatus==2}">승인</td>                                  
+                </tr>
+            </table>
+            <div id="pageNavi2" th:utext="${pageNavi}"></div>            
+            <div class="reportBtnBox">
+				<button class="reportBtn reportApprove">신고 승인</button>					
+				<button class="reportBtn reportDel">신고 삭제</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+	    $("[name=reportCheckAll]").on("click",function(){
+	        if($(this).is(":checked")){
+	            $("[name=reportCheck]").prop("checked",true);
+	        }
+	        else{
+	            $("[name=reportCheck]").prop("checked", false);
+	        }
+	    });
+	    
+	    //신고승인	-> 회원/매장 MEMBER_LEVEL/STORE_LEVEL UPDATE BLACKLIST로-> report_tbl의 report_status
+	    //reportApprove
+	    $(".reportApprove").on("click",function(){
+	    	const check= $(".chk:checked");		
+	    	if(check.length==0){
+				alert("선택된 회원이 없습니다.");
+				return;
+			}
+	    	const no = new Array();
+	    	const target = new Array();
+	    	const type = new Array();
+	    	check.each(function(index,item){
+				const reportNo = $(item).parent().next().val();
+				no.push(reportNo);
+				//const reportType = $(item).parent().children().eq(5).text();
+				//type.push(reportType);
+				//const reportTarget = $(item).parent().next().children().eq(4).val();
+				//target.push(reportTarget);
+			});
+	    	console.log(no);
+	    	//console.log(type);
+	    });
+	    
+	    
+	    
+	    //신고삭제  -> DELETE
+	    //reportDel
+	    $(".reportDel").on("click",function(){
+	    	const check= $(".chk:checked");		
+	    	if(check.length==0){
+				alert("선택된 회원이 없습니다.");
+				return;
+			}
+	    	const no = new Array();
+	    	check.each(function(index,item){
+				const reportNo = $(item).parent().next().text();
+				no.push(reportNo);
+			});
+	    	console.log(no);
+	    	const url = location.href;
+			let uri = url.replace(origin,"");
+			uri = uri.substring(0,uri.lastIndexOf("=")+1);
+	    	$.ajax({
+		        url: "/admin/reportDel",
+		        type: "get",
+		        data: { no : no },
+		        traditional: true,
+		        success: function(result) {
+		        	if(result==1){
+			            alert("완료");
+		        	}else{
+		        		alert("실패");
+		        	}
+		            const page= $(".active-page").text()-1;      
+		            if(page>0){
+			            if($(".blackTr").length==0){
+			            	location.href=uri+page;
+			            }					
+					}else{
+						location.reload();
+		            }
+		        },
+		        error: function(error) {
+		            console.log("에러");
+		        }
+		    });
+	    });
+	    
+	    
+	    
+	    //등급변경
+	    $(".memberBlackChangeLevel").on("click",function(){
+			const memberNo = $(this).parent().parent().children().eq(1).text();
+			const self = this;
+			const memberLevel = $(this).parent().prev().children().val();
+		
+			
+			/*
+			$.ajax({
+				url : "/admin/memberBlackChangeLevel",
+				type : "get",
+				data : {memberNo : memberNo, memberLevel:memberLevel},
+				success : function(result){
+					console.log(result,typeof result);
+					if(result===1){
+						console.log("성공");
+						alert("변경되었습니다.");
+					}else{
+						alert("잠시후 다시 시도해주세요.");
+					}
+					location.reload(); //안해도댐
+				},
+				error:function(){
+					console.log("에러");
+				}
+			});
+			
+			*/
+		});
+		$(".checkedMemberBlackChangeLevel").on("click",function(){
+			const check= $(".chk:checked");		
+			if(check.length==0){
+				alert("선택된 회원이 없습니다.");
+				return;
+			}
+			const no = new Array();
+			const level = new Array();
+			
+			check.each(function(index,item){
+				const memberNo = $(item).parent().next().text();
+				no.push(memberNo);
+				const memberLevel= $(item).parent().parent().find("select").val();
+				level.push(memberLevel);
+			});
+			/*
+			$.ajax({
+		        url: "/admin/blackMemberCheckedChangeLevel",
+		        type: "get",
+		        data: { no : no , level : level},
+		        traditional: true,
+		        success: function(result) {
+		        	if(result==1){
+			            alert("등급 변경이 완료되었습니다.");
+		        	}else{
+		        		alert("등급 변경 실패");
+		        	}
+		            location.reload();
+		        },
+		        error: function(error) {
+		            console.log("에러");
+		        }
+		    });
+			*/
+		});
+		
+		//블랙해제
+		$(".memberBlackCancelLevel").on("click",function(){
+			const memberNo = $(this).parent().parent().children().eq(1).text();
+			const self = this;
+			const origin = location.origin;
+			const url = location.href;
+			let uri = url.replace(origin,"");
+			uri = uri.substring(0,uri.lastIndexOf("=")+1);
+			$.ajax({
+				url : "/admin/memberBlackCancelLevel",
+				type : "get",
+				data : {memberNo : memberNo},
+				success : function(result){
+					if(result==1){
+						$(self).parent().parent().remove();//안해도됨
+					}else{
+						alert("잠시후 다시 시도해주세요.");
+					}
+					const page= $(".active-page").text()-1;
+					if(page>0){
+			            if($(".blackTr").length==0){
+			            	location.href=uri+page;
+			            }					
+					}else{
+						location.reload();
+		            }
+				},
+				error:function(){
+					console.log("에러");
+				}
+			});
+		});
+		
+		$(".checkedMemberBlackCancelLevel").on("click",function(){
+			const check= $(".chk:checked");		
+			if(check.length==0){
+				alert("선택된 회원이 없습니다.");
+				return;
+			}
+			const no = new Array();
+			
+			check.each(function(index,item){
+				const memberNo = $(item).parent().next().text();
+				no.push(memberNo);
+			});
+			
+			const origin = location.origin;
+			const url = location.href;
+			let uri = url.replace(origin,"");
+			uri = uri.substring(0,uri.lastIndexOf("=")+1);
+			//console.log(uri)
+			
+			$.ajax({
+		        url: "/admin/checkedMemberBlackCancelLevel",
+		        type: "get",
+		        data: { no : no },
+		        traditional: true,
+		        success: function(result) {
+		        	if(result==1){
+			            check.each(function(index,item){
+			            	$(item).parent().parent().remove();
+						});//안해도됨
+			            //alert("완료");
+		        	}else{
+		        		alert("실패");
+		        	}
+		            const page= $(".active-page").text()-1;      
+		            if(page>0){
+			            if($(".blackTr").length==0){
+			            	location.href=uri+page;
+			            }					
+					}else{
+						location.reload();
+		            }
+		        },
+		        error: function(error) {
+		            console.log("에러");
+		        }
+		    });
+			
+		});
+    </script>
+    <th:block th:include="common/footer"></th:block>
 </body>
 </html>

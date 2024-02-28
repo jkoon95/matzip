@@ -1,5 +1,7 @@
 package kr.or.iei.admin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -10,17 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletResponse;
-import kr.iei.admin.model.dto.AdminListData;
 import kr.or.iei.FileUtils;
-import kr.or.iei.admin.model.dao.AdminDao;
+import kr.or.iei.admin.model.dto.AdminListData;
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.store.model.dto.EvidenceFile;
 import kr.or.iei.store.model.dto.Store;
-import kr.or.iei.store.model.dto.StoreEvidenceData;
-import kr.or.iei.store.model.dto.StoreFileData;
-import kr.or.iei.store.model.dto.StoreInfoData;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -278,11 +276,30 @@ public class AdminController {
 			return 0;
 		}
 	}
+	//신고 목록
 	@GetMapping(value="/reportList")
-	public String reportList() {
-		//신고테이블 조회
-		
+	public String reportList(int reqPage, Model model) {
+		AdminListData ald = adminService.selectAllReport(reqPage);
+		model.addAttribute("list",ald.getList());
+		model.addAttribute("pageNavi",ald.getPageNavi());
 		return "admin/reportList";
+		//List list = adminService.selectAllReport();
+		//model.addAttribute("list", list);	
+	}
+	//reportDel
+	@ResponseBody
+	@GetMapping(value="/reportDel")
+	public int reportDel(int[] no) {
+		int count = no.length;
+		int result=0;
+		for(int reportNo : no) {
+			result += adminService.deleteReport(reportNo);			
+		}
+		if(result==count) {
+			return 1;			
+		}else {
+			return 0;
+		}
 	}
 	
 	

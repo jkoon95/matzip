@@ -1,14 +1,18 @@
 package kr.or.iei.reserve.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.iei.reserve.model.dao.ReserveDao;
+import kr.or.iei.reseve.model.dto.MenuServings;
 import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
+import kr.or.iei.reseve.model.dto.ReserveNo;
+import kr.or.iei.reseve.model.dto.ReserveViewMember;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
 import kr.or.iei.reseve.model.dto.TimeSet;
@@ -382,5 +386,56 @@ public class ReserveService {
 		
 		return insertResult;
 	}
+
+	
+	/////////////////////////////////////////////////////////////////////
+	
+
+	public HashMap<String, List> reserveViewMemberList(int memberNo) {
+		
+		HashMap<String, List> rvmList = new HashMap<String, List>();
+		
+		List<ReserveViewMember> afterRvmList = reserveDao.afterReserveViewMemberList(memberNo);
+		List<ReserveViewMember> beforeRvmList = reserveDao.beforeReserveViewMemberList(memberNo);
+		List<MenuServings> menuServings = reserveDao.MenuServings(memberNo);
+		
+		rvmList.put("after", afterRvmList);
+		rvmList.put("before", beforeRvmList);
+		rvmList.put("menuServings", menuServings);
+		return rvmList;
+	}
+
+	public int cancelReserve(int reserveNo) {
+		int result = 0;
+		Reserve reserve = reserveDao.selectCancelReserve(reserveNo);
+		List<ReserveNo> dummy = reserveDao.selectCancelDummy(reserve);
+		int dummyLastNo = reserve.getReserveNo();
+		if(dummy.get(0) != null) {//dummy 첫 시작은 status=2인 것임. 만약 이게 null이면 timetoeat=1이거나 status가 2또는0인게 없는거임.
+			for (int i=0; i<dummy.size(); i++){
+				if(i == 0) {
+					int num1 = dummy.get(i).getReserveNo();
+					int num2 = reserve.getReserveNo();
+					if (num1 - num2 == 1 || num1 - num2 > 100000){//시퀀스 초기화 고려
+						dummyLastNo = num1;
+					}else {
+						break;
+					}
+				}else {
+					int num1 = dummy.get(i).getReserveNo();
+					int num2 = dummy.get(i-1).getReserveNo();
+					if (num1 - num2 == 1 || num1 - num2 > 100000){//시퀀스 초기화 고려
+						dummyLastNo = num1;
+					}else {
+						break;
+					}
+				}
+			}
+		}
+
+		result += reserveDao.deleteCancelReserve(reserve.getReserveNo(), dummyLastNo);
+		
+		return result;
+	}
+	
 	
 }

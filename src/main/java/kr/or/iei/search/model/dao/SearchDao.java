@@ -17,6 +17,7 @@ import kr.or.iei.store.model.dto.StoreInfoRowMapper;
 import kr.or.iei.store.model.dto.StorePlusRowMapper;
 import kr.or.iei.store.model.dto.StoreReview;
 import kr.or.iei.store.model.dto.StoreReviewRowMapper;
+import kr.or.iei.store.model.dto.StoreRowMapper;
 
 @Repository
 public class SearchDao {
@@ -30,6 +31,8 @@ public class SearchDao {
 	private ClosedDayRowMapper closedDayRowMapper;
 	@Autowired
 	private StoreReviewRowMapper storeReviewRowMapper;
+	@Autowired
+	private StoreRowMapper storeRowMapper;
 
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -638,17 +641,39 @@ public class SearchDao {
 	}
 
 	public int insertReportStore(int memberNo, int storeNo, String reason) {
-		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,3)";
+		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,3,1)";
 		Object[] params = {memberNo,reason,storeNo};
 		int result = jdbc.update(query, params);
 		return result;
 	}
 	
 	public int insertReportReview(int memberNo, String reviewWriter) {
-		String query = "insert into report_tbl values(report_seq.nextval,?,'불량리뷰 신고',?,1)";
+		String query = "insert into report_tbl values(report_seq.nextval,?,'불량리뷰 신고',?,1,1)";
 		Object[] params = {memberNo,reviewWriter};
 		int result = jdbc.update(query, params);
 		return result;
 	}
+
+	public List selectStoreImg(String subwayName) {
+		String query = "select store_img from store_tbl where subway_name=?";
+		Object[] params = {subwayName};
+		List list = jdbc.queryForList(query,String.class,params);
+		return list;
+	}
+
+	public List<Store> selectAllStore(String subwayName) {
+		String query = "select * from store_tbl where subway_name=?";
+		Object[] params = {subwayName};
+		List list = jdbc.query(query, storeRowMapper, params);
+		return list;
+	}
+
+	public int checkCountReview(int storeNo) {
+		String query = "select count(*) from review_tbl where store_no=?";
+		Object[] params = {storeNo};
+		int reviewCount = jdbc.queryForObject(query, Integer.class, params);
+		return reviewCount;
+	}
+
 	
 }

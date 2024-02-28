@@ -65,7 +65,7 @@
     text-align: right;
 }
 .s-title33{
-	font-size: 26px; padding-left: 50px;padding-top: 20px;padding-bottom: 20px;
+	font-size: 26px;padding-left: 110px;;padding-top: 20px;padding-bottom: 20px;
 }
 .storeInfoTbl th{
 	padding-right: 10px;
@@ -171,7 +171,7 @@
 							<a th:if="${store.storeStatus==1}" th:href="@{/search/conveyStoreInfoToDetail(storeNo=${store.storeNo})}" class="storeInfoBox">매장가기</a>
 							<a th:if="${store.storeStatus==2}" th:href="@{/admin/storeStatus(storeNo=${store.storeNo})}" class="storeInfoBox">승인하기</a>	
 							<a th:href="@{/admin/memberView(memberNo=${member.memberNo})}" class="storeInfoBox" style="background-color: #FFA648">회원정보</a>
-							<a th:href="@{/store/storeDelete(storeNo=${store.storeNo})}" class="storeInfoBox" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">삭제하기</a>
+							<a th:href="@{/store/storeDelete(storeNo=${store.storeNo})}" class="storeInfoBox" style="background-color: #F15F5F;" onclick="return confirm('정말로 삭제하겠습니까?');">매장 삭제</a>
 						</div>						
             	</div>
             </div>
