@@ -206,6 +206,15 @@ public class MemberController {
 		model.addAttribute("loc","/");
 		return "common/msg";
 	}
+	
+	@GetMapping(value = "/userMsg")
+	public String userMsg(Model model) {
+		model.addAttribute("title","유저 페이지");
+		model.addAttribute("msg","유저만 접근 가능합니다.");
+		model.addAttribute("icon","warning");
+		model.addAttribute("loc","/");
+		return "common/msg";
+	}
 
 	@GetMapping(value="adminpage")
 	public String adminpage() {
