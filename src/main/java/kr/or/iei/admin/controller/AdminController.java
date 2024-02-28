@@ -301,8 +301,19 @@ public class AdminController {
 			return 0;
 		}
 	}
-	
-	
+	//신고승인	-> 회원/매장 MEMBER_LEVEL/STORE_LEVEL UPDATE BLACKLIST(회원조회 시 이미 다른 블랙리스트종류일시 6.전체블랙)으로
+    //												-> report_tbl의 report_status 2(승인)으로 update
+	@ResponseBody
+	@GetMapping(value="/reportApprove")
+	public int blackMemberCheckedChangeLevel(int[] no, int[] type, String[] target) {
+		int count = no.length*2;
+		int result= adminService.updateReport(no,type,target);
+		if(result==count) {
+			return 1;			
+		}else {
+			return 0;
+		}
+	}	
 	
 	
 }
