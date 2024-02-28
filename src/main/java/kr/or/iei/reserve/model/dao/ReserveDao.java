@@ -267,8 +267,8 @@ public class ReserveDao {
 		return dummy;
 	}
 
-	public int deleteCancelReserve(int reserveNo, int dummyLastNo) {
-		String query = "delete from reserve_tbl where reserve_no between ? and ?";
+	public int updateCancelReserve(int reserveNo, int dummyLastNo) {
+		String query = "update reserve_tbl set reserve_status=3 where reserve_no between ? and ?";
 		Object[] params = {reserveNo, dummyLastNo};
 		int result= jdbc.update(query, params);
 		return result;

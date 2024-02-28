@@ -134,7 +134,7 @@ main {
   line-height: 1;
 }
 
-.smallBtn :hover{
+.smallBtn:hover{
   background: #007fff;
   width: 54px;
 }

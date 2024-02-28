@@ -48,6 +48,7 @@ public class ReserveController {
 		return closedDays;
 	}
 	
+	
 	@ResponseBody
 	@PostMapping(value="/tempClosedDays")
 	public List<String> tempClosedDays(int storeNo){
@@ -114,9 +115,49 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/cancelReserve")
-	public int deleteReserve(Integer reserveNo) {
+	public int CancelReserve(Integer reserveNo) {
 		int result = reserveService.cancelReserve(reserveNo);
 		return result;
+	}
+	
+	@RequestMapping(value="/reserveManage")
+	public String reserveManage(Model model) {
+		int storeNo = 7;
+		
+		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
+		List<Integer> closedDays = reserveService.closedDays(storeNo);
+		
+		model.addAttribute("store", reserveFrm.getStore());
+		model.addAttribute("menus", reserveFrm.getMenus());
+		model.addAttribute("fullDays", reserveFrm.getFullDays());
+		
+		model.addAttribute("closedDays", closedDays);//정기휴일
+		
+		return "reserve/reserveManage";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/closedDays2")
+	public List<Integer> closedDays2(int storeNo){
+		//정기휴무일 구하기
+		List<Integer> closedDays = reserveService.closedDays(storeNo);
+		return closedDays;
+	}
+
+	@ResponseBody
+	@PostMapping(value="/tempClosedDays2")
+	public List<String> tempClosedDays2(int storeNo){
+		//임시휴무일 구하기
+		List<String> tempClosedDays = reserveService.tempClosedDays(storeNo);
+		return tempClosedDays;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/timeSet2")
+	public TimeSet timeSet2(int storeNo, String selectedDay){
+		//String Day = datepicker에서 선택한 날짜
+		TimeSet timeSet = reserveService.timeset(storeNo, selectedDay);
+		return timeSet;
 	}
 	
 }

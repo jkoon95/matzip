@@ -431,8 +431,8 @@ public class ReserveService {
 				}
 			}
 		}
-
-		result += reserveDao.deleteCancelReserve(reserve.getReserveNo(), dummyLastNo);
+		result += reserveDao.updateCancelReserve(reserve.getReserveNo(), dummyLastNo);
+		
 		
 		return result;
 	}

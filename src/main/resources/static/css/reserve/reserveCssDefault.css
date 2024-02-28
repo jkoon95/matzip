@@ -40,6 +40,13 @@ main {
   padding: 10px;
 }
 
+.small-article{
+  border: #eff1eb;
+  box-shadow: 0 0 0 3px #eff1eb ;
+  border-radius: 5px;
+  padding: 10px;
+}
+
 .article-title{
   text-align: center;
   font-size: large;
