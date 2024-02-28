@@ -3,10 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+  <script src="/js/jquery-3.7.1.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="/css/side-menu.css">
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
-		<div class="mid">
+	
+		<div class="hg-page-wrap">
+         <div class="hg-left">
+
+            <div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="/reserve/reserveList">
+                            <span class="material-icons">calendar_month</span>
+                            <span class="title">예약 내역</span>
+                        </a>
+                    </li>                    
+                </ul>
+            </div>
+		</div>            
+	           	
+	
+		<div class="hg-right">
 	        <div class="info-join-title">내 정보</div>
 	        <div class="info-join-wrap-box">            
 	            <form action="/member/update" method="post">                
@@ -62,6 +82,8 @@
 	            	</form>
 	        	</div>              
 	    	</div>
+	    	
+	    </div>	
 	    <th:block th:include="common/footer"></th:block>	
 </body>
 </html>

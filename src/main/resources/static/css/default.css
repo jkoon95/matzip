@@ -726,3 +726,18 @@ footer > .footer-content-box > .last {
     font-size: 50%;
 }
 
+/* mypage-side */
+
+.hg-page-wrap{
+    width: 1200px;
+    margin: 0 auto;    
+}
+
+.hg-left{ 
+    float: left;   
+}
+.hg-right{
+    float: left;   
+    margin-left: 50px;  
+}
+
