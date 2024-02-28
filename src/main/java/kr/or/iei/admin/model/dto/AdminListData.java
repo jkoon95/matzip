@@ -1,4 +1,4 @@
-package kr.iei.admin.model.dto;
+package kr.or.iei.admin.model.dto;
 
 import java.util.List;
 

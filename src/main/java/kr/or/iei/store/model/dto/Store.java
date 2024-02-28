@@ -57,6 +57,7 @@ public class Store {
 	private float reviewScore;
 	private String operationStatus;
 	private String storeAddr1;
+	private Double avgStar;
 	
 	
 	private String memberId;

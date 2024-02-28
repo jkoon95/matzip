@@ -442,15 +442,26 @@ public class SearchService {
 		return result;
 	}
 
-	public List selectStoreImg(String subwayName) {
-		List storeImgList = searchDao.selectStoreImg(subwayName);
-		return storeImgList;
+	public List<Store> selectAllStore(String subwayName) {
+		List<Store> storeList = searchDao.selectAllStore(subwayName);
+		return storeList;
 	}
 
-	public List selectStoreNo(String subwayName) {
-		List storeNoList = searchDao.selectStoreNo(subwayName);
-		return storeNoList;
+	public int checkCountReview(int storeNo) {
+		int reviewCount = searchDao.checkCountReview(storeNo);
+		return reviewCount;
 	}
+
+	public List<Store> selectTopStar() {
+		List<Store> topList = searchDao.selectTopStar();
+		return topList;
+	}
+
+	public List<Store> selectTopSubway() {
+		List<Store> subwayList = searchDao.selectTopSubway();
+		return subwayList;
+	}
+
 
 
 

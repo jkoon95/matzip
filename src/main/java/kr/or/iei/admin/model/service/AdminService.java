@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import kr.iei.admin.model.dto.AdminListData;
+import jakarta.mail.search.IntegerComparisonTerm;
+import kr.or.iei.admin.model.dto.AdminListData;
+import kr.or.iei.admin.model.dto.Report;
 import kr.or.iei.admin.model.dao.AdminDao;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.dto.Member;
@@ -686,6 +688,139 @@ public class AdminService {
 		int result = adminDao.updateMemberBlackCancel(memberNo);
 		return result;
 	}
+
+
+
+	public AdminListData selectAllReport(int reqPage) {
+		/*
+		List<Report> list = adminDao.selectAllReport();
+		for(Report r : list) {
+			if(r.getReportType()==3) {
+				int storeNo = Integer.valueOf(r.getReportTarget());
+				Store store = adminDao.selectReportStore(storeNo);
+				r.setStoreName(store.getStoreName());
+			}else {
+				Member member = adminDao.selectReportMember(r.getReportTarget());
+				r.setMemberNo2(member.getMemberNo());
+				r.setMemberId2(member.getMemberId());
+			}
+		}*/
+		//return list;
+		
+		int numPerPage = 5;
+		int end = reqPage*numPerPage;
+		int start = end - numPerPage + 1;
+		List<Report> list = adminDao.selectAllReport(start,end);
+		for(Report r : list) {
+			if(r.getReportType()==3) {
+				int storeNo = Integer.valueOf(r.getReportTarget());
+				Store store = adminDao.selectReportStore(storeNo);
+				r.setStoreName(store.getStoreName());
+				r.setStoreNo(storeNo);
+			}else {
+				Member member = adminDao.selectReportMember(r.getReportTarget());
+				r.setMemberNo2(member.getMemberNo());
+				r.setMemberId2(member.getMemberId());
+			}
+		}
+
+		int totalCount = adminDao.selectAllReportCount();
+		int totalPage = 0;
+		if(totalCount%numPerPage==0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+
+		int pageNaviSize = 5;
+		
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize +1;
+				
+		String pageNavi = "<ul class='pagination circle-style'>";
+		if(pageNo!=1) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/reportList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_left</span>";
+			pageNavi += "</a></li>";
+		}
+		for(int i=0;i<pageNaviSize;i++) {
+			if(pageNo == reqPage) {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item active-page' href='/admin/reportList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}else {
+				pageNavi += "<li>";
+				pageNavi += "<a class='page-item' href='/admin/reportList?reqPage="+(pageNo)+"'>";
+				pageNavi += pageNo;
+				pageNavi += "</a></li>";
+			}
+			pageNo++;
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+
+		if(pageNo <= totalPage) {
+			pageNavi += "<li>";
+			pageNavi += "<a class='page-item' href='/admin/reportList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<span class='material-icons'>chevron_right</span>";
+			pageNavi += "</a></li>";
+		}
+		pageNavi += "</ul>";
+
+		AdminListData ald = new AdminListData(list, pageNavi);
+		return ald;
+		
+	}
+
+	public int deleteReport(int reportNo) {
+		int result = adminDao.deleteReport(reportNo);
+		return result;
+	}
+
+
+/*
+	public int updateReport(int reportNo, int reportType, String reportTarget) {
+		//신고승인	-> 회원/매장 MEMBER_LEVEL/STORE_LEVEL UPDATE BLACKLIST(회원조회 시 이미 다른 블랙리스트종류일시 6.전체블랙)으로
+	    //												-> report_tbl의 report_status 2(승인)으로 update
+		//store_tbl -> store_level=2로 update
+		if(reportType==3) {
+			int result = adminDao.updateStoreBlackReport(reportTarget);
+		}else {
+			int result = adminDao
+		}
+		return 0;
+	}
+*/
+	//회원/매장 MEMBER_LEVEL/STORE_LEVEL UPDATE BLACKLIST(회원조회 시 이미 다른 블랙리스트종류일시 6.전체블랙)-> report_tbl의 report_status 2(승인)으로 update
+	public int updateReport(int[] no, int[] type, String[] target) {
+		int result = 0;
+		for(int i=0;i<no.length;i++) {//report_status=2
+			result+=adminDao.updateReportStatus(no[i]);
+			if(type[i]==3) {//store_level=2로
+				result += adminDao.updateStoreBlackReport(target[i]);				
+			}else if(type[i]==2){//member_Tbl=5로(원래 member의 level이 4라면 6으로)
+				int count = adminDao.originMemberLevel4(target[i]);
+				if(count>0) {//원래 레벨 4
+					result+=adminDao.updateMemberBlackReport6(target[i]);
+				}else {
+					result += adminDao.updateMemberBlackReport5(target[i]);					
+				}
+			}else {//member_Tbl=4로(원래 member의 level이 5라면 6으로)
+				int count = adminDao.originMemberLevel5(target[i]);
+				if(count>0) {
+					result+=adminDao.updateMemberBlackReport6(target[i]);
+				}else {
+					result += adminDao.updateMemberBlackReport4(target[i]);								
+				}
+			}
+		}
+		return result;
+	}
+
+
+
 
 	
 }

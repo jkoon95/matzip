@@ -1,15 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <meta charset="UTF-8">
+  <title>맛집 : 맛'Zip'</title>
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
+
 <body>
-	<th:block th:include="common/header"></th:block>
-	<h2>메인페이지(맛집리스트 종료 후 스와이퍼 구현)</h2>
-	<h2><a href="/store/bussinessNumberCheck">매장등록</a></h2>
-	<h2><a href="/store/myStore">내매장</a></h2>
-	<h2><a href="/admin/allMember?reqPage=1">관리자</a></h2>
-	<th:block th:include="common/footer"></th:block>
+  <th:block th:include="common/header"></th:block>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <div class="page-content">
+    <div class="page-title">인기 맛집</div>
+
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" th:each="store : ${topList}">
+          <a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+            <img th:src="@{/photo/store/{storeImg}(storeImg=${store.storeImg})}" />
+          </a>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+
+    <div class="page-title">지하철별 맛집</div>
+
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" th:each="store : ${subwayList}">
+          <a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+            <img th:src="@{/photo/store/{storeImg}(storeImg=${store.storeImg})}" />
+          </a>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+
+  </div>
+
+  <th:block th:include="common/footer"></th:block>
+
+  <script>
+    // 페이지 로드 시 실행되는 함수
+    $(document).ready(function () {
+      const swiper = new Swiper('.swiper', {
+        autoplay: {
+          delay: 5000,
+        },
+        loop: true,
+        slidesPerView: 3,
+        spaceBetween: 10,
+        centeredSlides: true,
+
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+
+        scrollbar: {
+          el: '.swiper-scrollbar',
+        },
+      });
+    })
+
+  </script>
+
 </body>
+
 </html>

@@ -8,10 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.or.iei.reseve.model.dto.MenuServings;
+import kr.or.iei.reseve.model.dto.MenuServingsRowMapper;
 import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveDateRowMapper;
+import kr.or.iei.reseve.model.dto.ReserveNo;
+import kr.or.iei.reseve.model.dto.ReserveNoRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveTimeRowMapper;
+import kr.or.iei.reseve.model.dto.ReserveViewMember;
+import kr.or.iei.reseve.model.dto.ReserveViewMemberRowMapper;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacityRowMapper;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
@@ -40,12 +46,17 @@ public class ReserveDao {
 	private TempClosedDayRowMapper tempClosedDayRowMapper;
 	@Autowired
 	private TableNoAndCapacityRowMapper tableNoAndCapacityRowMapper;
+	@Autowired
+	private ReserveViewMemberRowMapper reserveViewMemberRowMapper;
 	
-	//임시로 storeRowMapper, menuRowMapper
 	@Autowired
 	private StoreRowMapper storeRowMapper;
 	@Autowired
 	private MenuRowMapper menuRowMapper;
+	@Autowired
+	private MenuServingsRowMapper menuServingsRowMapper;
+	@Autowired
+	private ReserveNoRowMapper reserveNoRowMapper;
 	
 	
 	public Store searchStore(int storeNo) {
@@ -190,6 +201,80 @@ public class ReserveDao {
 		return result;
 		
 	}
+
+	
+	/////////////////////////////////////////////////////////////////////
+	
+
+	public List<ReserveViewMember> afterReserveViewMemberList(int memberNo) {
+		String query = "select reserve_no, reserve_date, reserve_time, reserve_people, "
+					 + "reserve_request, store_no, table_no, store_name, store_img "
+					 + "from reserve_tbl r "
+					 + "join store_tbl using (store_no) "
+					 + "where reserve_status = 1 and reserve_date >= to_char(sysdate, 'yyyy-mm-dd') "
+					 + "and r.member_no = ? "
+					 + "order by reserve_date asc, reserve_time asc";
+						//오늘로부터 가까운 날짜(오늘 또는 미래)부터 인덱스 앞번호 // 같은 날짜 기준으로 시각이 빠를 수록 인덱스 앞번호
+		Object[] params = {memberNo};
+		List<ReserveViewMember> afterRvmList = jdbc.query(query, reserveViewMemberRowMapper, params);
+		return afterRvmList;
+	}
+
+	public List<ReserveViewMember> beforeReserveViewMemberList(int memberNo) {
+		String query = "select reserve_no, reserve_date, reserve_time, reserve_people, "
+				 	 + "reserve_request, store_no, table_no, store_name, store_img "
+				 	 + "from reserve_tbl r "
+				 	 + "join store_tbl using (store_no) "
+				 	 + "where reserve_status = 1 and reserve_date < to_char(sysdate, 'yyyy-mm-dd') "
+				 	 + "and r.member_no = ? "
+				 	 + "order by reserve_date desc, reserve_time asc";
+						//오늘로부터 가까운 날짜(과거)부터 인덱스 앞번호 // 같은 날짜 기준으로 시각이 빠를 수록 인덱스 앞번호
+		Object[] params = {memberNo};
+		List<ReserveViewMember> beforeRvmList = jdbc.query(query, reserveViewMemberRowMapper, params);
+		return beforeRvmList;
+	}
+
+
+	public List<MenuServings> MenuServings(int memberNo) {
+		String query = "select reserve_no, menu_name, servings "
+					 + "from reserve_tbl "
+					 + "join (select * "
+					 + 		 "from reserve_menu_tbl "
+					 + 		 "join menu_tbl using (menu_no) ) "
+					 + "using (reserve_no) "
+					 + "where member_no = ?";
+		Object[] params = {memberNo};
+		List<MenuServings> menuServings = jdbc.query(query, menuServingsRowMapper, params);
+		return menuServings;
+	}
+
+	public Reserve selectCancelReserve(int reserveNo) {
+		String query = "select * from reserve_tbl where reserve_no = ?";
+		Object[] params = {reserveNo};
+		List<Reserve> reserve = jdbc.query(query, reserveRowMapper, params);
+		return reserve.get(0);
+	}
+
+	public List<ReserveNo> selectCancelDummy(Reserve reserve) {
+		String query = "select reserve_no "
+					 + "from reserve_tbl "
+					 + "where reserve_no >= ? and reserve_date= ? "
+					 + 		"and reserve_people = -1 and reserve_status != 1 and reserve_status != 3 "
+					 + 		"and member_no= ? and table_no= ? "
+					 + "order by reserve_no";
+		Object[] params = {reserve.getReserveNo(), reserve.getReserveDate(), reserve.getMemberNo(), reserve.getTableNo()};
+		List<ReserveNo> dummy = jdbc.query(query, reserveNoRowMapper, params);
+		return dummy;
+	}
+
+	public int deleteCancelReserve(int reserveNo, int dummyLastNo) {
+		String query = "delete from reserve_tbl where reserve_no between ? and ?";
+		Object[] params = {reserveNo, dummyLastNo};
+		int result= jdbc.update(query, params);
+		return result;
+	}
+
+
 
 	
 }

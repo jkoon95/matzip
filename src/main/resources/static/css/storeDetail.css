@@ -80,6 +80,7 @@ a {
 
 .infoAlertBtn {
   float: right;
+  margin-right: 20px;
 }
 
 .infoBtn {
@@ -96,14 +97,21 @@ a {
 }
 
 #infoContent {
-  width: 90%;
-  height: 330px;
+  width: 94%;
+  height: 340px;
   resize: none;
   padding: 10px;
-  font-size: 16px;
+  font-size: 17px;
+  background-color: #f0f0f0;
+  border: none;
+  font-weight: 600;
 }
 #infoContent:focus{
   outline: none;
+}
+
+.menu{
+  background-color: #f0f0f0;
 }
 
 
@@ -450,4 +458,12 @@ a {
 .swiper img{
   width: 100%;
   height: 360px;
+}
+
+.swiper-button-next{
+  color: transparent !important;
+}
+
+.swiper-button-prev{
+  color: transparent !important;
 }
