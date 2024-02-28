@@ -127,8 +127,8 @@ public class AdminDao {
 	}
 
 	public int memberUpdate(Member member) {
-		String query="update member_tbl set member_pw=?,member_phone=?,member_name=? where member_no=?";
-		Object[] params = {member.getMemberPw(),member.getMemberPhone(),member.getMemberName(),member.getMemberNo()};
+		String query="update member_tbl set member_phone=?,member_name=? where member_no=?";
+		Object[] params = {member.getMemberPhone(),member.getMemberName(),member.getMemberNo()};
 		int result = jdbc.update(query,params);
 		return result;
 	}

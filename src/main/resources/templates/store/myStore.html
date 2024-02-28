@@ -4,186 +4,37 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/storeInfo.css">
-<style>
-		.tabnav {
-			font-size: 0;
-			border: 1px solid #ddd;
-		}
-
-		.tabnav li {
-			display: inline-block;
-			height: 46px;
-			text-align: center;
-			border-right: 1px solid #ddd;
-		}
-
-		.tabnav li a:before {
-			content: "";
-			position: absolute;
-			left: 0;
-			top: 0px;
-			width: 100%;
-			height: 3px;
-		}
-
-		.tabnav li a.active:before {
-			background: #72B37E;
-		}
-
-		.tabnav li a.active {
-			border-bottom: 1px solid #fff;
-		}
-
-		.tabnav li a {
-			position: relative;
-			display: block;
-			background: #f8f8f8;
-			color: #000;
-			padding: 0 30px;
-			line-height: 46px;
-			text-decoration: none;
-			font-size: 16px;
-		}
-
-		.tabnav li a:hover,
-		.tabnav li a.active {
-			background: #fff;
-			color: #72B37E;
-		}
-
-		.tabcontent {
-			padding: 40px;
-			border: 1px solid #ddd;
-			border-top: none;
-		}
-		.tabcontent>#tab01 img{
-			width: 35%;
-			padding-bottom: 10px;
-		}
-		.s-storeInfo{
-    		padding: 80px;
-    		width: 800px;
-    		box-sizing: border-box;
-    		margin: 0 auto;
-		}
-		.s-info-wrap{
-    		padding: 15px;
-		}
-		.s-info-wrap>div:first-child{
-		    margin-bottom: 10px;
-		}
-		.s-info {
-		    width: 100%;
-		    padding: 0.5rem;
-		    background-color: #fff;
-		    outline: none;
-		    border: 1px solid #ccc;
-		    box-sizing: border-box;
-		    height: 35px;
-		    font-size: 14px;
-		}
-		.s-storeInfo th{
-		    height: 40px;
-		    text-align: right;
-		    font-weight: 500;
-		    padding-right: 10px;
-		}
-		.s-storeInfo td{
-		    padding-left: 10px;
-		    text-align: left;
-		}
-		.tabcontent table{
-			padding: 1rem;
-    		background-color: #fff;
-    		outline: none;
-    		border: 1px solid #ccc;
-    		box-sizing: border-box;
-    		width: 100%;
-		}
-		.menuInfo{
-			border: 1px solid #ccc;
-			height: 80px;
-		}
-		.goStore{
-    		background-color: #72B37E;
-		    color: #fff;
-		    font-size: 15px;
-		    border-radius: 5px;
-		    text-align: center;
-		    border: none;
-		    cursor: pointer;
-		    width: 80px;
-		    height: 40px;
-		    line-height: 40px;
-		    float:right;
-		    margin :10px;
-		}
-		.store-status{
-			text-align: right;
-			margin-bottom: 5px;
-			font-weight: 700;
-			font-size: 16px;
-		}
-		.menuShow{
-			font-size: 18px;
-			padding-right: 2px;
-		}
-		.s-lastTh{
-			padding-top: 3px;
-			padding-bottom: 3px;
-		}
-		.menuBtn{
-    		color: rgb(248, 114, 37);
-    		background-color: #ffffff;
-    		border-radius: 3px;
-    		cursor: pointer;
-    		text-align: right;
-    		padding-top: 5px;
-    		font-size: 15px;
-    		padding-left: 5px;
-		}
-		.menuBox input{
-    		margin-left: 10px;
-		}
-		.menuBox{
-			border-radius: 7px;
-			margin-bottom: 10px;
-			overflow: hidden;
-			height: 150px;
-			padding: 15px;
-		}
-		.s-img-view{
-			margin: 10px;
-			
-		}
-		.menuBoxIn{
-			display: flex;
-		}
-		.menuBoxInput{
-			width: 400px;
-			padding-top: 30px;
-		}
-		
-.cancelBtn{
-	padding-left: 13px;
-    color: #db5a5a;
-    /* text-align: right; */
-    font-size: 18px;
-    font-weight: 500;
-}
-.won{
-	 padding-left: 5px;font-size:15px;
-}
-.s-storeInfo th{
-	font-weight: 500;
-}
-</style>
+<link rel="stylesheet" href="/css/side-menu.css">
 </head>
 <body>
 	<!-- 매장만 들어갈 수 있도록 하기-->
 	<th:block th:include="common/header"></th:block>
+	<div class="content">
+		<div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="/store/bussinessNumberCheck">
+                            <span class="material-icons">add_business</span>
+                            <span class="title">매장등록</span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="/store/myStore" class="active">
+                            <span class="material-icons">storefront</span>
+                            <span class="title">매장 관리</span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="/reserve/reserveManage">
+                            <span class="material-icons">calendar_month</span>
+                            <span class="title">예약 관리</span>
+                        </a>
+                    </li>                   
+               </ul>
+        </div>        
 	<div class="s-content">
 		<div class="s-storeInfo">
+			<h2>매장관리</h2>
 			<div th:if="${store.storeStatus==1}" class="store-status" style="color:#72B37E;">[등록완료]</div>
 			<div th:if="${store.storeStatus==2}" class="store-status" style="color:#FF9436;">[등록대기중]</div>
 			<ul class="tabnav">
@@ -276,7 +127,7 @@
 						</tr>
 						<tr>
 							<td colspan="2">
-								<fieldset class="s-field" style="margin-top: 10px;">
+								<fieldset class="s-field" style="margin-top: 10px;margin-left: 40px;">
 			    					<legend>테이블수</legend>
 			    					<div>
 				                        <label for="tableCapacity1" class="s-label">1인용식탁  </label>
@@ -380,6 +231,8 @@
 			</div>
 		</div>
 	</div>
+	</div>
+	<script src="/js/side-menu.js"></script> 
 	<script th:inline="javascript">
 		
 		$(document).on("input", "[name='menuPrice']", function() {

@@ -5,6 +5,7 @@
 <title>매장 정보 변경</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/css/storeInfo.css">
+<link rel="stylesheet" href="/css/side-menu.css">
 <style>
 .s-table{
 	padding: 0.2rem;
@@ -47,6 +48,29 @@
 <body>
 	<!-- 매장만 들어갈 수 있도록 하기-->
 	<th:block th:include="common/header"></th:block>
+	<div class="content">
+		<div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="/store/bussinessNumberCheck">
+                            <span class="material-icons">add_business</span>
+                            <span class="title">매장등록</span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="/store/myStore" class="active">
+                            <span class="material-icons">storefront</span>
+                            <span class="title">매장 관리</span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="/reserve/reserveManage">
+                            <span class="material-icons">calendar_month</span>
+                            <span class="title">예약 관리</span>
+                        </a>
+                    </li>                   
+               </ul>
+        </div>        
     <div class="s-content">
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
@@ -436,9 +460,9 @@
                      
             </form>
         </div>
-
-
-        <script th:inline="javascript">
+	</div>
+	<script src="/js/side-menu.js"></script> 	
+    <script th:inline="javascript">
         	$("#foodType").on("click",function(){
         		$(this).css("display","none");
         		$(this).next().css("display","inline-block");
