@@ -160,4 +160,12 @@ public class ReserveController {
 		return timeSet;
 	}
 	
+	@ResponseBody
+	@PostMapping(value="reserveListStore")
+	public HashMap<String, List> reserveViewStoreList(int storeNo, String reserveDate, String reserveTime) {
+		//@SessionAttribute(required = false) Member member
+		HashMap<String, List> reserveViewStoreList = reserveService.reserveViewStoreList(storeNo, reserveDate, reserveTime);
+		return reserveViewStoreList;
+	}
+	
 }

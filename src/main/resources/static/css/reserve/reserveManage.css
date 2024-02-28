@@ -32,7 +32,7 @@ ul{
   box-sizing: border-box;
 }
 .content-right-side{
-  width: 550px;
+  width: 570px;
   box-sizing: border-box;
   display: flex;
   gap: 30px;
@@ -67,6 +67,7 @@ ul{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -75,7 +76,7 @@ ul{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   gap: 5px;
 }
 
@@ -87,4 +88,32 @@ ul{
 .smallBtn-active{
   background: #007fff;
   width: 54px;
+}
+
+
+.small-article{
+  width: 240px;
+}
+.name,.people,.menu,.request{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.small-title, .small-content, .menu, .request{
+  font-size: 14px;
+}
+.small-title{
+  width: 60px;
+}
+.small-content{
+  width: 180px;
+}
+.bold{
+  font-weight: bolder;
+}
+#cancel-btn{
+  display: block;
+  margin: 0 auto;
 }

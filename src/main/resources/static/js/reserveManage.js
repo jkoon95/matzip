@@ -130,8 +130,11 @@ $.ajax({
                     reserveTime: $("#reserveTime").val()
                   },
                   dataType: "json",
-                  success: function(data){
-
+                  success: function(reserveViewStoreList){
+                    const reserveList = reserveViewStoreList.reserveList[0];
+                    const menuServingsList = reserveViewStoreList.menuServingsList[0];
+                    console.log(reserveList);
+                    console.log(menuServingsList);
                   },
                   error: function(){
                     console.log("error");

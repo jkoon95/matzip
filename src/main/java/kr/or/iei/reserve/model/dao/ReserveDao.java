@@ -275,6 +275,29 @@ public class ReserveDao {
 	}
 
 
+	public List<Reserve> reserveList(int storeNo, String reserveDate, String reserveTime) {
+		String query = "select * from reserve_tbl "
+					+  "where reserve_status = 1 and store_no = ? and reserve_date = ? and reserve_time = ?";
+		Object[] params = {storeNo, reserveDate, reserveTime};
+		List<Reserve> reserveList = jdbc.query(query, reserveRowMapper, params);
+		return reserveList;
+	}
+
+
+	public List<MenuServings> menuServings2(int storeNo) {
+		String query = "select reserve_no, menu_name, servings "
+					+  "from reserve_tbl r "
+					+  "join (select * from reserve_menu_tbl "
+					+ 		"join menu_tbl using (menu_no) ) "
+					+  "using (reserve_no) "
+					+  "where r.store_no = ? "
+					+  "order by reserve_no";
+		Object[] params = {storeNo};
+		List<MenuServings> menuServingsList = jdbc.query(query, menuServingsRowMapper, params);
+		return menuServingsList;
+	}
+
+
 
 	
 }

@@ -431,10 +431,18 @@ public class ReserveService {
 				}
 			}
 		}
-		result += reserveDao.updateCancelReserve(reserve.getReserveNo(), dummyLastNo);
-		
+		result += reserveDao.updateCancelReserve(reserve.getReserveNo(), dummyLastNo);	
 		
 		return result;
+	}
+
+	public HashMap<String, List> reserveViewStoreList(int storeNo, String reserveDate, String reserveTime) {
+		HashMap<String, List> reserveViewStoreList = new HashMap<String, List>();
+		List<Reserve> reserveList = reserveDao.reserveList(storeNo, reserveDate, reserveTime);
+		List<MenuServings> menuServingsList = reserveDao.menuServings2(storeNo);
+		reserveViewStoreList.put("reserveList", reserveList);
+		reserveViewStoreList.put("menuServingsList", menuServingsList);
+		return reserveViewStoreList;
 	}
 	
 	
