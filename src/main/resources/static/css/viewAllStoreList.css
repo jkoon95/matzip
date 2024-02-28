@@ -39,7 +39,7 @@
 .store-content1{
     position: relative;
     display: flex;
-    height: 125px;
+    height: 131;
     width: 125px;
 }
 
@@ -71,8 +71,8 @@
 }
 
 .imgScale{
-    width: 131.25px;
-    height: 131.25px;
+    width: 125px;
+    height: 100%;
 }
 
 .heart-text{

@@ -183,7 +183,7 @@ $.ajax({
                     function searchTable(peopleNum, tableNoArr, tableCapacityArr){
                       for(let i=0; i<tableNoArr.length; i++){
                         if(peopleNum <= tableCapacityArr[i]){
-                          $("#reservePeople").val(tableCapacityArr[i]);
+                          $("#reservePeople").val(peopleNum);
                           $("#tableNo").val(tableNoArr[i]);
                           break;
                         }

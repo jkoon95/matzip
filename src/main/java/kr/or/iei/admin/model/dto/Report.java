@@ -15,6 +15,7 @@ public class Report {
 	private String reportReason;
 	private String reportTarget;
 	private int reportType;
+	private int reportStatus;
 	
 	private String memberId;
 	private String memberId2;

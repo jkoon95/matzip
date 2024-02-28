@@ -22,6 +22,7 @@ public class ReportRowMapper implements RowMapper<Report> {
 		r.setReportTarget(rs.getString("report_target"));
 		r.setReportType(rs.getInt("report_type"));
 		r.setMemberId(rs.getString("member_id"));
+		r.setReportStatus(rs.getInt("report_status"));
 		//r.setStore_no(rs.getInt("store_no"));
 		//r.setStore_name(rs.getString("store_name"));
 		return r;

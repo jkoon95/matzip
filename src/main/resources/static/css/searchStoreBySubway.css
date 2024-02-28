@@ -254,7 +254,7 @@
 .store-content1{
     position: relative;
     display: flex;
-    height: 125px;
+    height: 131px;
     width: 125px;
 }
 
@@ -460,7 +460,7 @@ body{
 .store-content3{
     position: relative;
     display: flex;
-    height: 125px;
+    height: 131;
     width: 125px;
 }
 .store-content4{
@@ -547,8 +547,8 @@ body{
   }
 
 .imgScale{
-    width: 131.25px;
-    height: 131.25px;
+    width: 125px;
+    height: 100%;
 }
 
 .store-all:hover{

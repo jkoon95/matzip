@@ -178,6 +178,35 @@ public class MemberController {
 	public String pwChange() {
 		return "member/pwChangeFrm";
 	}
+
+	
+	@GetMapping(value = "/loginMsg")
+	public String loginMsg(Model model) {
+		model.addAttribute("title","로그인 확인");
+		model.addAttribute("msg","로그인 후 이용이 가능합니다.");
+		model.addAttribute("icon","info");
+		model.addAttribute("loc","/");
+		return "common/msg";
+	}
+	
+	@GetMapping(value = "/adminMsg")
+	public String adminMsg(Model model) {
+		model.addAttribute("title","관리자페이지");
+		model.addAttribute("msg","관리자만 접근이 가능합니다.");
+		model.addAttribute("icon","warning");
+		model.addAttribute("loc","/");
+		return "common/msg";
+	}
+	
+	@GetMapping(value = "/storeMsg")
+	public String ceoMsg(Model model) {
+		model.addAttribute("title","사장페이지");
+		model.addAttribute("msg","사장만 접근이 가능합니다.");
+		model.addAttribute("icon","warning");
+		model.addAttribute("loc","/");
+		return "common/msg";
+	}
+
 	@GetMapping(value="adminpage")
 	public String adminpage() {
 		return "member/adminPage";
