@@ -57,7 +57,7 @@ public class WebConfig implements WebMvcConfigurer{
 			.addPathPatterns("/store/storeEnrollFrm","/store/storeEnroll","/store/myStore","/store/storeUpdateFrm","/store/storeUpdate","/store/storeDelete","/store/deleteMenu","/store/insertMenu","/store/bussinessNumberCheck");
 		
 		registry.addInterceptor(new UserInterceptor())
-			.addPathPatterns("/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm")
+			.addPathPatterns("/reserve/reserveFrm","/reserve/closedDays","/reserve/tempClosedDays","/reserve/timeSet","/reserve/tableNoAndCapacity","/reserve/reserveInsert","/reserve/reserveList","/reserve/cancelReserve");
 	}
 	
 	
