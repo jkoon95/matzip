@@ -49,7 +49,7 @@ public class WebConfig implements WebMvcConfigurer{
 		//모든 회원등급 Member
 		registry.addInterceptor(new LoginInterceptor())
 			.addPathPatterns("/member/mypage","/member/logout","/member/update","/member/delete")
-			.addPathPatterns("/board/boardWriteFrm","/board/write","/board/delete","/board/updateFrm","/board/update","/board/insertComment","/board/updateComment","/board/storeEnrollFrm");
+			.addPathPatterns("/board/boardWriteFrm","/board/write","/board/delete","/board/updateFrm");
 		
 		//관리자 회원등급 Member
 		registry.addInterceptor(new AdminInterceptor())
