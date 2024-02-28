@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li class="list">
-                        <a href="/admin/reportList">
+                        <a href="/admin/reportList?reqPage=1">
                             <span class="material-icons">calendar_month</span>
                             <span class="title">신고 관리</span>
                         </a>
@@ -71,13 +71,15 @@
 	                        	th:value="${session.member.memberId}" readonly>
 	                    </div>
 	                    <div class="info-join-wrap">
-	                        <label for="memberEmail">이메일</label>
-	                        <input type="text" name="memberEmail" id="memberEmail" class="input-from" 
-	                        	th:value="${session.member.memberEmail}" readonly>@
+	                        <label for="memberEmail">이메일</label>(주소입력)
+	                        <input type="text" name="memberEmail" class="input-from" 
+	                        	th:value="${session.member.memberEmail + session.member.emailAddress}">
+                        <!-- 
                         <select name="emailAdress">
                             <option value="@naver.com">- - - naver.com - - -</option>
                             <option value="@hanmail.net">- - -hanmail.net- - -</option>
-                        </select>	                        
+                        </select>
+                         -->	                        
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPw">비밀번호</label>
@@ -86,7 +88,7 @@
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPwRe">비밀번호 확인</label>
-	                        <input type="password" id="memberPwRe" class="input-from">
+	                        <input type="password" id="memberPwRe" class="input-from" required>
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberName">이름</label>
@@ -118,17 +120,46 @@
 	
 	
     <script type="text/javascript">
-        const list = $(".list");
-            list.on("click", function(){
-                list.children("a").removeClass("active");
-                $(this).children("a").addClass("active");
-                $(this).children("ul").children().toggleClass("sub-active");
+		    const list = $(".list");
+		    list.on("click", function(){
+		        list.children("a").removeClass("active");
+		        $(this).children("a").addClass("active");
+		        $(this).children("ul").children().toggleClass("sub-active");
+		    });
+		    const span = $("<span class='material-icons'>");
+		    span.attr("class", "material-icons");
+		    span.text("expand_more");
+		    const subList = $(".sub-list");
+		    subList.parent().prev("a").append(span);
+    
+    
+            $("#memberPwRe").on("change",function(){
+        		
+        		const memberPw = $("#memberPw").val();
+        		const memberPwRe = $("#memberPwRe").val();
+        		
+        		if(memberPw == memberPwRe){
+        						
+    				$("#memberPw").css("border", "1px solid blue");
+    				$("#memberPwRe").css("border", "1px solid blue");            
+        		}else{ 
+    				$("#memberPw").css("border", "1px solid red");
+    				$("#memberPwRe").css("border", "1px solid red");
+    				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        		}
+        	});
+            
+            $("form").submit(function (event) {
+                const memberPw = $("#memberPw").val();
+                const memberPwRe = $("#memberPwRe").val();
+
+                if (memberPw !== memberPwRe) {                   
+                    event.preventDefault();
+                    alert("다시 한번 정보를 확인하시기 바랍니다.");
+                } 
             });
-            const span = $("<span class='material-icons'>");
-            span.attr("class", "material-icons");
-            span.text("expand_more");
-            const subList = $(".sub-list");
-            subList.parent().prev("a").append(span);
+            
+        
     </script>	
 </body>
 </html>

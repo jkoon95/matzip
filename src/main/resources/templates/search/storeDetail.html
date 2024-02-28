@@ -104,10 +104,16 @@
     <div class="store-section">
       <div>
         <div class="section-title">가게 위치</div>
+        <button type="submit" class="infoBtn"
+            th:if="${session.member != null and session.member.memberNo == store.memberNo}"
+            onclick="window.location.href='http://192.168.10.10/store/myStore'">수정</button>
         <div id="map" style="width:379px;height:360px;"></div>
       </div>
       <div>
         <div class="section-title">메뉴 리스트</div>
+        <button type="submit" class="infoBtn"
+            th:if="${session.member != null and session.member.memberNo == store.memberNo}"
+            onclick="window.location.href='http://192.168.10.10/store/myStore'">수정</button>
         <div class="menu" style="height:360px; overflow-y: auto;">
           <div th:each="menuList : ${menuList}" style="display: flex; align-items: center; padding: 15px;">
             <img th:src="@{'/store/menu/' + ${menuList.menuImg}}"
@@ -130,7 +136,9 @@
           th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info != null)}"
           onclick="infoAlert()">도움말</button>
         <form id="infoForm" method="post">
-          <button type="submit" class="infoBtn" onclick="submitForm('update')">수정</button>
+          <button type="submit" class="infoBtn"
+            th:if="${session.member != null and session.member.memberNo == store.memberNo}"
+            onclick="submitForm('update')">수정</button>
           <button type="submit" class="infoBtn"
             th:if="${session.member != null and session.member.memberNo == store.memberNo and (info == null or info.infoContent == '')}"
             onclick="submitForm('insert')">작성</button>

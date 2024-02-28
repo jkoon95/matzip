@@ -53,13 +53,15 @@
 	                        	th:value="${session.member.memberId}" readonly>
 	                    </div>
 	                    <div class="info-join-wrap">
-	                        <label for="memberEmail">이메일</label>
-	                        <input type="text" name="memberEmail" id="memberEmail" class="input-from" 
-	                        	th:value="${session.member.memberEmail}">@
+	                        <label for="memberEmail">이메일</label>(주소입력)
+	                        <input type="text" name="memberEmail" class="input-from" 
+	                        	th:value="${session.member.memberEmail + session.member.emailAddress}">
+                        <!-- 
                         <select name="emailAdress">
                             <option value="@naver.com">- - - naver.com - - -</option>
                             <option value="@hanmail.net">- - -hanmail.net- - -</option>
-                        </select>	                        
+                        </select>
+                         -->	                        
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPw">비밀번호</label>
@@ -68,7 +70,7 @@
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberPwRe">비밀번호 확인</label><!-- 비밀번호 일치확인-->
-	                        <input type="password"  id="memberPwRe" class="input-from">
+	                        <input type="password"  id="memberPwRe" class="input-from" required>
 	                    </div>
 	                    <div class="info-join-wrap">
 	                        <label for="memberName">이름</label>
@@ -95,6 +97,34 @@
 	    	</div>
 	    	
 	    </div>	
-	    <th:block th:include="common/footer"></th:block>	
+	    <th:block th:include="common/footer"></th:block>
+	     <script>       
+        
+		$("#memberPwRe").on("change",function(event){
+    		
+    		const memberPw = $("#memberPw").val();
+    		const memberPwRe = $("#memberPwRe").val();
+    		
+    		if(memberPw == memberPwRe){
+    						
+				$("#memberPw").css("border", "1px solid blue");
+				$("#memberPwRe").css("border", "1px solid blue");            
+    		}else{ 
+				$("#memberPw").css("border", "1px solid red");
+				$("#memberPwRe").css("border", "1px solid red");
+				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");               
+    		}
+    	});
+		
+		 $("form").submit(function (event) {
+             const memberPw = $("#memberPw").val();
+             const memberPwRe = $("#memberPwRe").val();
+
+             if (memberPw !== memberPwRe) {                   
+                 event.preventDefault();
+                 alert("다시 한번 정보를 확인하시기 바랍니다.");
+             } 
+         });
+    </script>	
 </body>
 </html>

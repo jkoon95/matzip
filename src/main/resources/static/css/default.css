@@ -570,10 +570,11 @@ header > .header-wrap > .header-right-box{
     color: #ff0000;
     font-family: ns-eb;
 }
-#memberEmail{
+/*#memberEmail{
     width: 200px;
     text-align: center;
 }
+*/
 .info-join-wrap input {
     text-indent: 20px;
 }
@@ -738,6 +739,6 @@ footer > .footer-content-box > .last {
 }
 .hg-right{
     float: left;   
-    margin-left: 50px;  
+    margin-left: 80px;  
 }
 
