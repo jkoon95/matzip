@@ -680,12 +680,17 @@ public class SearchDao {
 
 	public List<Store> selectTopStar() {
 		String query = "SELECT * FROM (\r\n" + 
-				"    SELECT s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME, AVG(r.REVIEW_STAR) AS AVG_STAR \r\n" + 
-				"    FROM STORE_TBL s \r\n" + 
-				"    LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO \r\n" + 
-				"    WHERE s.STORE_STATUS = 1 \r\n" + 
-				"    GROUP BY s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME \r\n" + 
-				"    ORDER BY AVG_STAR DESC NULLS LAST\r\n" + 
+				"    SELECT s.STORE_NO,\r\n" + 
+				"           s.STORE_NAME,\r\n" + 
+				"           s.STORE_ADDR,\r\n" + 
+				"           s.STORE_PHONE,\r\n" + 
+				"           s.STORE_IMG,\r\n" + 
+				"           s.SUBWAY_NAME,\r\n" + 
+				"           AVG(r.REVIEW_STAR) AS AVG_STAR\r\n" + 
+				"    FROM STORE_TBL s\r\n" + 
+				"    JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" + 
+				"    GROUP BY s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME\r\n" + 
+				"    ORDER BY AVG_STAR DESC\r\n" + 
 				")\r\n" + 
 				"WHERE ROWNUM <= 5";
 		List list = jdbc.query(query, storeTopRowMapper);
