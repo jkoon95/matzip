@@ -55,6 +55,9 @@ public class WebConfig implements WebMvcConfigurer{
 		
 		registry.addInterceptor(new StoreInterceptor())
 			.addPathPatterns("/store/storeEnrollFrm","/store/storeEnroll","/store/myStore","/store/storeUpdateFrm","/store/storeUpdate","/store/storeDelete","/store/deleteMenu","/store/insertMenu","/store/bussinessNumberCheck");
+		
+		registry.addInterceptor(new UserInterceptor())
+			.addPathPatterns("/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm","/reserve/reserveFrm")
 	}
 	
 	
