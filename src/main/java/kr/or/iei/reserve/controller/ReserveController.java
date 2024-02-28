@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.reserve.model.service.ReserveService;
 import kr.or.iei.reseve.model.dto.MenuServings;
 import kr.or.iei.reseve.model.dto.Reserve;
@@ -27,12 +28,8 @@ public class ReserveController {
 	@Autowired
 	private ReserveService reserveService;
 	
-	@RequestMapping(value="/reserveFrm")
-	public String reserveFrm(Model model) {
-		//매개변수 : @SessionAttribute(required = false) Member member, int storeNo, Model model
-		
-		//원래 매개변수인데, 일단 임시로
-		int storeNo = 3;
+	@PostMapping(value="/reserveFrm")
+	public String reserveFrm(@SessionAttribute(required = false) Member member, int storeNo, Model model) {
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		
@@ -46,7 +43,6 @@ public class ReserveController {
 	@ResponseBody
 	@PostMapping(value="/closedDays")
 	public List<Integer> closedDays(int storeNo){
-		//매개변수 : int storeNo
 		//정기휴무일 구하기
 		List<Integer> closedDays = reserveService.closedDays(storeNo);
 		return closedDays;
@@ -55,7 +51,6 @@ public class ReserveController {
 	@ResponseBody
 	@PostMapping(value="/tempClosedDays")
 	public List<String> tempClosedDays(int storeNo){
-		//매개변수 : int storeNo
 		//임시휴무일 구하기
 		List<String> tempClosedDays = reserveService.tempClosedDays(storeNo);
 		return tempClosedDays;
@@ -64,7 +59,7 @@ public class ReserveController {
 	@ResponseBody
 	@PostMapping(value="/timeSet")
 	public TimeSet timeSet(int storeNo, String selectedDay){
-		//매개변수 : int storeNo, String Day(datepicker에서 선택한 날짜)
+		//String Day = datepicker에서 선택한 날짜
 		TimeSet timeSet = reserveService.timeset(storeNo, selectedDay);
 		return timeSet;
 	}
@@ -78,7 +73,7 @@ public class ReserveController {
 	}
 	
 	@PostMapping(value="/reserveInsert")
-	public String reserve(Reserve reserve, int[] menuNo, int[] servings, Model model) {
+	public String reserve(@SessionAttribute(required = false) Member member, Reserve reserve, int[] menuNo, int[] servings, Model model) {
 		/* 받아온 정보
 		 * @SessionAttribute(required = false) Member member
 		 * Reserve reserve
@@ -92,20 +87,19 @@ public class ReserveController {
 		 * int tableNo
 		 * String reserveRequest
 		 */
-		int memberNo = 3;//임시로
-		reserve.setMemberNo(memberNo); //원래는 reserve.setMemberNo(Member.getMemberNo()) 이렇게 세션에 있는 정보를 넣어야... 일단 임시로 넣었음.
+		//int memberNo = 3;//임시로
+		reserve.setMemberNo(member.getMemberNo());
 		reserve.setReserveStatus(1);
 		int insertResult = reserveService.insertReserve(reserve, menuNo, servings);
 		return "redirect:/reserve/reserveList";
 	}
 	
 	//나중에 post로 바꿔
-	@RequestMapping(value="/reserveList")
-	public String reserveList(Model model) {
-		//@SessionAttribute(required = false) Member member
-		int memberNo = 3;//임시로
+	@PostMapping(value="/reserveList")
+	public String reserveList(@SessionAttribute(required = false) Member member, Model model) {
+		//int memberNo = 3;//임시로
 		
-		HashMap<String, List> rvmList = reserveService.reserveViewMemberList(memberNo);
+		HashMap<String, List> rvmList = reserveService.reserveViewMemberList(member.getMemberNo());
 		
 		
 		List<ReserveViewMember> afterRvmList = rvmList.get("after");
