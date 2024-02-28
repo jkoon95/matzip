@@ -61,22 +61,10 @@ main {
 .smallBtn{
   width: 50px;
   height: 25px;
-  background: #78c386;
-  color: #fff;
   border: none;
   border-radius: 2px;
   cursor: pointer;
   line-height: 1;
-}
-
-.smallBtn :hover{
-  background: #007fff;
-  width: 54px;
-}
-
-.smallBtn-active{
-  background: #007fff;
-  width: 54px;
 }
 
 .middle-btn{

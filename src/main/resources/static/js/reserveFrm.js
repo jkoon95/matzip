@@ -1,6 +1,6 @@
 $("#reserve-btn").prop("disabled", true);//클릭 못하게
 
-
+let aaa = 1;
 $.ajax({
   url: "/reserve/closedDays",
   type: "post",
@@ -90,7 +90,7 @@ $.ajax({
           //숨겨둔 input태그에 날짜 집어넣기
           $("#reserveDate").val(dateText);
           //시각 버튼들 리셋 + reserveDate input태그 리셋
-          $(".reserveTime").remove();
+          
           $("#reserveTime").val("");
           //인원수 리셋
           $("#people").text(1);
@@ -101,6 +101,8 @@ $.ajax({
             data: {storeNo: storeNo, selectedDay: dateText},
             dataType: "json",
             success: function(timeSet){
+              //시각 버튼들 리셋
+              $(".reserveTime").remove();
               // timeSet.allTimes = List<String> allTimes
               // timeSet.fullTimes  = List<String> fullTimes
               // timeSet.remainTimes = List<String> remainTimes 이건 안 쓰네??
@@ -109,15 +111,17 @@ $.ajax({
                 const time = timeSet.allTimes[i];
                 const button = $("<button>");
                 button.attr("type", "button");
-                button.attr("class", "reserveTime smallBtn");
+                button.addClass("reserveTime smallBtn bg-green");
                 button.text(time);
                 //그 시각이 만석인 시각일 때
                 if(timeSet.fullTimes.indexOf(time) != -1){
-                  button.attr("class", "fullTime");//fulltime 클래스 추가
+                  button.removeClass("reserveTime smallBtn");
+                  button.addClass("fullTime bg-gray reserveTime smallBtn");//fulltime 클래스 추가
                   button.prop("disabled", true);//클릭 못하게
                 };
                 $(".time-area .li-content").append(button);
               };
+              
 
               //예약완료버튼 활성화(뒤에 또 있음)
               if($("#reserveDate").val() != ""
