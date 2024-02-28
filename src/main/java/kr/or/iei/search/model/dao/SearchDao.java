@@ -641,14 +641,14 @@ public class SearchDao {
 	}
 
 	public int insertReportStore(int memberNo, int storeNo, String reason) {
-		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,3)";
+		String query = "insert into report_tbl values(report_seq.nextval,?,?,?,3,1)";
 		Object[] params = {memberNo,reason,storeNo};
 		int result = jdbc.update(query, params);
 		return result;
 	}
 	
 	public int insertReportReview(int memberNo, String reviewWriter) {
-		String query = "insert into report_tbl values(report_seq.nextval,?,'불량리뷰 신고',?,1)";
+		String query = "insert into report_tbl values(report_seq.nextval,?,'불량리뷰 신고',?,1,1)";
 		Object[] params = {memberNo,reviewWriter};
 		int result = jdbc.update(query, params);
 		return result;
