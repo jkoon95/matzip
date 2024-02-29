@@ -13,36 +13,30 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   <div class="page-content">
-    <div class="page-title">인기 맛집</div>
+    <div class="page-title">✅ <span>MOST</span> 맛'Zip'🔻</div>
 
     <div class="swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${topList}">
-          <a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+          <a th:href="@{'/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
             <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" />
           </a>
         </div>
       </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-scrollbar"></div>
+      
     </div>
 
-    <div class="page-title">지하철별 맛집</div>
+    <div class="page-title">✅ 실시간<span> BEST </span> 평점 🔻</div>
 
     <div class="swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${subwayList}">
-          <a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+          <a th:href="@{'/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
             <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" />
           </a>
         </div>
       </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-scrollbar"></div>
+      
     </div>
 
   </div>
@@ -71,9 +65,7 @@
           prevEl: '.swiper-button-prev',
         },
 
-        scrollbar: {
-          el: '.swiper-scrollbar',
-        },
+        
       });
     })
 

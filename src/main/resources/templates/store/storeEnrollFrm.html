@@ -341,7 +341,7 @@
                     
                     <div class="s-input-wrap11">
                      	<fieldset class="s-field">
-    					<legend>테이블수</legend>
+    					<legend>테이블수<span class="s-smallexplain"> [예약받기 위한 입력사항입니다]</span></legend>
     					<div>
 	                        <label for="tableCapacity1" class="s-label">1인용식탁  </label>
 	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity1" class="s-table"><span> 개</span>
@@ -498,7 +498,7 @@
                         $(obj).parent().find(".s-img-view").attr("src", e.target.result);
                     }
                 } else {
-                    $(obj).parent().find(".s-img-view").attr("src", "");
+                    $(obj).parent().find(".s-img-view").attr("src", "/img/basic.png");
                 }
             }
 
@@ -510,7 +510,7 @@
                         $(obj).parent().parent().find(".s-img-view").attr("src", e.target.result);
                     }
                 } else {
-                    $(obj).parent().parent().find(".s-img-view").attr("src", "");
+                    $(obj).parent().parent().find(".s-img-view").attr("src", "/img/basic.png");
                 }
             }
             

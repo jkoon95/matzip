@@ -255,7 +255,7 @@
 	                $(obj).parent().parent().prev().attr("src", e.target.result);
 	            }
 	        } else {
-	            $(obj).parent().parent().prev().attr("src", "");
+	            $(obj).parent().parent().prev().attr("src", "/img/basic.png");
 	        }
 	    }
 		
@@ -294,7 +294,7 @@
 			$(".plusMenuAppend").append(
 					'<div class="menuBox plusMenuBox" style="border: 1px solid #ccc;">'+
 						'<div class="menuBoxIn">'+
-							'<img class="s-img-view" style="width: 100px;height: 100px;" src="/store/img/basic.png">'+
+							'<img class="s-img-view" style="width: 100px;height: 100px;" src="/img/basic.png">'+
 							'<div class="menuBoxInput">'+
 								'<div>'+
 									'<input type="file" name="plusMenuImg" accept=".jpg,.png,.jpeg" onchange="menuloadImg(this);" required>'+
