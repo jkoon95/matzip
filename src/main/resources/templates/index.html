@@ -18,7 +18,7 @@
     <div class="swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${topList}">
-          <a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+          <a th:href="@{'/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
             <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" />
           </a>
         </div>
@@ -34,7 +34,7 @@
     <div class="swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${subwayList}">
-          <a th:href="@{'http://127.0.0.1/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
+          <a th:href="@{'/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
             <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" />
           </a>
         </div>
