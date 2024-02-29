@@ -6,20 +6,23 @@ a {
 
 /* 공통 디자인 */
 .page-content {
-  width: 1600px;
+  width: 100%;
   margin: 0 auto;  
   flex-grow: 1;
-  overflow: hidden;  
+  overflow: hidden;
+  margin-top:20px;    
 }
 .page-title {
-  font-family: ns-r;
-  padding: 20px;
+  font-family: ns-r;  
   font-size: 150%;
   font-weight: 500;
+  margin-bottom:20px;
+  text-indent: 20px;
 }
 .page-title > span{
 	color: #f85050; 
 }
+
 
 /* font 클래스*/
 .f-thin {
@@ -132,16 +135,38 @@ a {
 
 /* 슬라이드 디자인 */
 .swiper{
-  width: 1600px;
+  width: 99%;
   margin: 0 auto;
   height: 300px;
-  margin-bottom: 50px;
+  
+}
+.swiper1{
+	
+}
+.swiper2{
+	margin-bottom: 100px;
 }
 .swiper img{
   width: 100%;
   height: 300px;
   border-radius: 10px;
   
+}
+.mid-content{
+	width:99%;	
+	background: #f9fafb;
+	padding: 100px 0;
+}
+.main-content{			
+	font-size: 30px;
+    font-weight: 200;
+    line-height: 2.0;
+    color: #191f28;
+    text-align: center;    
+}
+.main-content > span{
+	color: #47C83E;
+	font-family: ns-eb; 
 }
 
 /*
