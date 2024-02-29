@@ -441,7 +441,8 @@ header > .header-wrap > .header-right-box{
     background-color :#72B37E;
     border: 1px solid #b3b3b3;
     color: #fff;
-    width: 110px;    
+    width: 110px;
+    cursor: pointer;    
 }
 
 .idInfo-box{
