@@ -97,8 +97,7 @@ public class ReserveController {
 		return "redirect:/reserve/reserveList";
 	}
 	
-	//나중에 post로 바꿔
-	@PostMapping(value="/reserveList")
+	@GetMapping(value="/reserveList")
 	public String reserveList(@SessionAttribute Member member, Model model) {
 		
 		HashMap<String, List> rvmList = reserveService.reserveViewMemberList(member.getMemberNo());
