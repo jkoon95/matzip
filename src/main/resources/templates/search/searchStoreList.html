@@ -32,7 +32,7 @@
         </div>
 
         <div class="page-content">
-            <div class="store-all" th:each="store : ${searchList}" onclick="conveyStoreInfoToDetail(this);" th:data-store-no="${store.storeNo}">
+            <div class="store-all" th:each="store : ${searchList}"  onclick="conveyStoreInfoToDetail(this);" th:data-store-no="${store.storeNo}">
                 <div class="store-content1">
                     <img th:src="@{/store/{storeImg}(storeImg=${store.storeImg})}" alt="" class="imgScale">
                 </div>
