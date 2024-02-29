@@ -296,8 +296,8 @@ public class SearchDao {
 	}
 
 	public int selectAllSearchCount(String search) {
-		String query = "select count(*) from store_tbl WHERE FOOD_TYPE LIKE '%' || ? || '%' OR "
-				+ "STORE_NAME LIKE '%'||?||'%'  and store_status = 1";
+		String query = "select count(*) from store_tbl WHERE (FOOD_TYPE LIKE '%' || ? || '%' OR "
+				+ "STORE_NAME LIKE '%'||?||'%')  and store_status = 1";
 		Object[] params = { search, search };
 		int totalCount = jdbc.queryForObject(query, Integer.class, params);
 		return totalCount;
