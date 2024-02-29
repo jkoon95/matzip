@@ -41,7 +41,7 @@ public class SearchDao {
 	private JdbcTemplate jdbc;
 
 	public int searchTotalCount(String stationName) {
-		String query = "select count(*) from store_tbl where subway_name=?";
+		String query = "select count(*) from store_tbl where subway_name=? and store_status = 1";
 		Object[] params = { stationName };
 		int totalCount = jdbc.queryForObject(query, Integer.class, params);
 		return totalCount;
@@ -90,7 +90,7 @@ public class SearchDao {
 				"        LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" +
 				"        LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
 				"    WHERE\r\n" +
-				"        s.SUBWAY_NAME = ?\r\n" +
+				"        s.SUBWAY_NAME = ? and store_status = 1\r\n" +
 				"    GROUP BY\r\n" +
 				"        s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_ADDR1,\r\n" +
 				"        s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE, \r\n" +
@@ -162,7 +162,7 @@ public class SearchDao {
 				"            LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" +
 				"            LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
 				"        WHERE\r\n" +
-				"            s.SUBWAY_NAME = ?\r\n" +
+				"            s.SUBWAY_NAME = ? and store_status = 1\r\n" +
 				"        GROUP BY\r\n" +
 				"            s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR, \r\n" +
 				"            s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE, \r\n" +
@@ -234,6 +234,7 @@ public class SearchDao {
 				"        STORE_TBL s\r\n" +
 				"        LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" +
 				"        LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
+				" where store_status = 1"+
 				"    GROUP BY\r\n" +
 				"s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR, \r\n" +
 				"s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE, \r\n" +
@@ -257,7 +258,7 @@ public class SearchDao {
 	}
 
 	public StoreInfo getStoreInfoByStoreNo(int storeNo) {
-		String query = "select * from info_tbl where store_no=?";
+		String query = "select * from info_tbl where store_no=? ";
 		Object[] params = { storeNo };
 		List list = jdbc.query(query, storeInfoRowMapper, params);
 		if (list.isEmpty()) {
@@ -296,7 +297,7 @@ public class SearchDao {
 
 	public int selectAllSearchCount(String search) {
 		String query = "select count(*) from store_tbl WHERE FOOD_TYPE LIKE '%' || ? || '%' OR "
-				+ "STORE_NAME LIKE '%'||?||'%'";
+				+ "STORE_NAME LIKE '%'||?||'%'  and store_status = 1";
 		Object[] params = { search, search };
 		int totalCount = jdbc.queryForObject(query, Integer.class, params);
 		return totalCount;
@@ -333,7 +334,7 @@ public class SearchDao {
 	}
 
 	public int selectAllSearchCount() {
-		String query = "select count(*) from store_tbl";
+		String query = "select count(*) from store_tbl where store_status = 1";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 
 		return totalCount;
@@ -385,6 +386,7 @@ public class SearchDao {
 				"        WHERE \r\n" +
 				"            s.FOOD_TYPE LIKE '%' || ? || '%'\r\n" +
 				"            OR s.STORE_NAME LIKE '%' || ? || '%'\r\n" +
+				"        and store_status = 1"+
 				"        GROUP BY\r\n" +
 				"            s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE,\r\n" +
@@ -399,7 +401,7 @@ public class SearchDao {
 	}
 
 	public int selectAllCount() {
-		String query = "select count(*) from store_tbl";
+		String query = "select count(*) from store_tbl where  store_status = 1";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
 	}
@@ -447,6 +449,7 @@ public class SearchDao {
 				"            STORE_TBL s\r\n" +
 				"            LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" +
 				"            LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
+				" where store_status = 1"+
 				"        GROUP BY\r\n" +
 				"            s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE,\r\n" +
@@ -504,7 +507,7 @@ public class SearchDao {
 				"            LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" +
 				"            LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
 				"        WHERE \r\n" +
-				"            s.FOOD_TYPE = ? \r\n" +
+				"            s.FOOD_TYPE = ?  and store_status = 1\r\n" +
 				"        GROUP BY\r\n" +
 				"            s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR,\r\n" +
 				"            s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE,\r\n" +
@@ -520,7 +523,7 @@ public class SearchDao {
 	}
 
 	public int selectFoodTypeCount(String foodType) {
-		String query = "select count(*) from store_tbl where food_type = ?";
+		String query = "select count(*) from store_tbl where food_type = ?  and store_status = 1";
 		Object[] params = { foodType };
 		int totalCount = jdbc.queryForObject(query, Integer.class, params);
 		return totalCount;
@@ -566,6 +569,7 @@ public class SearchDao {
 				"            STORE_TBL s\r\n" + 
 				"            LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" + 
 				"            LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" + 
+				" where store_status = 1"+
 				"        GROUP BY\r\n" + 
 				"            s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR,\r\n" + 
 				"            s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE,\r\n" + 
@@ -618,6 +622,7 @@ public class SearchDao {
 				"            STORE_TBL s\r\n" + 
 				"            LEFT JOIN STORE_LIKE_TBL l ON s.STORE_NO = l.STORE_NO\r\n" + 
 				"            LEFT JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" + 
+				" where store_status = 1"+
 				"        GROUP BY\r\n" + 
 				"            s.STORE_NO, s.MEMBER_NO, s.BUSINESS_NO, s.STORE_NAME, s.STORE_ADDR,\r\n" + 
 				"            s.STORE_PHONE, s.HOMEPAGE, s.STORE_SNS, s.STORE_DESCRIPTION, s.FOOD_TYPE,\r\n" + 
@@ -684,7 +689,8 @@ public class SearchDao {
 				"           s.SUBWAY_NAME,\r\n" + 
 				"           AVG(r.REVIEW_STAR) AS AVG_STAR\r\n" + 
 				"    FROM STORE_TBL s\r\n" + 
-				"    JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" + 
+				"    JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
+				"    WHERE s.STORE_STATUS = 1"+
 				"    GROUP BY s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME\r\n" + 
 				"    ORDER BY AVG_STAR DESC\r\n" + 
 				")\r\n" + 
@@ -711,7 +717,8 @@ public class SearchDao {
 				"           AVG(r.REVIEW_STAR) AS AVG_STAR,\r\n" + 
 				"           ROW_NUMBER() OVER (PARTITION BY s.SUBWAY_NAME ORDER BY AVG(r.REVIEW_STAR) DESC) AS rn\r\n" + 
 				"    FROM STORE_TBL s\r\n" + 
-				"    JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" + 
+				"    JOIN REVIEW_TBL r ON s.STORE_NO = r.STORE_NO\r\n" +
+				"    WHERE s.STORE_STATUS = 1"+
 				"    GROUP BY s.STORE_NO, s.STORE_NAME, s.STORE_ADDR, s.STORE_PHONE, s.STORE_IMG, s.SUBWAY_NAME\r\n" + 
 				")\r\n" + 
 				"WHERE rn = 1";
