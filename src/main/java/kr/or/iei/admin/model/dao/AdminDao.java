@@ -134,7 +134,7 @@ public class AdminDao {
 	}
 
 	public List selectStoreList(int start, int end) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT * FROM store_tbl order by store_status desc,store_no desc)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (SELECT * FROM store_tbl order by store_status desc,store_no)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {start,end};
 		List list = jdbc.query(query,storeRowMapper ,params);
 		return list;
@@ -147,21 +147,21 @@ public class AdminDao {
 	}
 
 	public List selectSearchStoreAll(int start, int end, String keyword) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where store_name || subway_name like '%'||?||'%' ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where store_name || subway_name like '%'||?||'%' ORDER BY 1)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {keyword,start,end};
 		List list = jdbc.query(query, storeRowMapper ,params);
 		return list;
 	}
 
 	public List selectSearchStoreSubway(int start, int end, String keyword) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where subway_name like '%'||?||'%' ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where subway_name like '%'||?||'%' ORDER BY 1)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {keyword,start,end};
 		List list = jdbc.query(query, storeRowMapper, params);
 		return list;
 	}
 
 	public List selectSearchStoreName(int start, int end, String keyword) {
-		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where store_name like '%'||?||'%' ORDER BY 1 DESC)s) WHERE RNUM BETWEEN ? AND ?";
+		String query ="SELECT * FROM (SELECT ROWNUM AS RNUM, s.* FROM (select * from store_tbl where store_name like '%'||?||'%' ORDER BY 1)s) WHERE RNUM BETWEEN ? AND ?";
 		Object[] params = {keyword,start,end};
 		List list = jdbc.query(query, storeRowMapper, params);
 		return list;

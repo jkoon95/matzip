@@ -18,7 +18,9 @@ import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.store.model.dto.EvidenceFile;
+import kr.or.iei.store.model.dto.Menu;
 import kr.or.iei.store.model.dto.Store;
+import kr.or.iei.store.model.dto.StoreFileData;
 import kr.or.iei.store.model.service.StoreService;
 
 @Controller
@@ -315,5 +317,37 @@ public class AdminController {
 		}
 	}	
 	
+	
+	@GetMapping(value="/storeDelete")
+	public String storeDelete(Model model,int storeNo) {
+		StoreFileData sfd = storeService.deleteStore(storeNo);
+		if(sfd != null) {
+			//매장사진삭제
+			String storeSavepath = root+"/store/";
+			fileUtils.deleteFile(storeSavepath, sfd.getStoreImg());
+			//증빙서류삭제
+			String evidenceSavepath = root+"/store/evidence/";	
+			for(Object item : sfd.getEvidenceList()) {
+				EvidenceFile file = (EvidenceFile)item;
+				fileUtils.deleteFile(evidenceSavepath,file.getFilepath());
+			}
+			//메뉴사진삭제
+			String menuSavepath = root+"/store/menu/";		
+			for(Object item : sfd.getMenuList()) {
+				Menu file = (Menu)item;
+				fileUtils.deleteFile(menuSavepath,file.getMenuImg());
+			}
+			model.addAttribute("title","삭제완료");
+			model.addAttribute("msg","해당 매장이 삭제되었습니다");
+			model.addAttribute("icon","success");
+			model.addAttribute("loc","/admin/allStore?reqPage=1");
+		}else {
+			model.addAttribute("title","삭제 실패");
+			model.addAttribute("msg","관리자에게 문의하세요");
+			model.addAttribute("icon","error");
+			model.addAttribute("loc","/");				
+		}
+		return "common/msg";
+	}
 	
 }
