@@ -437,6 +437,16 @@ public class ReserveService {
 		return result;
 	}
 
+	
+	///////////////////////////////////////////////////////////////////
+	
+
+	public Store selectStore(int memberNo) {
+		Store store = reserveDao.selectStore(memberNo);
+		return store;
+	}
+
+	
 	public HashMap<String, List> reserveViewStoreList(int storeNo, String reserveDate, String reserveTime) {
 		HashMap<String, List> reserveViewStoreList = new HashMap<String, List>();
 		List<ReserveViewStore> reserveList = reserveDao.reserveList(storeNo, reserveDate, reserveTime);
@@ -451,10 +461,11 @@ public class ReserveService {
 		return result;
 	}
 
-	public int deleteTemp(int storeNo, String insertTempDay) {
-		int result = reserveDao.deleteTemp(storeNo, insertTempDay);
+	public int deleteTemp(int storeNo, String deleteTempDay) {
+		int result = reserveDao.deleteTemp(storeNo, deleteTempDay);
 		return result;
 	}
+
 	
 	
 }

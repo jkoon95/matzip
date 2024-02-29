@@ -58,7 +58,8 @@ public class WebConfig implements WebMvcConfigurer{
 		//사장 회원등급 Member
 		registry.addInterceptor(new StoreInterceptor())
 			.addPathPatterns("/store/storeEnrollFrm","/store/storeEnroll","/store/myStore","/store/storeUpdateFrm","/store/storeUpdate","/store/storeDelete","/store/deleteMenu","/store/insertMenu","/store/bussinessNumberCheck")
-			.addPathPatterns("/member/mystorepage","/member/storeupdate");
+			.addPathPatterns("/member/mystorepage","/member/storeupdate")
+			.addPathPatterns("/reserve/reserveManage", "/reserve/closedDays2", "/reserve/tempClosedDays2", "/reserve/timeSet2", "/reserve/reserveListStore", "/reserve/cancelReserve2", "/reserve/insertTemp", "/reserve/deleteTemp");
 		
 		//일반회원 회원등급 Member
 		registry.addInterceptor(new UserInterceptor())
