@@ -1,6 +1,5 @@
 $("#reserve-btn").prop("disabled", true);//클릭 못하게
 
-let aaa = 1;
 $.ajax({
   url: "/reserve/closedDays",
   type: "post",
@@ -27,7 +26,7 @@ $.ajax({
           //데이트 포맷
           dateFormat: "yy-mm-dd",
           //한글로 표시
-          preveText: "이전 달",
+          prevText: "이전 달",
           nextText: "다음 달",
           monthNames: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
           dayNames: ["일","월","화","수","목","금","토"],
@@ -141,7 +140,9 @@ $.ajax({
                 $(this).addClass("smallBtn-active");
                 //3. hidden으로 숨긴 input태그에 값 추가
                 $("#reserveTime").val($(this).text());
-                //4. 예약 가능 인원수 구하기
+                //4. 인원수 리셋
+                $("#people").text(1);
+                //5. 예약 가능 인원수 구하기
                 $.ajax({
                   url: "/reserve/tableNoAndCapacity",
                   type: "post",

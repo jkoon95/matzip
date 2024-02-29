@@ -64,7 +64,7 @@ public class StoreController {
 				model.addAttribute("title","실패");
 				model.addAttribute("msg","등록된 보유하신 매장이 있습니다.");
 				model.addAttribute("icon","error");
-				model.addAttribute("loc","/");
+				model.addAttribute("loc","/store/myStore");
 				return "common/msg";
 			}
 		}
@@ -117,12 +117,13 @@ public class StoreController {
 				model.addAttribute("title","성공");
 				model.addAttribute("msg","매장등록에 성공했습니다.");
 				model.addAttribute("icon","success");
+				model.addAttribute("loc","/store/myStore");
 			}else {
 				model.addAttribute("title","실패");
 				model.addAttribute("msg","매장등록에 실패했습니다.");
 				model.addAttribute("icon","error");
-			}
 				model.addAttribute("loc","/");
+			}
 			return "common/msg";
 		}
 		
@@ -288,7 +289,7 @@ public class StoreController {
 				model.addAttribute("title","삭제완료");
 				model.addAttribute("msg","해당 매장이 삭제되었습니다");
 				model.addAttribute("icon","success");
-				model.addAttribute("loc","/");
+				model.addAttribute("loc","/store/bussinessNumberCheck");
 			}else {
 				model.addAttribute("title","삭제 실패");
 				model.addAttribute("msg","관리자에게 문의하세요");

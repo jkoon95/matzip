@@ -13,6 +13,7 @@ import kr.or.iei.reseve.model.dto.Reserve;
 import kr.or.iei.reseve.model.dto.ReserveFrm;
 import kr.or.iei.reseve.model.dto.ReserveNo;
 import kr.or.iei.reseve.model.dto.ReserveViewMember;
+import kr.or.iei.reseve.model.dto.ReserveViewStore;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
 import kr.or.iei.reseve.model.dto.TimeSet;
@@ -431,9 +432,27 @@ public class ReserveService {
 				}
 			}
 		}
-
-		result += reserveDao.deleteCancelReserve(reserve.getReserveNo(), dummyLastNo);
+		result += reserveDao.updateCancelReserve(reserve.getReserveNo(), dummyLastNo);	
 		
+		return result;
+	}
+
+	public HashMap<String, List> reserveViewStoreList(int storeNo, String reserveDate, String reserveTime) {
+		HashMap<String, List> reserveViewStoreList = new HashMap<String, List>();
+		List<ReserveViewStore> reserveList = reserveDao.reserveList(storeNo, reserveDate, reserveTime);
+		List<MenuServings> menuServingsList = reserveDao.menuServings2(storeNo);
+		reserveViewStoreList.put("reserveList", reserveList);
+		reserveViewStoreList.put("menuServingsList", menuServingsList);
+		return reserveViewStoreList;
+	}
+
+	public int insertTemp(int storeNo, String insertTempDay) {
+		int result = reserveDao.insertTemp(storeNo, insertTempDay);
+		return result;
+	}
+
+	public int deleteTemp(int storeNo, String insertTempDay) {
+		int result = reserveDao.deleteTemp(storeNo, insertTempDay);
 		return result;
 	}
 	

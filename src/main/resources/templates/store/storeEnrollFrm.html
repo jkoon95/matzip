@@ -5,14 +5,35 @@
 <title>매장 등록</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/css/storeInfo.css">
-<style>
-
-</style>
+<link rel="stylesheet" href="/css/side-menu.css">
 </head>
 <body>
 	<!-- 매장만 들어갈 수 있도록 하기-->
 	<th:block th:include="common/header"></th:block>
-    <div class="s-content">
+	<div class="content">
+		<div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="/store/bussinessNumberCheck" class="active">
+                            <span class="material-icons">add_business</span>
+                            <span class="title">매장등록</span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="/store/myStore">
+                            <span class="material-icons">storefront</span>
+                            <span class="title">매장 관리</span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="/reserve/reserveManage">
+                            <span class="material-icons">calendar_month</span>
+                            <span class="title">예약 관리</span>
+                        </a>
+                    </li>                   
+               </ul>
+        </div>        
+    	<div class="s-content">
 		<!-- 매장등록 -->
         <div id="s-enrollStoreContent">
             <h2 class="s-title2">매장등록</h2>
@@ -320,7 +341,7 @@
                     
                     <div class="s-input-wrap11">
                      	<fieldset class="s-field">
-    					<legend>테이블수</legend>
+    					<legend>테이블수<span class="s-smallexplain"> [예약받기 위한 입력사항입니다]</span></legend>
     					<div>
 	                        <label for="tableCapacity1" class="s-label">1인용식탁  </label>
 	                        <input type="number" min="0" name="tableCapacitys" id="tableCapacity1" class="s-table"><span> 개</span>
@@ -400,9 +421,9 @@
                 </div>             
             </form>
         </div>
-
-
-        <script>
+	</div>
+	<script src="/js/side-menu.js"></script> 
+    <script>
             //주소 길찾기
             function searchAddr() {
                 new daum.Postcode({
@@ -477,7 +498,7 @@
                         $(obj).parent().find(".s-img-view").attr("src", e.target.result);
                     }
                 } else {
-                    $(obj).parent().find(".s-img-view").attr("src", "");
+                    $(obj).parent().find(".s-img-view").attr("src", "/img/basic.png");
                 }
             }
 
@@ -489,7 +510,7 @@
                         $(obj).parent().parent().find(".s-img-view").attr("src", e.target.result);
                     }
                 } else {
-                    $(obj).parent().parent().find(".s-img-view").attr("src", "");
+                    $(obj).parent().parent().find(".s-img-view").attr("src", "/img/basic.png");
                 }
             }
             

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -47,6 +48,7 @@ public class ReserveController {
 		List<Integer> closedDays = reserveService.closedDays(storeNo);
 		return closedDays;
 	}
+	
 	
 	@ResponseBody
 	@PostMapping(value="/tempClosedDays")
@@ -114,9 +116,77 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/cancelReserve")
-	public int deleteReserve(Integer reserveNo) {
+	public int CancelReserve(Integer reserveNo) {
 		int result = reserveService.cancelReserve(reserveNo);
 		return result;
 	}
 	
+	@RequestMapping(value="/reserveManage")
+	public String reserveManage(Model model) {
+		int storeNo = 7;//나중에 매개변수로 옮겨라. postmapping으로도 바꾸고.
+		
+		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
+		List<Integer> closedDays = reserveService.closedDays(storeNo);
+		
+		model.addAttribute("store", reserveFrm.getStore());
+		model.addAttribute("menus", reserveFrm.getMenus());
+		model.addAttribute("fullDays", reserveFrm.getFullDays());
+		
+		model.addAttribute("closedDays", closedDays);//정기휴일
+		
+		return "reserve/reserveManage";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/closedDays2")
+	public List<Integer> closedDays2(int storeNo){
+		//정기휴무일 구하기
+		List<Integer> closedDays = reserveService.closedDays(storeNo);
+		return closedDays;
+	}
+
+	@ResponseBody
+	@PostMapping(value="/tempClosedDays2")
+	public List<String> tempClosedDays2(int storeNo){
+		//임시휴무일 구하기
+		List<String> tempClosedDays = reserveService.tempClosedDays(storeNo);
+		return tempClosedDays;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/timeSet2")
+	public TimeSet timeSet2(int storeNo, String selectedDay){
+		//String Day = datepicker에서 선택한 날짜
+		TimeSet timeSet = reserveService.timeset(storeNo, selectedDay);
+		return timeSet;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="reserveListStore")
+	public HashMap<String, List> reserveViewStoreList(int storeNo, String reserveDate, String reserveTime) {
+		//@SessionAttribute(required = false) Member member
+		HashMap<String, List> reserveViewStoreList = reserveService.reserveViewStoreList(storeNo, reserveDate, reserveTime);
+		return reserveViewStoreList;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/cancelReserve2")
+	public int CancelReserve2(int reserveNo) {
+		int result = reserveService.cancelReserve(reserveNo);
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/insertTemp")
+	public int insertTemp(int storeNo, String insertTempDay) {
+		int result = reserveService.insertTemp(storeNo, insertTempDay);
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/deleteTemp")
+	public int deleteTemp(int storeNo, String insertTempDay) {
+		int result = reserveService.deleteTemp(storeNo, insertTempDay);
+		return result;
+	}
 }

@@ -6,117 +6,54 @@
 <link rel="stylesheet" href="/css/storeInfo.css">
 <link rel="stylesheet" href="/css/admin.css">
 <link rel="stylesheet" href="/css/notice.css">
-<style>
-.goStore{
-    background-color: #72B37E;
-	color: #fff;
-	font-size: 15px;
-	border-radius: 5px;
-	text-align: center;
-	border: none;
-	cursor: pointer;
-	width: 80px;
-	height: 40px;
-	line-height: 40px;
-	float:right;
-	margin :10px;
-}
-.store-status{
-	text-align: right;
-	margin-bottom: 5px;
-	font-weight: 700;
-	font-size: 15px;
-}
-.s-lastTh{
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-.s-adminStoreInfo{
-	margin: 0 auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-    padding-bottom: 50px;
-    border-radius: 15px;
-    padding: 70px;
-    width: 700px;
-    box-sizing: border-box;
-    font-size: 18px;
-}   
-}
-.s-img{
-	width: 200px;
-	height: 200px;
-	border-radius: 10px;
-}		
-.s-fileDown a{
-	color: #1232e9;
-}	
-.sss-content{
-	padding: 50px;
-	padding-bottom: 150px;
-	width: 900px;
-}
-.s-smallTitle{
-    margin-bottom: 5px;
-    font-weight: 700;
-    font-size: 17px;
-    color:#f04c4c;
-    padding-right: 100px;
-    text-align: right;
-}
-.s-title33{
-	font-size: 26px;padding-left: 110px;;padding-top: 20px;padding-bottom: 20px;
-}
-.storeInfoTbl th{
-	padding-right: 10px;
-	text-align: right;
-	font-size: 18px;
-	font-weight: 300;
-	
-}
-.storeInfoTbl tr{
-	height: 60px;
-	margin-bottom: 10px;
-}
-.storeInfoTbl{
-	margin-left: 50px;
-}
-.s-storeImgBox{
-	margin-bottom: 20px;
-}
-.s-storeId{
-	text-align: center;
-	margin-bottom: 5px;
-    font-weight: 700;
-    font-size: 20px;
-    color:#2e2c2c;
-}
-.storeInfoBox{
-	color: #fff;
-    font-size: 17px;
-    border-radius: 5px;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    width: 90px;
-    height: 50px;
-    line-height: 50px;
-    display: inline-block;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 40px;
-    background-color: #72B37E;
-}
-.s-storeInfolast{
-	text-align: center;
-}
-</style>
+<link rel="stylesheet" href="/css/side-menu.css">
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
     <div class="content">
-    	<th:block th:include="common/side"></th:block>
-    	 <div class="sss-content">
+    	<!--사이드메뉴-->
+		<div class="navigation">
+			<ul>
+				<li class="list">
+					<a href="/admin/allMember?reqPage=1">
+						<span class="material-icons">account_circle</span>
+						<span class="title">전체회원조회</span>
+					</a>
+				</li>
+				<li class="list">
+					<a href="/admin/allStore?reqPage=1">
+						<span class="material-icons">storefront</span>
+						<span class="title">매장 관리</span>
+					</a>
+				</li>
+				<li class="list">
+					<a href="/admin/reportList?reqPage=1">
+						<span class="material-icons">calendar_month</span>
+						<span class="title">신고 관리</span>
+					</a>
+				</li>
+				<li class="list">
+					<a href="#">
+						<span class="material-icons">calendar_month</span>
+						<span class="title">블랙리스트관리</span>
+					</a>
+					<ul>
+						<li class="sub-list">
+							<a href="/admin/storeBlackList?reqPage=1">
+								<span class="title">매장블랙리스트</span>
+							</a>
+						</li>
+						<li class="sub-list">
+							<a href="/admin/memberBlackList?reqPage=1">
+								<span class="title">회원블랙리스트</span>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<!--//사이드메뉴-->
+    	 <div class="sss-content2">
             <div><h3 class="s-title33">매장 정보<h3></div>
             	<div class="s-smallTitle" th:if="${store.storeStatus}==2">[매장승인필요]</div>	
             	<div  class="s-adminStoreInfo">
@@ -177,6 +114,7 @@
             </div>
          </div>
     </div>
+    <script src="/js/side-menu.js"></script>
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>

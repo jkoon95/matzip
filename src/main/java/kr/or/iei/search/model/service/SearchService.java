@@ -296,7 +296,7 @@ public class SearchService {
 		//이전버튼(pageNo가 1페이지면 이전페이지가 없으므로 아닐때만 생성)
 		if(pageNo!=1) {
 			pageNavi += "<li>";
-			pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<a class='page-item' href='/search/selectByFoodType?reqPage="+(pageNo-1)+"&foodType="+(foodType)+"'>";
 			pageNavi += "<span class='material-icons'>chevron_left</span>";
 			pageNavi += "</a></li>";
 		}
@@ -304,14 +304,14 @@ public class SearchService {
 		for(int i=0;i<pageNaviSize;i++) {
 			if(pageNo == reqPage) {
 				pageNavi += "<li>";
-				pageNavi += "<a class='page-item active-page' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+				pageNavi += "<a class='page-item active-page' href='/search/selectByFoodType?reqPage="+(pageNo)+"&foodType="+(foodType)+"'>";
 				pageNavi += pageNo;
 				pageNavi += "</a></li>";
 			}else {
 				pageNavi += "<li>";
-				pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+				pageNavi += "<a class='page-item' href='/search/selectByFoodType?reqPage="+(pageNo)+"&foodType="+(foodType)+"'>";
 				pageNavi += pageNo;
-				pageNavi += "</a></li>";
+				pageNavi += "</a></li>";	
 			}
 			pageNo++;
 			//페이지를 만들다가 최종페이지를 출력했으면 더이상 반복하지 않고 종료
@@ -323,7 +323,7 @@ public class SearchService {
 		//다음버튼(출력한 번호+1한 숫자가 최종페이지보다 같거나 같으면(최종페이지를 아직 출력하지 않았으면))
 		if(pageNo <= totalPage) {
 			pageNavi += "<li>";
-			pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+			pageNavi += "<a class='page-item' href='/search/selectByFoodType?reqPage="+(pageNo)+"&foodType="+(foodType)+"'>";
 			pageNavi += "<span class='material-icons'>chevron_right</span>";
 			pageNavi += "</a></li>";
 		}
@@ -385,7 +385,7 @@ public class SearchService {
 				//이전버튼(pageNo가 1페이지면 이전페이지가 없으므로 아닐때만 생성)
 				if(pageNo!=1) {
 					pageNavi += "<li>";
-					pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo-1)+"'>";
+					pageNavi += "<a class='page-item' href='/search/selectBySearchType?reqPage="+(pageNo-1)+"&searchType="+(searchType)+"'>";
 					pageNavi += "<span class='material-icons'>chevron_left</span>";
 					pageNavi += "</a></li>";
 				}
@@ -393,12 +393,12 @@ public class SearchService {
 				for(int i=0;i<pageNaviSize;i++) {
 					if(pageNo == reqPage) {
 						pageNavi += "<li>";
-						pageNavi += "<a class='page-item active-page' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+						pageNavi += "<a class='page-item active-page' href='/search/selectBySearchType?reqPage="+(pageNo)+"&searchType="+(searchType)+"'>";
 						pageNavi += pageNo;
 						pageNavi += "</a></li>";
 					}else {
 						pageNavi += "<li>";
-						pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+						pageNavi += "<a class='page-item' href='/search/selectBySearchType?reqPage="+(pageNo)+"&searchType="+(searchType)+"'>";
 						pageNavi += pageNo;
 						pageNavi += "</a></li>";
 					}
@@ -412,7 +412,7 @@ public class SearchService {
 				//다음버튼(출력한 번호+1한 숫자가 최종페이지보다 같거나 같으면(최종페이지를 아직 출력하지 않았으면))
 				if(pageNo <= totalPage) {
 					pageNavi += "<li>";
-					pageNavi += "<a class='page-item' href='/search/viewAllStoreList?reqPage="+(pageNo)+"'>";
+					pageNavi += "<a class='page-item' href='/search/selectBySearchType?reqPage="+(pageNo)+"&searchType="+(searchType)+"'>";
 					pageNavi += "<span class='material-icons'>chevron_right</span>";
 					pageNavi += "</a></li>";
 				}
