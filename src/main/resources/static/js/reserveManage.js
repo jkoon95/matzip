@@ -190,11 +190,7 @@ $.ajax({
                             requestDiv.text(reserveList[i].reserveRequest);
                           requestContent.append(requestDiv);
                       request.append(requestTitle).append(requestContent);
-                      //reserveNo
-                      const reserveNo = $("<div>");
-                      reserveNo.addClass("reserveNo");
-                      reserveNo.val(reserveList[i].reserveNo);
-                      //button
+                      //button(reserveNo)
                       const now = new Date();
                       const cancelBtn = $("<button>");
                         //잠간 날짜비교를 위해
@@ -203,12 +199,11 @@ $.ajax({
                       if((rr-today)/(1000*60*60*24) > 1){
                         cancelBtn.attr("type","button");
                         cancelBtn.addClass("middle-btn bg-red cancel-btn");
-                        cancelBtn.val(12);
+                        cancelBtn.val(reserveList[i].reserveNo);
                         cancelBtn.text("예약취소");
                       }else{
                         cancelBtn.attr("type","button");
                         cancelBtn.addClass("middle-btn bg-gray no-cancel-btn");
-                        cancelBtn.val(1234);
                         cancelBtn.text("예약취소 불가");
                       }
                       //추가

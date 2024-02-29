@@ -21,6 +21,7 @@ import kr.or.iei.reseve.model.dto.ReserveFrm;
 import kr.or.iei.reseve.model.dto.ReserveViewMember;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TimeSet;
+import kr.or.iei.store.model.dto.Store;
 
 @RequestMapping(value="/reserve")
 @Controller
@@ -30,7 +31,7 @@ public class ReserveController {
 	private ReserveService reserveService;
 	
 	@PostMapping(value="/reserveFrm")
-	public String reserveFrm(@SessionAttribute(required = false) Member member, int storeNo, Model model) {
+	public String reserveFrm(@SessionAttribute Member member, int storeNo, Model model) {
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		
@@ -97,12 +98,10 @@ public class ReserveController {
 	}
 	
 	//나중에 post로 바꿔
-	@RequestMapping(value="/reserveList")
-	public String reserveList(@SessionAttribute(required = false) Member member, Model model) {
-		//int memberNo = 3;//임시로
+	@PostMapping(value="/reserveList")
+	public String reserveList(@SessionAttribute Member member, Model model) {
 		
 		HashMap<String, List> rvmList = reserveService.reserveViewMemberList(member.getMemberNo());
-		
 		
 		List<ReserveViewMember> afterRvmList = rvmList.get("after");
 		List<ReserveViewMember> beforeRvmList = rvmList.get("before");
@@ -122,9 +121,26 @@ public class ReserveController {
 	}
 	
 	@RequestMapping(value="/reserveManage")
-	public String reserveManage(Model model) {
-		int storeNo = 7;//나중에 매개변수로 옮겨라. postmapping으로도 바꾸고.
+	public String reserveManage(@SessionAttribute Member member, Model model) {
 		
+		int memberNo = member.getMemberNo();
+		Store store = reserveService.selectStore(memberNo);
+		if(store!=null) {
+			//매장등록완료된 회원
+			List<String> tempClosedDays = reserveService.tempClosedDays(store.getStoreNo());
+			model.addAttribute("store", store);
+			model.addAttribute("tempClosedDays", tempClosedDays);
+			return "reserve/reserveManage";
+		}else {
+			//매장없을시 등록페이지로이동
+			model.addAttribute("title","실패");
+			model.addAttribute("msg","매장을 먼저 등록해주세요.");
+			model.addAttribute("icon","error");
+			model.addAttribute("loc","/store/bussinessNumberCheck");
+			return "common/msg";
+		}
+		
+		/*
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		List<Integer> closedDays = reserveService.closedDays(storeNo);
 		
@@ -135,6 +151,7 @@ public class ReserveController {
 		model.addAttribute("closedDays", closedDays);//정기휴일
 		
 		return "reserve/reserveManage";
+		*/
 	}
 	
 	@ResponseBody
@@ -185,8 +202,8 @@ public class ReserveController {
 	
 	@ResponseBody
 	@PostMapping(value="/deleteTemp")
-	public int deleteTemp(int storeNo, String insertTempDay) {
-		int result = reserveService.deleteTemp(storeNo, insertTempDay);
+	public int deleteTemp(int storeNo, String deleteTempDay) {
+		int result = reserveService.deleteTemp(storeNo, deleteTempDay);
 		return result;
 	}
 }

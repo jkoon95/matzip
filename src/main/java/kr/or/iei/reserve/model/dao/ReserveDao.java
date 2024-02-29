@@ -277,7 +277,15 @@ public class ReserveDao {
 		int result= jdbc.update(query, params);
 		return result;
 	}
-
+	
+	///////////////////////////////////////////////////////////////////
+	
+	public Store selectStore(int memberNo) {
+		String query = "select * from store_tbl where member_no = ?";
+		Object[] params = {memberNo};
+		List<Store> list = jdbc.query(query, storeRowMapper, params);
+		return list.get(0);
+	}
 
 	public List<ReserveViewStore> reserveList(int storeNo, String reserveDate, String reserveTime) {
 		String query = "select * from reserve_tbl "
@@ -312,15 +320,13 @@ public class ReserveDao {
 	}
 
 
-	public int deleteTemp(int storeNo, String insertTempDay) {
+	public int deleteTemp(int storeNo, String deleteTempDay) {
 		String query = "delete from temp_closed_day_tbl "
 					+  "where store_no = ? and temp_closed_day = ?";
-		Object[] params = {storeNo, insertTempDay};
+		Object[] params = {storeNo, deleteTempDay};
 		int result = jdbc.update(query, params);
 		return result;
 	}
-
-
 
 	
 }

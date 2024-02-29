@@ -109,7 +109,7 @@ public class SearchDao {
 				"            ELSE '마감'\r\n" +
 				"        END\r\n" +
 				"    ORDER BY\r\n" +
-				"        LIKE_COUNT DESC\r\n" +
+				"        REVIEW_SCORE DESC\r\n" +
 				") WHERE ROWNUM <= ?";
 		Object[] params = { stationName, number };
 		List list = jdbc.query(query, storePlusRowMapper, params);
