@@ -34,6 +34,7 @@
             		<input type="hidden" name="reqPage" value="1">
             		<th:block th:switch="${foodType}">
             			<select name="foodType" id="foodType" onchange="this.form.submit()">
+            				<option value="한식" selected disabled>음식 타입</option>
 			                <option value="한식" th:selected="${foodType == '한식'}">한식</option>
 			                <option value="중식" th:selected="${foodType == '중식'}">중식</option>
 			                <option value="일식" th:selected="${foodType == '일식'}">일식</option>
@@ -51,6 +52,7 @@
 	            	<input type="hidden" name="reqPage" value="1">
 	            	<th:block th:switch="${searchType}">
 		            	<select name="searchType" id="searchType"  onchange="this.form.submit()">
+		            		<option value="리뷰 수" selected disabled>검색 타입</option>
 			                <option value="리뷰 수" th:selected="${searchType == '리뷰 수'}">리뷰 수</option>
 			                <option value="리뷰 점수" th:selected="${searchType == '리뷰 점수'}">리뷰 점수</option>
 		            	</select>

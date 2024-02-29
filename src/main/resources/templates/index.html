@@ -13,9 +13,9 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   <div class="page-content">
-    <div class="page-title">인기 맛집</div>
+    <div class="page-title">✅ <span>MOST</span> 맛'Zip'🔻</div>
 
-    <div class="swiper">
+    <div class="swiper swiper1">
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${topList}">
           <a th:href="@{'/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
@@ -23,15 +23,19 @@
           </a>
         </div>
       </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-scrollbar"></div>
+      
     </div>
+	
+	<div class="mid-content">
+		<div class="main-content">
+		모든 맛'Zip'을 <span>역 근처</span>에서 찾아보고 한번에 <span>검색</span>하세요. 
+		<br>이제껏 경험못했던 쉽고 편리한 <span>예약</span> 서비스,
+		<br>맛'Zip'과 함께라면 당신의 <span>일상</span>이 새로워질 거에요.
+		</div>
+	</div>
+    <div class="page-title">✅ 실시간<span> BEST </span> 평점 🔻</div>
 
-    <div class="page-title">지하철별 맛집</div>
-
-    <div class="swiper">
+    <div class="swiper swiper2">
       <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="store : ${subwayList}">
           <a th:href="@{'/search/conveyStoreInfoToDetail?storeNo=' + ${store.storeNo}}">
@@ -39,10 +43,7 @@
           </a>
         </div>
       </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-scrollbar"></div>
+      
     </div>
 
   </div>
@@ -52,9 +53,9 @@
   <script>
     // 페이지 로드 시 실행되는 함수
     $(document).ready(function () {
-      const swiper = new Swiper('.swiper', {
+      const swiper = new Swiper('.swiper1', {
         autoplay: {
-          delay: 1500,
+          delay: 3500,
         },
         loop: true,
         slidesPerView: 3,
@@ -71,11 +72,33 @@
           prevEl: '.swiper-button-prev',
         },
 
-        scrollbar: {
-          el: '.swiper-scrollbar',
-        },
+        
       });
     })
+     $(document).ready(function () {
+      const swiper = new Swiper('.swiper2', {
+        autoplay: {
+          delay: 6000,
+        },
+        loop: true,
+        slidesPerView: 3,
+        spaceBetween: 10,
+        centeredSlides: true,
+
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+
+        
+      });
+    })
+    
 
   </script>
 

@@ -24,7 +24,7 @@
       <!--컨텐츠-->
       <div class="page-content">
         <!--컨텐츠title-->
-        <div class="page-title">현재 예약 내역</div>
+        <div class="page-title">예약 관리</div>
         <!--//컨텐츠title-->
 
         <!--컨텐츠wrap-->
@@ -50,6 +50,16 @@
                   </div>
                   <div class="temp-explain">
                     (날짜를 선택하고 위의 버튼을 누르십시오)
+                  </div>
+                </div>
+                <div class="tempClosedDays">
+                  <div class="tempClosedDays-left">임시휴무일 : </div>
+                  <div class="tempClosedDays-right">
+                    <th:block th:each="day : ${tempClosedDays}">
+                      <th:block th:if="${day >= #calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+                        <div th:text="${day}"></div>
+                      </th:block>
+                    </th:block>
                   </div>
                 </div>
 

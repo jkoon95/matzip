@@ -68,12 +68,24 @@ $.ajax({
           //배열(disabledDays)의 값과 일치하는 날짜는 false를 리턴
           for (let i = 0; i < tempClosedDays.length; i++) {
             if(month < 9){
-              if($.inArray(year + '-0' + (month+1) + '-' + dates, tempClosedDays) != -1){
-                return [false];
+              if(dates < 10){
+                if($.inArray(year + '-0' + (month+1) + '-0' + dates, tempClosedDays) != -1){
+                  return [false];
+                }
+              } else{
+                if($.inArray(year + '-0' + (month+1) + '-' + dates, tempClosedDays) != -1){
+                  return [false];
+                }
               }
             } else{
-              if($.inArray(year + '-' + (month+1) + '-' + dates, tempClosedDays) != -1){
-                return [false];
+              if(dates < 10){
+                if($.inArray(year + '-0' + (month+1) + '-0' + dates, tempClosedDays) != -1){
+                  return [false];
+                }
+              } else{
+                if($.inArray(year + '-0' + (month+1) + '-' + dates, tempClosedDays) != -1){
+                  return [false];
+                }
               }
             }
           }
