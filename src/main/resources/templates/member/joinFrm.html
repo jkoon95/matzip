@@ -11,7 +11,7 @@
         <div class="join-wrap-box">            
             <form action="/member/join" method="post">                
                 <div class="join-box">
-                    <p><span>* </span> 표시된 곳은 필수입력 항목입니다</p>
+                    <p><span>* </span>모든 항목을 입력해주시기바랍니다.</p>
                     <div class="choiceBtn">                                       	
                         <label>
                             <span>매장</span>
@@ -27,7 +27,7 @@
                         <input type="text" name="memberId" id="memberId" class="input-from" required>
                     </div>
                     <div class="join-wrap">
-                        <label for="memberEmail">이메일</label>
+                        <label for="memberEmail">이메일<sup>*</sup></label>
                         <input type="text" name="memberEmail" id="memberEmail" class="input-from"> @
                         <select name="emailAddress">
                             <option value="@naver.com">--- naver.com ---</option>
@@ -43,21 +43,21 @@
                         <input type="password" id="memberPwRe" class="input-from" required>
                     </div>
                     <div class="join-wrap">
-                        <label for="memberName">이름</label>
+                        <label for="memberName">이름<sup>*</sup></label>
                         <input type="text" name="memberName" id="memberName" class="input-from" required>
                     </div>
                     <div class="join-wrap">
-                        <label for="memberNickname">닉네임 <span id="checkNickname"></span></label>
+                        <label for="memberNickname">닉네임 <sup>*</sup><span id="checkNickname"></span></label>
                         <input type="text" name="memberNickname" id="memberNickname" class="input-from" required>
                     </div>
                     <div class="join-wrap">
-                        <label for="memberPhone">휴대전화번호 (ex : 010-1234-5678)</label>
+                        <label for="memberPhone">휴대전화번호<sup>*</sup></label>
                         <input type="text" name="memberPhone" id="memberPhone" class="input-from" placeholder="010-0000-0000" required>
                     </div>        
                     </div>
                     <div class="agree-wrap">
                         <div class="agree-check">
-                            <label for="check2"> 개인정보 수집 및 이용에 동의합니다. </label>
+                            <label for="check2"> 개인정보 수집 및 이용에 동의합니다.</label>
                             <input type="checkbox" name="check2" id="check2" required>                
                         </div>
                         <div>
@@ -131,6 +131,42 @@
 				$("#pwRe-msg").css("color"," red");
 				$("#memberPw").css("border", "1px solid red");
 				$("#memberPwRe").css("border", "1px solid red");
+    		}
+    	});
+    	
+
+        $("#memberPhone").keyup(function(){
+        	$(this).val($(this).val().replace(/[^0-9]/g, ""));
+    		var val = $(this).val().replace(/[^0-9]/g, '');
+    		if(val.length > 3 && val.length < 6){
+    			var tmp = val.substring(0,2)
+    			if(tmp == "02"){
+    				$(this).val(val.substring(0,2) + "-" + val.substring(2));
+    			} else {
+    				$(this).val(val.substring(0,3) + "-" + val.substring(3));
+    			}
+    		}else if (val.length > 6){
+    			var tmp = val.substring(0,2)
+    			var tmp2 = val.substring(0,4)
+    			if(tmp == "02"){
+    				if(val.length == "10"){
+    					$(this).val(val.substring(0,2) + "-" + val.substring(2, 6) + "-" + val.substring(6));
+    				} else {
+    					$(this).val(val.substring(0,2) + "-" + val.substring(2, 5) + "-" + val.substring(5));
+    				}
+    			} else if(tmp2 == "0505"){
+    				if(val.length == "12"){
+    					$(this).val(val.substring(0,4) + "-" + val.substring(4, 8) + "-" + val.substring(8));
+    				} else {
+    					$(this).val(val.substring(0,4) + "-" + val.substring(4, 7) + "-" + val.substring(7));
+    				}
+    			} else {
+    				if(val.length == "11"){
+    					$(this).val(val.substring(0,3) + "-" + val.substring(3, 7) + "-" + val.substring(7));
+    				} else {
+    					$(this).val(val.substring(0,3) + "-" + val.substring(3, 6) + "-" + val.substring(6));
+    				}
+    			}
     		}
     	});
     </script>
