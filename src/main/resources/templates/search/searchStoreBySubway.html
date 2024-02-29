@@ -511,7 +511,7 @@
           // });
 
           $.each(data, function (index, store) {
-            if (store !== null) {
+            if (store !== null && store.storeStatus == 1 ) {
               const storeDiv = $("<div>").addClass("store-top5").on("click", function () {
                 location.href = "/search/conveyStoreInfoToDetail?storeNo=" + store.storeNo;
               }).on("mouseover", function () {
@@ -615,7 +615,7 @@
                 // })
 
                 $.each(data.searchList, function (index, store) {
-                  if (store !== null) {
+                  if (store !== null  && store.storeStatus == 1 ) {
                     const storeDiv = $("<div>").addClass("store-all").on("click", function () {
                       location.href = "/search/conveyStoreInfoToDetail?storeNo=" + store.storeNo;
                     }).on("mouseover", function () {
@@ -715,7 +715,7 @@
                       // 	}
                       // })
                       $.each(data.searchList, function (index, store) {
-                        if (store !== null) {
+                        if (store !== null  && store.storeStatus == 1 ) {
                           const storeDiv = $("<div>").addClass("store-all").on("click", function () {
                             location.href = "/search/conveyStoreInfoToDetail?storeNo=" + store.storeNo;
                           }).on("mouseover", function () {
