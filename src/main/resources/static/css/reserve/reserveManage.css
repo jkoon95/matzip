@@ -21,18 +21,18 @@ ul{
   width: 100%; /*=950px*/
   box-sizing: border-box;
   display: flex;
-  gap: 30px;
+  gap: 15px;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
 }
 
 .content-left-side{
-  width: 300px;
+  width: 330px;
   box-sizing: border-box;
 }
 .content-right-side{
-  width: 570px;
+  width: 580px;
   box-sizing: border-box;
   display: flex;
   gap: 30px;
@@ -66,17 +66,29 @@ ul{
   width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 20px;
 }
 
 
+.temp{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+
+
+
 .timeset .article-content{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
   gap: 5px;
 }
 
@@ -91,17 +103,20 @@ ul{
 }
 
 
-.small-article{
+.reserve{
   width: 240px;
 }
-.name,.people,.menu,.request{
+.name, .people, .menu, .request{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
-.small-title, .small-content, .menu, .request{
+.reserveNo{
+  display: none;
+}
+.small-title, .small-content{
   font-size: 14px;
 }
 .small-title{
@@ -113,7 +128,12 @@ ul{
 .bold{
   font-weight: bolder;
 }
-#cancel-btn{
+.cancel-btn{
   display: block;
   margin: 0 auto;
 }
+.no-cancel-btn{
+  display: block;
+  margin: 0 auto;
+}
+

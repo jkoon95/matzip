@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -122,7 +123,7 @@ public class ReserveController {
 	
 	@RequestMapping(value="/reserveManage")
 	public String reserveManage(Model model) {
-		int storeNo = 7;
+		int storeNo = 7;//나중에 매개변수로 옮겨라. postmapping으로도 바꾸고.
 		
 		ReserveFrm reserveFrm = reserveService.reserveFrm(storeNo);
 		List<Integer> closedDays = reserveService.closedDays(storeNo);
@@ -168,4 +169,24 @@ public class ReserveController {
 		return reserveViewStoreList;
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/cancelReserve2")
+	public int CancelReserve2(int reserveNo) {
+		int result = reserveService.cancelReserve(reserveNo);
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/insertTemp")
+	public int insertTemp(int storeNo, String insertTempDay) {
+		int result = reserveService.insertTemp(storeNo, insertTempDay);
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/deleteTemp")
+	public int deleteTemp(int storeNo, String insertTempDay) {
+		int result = reserveService.deleteTemp(storeNo, insertTempDay);
+		return result;
+	}
 }

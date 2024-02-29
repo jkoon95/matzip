@@ -18,6 +18,8 @@ import kr.or.iei.reseve.model.dto.ReserveRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveTimeRowMapper;
 import kr.or.iei.reseve.model.dto.ReserveViewMember;
 import kr.or.iei.reseve.model.dto.ReserveViewMemberRowMapper;
+import kr.or.iei.reseve.model.dto.ReserveViewStore;
+import kr.or.iei.reseve.model.dto.ReserveViewStoreRowMapper;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacity;
 import kr.or.iei.reseve.model.dto.TableNoAndCapacityRowMapper;
 import kr.or.iei.reseve.model.dto.TempClosedDay;
@@ -57,6 +59,8 @@ public class ReserveDao {
 	private MenuServingsRowMapper menuServingsRowMapper;
 	@Autowired
 	private ReserveNoRowMapper reserveNoRowMapper;
+	@Autowired
+	private ReserveViewStoreRowMapper reserveViewStoreRowMapper;
 	
 	
 	public Store searchStore(int storeNo) {
@@ -275,11 +279,12 @@ public class ReserveDao {
 	}
 
 
-	public List<Reserve> reserveList(int storeNo, String reserveDate, String reserveTime) {
+	public List<ReserveViewStore> reserveList(int storeNo, String reserveDate, String reserveTime) {
 		String query = "select * from reserve_tbl "
+					+  "join (select member_no, member_name from member_tbl) using (member_no) "
 					+  "where reserve_status = 1 and store_no = ? and reserve_date = ? and reserve_time = ?";
 		Object[] params = {storeNo, reserveDate, reserveTime};
-		List<Reserve> reserveList = jdbc.query(query, reserveRowMapper, params);
+		List<ReserveViewStore> reserveList = jdbc.query(query, reserveViewStoreRowMapper, params);
 		return reserveList;
 	}
 
@@ -295,6 +300,24 @@ public class ReserveDao {
 		Object[] params = {storeNo};
 		List<MenuServings> menuServingsList = jdbc.query(query, menuServingsRowMapper, params);
 		return menuServingsList;
+	}
+
+
+	public int insertTemp(int storeNo, String insertTempDay) {
+		String query = "insert into temp_closed_day_tbl "
+					+  "values (?, ?)";
+		Object[] params = {storeNo, insertTempDay};
+		int result = jdbc.update(query, params);
+		return result;
+	}
+
+
+	public int deleteTemp(int storeNo, String insertTempDay) {
+		String query = "delete from temp_closed_day_tbl "
+					+  "where store_no = ? and temp_closed_day = ?";
+		Object[] params = {storeNo, insertTempDay};
+		int result = jdbc.update(query, params);
+		return result;
 	}
 
 
