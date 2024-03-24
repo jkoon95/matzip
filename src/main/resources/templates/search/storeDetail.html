@@ -338,7 +338,7 @@
         var storeNo = $("input[name='storeNo']").val();
         var reviewWriter = $("input[name='reviewWriter']").val();
 
-        if (confirm("신고하시겠습니까?")) {
+        if (confirm("리뷰를 신고하시겠습니까?")) {
           $.ajax({
             type: "POST",
             url: "/search/reportReview",
